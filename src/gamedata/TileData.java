@@ -4,7 +4,7 @@ import util.Index;
 import types.TileType;
 
 /**
- * used by MapData to store the information for each individual
+ * Used by MapData to store the information for each individual
  * tile in the map.
  * 
  * @author TNK
