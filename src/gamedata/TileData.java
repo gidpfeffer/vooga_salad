@@ -1,10 +1,10 @@
 package gamedata;
 
+import util.Index;
 import types.TileType;
-import util.Tuple;
 
 /**
- * used by MapData to store the information for each individual
+ * Used by MapData to store the information for each individual
  * tile in the map.
  * 
  * @author TNK
@@ -14,9 +14,9 @@ public class TileData {
 	
 	private String imagePath;
 	private TileType tileType;
-	private Tuple<Integer,Integer> index; 
+	private Index index; 
 	
-	public TileData(String imagePath,Tuple<Integer,Integer> index, TileType tileType) {
+	public TileData(String imagePath,Index index, TileType tileType) {
 		check();
 		this.imagePath = imagePath;
 		this.tileType = tileType;
@@ -39,15 +39,16 @@ public class TileData {
 		return tileType;
 	}
 
-	public Tuple<Integer,Integer> getIndex(){
+	public Index getIndex(){
 		return index;
 	}
 	
 	public void setImagePath(String path){
 		this.imagePath = path;
 	}
-
-	public void setIndex(Tuple<Integer, Integer> index) {
+	
+	//TODO remove this method if it's unnecessary
+	public void setIndex(Index index) {
 		this.index = index;
 	}
 	
