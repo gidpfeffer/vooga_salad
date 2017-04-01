@@ -1,9 +1,9 @@
-package gameengine.actors;
+package usecases;
 
 import gameengine.ActorResult;
 import gameengine.actors.management.IActor;
 
-public class Tower implements IActor {
+public class Projectile implements IActor{
 
 	@Override
 	public ActorResult act(Object out) {

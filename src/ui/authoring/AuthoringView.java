@@ -24,7 +24,6 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.level.LevelEditorView;
-import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
 import ui.general.Frame;
 import ui.general.ImageButton;

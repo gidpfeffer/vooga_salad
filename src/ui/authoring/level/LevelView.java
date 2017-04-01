@@ -1,5 +1,7 @@
 package ui.authoring.level;
 
+import gamedata.LevelData;
+
 public class LevelView {
 	
 	private LevelData myLevelData;

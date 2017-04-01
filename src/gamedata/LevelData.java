@@ -1,6 +1,6 @@
-package ui.authoring.level;
+package gamedata;
 
-import ui.authoring.map.MapData;
+import java.util.List;
 
 /**
  * holds all the data that is encoded for a level
@@ -10,6 +10,7 @@ import ui.authoring.map.MapData;
  */
 public class LevelData {
 	private MapData mapData;
+	private List<ActorData>actors;
 	
 	/* TODO
 	 * 

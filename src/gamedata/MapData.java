@@ -1,4 +1,4 @@
-package ui.authoring.map;
+package gamedata;
 
 import java.util.Optional;
 

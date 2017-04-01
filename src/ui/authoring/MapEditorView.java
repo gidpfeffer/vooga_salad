@@ -1,7 +1,9 @@
-package ui.authoring.map;
+package ui.authoring;
 
 import java.util.Optional;
 
+import gamedata.MapData;
+import gamedata.TileData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -12,6 +14,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import types.TileType;
+import ui.authoring.map.PathTile;
 import ui.general.CustomColors;
 import ui.general.Frame;
 import ui.general.Frameable;
@@ -75,11 +79,8 @@ public class MapEditorView extends UIView{
 			}
 		}
 		myMapData.addTileDataAtIndex(new TileData(defaultEntryImage, new Index(0,myDimensions.y/2), TileType.ENTRY));
+		myMapData.addTileDataAtIndex(new TileData(defaultExitImage, new Index(myDimensions.x - 1,myDimensions.y/2), TileType.EXIT));
 
-	}
-	
-	private void setTile(PathTile tile){
-		myMapData.addTileDataAtIndex(tile.getTileData());
 	}
 	
 	private void replaceTile(PathTile tile){

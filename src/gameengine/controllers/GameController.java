@@ -1,5 +1,5 @@
 package gameengine.controllers;
 
-public class GameController {
-
+public interface GameController {
+	public void step();
 }

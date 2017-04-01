@@ -1,8 +1,8 @@
 package ui.map;
 
+import gamedata.MapData;
 import javafx.scene.layout.GridPane;
 import ui.api_internal.MapViewAPI;
-import ui.authoring.map.MapData;
 import ui.authoring.map.PathTile;
 import ui.general.Frame;
 import ui.general.Frameable;

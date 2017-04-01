@@ -1,5 +1,6 @@
 package ui.authoring.map;
 
+import gamedata.TileData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;

@@ -1,6 +1,7 @@
 package gameengine.actors;
 
 import gameengine.ActorResult;
+import gameengine.actors.management.IActor;
 
 public class Base implements IActor{
 

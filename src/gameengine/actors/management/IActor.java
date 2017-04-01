@@ -1,4 +1,4 @@
-package gameengine.actors;
+package gameengine.actors.management;
 
 import gameengine.ActorResult;
 

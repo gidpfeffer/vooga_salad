@@ -1,7 +1,7 @@
-package ui.authoring.map;
+package gamedata;
 
 import util.Index;
-import util.Tuple;
+import types.TileType;
 
 /**
  * used by MapData to store the information for each individual
