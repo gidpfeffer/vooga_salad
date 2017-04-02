@@ -1,32 +1,55 @@
 package ui.authoring.map;
 
+import gamedata.TileData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import util.Index;
+import util.Tuple;
 
-public abstract class PathTile extends StackPane{
+public class PathTile extends StackPane{
+	
 	
 	private ImageView myImageView;
-	private String myImagePath;
-
-	public PathTile(String imagePath, double width, double height){
+	private Tuple<Double,Double> myTileSize;
+	private TileData myTileData;
+	
+	//TODO create default init
+	
+	public PathTile(TileData tileData, double width, double height){
 		super();
-		myImageView = new ImageView(new Image(imagePath));
+		myImageView = new ImageView(new Image(tileData.getImagePath()));
 		myImageView.setFitWidth(width);
 		myImageView.setFitHeight(height);
-		myImagePath = imagePath;
+		myTileData = tileData;
+		myTileSize = new Tuple<Double,Double>(width, height);
 		this.getChildren().add(myImageView);
-		
-	}
-	
-	public String getImage() {
-		return myImagePath;
 	}
 
+	
 	public void setImageWithPath(String path) {
-		myImagePath = path;
+		myTileData.setImagePath(path);
 		myImageView.setImage(new Image(path));
 	}
 	
+	public Tuple<Double,Double> getTileSize(){
+		return myTileSize;
+	}
+	
+	/**
+	 * returns a clone of whatever the object is with the same data
+	 * @param tuple 
+	 */
+	public PathTile clone(Index index){
+		TileData newData= new TileData(myTileData.getImagePath(), index, myTileData.getTileType());
+		return new PathTile(newData,myTileSize.x, myTileSize.y);
+	}
+
+	public TileData getTileData() {
+		return myTileData;
+	}
+	
+	public void setTileData(TileData newTileData){
+		//TODO
+	}
 }

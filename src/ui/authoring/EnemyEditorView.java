@@ -1,5 +1,7 @@
 package ui.authoring;
 
-public class EnemyEditorView {
+import ui.general.UIView;
+
+public class EnemyEditorView extends UIView{
 
 }

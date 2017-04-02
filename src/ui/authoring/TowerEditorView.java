@@ -1,5 +1,7 @@
 package ui.authoring;
 
-public class TowerEditorView {
+import ui.general.UIView;
+
+public class TowerEditorView extends UIView{
 
 }

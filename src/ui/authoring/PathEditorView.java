@@ -1,5 +1,7 @@
 package ui.authoring;
 
-public class PathEditorView {
+import ui.general.UIView;
+
+public class PathEditorView extends UIView {
 
 }

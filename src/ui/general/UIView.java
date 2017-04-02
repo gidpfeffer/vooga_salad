@@ -28,7 +28,12 @@
  */
 package ui.general;
 
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * UIView is a Pane that can be initialized with a frame.
@@ -71,5 +76,8 @@ public class UIView extends Pane implements Frameable{
 		return _bounds;
 	}
 	
+	public void setBackgroundColor(Color c){
+		this.setBackground(new Background(new BackgroundFill[] { new BackgroundFill(c, new CornerRadii(3), Insets.EMPTY)}));
+	}
 	
 }
