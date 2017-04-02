@@ -1,18 +1,22 @@
 package util;
 
 public class Index {
-	Tuple<Double,Double> location;
+	private Tuple<Integer,Integer> index;
 	
-	public Index(Double i1, Double i2){
-		location = new Tuple<Double,Double>(i1, i2);
+	public Index(Integer col, Integer row){
+		setIndex(col, row);
 	}
 
-	public Tuple<Double, Double> getLocation() {
-		return location;
+	public Integer getX() {
+		return index.x;
+	}
+	
+	public Integer getY() {
+		return index.y;
 	}
 
-	public void setLocation(Tuple<Double, Double> location) {
-		this.location = location;
+	public void setIndex(Integer col, Integer row) {
+		this.index = new Tuple<Integer,Integer>(col, row);
 	}
 	
 	
