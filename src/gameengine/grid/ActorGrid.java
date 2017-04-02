@@ -10,10 +10,10 @@ import gameengine.grid.interfaces.ReadableGrid;
 
 public class ActorGrid implements ReadShootMoveGrid{
 	
-	List<Actor<? extends ReadableGrid>> actors;
+	public ActorGrid(){
+		
+	}
 	
-	public ActorGrid():
-		actors = new ArrayList<>();
 
 	@Override
 	public boolean addProjectile(Actor<? extends ReadableGrid> projectile, double startX, double startY) {
