@@ -1,13 +1,9 @@
 package gameengine.actors.management;
 
-import gameengine.ActorResult;
+public interface Actor <G>{
 
-public interface IActor <O>{
-
-	public ActorResult act(O out);
-	
-	public void deactivate();
-	
+	public void act(G grid);
+		
 	public boolean isActive();
 	
 	public double getHealth();

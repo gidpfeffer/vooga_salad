@@ -1,20 +1,13 @@
 package gameengine.actors;
 
 import gameengine.ActorResult;
-import gameengine.actors.management.IActor;
+import gameengine.actors.management.Actor;
 
-public class Tower implements IActor {
-
-	@Override
-	public ActorResult act(Object out) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public class Tower implements Actor {
 
 	@Override
-	public void deactivate() {
+	public void act(Object out) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
