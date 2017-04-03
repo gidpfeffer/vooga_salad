@@ -1,33 +1,16 @@
 package gameengine.actors.enemy;
 
-import java.util.List;
 
-import gameengine.ActorResult;
-import usecases.IActor;
+import gameengine.actors.management.Actor;
 
-public abstract class Enemy <O> implements IActor<O> {
+
+/**
+ * 
+ * @author Anh
+ *
+ * @param <O>
+ */
+public abstract class Enemy <O> implements Actor<O> {
 		
-	@Override
-	public abstract ActorResult act(O out) ;
-		// TODO Auto-generated method stub
-	
 
-	@Override
-	public abstract void deactivate() ;
-		// TODO Auto-generated method stub
-		
-	
-
-	@Override
-	public abstract boolean isActive();
-
-	@Override
-	public abstract double getHealth() ;
-		// TODO Auto-generated method stub
-
-
-	@Override
-	public abstract void setHealth(double health);
-		// TODO Auto-generated method stub
-	
 }

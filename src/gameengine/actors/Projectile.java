@@ -2,13 +2,16 @@ package gameengine.actors;
 
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
+import gamedata.ProjectileData;
+
 public class Projectile extends AbstractActor<ReadAndMoveGrid>{
 
 	private double mySpeed;
 	//private Path myPath;
 	
-	public void Projectile() {
+	public Projectile(ProjectileData proj) {
 		//DO PROJECTILES NEED HEALTH?
+		//TODO: @Maddie complete
 	}
 	
 	/* (non-Javadoc)
@@ -34,9 +37,4 @@ public class Projectile extends AbstractActor<ReadAndMoveGrid>{
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-
-
 }

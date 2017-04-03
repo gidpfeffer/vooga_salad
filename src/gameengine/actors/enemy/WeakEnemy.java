@@ -1,35 +1,48 @@
 package gameengine.actors.enemy;
 
-import gameengine.ActorResult;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
-public class WeakEnemy extends Enemy {
-	private List<Point2D> myPathCoordinates;
+import gameengine.grid.Grid2D;
+import gameengine.grid.interfaces.*;
+
+
+/**
+ * take in constructor a collection of coordinates, turn that into a queue, and poll a coordinate to move to at every
+ * step. 
+ * @author Anh
+ *
+ */
+public class WeakEnemy extends Enemy<ReadAndMoveGrid> {
+	private Queue<Grid2D> myPathCoordinates;
+	private double myID; 
 
 	/** 
 	 * In the constructor, the pathCoordinates list comes from 
-	 * PathFinder.getPathCoordinates(Integer enemy Path Index,  double enemySpeed) 
+	 * PathFinder.getPathCoordinates(Integer enemy Path Index,  double increment) 
 	 * @param pathCoordinates
 	 */
-	public WeakEnemy (List<Point2D> pathCoordinates){ 
-		myPathCoordinates = pathCoordinates;	
+	public WeakEnemy (Collection<Grid2D> pathCoordinates){ 
+		myPathCoordinates = new LinkedList<>(pathCoordinates);	
 	}
 	
 	@Override
-	public ActorResult act(Object out) {
-		// TODO Auto-generated method stub
-		
-		// pop a coordinate from myPathCoordinates to set the enemy location to 
-		
-		
-		return null;
+	public void act(ReadAndMoveGrid grid) {
+		move(grid);		
+		// more actions
 	}
+	
 
-	@Override
-	public void deactivate() {
-		// TODO Auto-generated method stub
-		
+	private void move(ReadAndMoveGrid grid) {
+		if (!myPathCoordinates.isEmpty()){
+			// poll a coordinate from myPathCoordinates to set the enemy location to
+			Grid2D newLoc = myPathCoordinates.poll();
+			grid.move(myID, newLoc.getX(), newLoc.getY());
+		}
 	}
-
+	
 	@Override
 	public boolean isActive() {
 		// TODO Auto-generated method stub
@@ -37,15 +50,11 @@ public class WeakEnemy extends Enemy {
 	}
 
 	@Override
-	public double getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setHealth(double health) {
+	public void applyDamage(double health) {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 	
 }
