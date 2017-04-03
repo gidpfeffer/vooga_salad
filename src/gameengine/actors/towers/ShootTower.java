@@ -1,21 +1,19 @@
-package gameengine.actors;
+package gameengine.actors.towers;
 
 import java.util.List;
 
+import gameengine.actors.Projectile;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.ReadAndShootGrid;
 import gameengine.grid.interfaces.ReadableGrid;
 
-public class Tower implements Actor <ReadAndShootGrid> {
+public class ShootTower extends ATower<ReadAndShootGrid> {
 	
 	private double myShootRadius;
-	private boolean isActive;
-	private double myHealth;
 	
-	public Tower(double shootRadius, double startingHealth) {
+	public ShootTower(double shootRadius) {
+		super();
 		myShootRadius = shootRadius;
-		myHealth = startingHealth;
-		isActive = true;
 	}
 
 	/* (non-Javadoc)
@@ -33,35 +31,12 @@ public class Tower implements Actor <ReadAndShootGrid> {
 			grid.addProjectile(new Projectile(), grid.getLocationOf(this).getX(), grid.getLocationOf(this).getY());
 		} 
 	}
-
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#isActive()
-	 */
+	
 	@Override
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return isActive;
-	}
-
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#getHealth()
-	 */
-	@Override
-	public double getHealth() {
-		// TODO Auto-generated method stub
-		return myHealth;
-	}
-
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#setHealth(double)
-	 */
-	@Override
-	public void setHealth(double health) {
-		// TODO Auto-generated method stub
-		myHealth = health;
+	public void applyDamage(double health) {
 		
 	}
-	
+
 	private Actor<? extends ReadableGrid> getEnemyToShoot(List<Actor <? extends ReadableGrid>> actorList, ReadableGrid grid) {
 		//implementation for getting closes shooter
 		double shortestDistance = Double.POSITIVE_INFINITY;
