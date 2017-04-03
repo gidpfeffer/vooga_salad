@@ -4,7 +4,7 @@ import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
 import gamedata.ProjectileData;
 
-public class Projectile extends AbstractActor<ReadAndMoveGrid>{
+public class Projectile extends Shot<ReadAndMoveGrid>{
 
 	private double mySpeed;
 	//private Path myPath;

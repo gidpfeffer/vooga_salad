@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import gameengine.actors.AbstractActor;
 import gameengine.actors.Base;
 import gameengine.actors.Projectile;
+import gameengine.actors.Shot;
 import gameengine.actors.Troop;
 import gameengine.actors.management.Actor;
 import gameengine.actors.towers.ATower;
@@ -21,12 +22,11 @@ import gameengine.grid.interfaces.Identifiers.MovableActor;
 
 public class ActorGrid implements ReadShootMoveGrid{
 	
-	Map<Integer, MovableActor<Projectile>> projectileMap;
-	Map<Integer, MovableActor<Troop<? extends ReadableGrid>>> enemyMap;
-	Map<Integer, MovableActor<Base<? extends ReadableGrid>>> baseMap;
-	Map<Integer, MovableActor<ATower<? extends ReadableGrid>>> towerMap;
-	List<Map<Integer, MovableActor<? extends Actor<? extends ReadableGrid>>>> actorList;
-	
+	Map<Integer, MovableActor<Shot<ReadableGrid>>> projectileMap;
+	Map<Integer, MovableActor<Troop<ReadableGrid>>> enemyMap;
+	Map<Integer, MovableActor<Base<ReadableGrid>>> baseMap;
+	Map<Integer, MovableActor<ATower<ReadableGrid>>> towerMap;
+	List<Map<Integer, MovableActor<Actor<ReadableGrid>>>> actorList;
 	
 	public ActorGrid(){
 		initializeInstances();
@@ -38,7 +38,7 @@ public class ActorGrid implements ReadShootMoveGrid{
 		baseMap = new HashMap<>();
 		towerMap = new HashMap<>();
 		actorList = new ArrayList<>();
-		actorList.add(baseMap);
+		actorList.add(enemyMap);
 	}
 
 	@Override
