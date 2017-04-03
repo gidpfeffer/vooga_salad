@@ -1,12 +1,10 @@
 package gameengine.actors;
 
-import gameengine.ActorResult;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.ReadAndMoveGrid;
 
 public class Projectile implements Actor<ReadAndMoveGrid> {
 
-	
 	private double mySpeed;
 	//private Path myPath;
 	
