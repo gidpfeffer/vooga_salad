@@ -4,8 +4,8 @@ import java.util.List;
 
 import gameengine.actors.Projectile;
 import gameengine.actors.management.Actor;
-import gameengine.grid.interfaces.ReadAndShootGrid;
-import gameengine.grid.interfaces.ReadableGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public class ShootTower extends ATower<ReadAndShootGrid> {
 	
