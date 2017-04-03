@@ -21,5 +21,7 @@ public class Grid2D {
 	public double getY(){
 		return myY; 
 	}
-
+	public String asString(){
+		return myX + " , " + myY;
+	}
 }
