@@ -6,8 +6,6 @@ public interface Actor <G>{
 		
 	public boolean isActive();
 	
-	public double getHealth();
-	
-	public void setHealth(double health);
+	public void applyDamage(double health);
 
 }

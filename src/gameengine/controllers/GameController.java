@@ -1,8 +1,22 @@
 package gameengine.controllers;
 
-public interface GameController {
-	public enum Actors {TOWER,SMART_ENEMY,DUMB_ENEMY};
-	//possible problem = trying to upgrade tower into a smart enemy?
-	//map enum Actors to Actor<G> instance 
-	public void step();
+import gamedata.GameData;
+import gameengine.player.GameStatus;
+import ui.handlers.UIHandler;
+
+public class GameController {
+	private GameStatus myGameStatus;
+	private GameData myGameData;
+	private UIHandler myUIHandler;
+	private LevelController myLevelController;
+
+	public GameController() {
+		
+	}
+	public void step() {
+	}
+	
+	public void updateLevel(LevelController levelController) {
+		myLevelController = levelController;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gameengine.actors.Projectile;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Grid2D;
 import gameengine.grid.interfaces.ReadShootMoveGrid;
@@ -26,7 +27,7 @@ public class ActorGrid implements ReadShootMoveGrid{
 	}
 
 	@Override
-	public boolean addProjectile(Actor<? extends ReadableGrid> projectile, double startX, double startY) {
+	public boolean addProjectile(Projectile projectile, double startX, double startY) {
 		// TODO Auto-generated method stub
 		return false;
 	}
