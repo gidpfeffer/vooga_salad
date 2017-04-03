@@ -1,7 +1,8 @@
 package gameengine.actors.enemy;
 
 
-import gameengine.actors.management.Actor;
+import gameengine.actors.Troop;
+
 
 
 /**
@@ -10,7 +11,7 @@ import gameengine.actors.management.Actor;
  *
  * @param <O>
  */
-public abstract class Enemy <O> implements Actor<O> {
+public abstract class Enemy <O> extends Troop<O> {
 		
 
 }
