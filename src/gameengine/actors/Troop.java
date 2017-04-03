@@ -1,16 +1,16 @@
 package gameengine.actors;
 
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamedata.TroopData;
-import gameengine.actors.management.Actor;
 
-public class Troop implements Actor{
+public abstract class Troop <T extends ReadableGrid> extends AbstractActor<T> {
 
 	public Troop(TroopData troop){
 		//TODO: @Maddie complete
 	}
 	
 	@Override
-	public void act(Object out) {
+	public void act(T out) {
 		// TODO Auto-generated method stub
 	}
 

@@ -1,10 +1,10 @@
 package gameengine.actors;
 
-import gamedata.ProjectileData;
-import gameengine.actors.management.Actor;
-import gameengine.grid.interfaces.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
-public class Projectile implements Actor<ReadAndMoveGrid> {
+import gamedata.ProjectileData;
+
+public class Projectile extends AbstractActor<ReadAndMoveGrid>{
 
 	private double mySpeed;
 	//private Path myPath;
@@ -37,8 +37,4 @@ public class Projectile implements Actor<ReadAndMoveGrid> {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-
 }
