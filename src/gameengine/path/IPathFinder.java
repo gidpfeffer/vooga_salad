@@ -1,5 +1,6 @@
 package gameengine.path;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
