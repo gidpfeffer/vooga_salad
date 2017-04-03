@@ -1,5 +1,6 @@
 package gameengine.actors;
 
+import gamedata.ProjectileData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.ReadAndMoveGrid;
 
@@ -8,8 +9,9 @@ public class Projectile implements Actor<ReadAndMoveGrid> {
 	private double mySpeed;
 	//private Path myPath;
 	
-	public void Projectile() {
+	public Projectile(ProjectileData proj) {
 		//DO PROJECTILES NEED HEALTH?
+		//TODO: @Maddie complete
 	}
 	
 	/* (non-Javadoc)
@@ -30,23 +32,12 @@ public class Projectile implements Actor<ReadAndMoveGrid> {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#getHealth()
-	 */
 	@Override
-	public double getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#setHealth(double)
-	 */
-	@Override
-	public void setHealth(double health) {
+	public void applyDamage(double health) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 

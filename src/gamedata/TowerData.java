@@ -2,7 +2,13 @@ package gamedata;
 
 import types.TowerType;
 
-public class TowerData {
+/**
+ * 
+ * @author maddiebriere
+ *
+ */
+
+public class TowerData extends ActorData{
 	private String imagePath;
 	private TowerType towerType;
 	
