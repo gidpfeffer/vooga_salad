@@ -1,11 +1,16 @@
 package gameengine.actors;
 
-import gameengine.actors.management.Actor;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+import gamedata.TroopData;
 
-public abstract class Troop<G> implements Actor<G>{
+public abstract class Troop <T extends ReadableGrid> extends AbstractActor<T> {
 
+	public Troop(TroopData troop){
+		//TODO: @Maddie complete
+	}
+	
 	@Override
-	public void act(Object out) {
+	public void act(T out) {
 		// TODO Auto-generated method stub
 	}
 
@@ -14,18 +19,6 @@ public abstract class Troop<G> implements Actor<G>{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-//	@Override
-//	public double getHealth() {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public void setHealth(double health) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 	@Override
 	public void applyDamage(double health) {

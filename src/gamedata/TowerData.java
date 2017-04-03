@@ -8,7 +8,7 @@ import types.TowerType;
  *
  */
 
-public class TowerData {
+public class TowerData extends ActorData{
 	private String imagePath;
 	private TowerType towerType;
 	
