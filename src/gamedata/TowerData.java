@@ -2,6 +2,12 @@ package gamedata;
 
 import types.TowerType;
 
+/**
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class TowerData {
 	private String imagePath;
 	private TowerType towerType;

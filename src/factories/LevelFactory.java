@@ -1,9 +1,10 @@
-package gameengine.player.levels;
+package factories;
 
 import gamedata.GameData;
 import gameengine.controllers.LevelController;
 
 /**
+ * Generates a new level from the current game data
  * 
  * @author maddiebriere
  *
@@ -11,5 +12,5 @@ import gameengine.controllers.LevelController;
 
 public interface LevelFactory {
 
-	public LevelController buildLevel(GameData current);
+	public LevelController buildLevel(GameData current, int level);
 }
