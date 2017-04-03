@@ -2,7 +2,7 @@ package gameengine.actors;
 
 import gameengine.actors.management.Actor;
 
-public class Troop implements Actor{
+public abstract class Troop<G> implements Actor<G>{
 
 	@Override
 	public void act(Object out) {
@@ -15,14 +15,20 @@ public class Troop implements Actor{
 		return false;
 	}
 
-	@Override
-	public double getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	@Override
+//	public double getHealth() {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//	@Override
+//	public void setHealth(double health) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
-	public void setHealth(double health) {
+	public void applyDamage(double health) {
 		// TODO Auto-generated method stub
 		
 	}
