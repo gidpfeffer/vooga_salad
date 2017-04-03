@@ -1,5 +1,7 @@
 package gameengine.player;
 
+import java.util.Optional;
+
 /**
  * 
  * Holds basic information about current status
@@ -11,16 +13,22 @@ package gameengine.player;
  */
 
 public class GameStatus {
-	public double myExperience;
-	public double myMoney;
+	//NOTE: Don't need to have experience or money
+	public Optional<Double> myExperience;
+	public Optional<Double> myMoney;
 	public int myLevel;
 	
+	//TODO: Replace with Predicate
 	public void addExperience(double exp){
-		myExperience +=exp;
+		if(myExperience.isPresent()){
+			myExperience = Optional.of(myExperience.get()+exp);
+		}
 	}
 	
 	public void addMoney(double mon){
-		myMoney+= mon;
+		if(myMoney.isPresent()){
+			myMoney = Optional.of(myMoney.get()+mon);
+		}
 	}
 	
 	public void spendMoney(double mon){
@@ -32,19 +40,22 @@ public class GameStatus {
 	}
 	
 	public double getMyExperience() {
-		return myExperience;
+		return myExperience.get();
 	}
 	
+	//TODO: Is the check necessary?
 	public void setMyExperience(double myExperience) {
-		this.myExperience = myExperience;
+		if(this.myExperience.isPresent()) //if we are considering experience
+			this.myExperience = Optional.of(myExperience);
 	}
 	
 	public double getMyMoney() {
-		return myMoney;
+		return myMoney.get();
 	}
 	
 	public void setMyMoney(double myMoney) {
-		this.myMoney = myMoney;
+		if(this.myMoney.isPresent()) //if we are considering experience
+			this.myMoney = Optional.of(myMoney);
 	}
 	
 	public int getMyLevel() {
