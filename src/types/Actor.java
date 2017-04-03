@@ -11,8 +11,8 @@ public enum Actor {
 		this.type = type;
 	}
 	
-	public boolean isType(Type type) {
-		return this.type ==type;
+	public boolean isSameType(Actor actor) {
+		return this.type ==actor.type;
 	}
 	
 	public enum Type {
