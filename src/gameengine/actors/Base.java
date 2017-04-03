@@ -1,30 +1,8 @@
 package gameengine.actors;
 
-import gameengine.actors.management.Actor;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
-public class Base implements Actor{
+public abstract class Base <T extends ReadableGrid> extends AbstractActor<T>{
 
-	@Override
-	public void act(Object out) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public double getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setHealth(double health) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

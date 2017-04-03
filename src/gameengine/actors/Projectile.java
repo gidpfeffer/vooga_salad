@@ -1,9 +1,8 @@
 package gameengine.actors;
 
-import gameengine.actors.management.Actor;
-import gameengine.grid.interfaces.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
-public class Projectile implements Actor<ReadAndMoveGrid> {
+public class Projectile extends AbstractActor<ReadAndMoveGrid>{
 
 	private double mySpeed;
 	//private Path myPath;
@@ -30,23 +29,13 @@ public class Projectile implements Actor<ReadAndMoveGrid> {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#getHealth()
-	 */
 	@Override
-	public double getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#setHealth(double)
-	 */
-	@Override
-	public void setHealth(double health) {
+	public void applyDamage(double health) {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 
 

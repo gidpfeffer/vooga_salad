@@ -1,4 +1,4 @@
-package gameengine.grid.interfaces;
+package gameengine.grid.interfaces.ActorGrid;
 
 import gameengine.actors.Projectile;
 

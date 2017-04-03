@@ -1,9 +1,9 @@
 package gameengine.actors.towers;
 
-import gameengine.actors.management.Actor;
-import gameengine.grid.interfaces.ReadableGrid;
+import gameengine.actors.AbstractActor;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
-public abstract class ATower<G extends ReadableGrid> implements Actor <G> {
+public abstract class ATower <T extends ReadableGrid> extends AbstractActor<T>{
 	
 	private boolean isActive;
 	
