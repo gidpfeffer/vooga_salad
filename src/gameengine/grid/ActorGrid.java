@@ -1,8 +1,11 @@
 package gameengine.grid;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gameengine.actors.Projectile;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Grid2D;
 import gameengine.grid.interfaces.ReadShootMoveGrid;
@@ -10,13 +13,21 @@ import gameengine.grid.interfaces.ReadableGrid;
 
 public class ActorGrid implements ReadShootMoveGrid{
 	
+	List<ActorMapIdentifier> actorList;
+	
 	public ActorGrid(){
-		
+		actorList = new ArrayList<>();
+		initializeActorMaps();
 	}
 	
+	private void initializeActorMaps(){
+		for(ActorType a: ActorType.values()){
+			actorList.add(new ActorMapIdentifier(new HashMap<>(), a));
+		}
+	}
 
 	@Override
-	public boolean addProjectile(Actor<? extends ReadableGrid> projectile, double startX, double startY) {
+	public boolean addProjectile(Projectile projectile, double startX, double startY) {
 		// TODO Auto-generated method stub
 		return false;
 	}
