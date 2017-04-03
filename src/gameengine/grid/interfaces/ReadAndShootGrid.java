@@ -1,10 +1,10 @@
 package gameengine.grid.interfaces;
 
-import gameengine.actors.management.Actor;
+import gameengine.actors.Projectile;
 
 public interface ReadAndShootGrid extends ReadableGrid{
 
 	//Someone needs to make a projectile class
-	boolean addProjectile(Actor<? extends ReadableGrid> projectile, double startX, double startY);
+	boolean addProjectile(Projectile projectile, double startX, double startY);
 
 }
