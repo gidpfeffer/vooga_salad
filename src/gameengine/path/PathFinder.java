@@ -23,15 +23,19 @@ public class PathFinder  {
 	}
 	
 	public List<Grid2D> getPathCoordinates(Integer pathNo, double increment){
+		
 		List<Grid2D> coordinatesToReturn = new ArrayList<Grid2D>(); 
 		List<Grid2D> pathChosen = myPaths.get(pathNo); 
 		
-		for (int i = 0; i< pathChosen.size()-1; i++ ){
-			
-			coordinatesToReturn.addAll(getIncrementPoints(pathChosen.get(i),pathChosen.get(i+1),increment));
-			coordinatesToReturn.add(new Grid2D(pathChosen.get(i+1)));
-		}
 		
+		for (int i = 0; i< pathChosen.size()-1; i++ ){
+			System.out.println("==============================");
+			System.out.println(pathChosen.get(i).asString());
+			coordinatesToReturn.addAll(getIncrementPoints(pathChosen.get(i),pathChosen.get(i+1),increment));
+			System.out.println("current list has");
+			coordinatesToReturn.forEach(e -> System.out.println(e.asString()));
+		}
+		coordinatesToReturn.add(new Grid2D(pathChosen.get(pathChosen.size()-1))); // for the ending point
 		return coordinatesToReturn;
 	}
 	
@@ -40,12 +44,17 @@ public class PathFinder  {
 	private List<Grid2D> getIncrementPoints(Grid2D start,Grid2D end, double increment){
 		List<Grid2D> result = new ArrayList<Grid2D>();
 		double distance = getDistance(start, end); 
+		System.out.println("distance between " + start.asString() + " and " + end.asString() + " is: " + distance);
+		
 		double angle = getAngle(start,end);
+		System.out.println("angle between " + start.asString() + " and " + end.asString() + " is: " + angle);
+		
 		int numIncrements = (int) (distance % increment == 0 ? (distance/increment)-1: (distance/increment));
+		System.out.println("Num of increments " + numIncrements);
 		
 		for (int i = 0; i <= numIncrements; i++){
-			double newX = start.getX() + distance* i * Math.cos(angle);
-			double newY = start.getY() + distance* i * Math.sin(angle);
+			double newX = start.getX() + increment* i * Math.cos(angle);
+			double newY = start.getY() + increment* i * Math.sin(angle);
 			result.add(new Grid2D(newX,newY));
 		}
 		return result; 
@@ -79,9 +88,10 @@ public class PathFinder  {
 		PathFinder test = new PathFinder(map); 
 		List<Grid2D> path = test.getPathCoordinates(0,2);
 		
-		for (Grid2D point :path){
-			System.out.println(point.getX() + " " + point.getY());
-		}
+		System.out.println("**********");
+		
+		path.forEach(e -> System.out.println(e.asString()));
+		
 	}
 
 }
