@@ -1,4 +1,6 @@
-package gameengine.actors.properties;
+package gamedata.composition;
+
+import gameengine.actors.properties.Health;
 
 public class LimitedHealth implements Health {
 

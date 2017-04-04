@@ -1,5 +1,6 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.LimitedHealth;
 import gameengine.actors.Projectile;
 
 public class ImmuneHealth<G extends Projectile> extends LimitedHealth{
