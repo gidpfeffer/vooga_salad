@@ -9,21 +9,20 @@ import gameengine.actors.Troop;
 import gameengine.actors.properties.Health;
 import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 
 /**
- * take in constructor a collection of coordinates, turn that into a queue, and poll a coordinate to move to at every
- * step. 
  * @author Anh
  *
  */
 
-public class Enemy extends Troop<ReadAndMoveGrid> {
+public class Enemy extends Troop<ReadableGrid> {
 
-	List<IActProperty> myProperties; 
+	List<IActProperty<ReadableGrid>> myProperties; 
 	private int myID;
-	public Enemy(Health h, List<IActProperty> properties) {
+	public Enemy(Health h, List<IActProperty<ReadableGrid>> properties) {
 		super(h, properties);
 		myProperties = properties;
 		// TODO Auto-generated constructor stub
@@ -32,7 +31,7 @@ public class Enemy extends Troop<ReadAndMoveGrid> {
 
 
 	@Override
-	public void act(ReadAndMoveGrid grid) {
+	public void act(ReadableGrid grid) {
 		myProperties.forEach(e -> e.action(grid,myID));
 	}
 	
