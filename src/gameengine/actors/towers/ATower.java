@@ -5,10 +5,8 @@ import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public abstract class ATower <T extends ReadableGrid> extends AbstractActor<T>{
 	
-	private boolean isActive;
-	
 	public ATower() {
-		isActive = true;
+
 	}
 
 	/* (non-Javadoc)
@@ -17,7 +15,7 @@ public abstract class ATower <T extends ReadableGrid> extends AbstractActor<T>{
 	@Override
 	public boolean isActive() {
 		// TODO Auto-generated method stub
-		return isActive;
+		return true;
 	}
 
 }
