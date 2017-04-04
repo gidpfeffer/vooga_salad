@@ -63,8 +63,8 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	}
 	
 	private double getDistance(double x1, double x2, double y1, double y2){
-		double squaredXDif = Math.pow(x2, 2) - Math.pow(x1, 2);
-		double squaredYDif = Math.pow(y2, 2) - Math.pow(y1, 2);
+		double squaredXDif = Math.pow(x2 - x1, 2);
+		double squaredYDif = Math.pow(y2 - y1, 2);
 		return Math.pow(squaredXDif + squaredYDif, 0.5);
 	}
 
@@ -111,9 +111,10 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	private Collection<Grid2D> getLocationsFromMap(Map<Integer, 
 			? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map){
 		
-		return map.values().stream()
+		List<Grid2D> locations = map.values().stream()
 				.map(a -> a.getLocation())
-				.collect(Collectors.toCollection(ArrayList::new));
+				.collect(Collectors.toList());
+		return Collections.unmodifiableCollection(locations);
 	}
 
 	@Override
