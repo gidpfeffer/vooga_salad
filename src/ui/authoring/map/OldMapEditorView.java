@@ -19,7 +19,6 @@ import ui.data.TileData;
 
 import ui.general.CustomColors;
 import ui.general.Frame;
-import ui.general.Frameable;
 import ui.general.UIView;
 import ui.map.OldMapView;
 import util.Index;

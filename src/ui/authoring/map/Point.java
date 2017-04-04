@@ -20,7 +20,7 @@ public class Point extends Circle{
         //etc
     }};
 	public Point(Location loc, PointType pointType){
-		super(loc.getX(), loc.getY(), 12);
+		super(loc.getX(), loc.getY(), 8);
 		setFill(pointTypeToColor.get(pointType));
 	}
 	

@@ -23,14 +23,17 @@ public class ImageButton extends Button{
 	
 	public ImageButton(String selected, String unselected, Location size){
 		super();
-		updateImages(new Image(selected, size.getX(),size.getY(),false,false),
-				new Image(unselected,size.getX(),size.getY(),false,false));
+		updateImages(new Image(selected),
+				new Image(unselected), size);
 	}
 	
-	public void updateImages(final Image selected, final Image unselected) {
+	public void updateImages(final Image selected, final Image unselected, Location size) {
 		this.setBackground(Background.EMPTY);
 		this.setBorder(Border.EMPTY);
 		final ImageView iv = new ImageView(selected);
+		iv.setPreserveRatio(true);
+		iv.setFitWidth(size.getX());
+		iv.setFitHeight(size.getY());
 		this.getChildren().add(iv);
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			iv.setImage(unselected);

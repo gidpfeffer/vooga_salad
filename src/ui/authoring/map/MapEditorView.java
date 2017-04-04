@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,19 +13,16 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import ui.general.CustomColors;
-import ui.general.Frame;
-import ui.general.ImageButton;
-import ui.general.UIView;
-import util.Location;
+import ui.general.*;
+import util.*;
 
 
-public class MapEditorView extends AnchorPane{
+public class MapEditorView extends StackPane{
 	
-	private final String DEFAULT_BACKGROUND_PATH = "default_map_background.png";
+	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
 	
 	private List<Location> myPoints = new ArrayList<Location>();
-	private ImageView myBackgroundView = new ImageView(new Image(DEFAULT_BACKGROUND_PATH));
+	private ImageViewPane myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
 	public MapEditorView(){
 		super();
 		setupViews();
@@ -43,7 +42,6 @@ public class MapEditorView extends AnchorPane{
 	
 	private void addPointToMap(MouseEvent e){
 		//TODO backend data
-		//TODO remove switch
 		Location loc = new Location(e.getX(),e.getY());
 		Point p;
 		if(e.getButton().equals(MouseButton.SECONDARY)){
@@ -61,29 +59,21 @@ public class MapEditorView extends AnchorPane{
 	}
 	
 	private void setupViews() {
-		//this.setBackgroundColor(CustomColors.GREEN); //TODO
 		setupBackground();
 		setupUndoButton();
 	}
 	
 	private void setupBackground() {
-		//this.myBackgroundView.setFitHeight(this.getPrefHeight());
-		//this.myBackgroundView.setFitWidth(this.getPrefWidth());
-		this.myBackgroundView.setPreserveRatio(true);
-		myBackgroundView.fitWidthProperty().bind(this.widthProperty());
-		myBackgroundView.fitHeightProperty().bind(this.heightProperty());
-//		AnchorPane.setBottomAnchor(myBackgroundView, 0.0);
-//		AnchorPane.setTopAnchor(myBackgroundView, 0.0);
-//		AnchorPane.setLeftAnchor(myBackgroundView, 0.0);
-//		AnchorPane.setRightAnchor(myBackgroundView, 0.0);
+		AnchorPane.setLeftAnchor(myBackgroundView, 0.0);
+		AnchorPane.setRightAnchor(myBackgroundView, 0.0);
 		this.getChildren().add(myBackgroundView);
 	}
 
 	private void setupUndoButton() {
 		ImageButton b = new ImageButton( "undo_icon.png", new Location(32.0,32.0));
 		b.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> undoAction(e));
-		AnchorPane.setBottomAnchor(b, 12.0);
-		AnchorPane.setRightAnchor(b, 12.0);
+		StackPane.setAlignment(b, Pos.BOTTOM_RIGHT);
+		StackPane.setMargin(b, new Insets(10));
 		this.getChildren().add(b);
 	}
 
@@ -96,7 +86,7 @@ public class MapEditorView extends AnchorPane{
 	//PUBLIC METHODS
 	
 	public void setBackgroundImage(Image image){
-		this.myBackgroundView.setImage(image);
+		this.myBackgroundView.setImageView(new ImageView(image));;
 	}
 	
 }
