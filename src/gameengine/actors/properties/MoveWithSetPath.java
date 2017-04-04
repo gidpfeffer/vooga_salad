@@ -10,14 +10,13 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 /**
  * this property needs the path as list of coordinates. The pathCoordinates list comes 
  * from PathFinder.getPathCoordinates(Integer enemy Path Index,  double increment)  
+ * turn that list into a queue, and poll a coordinate to move to at every
+ * step. 
  * @author Anh
  *
  */
 public class MoveWithSetPath implements IActProperty<ReadAndMoveGrid>{
 
-	/**
-	 * @param pathCoordinates
-	 */
 	
 	private Queue<Grid2D> myPathCoordinates;
 	
@@ -28,16 +27,11 @@ public class MoveWithSetPath implements IActProperty<ReadAndMoveGrid>{
 	@Override
 	public void action(ReadAndMoveGrid grid, Integer actorID) {
 		// TODO Auto-generated method stub
-		move(grid,actorID);
-	}
-
-	private void move(ReadAndMoveGrid g, int id) {
 		if (!myPathCoordinates.isEmpty()){
 			// poll a coordinate from myPathCoordinates to set the enemy location to
 			Grid2D newLoc = myPathCoordinates.poll();
-			g.move(id, newLoc.getX(), newLoc.getY()); 
+			grid.move(actorID, newLoc.getX(), newLoc.getY()); 
 		}
 	}
-	
-	
+
 }

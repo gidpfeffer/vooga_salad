@@ -9,7 +9,7 @@ import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public abstract class Troop <T extends ReadableGrid> extends AbstractActor<T> {
 
-	public Troop(Health h, List<IActProperty> properties){	
+	public Troop(Health h, List<IActProperty<ReadableGrid>> properties){	
 	}
 	
 	@Override
