@@ -1,9 +1,9 @@
 package ui.authoring.map;
 
-import gamedata.TileData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import ui.data.TileData;
 import util.Index;
 import util.Tuple;
 

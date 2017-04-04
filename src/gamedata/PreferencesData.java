@@ -1,36 +1,46 @@
 package gamedata;
 
+import java.util.Optional;
+
 /**
  * Preferences set in authoring stage
  * @author maddiebriere
  *
  */
 
-public interface PreferencesData {
+public class PreferencesData {
 	static final int NUM_LIVES = 3;
+	static final boolean DEFAULT = false;
 	
-	default int getNumLives(){
-		return NUM_LIVES;
+	private Optional<Integer> numLives;
+	private Optional<Boolean> enemyLoop;
+	private Optional<Boolean> towersAttackable;
+	private Optional<Boolean> wantMoney;
+	private Optional<Boolean> expByLevel;
+	private Optional<Boolean> pauseBetweenWaves;
+	
+	public int getNumLives(){
+		return numLives.orElse(NUM_LIVES);
 	}
 	
-	default boolean doEnemiesLoop(){
-		return false;
+	public boolean doEnemiesLoop(){
+		return enemyLoop.orElse(DEFAULT);
 	}
 	
-	default boolean isBasePresent(){
-		return true;
+	public boolean areTowersAttackable(){
+		return towersAttackable.orElse(DEFAULT);
 	}
 	
-	default boolean areTowersAttackable(){
-		return true;
+	public boolean wantMoney(){
+		return wantMoney.orElse(DEFAULT);
 	}
 	
-	default boolean wantMoney(){
-		return true;
+	public boolean expByLevel(){
+		return expByLevel.orElse(DEFAULT);
 	}
 	
-	default boolean pauseBetweenWaves(){
-		return false;
+	public boolean pauseBetweenWaves(){
+		return pauseBetweenWaves.orElse(DEFAULT);
 	}
 	
 	//TODO: Generate more preferences

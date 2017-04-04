@@ -1,4 +1,4 @@
-package gamedata;
+package ui.data;
 
 import util.Index;
 import types.TileType;
@@ -6,6 +6,9 @@ import types.TileType;
 /**
  * Used by MapData to store the information for each individual
  * tile in the map.
+ * 
+ * 
+ * TODO: Decide necessity
  * 
  * @author TNK
  *

@@ -1,6 +1,7 @@
 package gameengine.actors.enemy;
 
 
+import gamedata.TroopData;
 import gameengine.actors.Troop;
 
 
@@ -12,6 +13,7 @@ import gameengine.actors.Troop;
  * @param <O>
  */
 public abstract class Enemy <O> extends Troop<O> {
+
 		
 
 }
