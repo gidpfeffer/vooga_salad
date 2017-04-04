@@ -22,7 +22,7 @@ public class Test {
 		Grid2D loc = grid.getLocationOf(100);
 		
 		//test.Print2D(loc);
-		for(Grid2D g: grid.getEnemiesInRadius(10.0, 12.0, 2)){
+		for(Grid2D g: grid.getTowersInRadius(10.0, 12.0, 5)){
 			test.Print2D(g);
 		}
 	}
