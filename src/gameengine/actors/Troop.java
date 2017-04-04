@@ -1,12 +1,15 @@
 package gameengine.actors;
 
-import gamedata.TroopData;
+
+import java.util.List;
+
+import gameengine.actors.properties.Health;
+import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public abstract class Troop <T extends ReadableGrid> extends AbstractActor<T> {
 
-	public Troop(){
-		//TODO: @Maddie complete
+	public Troop(Health h, List<IActProperty> properties){	
 	}
 	
 	@Override
