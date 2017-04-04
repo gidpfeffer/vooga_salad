@@ -2,6 +2,18 @@ package gameengine.actors.properties;
 
 import gameengine.actors.Projectile;
 
-public interface ImmuneHealth<G extends Projectile> extends Health{
-	public void apply(double damage, G projectile);
+public class ImmuneHealth<G extends Projectile> extends LimitedHealth{
+	public ImmuneHealth(double health) {
+		super(health);
+	}
+
+	public void apply(double damage) {
+		
+	}
+
+	@Override
+	public boolean isAlive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
