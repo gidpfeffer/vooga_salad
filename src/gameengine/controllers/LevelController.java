@@ -11,5 +11,4 @@ import gameengine.grid.ActorGrid;
 public class LevelController {
 	public int myLevel;
 	public ActorGrid myMap;
-	//TODO: understand map implementation more thoroughly
 }
