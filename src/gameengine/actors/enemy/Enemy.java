@@ -15,38 +15,25 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  * @author Anh
  *
  */
+
 public class Enemy extends Troop<ReadAndMoveGrid> {
-	private Queue<Grid2D> myPathCoordinates;
-	private int myID; 
+
 
 	/** 
-	 * In the constructor, the pathCoordinates list comes from 
-	 * PathFinder.getPathCoordinates(Integer enemy Path Index,  double increment) 
 	 * @param pathCoordinates
 	 */
-	public Enemy (Collection<Grid2D> pathCoordinates){ 
-		myPathCoordinates = new LinkedList<>(pathCoordinates);	
+
+
+	public Enemy(Health h, Property p...){
+		
 	}
-	/*
-	 * 
-	 * public Enemy(Health health, IActProperty properties...)
-	 * 
-	 */
 	
 	@Override
 	public void act(ReadAndMoveGrid grid) {
-		move(grid);		
+		p.action(grid);		
 		// more actions
 	}
 	
-
-	private void move(ReadAndMoveGrid grid) {
-		if (!myPathCoordinates.isEmpty()){
-			// poll a coordinate from myPathCoordinates to set the enemy location to
-			Grid2D newLoc = myPathCoordinates.poll();
-			grid.move(myID, newLoc.getX(), newLoc.getY());
-		}
-	}
 	
 	@Override
 	public boolean isActive() {

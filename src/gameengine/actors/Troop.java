@@ -1,10 +1,11 @@
 package gameengine.actors;
 
+import gamedata.TroopData;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public abstract class Troop <T extends ReadableGrid> extends AbstractActor<T> {
 
-	public Troop(){
+	public Troop(Health h, Property p ...){
 		//TODO: @Maddie complete
 	}
 	

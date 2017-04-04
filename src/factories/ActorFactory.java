@@ -11,6 +11,8 @@ import gameengine.actors.management.Actor;
 
 public class ActorFactory extends AbstractFactory<Actor>{
 
+	//Use ID generator class
+	
 	public ActorFactory(String path) {
 		super(path);
 	}

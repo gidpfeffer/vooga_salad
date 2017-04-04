@@ -1,4 +1,4 @@
-package gamedata;
+package ui.data;
 
 import java.util.Optional;
 
@@ -9,6 +9,9 @@ import util.Tuple;
  * holds all the information about the map
  * it contains a 2d-array of the size of the map dimensions
  * where each object encodes the tile type and tile image
+ * 
+ * TODO: Figure out necessity
+ * 
  * @author TNK
  *
  */
