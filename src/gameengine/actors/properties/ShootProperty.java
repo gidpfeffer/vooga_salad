@@ -2,6 +2,7 @@ package gameengine.actors.properties;
 
 import java.util.List;
 
+import gamedata.composition.ShootData;
 import gameengine.actors.Projectile;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
@@ -10,10 +11,10 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 public class ShootProperty<G extends ReadAndShootGrid> implements IActProperty<G>{
 
-	private double myRange;
+	private ShootData myData;
 	
-	public ShootProperty(double range) {
-		myRange = range;
+	public ShootProperty(ShootData data) {
+		myData = data;
 	}
 	@Override
 	public void action(G grid, Integer actorID) {
@@ -36,6 +37,10 @@ public class ShootProperty<G extends ReadAndShootGrid> implements IActProperty<G
 		}
 		return enemyToShoot;
 		
+	}
+	
+	public double getRange(){
+		return myData.getMyRange();
 	}
 
 }
