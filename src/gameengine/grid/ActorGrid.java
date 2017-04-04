@@ -23,6 +23,7 @@ import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import util.PathUtil;
 
 public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid{
 	
@@ -52,12 +53,6 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 		actorList.add(enemyMap);
 		actorList.add(baseMap);
 		actorList.add(towerMap);
-	}
-
-	private double getDistance(double x1, double x2, double y1, double y2){
-		double squaredXDif = Math.pow(x2 - x1, 2);
-		double squaredYDif = Math.pow(y2 - y1, 2);
-		return Math.pow(squaredXDif + squaredYDif, 0.5);
 	}
 
 	@Override
@@ -232,7 +227,8 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	private Collection<Grid2D> filterLocations(Collection<Grid2D> allLocations,
 			double x, double y, double radius){
 		return filter(allLocations, 
-				g -> getDistance(g.getX(), x, g.getY(), y) <= radius);
+				g -> PathUtil.getDistance(new Coordinates(g.getX(), g.getY()), 
+						new Coordinates(x, y)) <= radius);
 	}
 	
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
