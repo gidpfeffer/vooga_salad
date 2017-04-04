@@ -28,14 +28,9 @@ public class PathFinder  {
 		
 		List<Grid2D> coordinatesToReturn = new ArrayList<Grid2D>(); 
 		List<Grid2D> pathChosen = myPaths.get(pathNo); 
-		
-		
 		for (int i = 0; i< pathChosen.size()-1; i++ ){
-			System.out.println("==============================");
-			System.out.println(pathChosen.get(i).asString());
 			coordinatesToReturn.addAll(PathUtil.getIncrementPoints(pathChosen.get(i),pathChosen.get(i+1),increment));
-			System.out.println("current list has");
-			coordinatesToReturn.forEach(e -> System.out.println(e.asString()));
+			coordinatesToReturn.remove(coordinatesToReturn.size()-1);
 		}
 		coordinatesToReturn.add(new Coordinates(pathChosen.get(pathChosen.size()-1))); // for the ending point
 		return coordinatesToReturn;
@@ -50,8 +45,6 @@ public class PathFinder  {
 		wayPoints.add(new Coordinates(5,0));
 		wayPoints.add(new Coordinates(10,0));
 		wayPoints.add(new Coordinates(13,0));
-		
-		
 		
 		map.put(0, wayPoints);
 		
