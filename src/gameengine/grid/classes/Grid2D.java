@@ -1,4 +1,4 @@
-package gameengine.grid;
+package gameengine.grid.classes;
 
 public class Grid2D {
 	

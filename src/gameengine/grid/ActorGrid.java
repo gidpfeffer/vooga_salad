@@ -9,19 +9,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import gameengine.actors.Base;
-import gameengine.actors.Projectile;
 import gameengine.actors.Shot;
 import gameengine.actors.Troop;
 import gameengine.actors.management.Actor;
 import gameengine.actors.towers.ATower;
+import gameengine.grid.classes.ActorLocator;
+import gameengine.grid.classes.Dimensions;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.MovableActor;
+import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 
-public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid{
+public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid{
 	
 	private Map<Integer, MovableActor<Shot<ReadableGrid>>> projectileMap;
 	private Map<Integer, MovableActor<Troop<ReadableGrid>>> enemyMap;
@@ -52,12 +54,6 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	}
 
 	@Override
-	public boolean addProjectile(Projectile projectile, double startX, double startY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius) {
 		Collection<Grid2D> allLocations = getLocationsFromMap(enemyMap);
 		List<Grid2D> enemiesInRadius = allLocations.stream()
@@ -73,15 +69,15 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	}
 
 	@Override
-	public Grid2D getLocationOf(double id) {
-		Map<Integer, ? extends MovableActor<? extends Actor<ReadableGrid>>> map = findRelevantMap(id);
-		return map.get(id).getLocation();
+	public Grid2D getLocationOf(int ID) {
+		Map<Integer, ? extends MovableActor<? extends Actor<ReadableGrid>>> map = findRelevantMap(ID);
+		return map.get(ID).getLocation();
 	}
 	
-	private Map<Integer, ? extends MovableActor<? extends Actor<ReadableGrid>>> findRelevantMap(double id){
+	private Map<Integer, ? extends MovableActor<? extends Actor<ReadableGrid>>> findRelevantMap(int ID){
 		
 		for(Map<Integer, ? extends MovableActor<? extends Actor<ReadableGrid>>> map : actorList){
-			if(map.keySet().contains(id)){
+			if(map.keySet().contains(ID)){
 				return map;
 			}
 		}
@@ -93,7 +89,7 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 		if(x < 0 || y < 0){
 			return false;
 		}
-		return (x <= limits.getX() && y < limits.getY());
+		return x <= limits.getX() && y < limits.getY();
 	}
 
 	@Override
@@ -107,7 +103,7 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	}
 
 	@Override
-	public void move(double ID, double newX, double newY) {
+	public void move(int ID, double newX, double newY) {
 		Map<Integer, ? extends MovableActor<? extends Actor<ReadableGrid>>> map = findRelevantMap(ID);
 		map.get(ID).setLocation(newX, newY);
 	}
@@ -140,4 +136,33 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 		return Collections.unmodifiableCollection(getLocationsFromMap(projectileMap));
 	}
 
+	@Override
+	public void addEnemy(Troop<ReadableGrid> enemy, int ID, double startX, double startY) {
+		Dimensions location = new Dimensions(startX, startY);
+		MovableActor<Troop<ReadableGrid>> troop = new ActorLocator<>(location, enemy);
+		enemyMap.put(ID, troop);
+	}
+
+	@Override
+	public void addProjectile(Shot<ReadableGrid> shot, int ID, double startX, double startY) {
+		addActorToMap(shot, ID, startX, startY, projectileMap);
+	}
+
+	@Override
+	public void addBase(Base<ReadableGrid> base, int ID, double startX, double startY) {
+		addActorToMap(base, ID, startX, startY, baseMap);
+	}
+
+	@Override
+	public void addTower(ATower<ReadableGrid> tower, int ID, double startX, double startY) {
+		addActorToMap(tower, ID, startX, startY, towerMap);
+	}
+	
+	private <T extends Actor<ReadableGrid>> void addActorToMap(T actor, 
+			int ID, double startX, double startY, Map<Integer, MovableActor<T>> map){
+		
+		Dimensions location = new Dimensions(startX, startY);
+		MovableActor<T> actorLocator = new ActorLocator<>(location, actor);
+		map.put(ID, actorLocator);
+	}
 }

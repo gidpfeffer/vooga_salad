@@ -1,4 +1,4 @@
-package gameengine.grid;
+package gameengine.grid.classes;
 
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;

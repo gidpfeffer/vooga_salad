@@ -1,4 +1,4 @@
-package gameengine.grid;
+package gameengine.grid.classes;
 
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 
