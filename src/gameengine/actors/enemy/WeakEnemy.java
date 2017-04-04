@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import gameengine.grid.Grid2D;
+import gameengine.grid.classes.Grid2D;
 import gameengine.grid.interfaces.*;
 
 
