@@ -196,8 +196,7 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 		upgradeActor(towerMap.get(ID).getActor(), newTower, towerMap);
 	}
 	
-	private <T extends Actor<ReadableGrid>> void
-		assertIDExists(Map<Integer, ActorLocator<T>> map, int ID){
+	private <T extends Actor<ReadableGrid>> void assertIDExists(Map<Integer, ActorLocator<T>> map, int ID){
 		if(!map.containsKey(ID)){
 			throw new IllegalArgumentException("Attempted to upgrade an Actor that doesn't exist. "
 				+ "See ActorGrid line ~ 210");
