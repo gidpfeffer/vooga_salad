@@ -2,8 +2,8 @@ package gameengine.actors.properties;
 
 import gameengine.actors.Projectile;
 
-public class ImmuneHealth<G extends Projectile> extends LimitedHealth{
-	public ImmuneHealth(double health) {
+public class ImmuneHealthProperty<G extends Projectile> extends LimitedHealthProperty{
+	public ImmuneHealthProperty(double health) {
 		super(health);
 	}
 

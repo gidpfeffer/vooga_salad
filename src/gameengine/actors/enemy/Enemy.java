@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 import gameengine.actors.Troop;
-import gameengine.actors.properties.Health;
+import gameengine.actors.properties.HealthProperty;
 import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
@@ -22,7 +22,7 @@ public class Enemy extends Troop<ReadableGrid> {
 
 	List<IActProperty<ReadableGrid>> myProperties; 
 	private int myID;
-	public Enemy(Health h, List<IActProperty<ReadableGrid>> properties) {
+	public Enemy(HealthProperty h, List<IActProperty<ReadableGrid>> properties) {
 		super(h, properties);
 		myProperties = properties;
 		// TODO Auto-generated constructor stub

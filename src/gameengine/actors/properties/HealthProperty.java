@@ -1,6 +1,6 @@
 package gameengine.actors.properties;
 
-public interface Health{
+public interface HealthProperty{
 
 	public void apply(double damage);
 	

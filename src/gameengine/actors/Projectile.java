@@ -1,8 +1,11 @@
 package gameengine.actors;
 
+import gameengine.actors.properties.HealthProperty;
+import gameengine.actors.properties.IActProperty;
+import gameengine.actors.properties.MoveWithDestinationProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
-import gamedata.ProjectileData;
+import java.util.List;
 
 public class Projectile extends Shot<ReadAndMoveGrid>{
 
@@ -10,6 +13,11 @@ public class Projectile extends Shot<ReadAndMoveGrid>{
 	private double finalX;
 	private double finalY;
 	//private Path myPath;
+	
+	public Projectile(MoveWithDestinationProperty m, 
+			HealthProperty h, List<IActProperty> properties){	
+		//TODO: Complete
+	}
 	
 	public Projectile(double endX, double endY) {
 		finalX = endX;
