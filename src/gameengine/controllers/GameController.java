@@ -50,7 +50,7 @@ public class GameController {
 			}
 
 			@Override
-			public void updateGameObjectLocation(double x, double y) {
+			public void updateGameObjectLocation(int id, double x, double y) {
 				// TODO Auto-generated method stub
 				
 			}
