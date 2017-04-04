@@ -2,7 +2,7 @@ package gameengine.controllers;
 
 import gamedata.GameData;
 import gameengine.player.GameStatus;
-import types.Actor;
+import types.ActorType;
 import ui.handlers.UIHandler;
 import util.IDGenerator;
 import util.VoogaException;
@@ -29,7 +29,7 @@ public class GameController {
 		myUIHandler = new UIHandler(){
 
 			@Override
-			public int addGameObject(Actor actor, double x, double y) {
+			public int addGameObject(ActorType actor, double x, double y) {
 				int id = myIDGenerator.getNewID();
 				return id;
 			}
@@ -41,7 +41,7 @@ public class GameController {
 			}
 
 			@Override
-			public void updateGameObjectType(int id, Actor currentActor,Actor newActor) throws VoogaException {
+			public void updateGameObjectType(int id, ActorType currentActor,ActorType newActor) throws VoogaException {
 				if (currentActor.isSameType(newActor)) {
 					//update
 				} else {
@@ -50,7 +50,7 @@ public class GameController {
 			}
 
 			@Override
-			public void updateGameObjectLocation(double x, double y) {
+			public void updateGameObjectLocation(int id, double x, double y) {
 				// TODO Auto-generated method stub
 				
 			}

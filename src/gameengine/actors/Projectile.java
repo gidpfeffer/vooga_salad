@@ -4,14 +4,16 @@ import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
 import gamedata.ProjectileData;
 
-public class Projectile extends AbstractActor<ReadAndMoveGrid>{
+public class Projectile extends Shot<ReadAndMoveGrid>{
 
 	private double mySpeed;
+	private double finalX;
+	private double finalY;
 	//private Path myPath;
 	
-	public Projectile(ProjectileData proj) {
-		//DO PROJECTILES NEED HEALTH?
-		//TODO: @Maddie complete
+	public Projectile(double endX, double endY) {
+		finalX = endX;
+		finalY = endY;
 	}
 	
 	/* (non-Javadoc)

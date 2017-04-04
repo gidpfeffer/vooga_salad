@@ -1,15 +1,16 @@
 package gameengine.grid.interfaces.ActorGrid;
 
 import java.util.Collection;
-import java.util.List;
 
-import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 public interface ReadableGrid{
 	
-	List<Actor<? extends ReadableGrid>> getInRadius(double x, double y, double radius);
-	Grid2D getLocationOf(Actor<? extends ReadableGrid> t);
+	Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius);
+	Collection<Grid2D> getBasesInRadius(double x, double y, double radius);
+	Collection<Grid2D> getProjectilesInRadius(double x, double y, double radius);
+	Collection<Grid2D> getTowersInRadius(double x, double y, double radius);
+	Grid2D getLocationOf(int id);
 	Collection<Grid2D> getEnemyLocations();
 	Collection<Grid2D> getTowerLocations();
 	Collection<Grid2D> getBaseLocations();

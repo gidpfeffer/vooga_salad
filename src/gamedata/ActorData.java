@@ -8,7 +8,8 @@ package gamedata;
 
 public abstract class ActorData {
 	private boolean isActive;
-	private double health;
+	private String imagePath;
+	private double heading; //angle
 	
 	public boolean isActive() {
 		return isActive;
@@ -17,14 +18,5 @@ public abstract class ActorData {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
-	public double getHealth() {
-		return health;
-	}
-	
-	public void setHealth(double health) {
-		this.health = health;
-	}
-	
 	
 }
