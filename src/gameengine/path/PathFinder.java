@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gameengine.grid.Grid2D;
+import gameengine.grid.classes.Grid2D;
 
 /**
  * return a path as a list of all coordinates for an enemy to go for each step. It should know the path index and the

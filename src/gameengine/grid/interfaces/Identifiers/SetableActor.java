@@ -3,10 +3,8 @@ package gameengine.grid.interfaces.Identifiers;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
-public interface FinadableActor <T extends Actor<? extends ReadableGrid>>{
+public interface SetableActor <T extends Actor<? extends ReadableGrid>> extends FinadableActor<T>{
 
-	T getActor();
-	Grid2D getLocation();
-	
+	void UpgradeActor(T t);
 	
 }
