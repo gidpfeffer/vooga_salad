@@ -1,11 +1,13 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.LimitedHealthData;
+
 public class LimitedHealthProperty implements HealthProperty {
 
 	private double myHealth;
 
-	public LimitedHealthProperty(double health) {
-		myHealth = health;
+	public LimitedHealthProperty(LimitedHealthData data) {
+		myHealth = data.getStartHealth();
 	}
 
 	@Override

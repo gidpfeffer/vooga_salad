@@ -11,10 +11,10 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 public class ShootProperty<G extends ReadAndShootGrid> implements IActProperty<G>{
 
-	private ShootData myData;
+	private double myRange;
 	
 	public ShootProperty(ShootData data) {
-		myData = data;
+		myRange = data.getMyRange();
 	}
 	@Override
 	public void action(G grid, Integer actorID) {

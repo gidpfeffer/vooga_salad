@@ -1,6 +1,7 @@
 package factories;
 
 import gameengine.actors.management.Actor;
+import util.VoogaException;
 
 /**
  * Factory for creation of actors
@@ -25,7 +26,11 @@ public class ActorFactory extends AbstractFactory<Actor>{
 
 	@Override
 	protected Actor failResponse() {
-		//TODO: More sophisticated response
+		try {
+			throw new VoogaException("Reflection Error: No such property/actor");
+		} catch (VoogaException e) {
+			//TODO: Error Catching
+		}
 		return null;
 	}
 

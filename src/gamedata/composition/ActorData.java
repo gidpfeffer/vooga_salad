@@ -11,19 +11,10 @@ import types.ActorType;
  */
 
 public class ActorData implements Data {
-	private ActorType myType;
 	private boolean isActive;
 	private String imagePath;
 	private double heading; //angle
 	
-	public ActorType getMyType() {
-		return myType;
-	}
-
-	public void setMyType(ActorType myType) {
-		this.myType = myType;
-	}
-
 	public boolean isActive() {
 		return isActive;
 	}
