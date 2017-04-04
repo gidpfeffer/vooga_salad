@@ -2,9 +2,12 @@ package gameengine.actors.enemy;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import gameengine.actors.Troop;
+import gameengine.actors.properties.Health;
+import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 
@@ -18,20 +21,19 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 public class Enemy extends Troop<ReadAndMoveGrid> {
 
-
-	/** 
-	 * @param pathCoordinates
-	 */
-
-
-	public Enemy(Health h, Property p...){
-		
+	List<IActProperty> myProperties; 
+	private int myID;
+	public Enemy(Health h, List<IActProperty> properties) {
+		super(h, properties);
+		myProperties = properties;
+		// TODO Auto-generated constructor stub
 	}
-	
+
+
+
 	@Override
 	public void act(ReadAndMoveGrid grid) {
-		p.action(grid);		
-		// more actions
+		myProperties.forEach(e -> e.action(grid,myID));
 	}
 	
 	
