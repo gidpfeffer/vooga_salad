@@ -9,14 +9,14 @@ import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public interface ControllableGrid {
 
-	void addEnemy(Troop<ReadableGrid> enemy, int ID, double startX, double startY);
-	void addProjectile(Shot<ReadableGrid> shot, int ID, double startX, double startY);
-	void addBase(Base<ReadableGrid> base, int ID, double startX, double startY);
-	void addTower(ATower<ReadableGrid> tower, int ID, double startX, double startY);
+	void addEnemy(Troop<? extends ReadableGrid> enemy, int ID, double startX, double startY);
+	void addProjectile(Shot<? extends ReadableGrid> shot, int ID, double startX, double startY);
+	void addBase(Base<? extends ReadableGrid> base, int ID, double startX, double startY);
+	void addTower(ATower<? extends ReadableGrid> tower, int ID, double startX, double startY);
 	void removeActor(int ID);
-	void upgradeEnemy(Troop<ReadableGrid> newEnemy, int ID);
-	void upgradeProjectile(Shot<ReadableGrid> newShot, int ID);
-	void upgradeBase(Base<ReadableGrid> newBase, int ID);
-	void upgradeTower(ATower<ReadableGrid> newTower, int ID);
+	void upgradeEnemy(Troop<? extends ReadableGrid> newEnemy, int ID);
+	void upgradeProjectile(Shot<? extends ReadableGrid> newShot, int ID);
+	void upgradeBase(Base<? extends ReadableGrid> newBase, int ID);
+	void upgradeTower(ATower<? extends ReadableGrid> newTower, int ID);
 	
 }

@@ -4,7 +4,7 @@ import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public abstract class Troop <T extends ReadableGrid> extends AbstractActor<T> {
 
-	public Troop(TroopData troop){
+	public Troop(){
 		//TODO: @Maddie complete
 	}
 	

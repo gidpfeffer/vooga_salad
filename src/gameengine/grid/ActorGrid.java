@@ -25,11 +25,11 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 
 public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid{
 	
-	private Map<Integer, ActorLocator<Shot<ReadableGrid>>> projectileMap;
-	private Map<Integer, ActorLocator<Troop<ReadableGrid>>> enemyMap;
-	private Map<Integer, ActorLocator<Base<ReadableGrid>>> baseMap;
-	private Map<Integer, ActorLocator<ATower<ReadableGrid>>> towerMap;
-	private List<Map<Integer, ? extends ActorLocator<? extends Actor<ReadableGrid>>>> actorList;
+	private Map<Integer, ActorLocator<Shot<? extends ReadableGrid>>> projectileMap;
+	private Map<Integer, ActorLocator<Troop<? extends ReadableGrid>>> enemyMap;
+	private Map<Integer, ActorLocator<Base<? extends ReadableGrid>>> baseMap;
+	private Map<Integer, ActorLocator<ATower<? extends ReadableGrid>>> towerMap;
+	private List<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> actorList;
 	private Dimensions limits;
 	
 	public ActorGrid(double maxX, double maxY){
@@ -70,13 +70,13 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 
 	@Override
 	public Grid2D getLocationOf(int ID) {
-		Map<Integer, ? extends ActorLocator<? extends Actor<ReadableGrid>>> map = findRelevantMap(ID);
+		Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map = findRelevantMap(ID);
 		return map.get(ID).getLocation();
 	}
 	
-	private Map<Integer, ? extends ActorLocator<? extends Actor<ReadableGrid>>> findRelevantMap(int ID){
+	private Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> findRelevantMap(int ID){
 		
-		for(Map<Integer, ? extends ActorLocator<? extends Actor<ReadableGrid>>> map : actorList){
+		for(Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map : actorList){
 			if(map.keySet().contains(ID)){
 				return map;
 			}
@@ -104,12 +104,12 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 
 	@Override
 	public void move(int ID, double newX, double newY) {
-		Map<Integer, ? extends ActorLocator<? extends Actor<ReadableGrid>>> map = findRelevantMap(ID);
+		Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map = findRelevantMap(ID);
 		map.get(ID).setLocation(newX, newY);
 	}
 
 	private Collection<Grid2D> getLocationsFromMap(Map<Integer, 
-			? extends ActorLocator<? extends Actor<ReadableGrid>>> map){
+			? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map){
 		
 		return map.values().stream()
 				.map(a -> a.getLocation())
@@ -137,28 +137,28 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	}
 
 	@Override
-	public void addEnemy(Troop<ReadableGrid> enemy, int ID, double startX, double startY) {
+	public void addEnemy(Troop<? extends ReadableGrid> enemy, int ID, double startX, double startY) {
 		Dimensions location = new Dimensions(startX, startY);
-		ActorLocator<Troop<ReadableGrid>> troop = new ActorLocator<>(location, enemy);
+		ActorLocator<Troop<? extends ReadableGrid>> troop = new ActorLocator<>(location, enemy);
 		enemyMap.put(ID, troop);
 	}
 
 	@Override
-	public void addProjectile(Shot<ReadableGrid> shot, int ID, double startX, double startY) {
+	public void addProjectile(Shot<? extends ReadableGrid> shot, int ID, double startX, double startY) {
 		addActorToMap(shot, ID, startX, startY, projectileMap);
 	}
 
 	@Override
-	public void addBase(Base<ReadableGrid> base, int ID, double startX, double startY) {
+	public void addBase(Base<? extends ReadableGrid> base, int ID, double startX, double startY) {
 		addActorToMap(base, ID, startX, startY, baseMap);
 	}
 
 	@Override
-	public void addTower(ATower<ReadableGrid> tower, int ID, double startX, double startY) {
+	public void addTower(ATower<? extends ReadableGrid> tower, int ID, double startX, double startY) {
 		addActorToMap(tower, ID, startX, startY, towerMap);
 	}
 	
-	private <T extends Actor<ReadableGrid>> void addActorToMap(T actor, 
+	private <T extends Actor<? extends ReadableGrid>> void addActorToMap(T actor, 
 			int ID, double startX, double startY, Map<Integer, ActorLocator<T>> map){
 		
 		Dimensions location = new Dimensions(startX, startY);
@@ -168,42 +168,42 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 
 	@Override
 	public void removeActor(int ID) {
-		Map<Integer, ? extends ActorLocator<? extends Actor<ReadableGrid>>> map = findRelevantMap(ID);
+		Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map = findRelevantMap(ID);
 		map.remove(ID);
 	}
 
 	@Override
-	public void upgradeEnemy(Troop<ReadableGrid> newEnemy, int ID) {
+	public void upgradeEnemy(Troop<? extends ReadableGrid> newEnemy, int ID) {
 		assertIDExists(enemyMap, ID);
 		upgradeActor(enemyMap.get(ID).getActor(), newEnemy, enemyMap);
 	}
 
 	@Override
-	public void upgradeProjectile(Shot<ReadableGrid> newShot, int ID) {
+	public void upgradeProjectile(Shot<? extends ReadableGrid> newShot, int ID) {
 		assertIDExists(projectileMap, ID);
 		upgradeActor(projectileMap.get(ID).getActor(), newShot, projectileMap);
 	}
 
 	@Override
-	public void upgradeBase(Base<ReadableGrid> newBase, int ID) {
+	public void upgradeBase(Base<? extends ReadableGrid> newBase, int ID) {
 		assertIDExists(baseMap, ID);
 		upgradeActor(baseMap.get(ID).getActor(), newBase, baseMap);
 	}
 
 	@Override
-	public void upgradeTower(ATower<ReadableGrid> newTower, int ID) {
+	public void upgradeTower(ATower<? extends ReadableGrid> newTower, int ID) {
 		assertIDExists(towerMap, ID);
 		upgradeActor(towerMap.get(ID).getActor(), newTower, towerMap);
 	}
 	
-	private <T extends Actor<ReadableGrid>> void assertIDExists(Map<Integer, ActorLocator<T>> map, int ID){
+	private <T extends Actor<? extends ReadableGrid>> void assertIDExists(Map<Integer, ActorLocator<T>> map, int ID){
 		if(!map.containsKey(ID)){
 			throw new IllegalArgumentException("Attempted to upgrade an Actor that doesn't exist. "
 				+ "See ActorGrid line ~ 210");
 		}
 	}
 	
-	private <T extends Actor<ReadableGrid>>
+	private <T extends Actor<? extends ReadableGrid>>
 		void upgradeActor(T oldActor, T newActor, Map<Integer, ActorLocator<T>> map){
 		for(Entry<Integer, ActorLocator<T>> entry : map.entrySet()){
 			if(entry.getValue().getActor().equals(oldActor)){
