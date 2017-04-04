@@ -1,12 +1,10 @@
-package gamedata.composition;
+package gameengine.actors.properties;
 
-import gameengine.actors.properties.Health;
-
-public class LimitedHealth implements Health {
+public class LimitedHealthProperty implements HealthProperty {
 
 	private double myHealth;
 
-	public LimitedHealth(double health) {
+	public LimitedHealthProperty(double health) {
 		myHealth = health;
 	}
 

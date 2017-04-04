@@ -1,5 +1,5 @@
 package gamedata.composition;
 
-public class ImmuneHealthData {
+public class ImmuneHealthData implements HealthData {
 
 }

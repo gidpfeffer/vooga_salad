@@ -18,7 +18,7 @@ public class LevelFactory {
 
 	public LevelController buildLevel(GameData current, int level){
 		LevelData curr = current.getLevel(level);
-		ActorGrid data = curr.getMyGrid();
+		//ActorGrid data = curr.getMyGrid();
 		
 		//TODO: complete
 		return null;

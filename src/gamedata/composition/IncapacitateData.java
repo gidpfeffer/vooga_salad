@@ -1,5 +1,5 @@
 package gamedata.composition;
 
-public class IncapacitateData {
+public class IncapacitateData implements Data{
 
 }

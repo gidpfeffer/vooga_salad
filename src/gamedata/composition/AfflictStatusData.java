@@ -1,5 +1,5 @@
 package gamedata.composition;
 
-public class AfflictStatusData {
+public class AfflictStatusData implements Data{
 
 }
