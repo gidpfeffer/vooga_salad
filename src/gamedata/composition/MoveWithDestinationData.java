@@ -3,6 +3,7 @@ package gamedata.composition;
 import java.util.List;
 
 import gameengine.grid.classes.Coordinates;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import util.PathUtil;
 
 /**
@@ -26,7 +27,7 @@ public class MoveWithDestinationData implements Data{
 		finalLocation = new Coordinates(finalX, finalY);
 	}
 	
-	public List<Coordinates> getStraightPath(){
+	public List<Grid2D> getStraightPath(){
 		return PathUtil.getIncrementPoints(initialLocation, finalLocation, 
 				mySpeed);
 	}

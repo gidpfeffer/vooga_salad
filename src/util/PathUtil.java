@@ -26,8 +26,15 @@ public class PathUtil {
 		return Math.atan2(point2.getY() - point1.getY(), point2.getX() - point1.getX());
 	}
 	
-	public static List<Coordinates> getIncrementPoints(Grid2D start,Grid2D end, double increment){
-		List<Coordinates> result = new ArrayList<Coordinates>();
+	/**
+	 * 
+	 * @param start
+	 * @param end
+	 * @param increment
+	 * @return a list of coordinates from start to end, separated by increment distance
+	 */
+	public static List<Grid2D> getIncrementPoints(Grid2D start,Grid2D end, double increment){
+		List<Grid2D> result = new ArrayList<Grid2D>();
 		double distance = getDistance(start, end); 
 		System.out.println("distance between " + start.asString() + " and " + end.asString() + " is: " + distance);
 		
@@ -42,6 +49,7 @@ public class PathUtil {
 			double newY = start.getY() + increment* i * Math.sin(angle);
 			result.add(new Coordinates(newX,newY));
 		}
+		result.add(new Coordinates(end));
 		return result; 
 	}
 	
