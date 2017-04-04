@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import gameengine.actors.Base;
@@ -53,15 +54,6 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 		actorList.add(towerMap);
 	}
 
-	@Override
-	public Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius) {
-		Collection<Grid2D> allLocations = getLocationsFromMap(enemyMap);
-		List<Grid2D> enemiesInRadius = allLocations.stream()
-				.filter(a -> getDistance(a.getX(), x, a.getY(), y) <= radius)
-				.collect(Collectors.toCollection(ArrayList::new));
-		return Collections.unmodifiableCollection(enemiesInRadius);
-	}
-	
 	private double getDistance(double x1, double x2, double y1, double y2){
 		double squaredXDif = Math.pow(x2 - x1, 2);
 		double squaredYDif = Math.pow(y2 - y1, 2);
@@ -211,5 +203,41 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 				entry.getValue().UpgradeActor(oldActor);
 			}
 		}
+	}
+
+	@Override
+	public Collection<Grid2D> getBasesInRadius(double x, double y, double radius) {
+		return Collections.unmodifiableCollection(
+				filterLocations(getLocationsFromMap(baseMap), x, y, radius));
+	}
+
+	@Override
+	public Collection<Grid2D> getProjectilesInRadius(double x, double y, double radius) {
+		return Collections.unmodifiableCollection(
+				filterLocations(getLocationsFromMap(projectileMap), x, y, radius));
+	}
+
+	@Override
+	public Collection<Grid2D> getTowersInRadius(double x, double y, double radius) {
+		return Collections.unmodifiableCollection(
+				filterLocations(getLocationsFromMap(towerMap), x, y, radius));
+	}
+	
+	@Override
+	public Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius) {
+		return Collections.unmodifiableCollection(
+				filterLocations(getLocationsFromMap(enemyMap), x, y, radius));
+	}
+	
+	private Collection<Grid2D> filterLocations(Collection<Grid2D> allLocations,
+			double x, double y, double radius){
+		return filter(allLocations, 
+				g -> getDistance(g.getX(), x, g.getY(), y) <= radius);
+	}
+	
+	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
+		return items.stream()
+				.filter(t -> predicate.test(t))
+				.collect(Collectors.toList());
 	}
 }
