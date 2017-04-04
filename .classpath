@@ -2,6 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="images"/>
+	<classpathentry kind="src" path="data/resource"/>
+	<classpathentry kind="src" path="data/css"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/xstream-1.4.9/lib/xstream-1.4.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

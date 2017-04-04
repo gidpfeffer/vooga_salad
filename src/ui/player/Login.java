@@ -1,6 +1,10 @@
 package ui.player;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -22,33 +26,55 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import ui.*;
+import ui.authoring.AuthoringView;
 
 //tweaked from http://docs.oracle.com/javafx/2/get_started/form.htm
-public class Login extends Application{
-	private Passwords passwords = new Passwords();
+public class Login{
+	private Stage stage;
+	private Scene scene;
+	private Passwords passwords;
 	private ResourceBundle loginResource;
 	private XStream mySerializer = new XStream(new DomDriver());
+	private String mySavedPasswords = "";
+	private final String filename = "passwordXML.xml";
 	
-	@Override
+	
+	public Scene getScene() {
+		return scene;
+	}
+	public Login(Stage stage, String css, String resource) {
+		this.stage = stage;
+		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
+		stage.setMinWidth(Preferences.SCREEN_WIDTH);
+		loginResource = ResourceBundle.getBundle(resource);
+		passwords = readInPasswords();
+		scene = setup(css);
+	}
+	
+/*	@Override
     public void start(Stage primaryStage) {
 		loginResource = ResourceBundle.getBundle("login");
         primaryStage.setTitle(loginResource.getString("login"));
         Scene loginPage = setup();
         primaryStage.setScene(loginPage);
-        primaryStage.setMinHeight(300);
-        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(350);
+        primaryStage.setMinWidth(650);
         primaryStage.show();
-    }
+    }*/
 	
-	public Scene setup() {
+	public Scene setup(String css) {
 		GridPane root = new GridPane();
+		root.setId("root");
+        
 		GridPane loginGrid = createGrid(Pos.TOP_LEFT);
 		GridPane signupGrid = createGrid(Pos.TOP_LEFT);
 		root.add(loginGrid, 0, 0);
 		root.add(signupGrid, 1, 0);
 		root.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add("loginScreen.css");
+		scene.getStylesheets().add(css);
+		//scene.getStylesheets().addAll(this.getClass().getResource(css).toExternalForm());
 		//System.out.println(javafx.scene.text.Font.getFamilies());
 		
 		Text welcomeBackTitle = createTitle(loginResource.getString("welcomeBack"));
@@ -68,8 +94,6 @@ public class Login extends Application{
 		
 		loginGrid.add(loginHbox, 1, 4);
 		signupGrid.add(signupEnter, 1, 4);
-
-		
 		
 		final Text actiontarget = new Text();
         root.add(actiontarget, 1, 2);
@@ -77,6 +101,9 @@ public class Login extends Application{
         loginEnter.setOnAction(e -> loginClicked(loginGrid, actiontarget));
         signupEnter.setOnAction(e -> signupClicked(signupGrid, actiontarget));
         
+        Button auth = new Button(loginResource.getString("gotoAuth"));
+        auth.setOnAction(e -> gotoUIMain());
+        root.add(auth, 0, 3);
 		return scene;
 	}
 	
@@ -173,6 +200,15 @@ public class Login extends Application{
 				actiontarget.setFill(Color.GREEN);
 				actiontarget.setText(loginResource.getString("successfulSignUp"));
 				passwords.signup(userTextField.getText(), passwordField.getText());
+	            try {
+	                System.out.println("Saving Password...");
+	                mySavedPasswords = mySerializer.toXML(passwords);
+	                System.out.println(mySavedPasswords);
+	                writePasswords(mySavedPasswords);
+	            }
+	            catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
 				userTextField.clear();
 				passwordField.clear();
 				repasswordField.clear();
@@ -183,7 +219,42 @@ public class Login extends Application{
 		};
 	}
 	
+	private void writePasswords(String xml){
+		try {
+			File file = new File(filename);
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(xml);
+			fileWriter.flush();
+			fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.print("XML Error");
+		}
+	}
+	
+	private Passwords readInPasswords() {
+        try {
+            System.out.println("Loading Passwords...");
+            String content = new Scanner(new File(filename)).useDelimiter("\\Z").next();
+            System.out.println(content);
+            passwords = (Passwords) mySerializer.fromXML(content);
+        }
+        catch (Exception ex) {
+        	passwords = new Passwords();
+            //ex.printStackTrace();
+        }
+		return passwords;
+	}
+	
+	private void gotoUIMain() {
+		UIMain view = new UIMain("English");
+		stage.setScene(view.getScene());
+		stage.setTitle("VOOGASalad");
+		stage.setResizable(false);
+		stage.show();
+	}
+/*	
 	public static void main(String[] args) {
 		launch(args);
-	}
+	}*/
 }

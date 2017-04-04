@@ -11,22 +11,6 @@ public class Passwords {
 
 	private Map<String, String> database = new HashMap<>();
 	public static final String SALT = "anngelyque";
-	
-	
-	public static void main(String args[]) {
-		Passwords demo = new Passwords();
-		demo.signup("john", "dummy123");
-
-		// login should succeed.
-		if (demo.login("john", "dummy123"))
-			System.out.println("user login successfull.");
-
-		// login should fail because of wrong password.
-		if (demo.login("john", "blahblah"))
-			System.out.println("User login successfull.");
-		else
-			System.out.println("user login failed.");
-	}
 
 	public Boolean existingUserCheck(String username) {
 		return database.containsKey(username);
