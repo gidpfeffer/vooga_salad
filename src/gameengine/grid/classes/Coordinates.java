@@ -12,6 +12,11 @@ public class Coordinates implements Grid2D{
 		this.y = y;
 	}
 	
+	public Coordinates(Coordinates other){
+		this.x = other.getX();
+		this.y = other.getY();
+	}
+	
 	@Override
 	public double getX() {
 		return x;
@@ -20,6 +25,10 @@ public class Coordinates implements Grid2D{
 	@Override
 	public double getY() {
 		return y;
+	}
+	
+	public String asString(){
+		return x + " , " + y; 
 	}
 
 }

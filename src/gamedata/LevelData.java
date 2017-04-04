@@ -2,6 +2,8 @@ package gamedata;
 
 import java.util.List;
 
+import ui.data.MapData;
+
 /**
  * holds all the data that is encoded for a level
  * such as enemies, towers, and map
