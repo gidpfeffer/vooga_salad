@@ -13,6 +13,10 @@ public interface ControllableGrid {
 	void addProjectile(Shot<ReadableGrid> shot, int ID, double startX, double startY);
 	void addBase(Base<ReadableGrid> base, int ID, double startX, double startY);
 	void addTower(ATower<ReadableGrid> tower, int ID, double startX, double startY);
-	
+	void removeActor(int ID);
+	void upgradeEnemy(Troop<ReadableGrid> newEnemy, int ID);
+	void upgradeProjectile(Shot<ReadableGrid> newShot, int ID);
+	void upgradeBase(Base<ReadableGrid> newBase, int ID);
+	void upgradeTower(ATower<ReadableGrid> newTower, int ID);
 	
 }

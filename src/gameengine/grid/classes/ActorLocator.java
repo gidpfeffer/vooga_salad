@@ -4,8 +4,9 @@ import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.MovableActor;
+import gameengine.grid.interfaces.Identifiers.SetableActor;
 
-public class ActorLocator <T extends Actor<ReadableGrid>> implements MovableActor<T>{
+public class ActorLocator <T extends Actor<ReadableGrid>> implements MovableActor<T>, SetableActor<T>{
 	
 	private Grid2D location;
 	private T actor;
@@ -30,6 +31,12 @@ public class ActorLocator <T extends Actor<ReadableGrid>> implements MovableActo
 	@Override
 	public T getActor() {
 		return actor;
+	}
+
+
+	@Override
+	public void UpgradeActor(T t) {
+		this.actor = t;
 	}
 
 }
