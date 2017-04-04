@@ -24,7 +24,7 @@ public class ActorLocator <T extends Actor<? extends ReadableGrid>> implements M
 
 	@Override
 	public void setLocation(double x, double y) {
-		location = new Dimensions(x, y);
+		location = new Coordinates(x, y);
 	}
 
 

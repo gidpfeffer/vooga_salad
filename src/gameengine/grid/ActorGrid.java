@@ -15,7 +15,7 @@ import gameengine.actors.Troop;
 import gameengine.actors.management.Actor;
 import gameengine.actors.towers.ATower;
 import gameengine.grid.classes.ActorLocator;
-import gameengine.grid.classes.Dimensions;
+import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
@@ -30,10 +30,10 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	private Map<Integer, ActorLocator<Base<? extends ReadableGrid>>> baseMap;
 	private Map<Integer, ActorLocator<ATower<? extends ReadableGrid>>> towerMap;
 	private List<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> actorList;
-	private Dimensions limits;
+	private Coordinates limits;
 	
 	public ActorGrid(double maxX, double maxY){
-		limits = new Dimensions(maxX, maxY);
+		limits = new Coordinates(maxX, maxY);
 		initializeInstances();
 	}
 	
@@ -138,7 +138,7 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 
 	@Override
 	public void addEnemy(Troop<? extends ReadableGrid> enemy, int ID, double startX, double startY) {
-		Dimensions location = new Dimensions(startX, startY);
+		Coordinates location = new Coordinates(startX, startY);
 		ActorLocator<Troop<? extends ReadableGrid>> troop = new ActorLocator<>(location, enemy);
 		enemyMap.put(ID, troop);
 	}
@@ -161,7 +161,7 @@ public class ActorGrid implements ReadableGrid, ReadAndMoveGrid, ReadAndShootGri
 	private <T extends Actor<? extends ReadableGrid>> void addActorToMap(T actor, 
 			int ID, double startX, double startY, Map<Integer, ActorLocator<T>> map){
 		
-		Dimensions location = new Dimensions(startX, startY);
+		Coordinates location = new Coordinates(startX, startY);
 		ActorLocator<T> actorLocator = new ActorLocator<>(location, actor);
 		map.put(ID, actorLocator);
 	}
