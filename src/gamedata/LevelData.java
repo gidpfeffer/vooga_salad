@@ -1,5 +1,7 @@
 package gamedata;
 
+import gameengine.grid.ActorGrid;
+
 /**
  * holds all the data that is encoded for a level
  * such as enemies, towers, and map
@@ -7,18 +9,19 @@ package gamedata;
  *
  */
 public class LevelData {
-	private GridData myGrid;
+	private ActorGrid myGrid;
 	//TODO: add other variables
 
-	public LevelData(){
-		myGrid = new GridData();
+	//Better way to do this?
+	public LevelData(double maxX, double maxY){
+		myGrid = new ActorGrid(maxX, maxY);
 	}
 	
-	public GridData getMyGrid() {
+	public ActorGrid getMyGrid() {
 		return myGrid;
 	}
 
-	public void setMyGrid(GridData myGrid) {
+	public void setMyGrid(ActorGrid myGrid) {
 		this.myGrid = myGrid;
 	}
 	
