@@ -9,10 +9,13 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -24,25 +27,28 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.level.LevelEditorView;
+import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
 import ui.general.Frame;
 import ui.general.ImageButton;
+import ui.general.UIHelper;
 import ui.general.UIView;
 
-public class AuthoringView extends UIView {
+public class AuthoringView extends BorderPane {
 
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
-	private UIView myLeftPane; //purpose of this pane is to flip animate 
-	private UIView myLeftPaneFront; //contains the buttons
-	private UIView myLeftPaneBack; //contains the views for buttons 
+	private StackPane myLeftPane; //purpose of this pane is to flip animate 
+	private StackPane myLeftPaneFront; //contains the buttons
+	private StackPane myLeftPaneBack; //contains the views for buttons 
 	private PathEditorView myPathView;
 	private TowerEditorView myTowerView;
 	private EnemyEditorView myEnemyView;
 
 
 	public AuthoringView() {
-		this.setBackgroundColor(CustomColors.GREEN_200);
+		//this.setBackgroundColor(CustomColors.GREEN_200); TODO
+	
 		setupViews();
 	}
 
@@ -51,8 +57,8 @@ public class AuthoringView extends UIView {
 		setupMapView();
 		setupLevelView();
 		setupLeftPane();
+		setupBottomPane();
 	}
-	
 
 	private void setupTitle() {
 		Label title = new Label("Game Authoring Environment");
@@ -60,9 +66,8 @@ public class AuthoringView extends UIView {
 		title.setPrefWidth(Preferences.SCREEN_WIDTH);
 		title.setTextFill(Color.rgb(0, 0, 0, 0.75));
 		title.setAlignment(Pos.CENTER);
-		title.setLayoutX(0);
-		title.setLayoutY(12);
-		this.getChildren().add(title);
+		title.setPrefHeight(60);
+		this.setTop(title);
 	}
 
 	private void setupMapView() {
@@ -71,27 +76,33 @@ public class AuthoringView extends UIView {
 		double height = Math.round(Preferences.SCREEN_HEIGHT - 2*inset);
 		int dim = 11;
 		height = height - dim%2;
-		myMapView = new MapEditorView(dim,dim, 
-				new Frame((Preferences.SCREEN_WIDTH - height)/2.0, inset, height, height)
-				);
-		this.getChildren().add(myMapView);
+		myMapView = new MapEditorView();
+		this.setCenter(myMapView);
 	}
 
 	private void setupLevelView() {
-		myLevelView = new LevelEditorView(
-				new Frame(myMapView.getFrame().getMaxX() + 12, myMapView.getFrame().getY(), 
-						Preferences.SCREEN_WIDTH - myMapView.getFrame().getMaxX() - 24, myMapView.getFrame().getHeight()));
-		this.getChildren().add(myLevelView);
+		myLevelView = new LevelEditorView();
+		myLevelView.setMinWidth(100);
+		this.setRight(myLevelView);
+		
+	}
+	
+	private StackPane stackWithButton(){
+		//TODO
+		return null;
 	}
 
 
 	
 	private void setupLeftPane(){
-		myLeftPane = new UIView(
-				new Frame(12,myMapView.getFrame().getY(), myMapView.getFrame().getX() - 24, myMapView.getFrame().getHeight())
-				);
-		myLeftPaneFront = new UIView(myLeftPane.getBounds());
-		myLeftPaneBack = new UIView(myLeftPane.getBounds());
+		myLeftPane = new StackPane();
+		myLeftPaneFront = new StackPane();
+		myLeftPaneBack = new StackPane();
+		myLeftPaneBack.setMinWidth(100);
+		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
+		AnchorPane.setTopAnchor(myLeftPane, 12.0);
+		AnchorPane.setLeftAnchor(myLeftPane, 12.0);
+		
 		setupLeftPaneButtons();
 		setupPathView();
 		setupTowerView();
@@ -99,16 +110,21 @@ public class AuthoringView extends UIView {
 		myLeftPaneBack.setScaleX(0);
 		myLeftPane.getChildren().add(myLeftPaneBack);
 		myLeftPane.getChildren().add(myLeftPaneFront);
-		myLeftPane.setBackgroundColor(CustomColors.GREEN);
-		this.getChildren().add(myLeftPane);
+		UIHelper.setBackgroundColor(myLeftPane,CustomColors.GREEN);
+		this.setLeft(myLeftPane);
 	}
 
 	private void setupLeftPaneButtons() {
-		VBox v = new VBox();
-		Button enemy = new Button();
-		
+		//TODO
+	}
+	
+	private void setupBottomPane() {
+		Pane pane = new Pane();
+		pane.setPrefHeight(60);
+		this.setBottom(pane);
 	}
 
+	
 	private void setupTowerView() {
 		myTowerView = new TowerEditorView();
 		addBackButtonToView(myTowerView);
@@ -124,7 +140,7 @@ public class AuthoringView extends UIView {
 		addBackButtonToView(myEnemyView);
 	}
 	
-	private void addBackButtonToView(UIView view){
+	private void addBackButtonToView(Pane view){
 		//TODO
 	}
 	

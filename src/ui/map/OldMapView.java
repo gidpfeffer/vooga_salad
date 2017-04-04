@@ -8,11 +8,11 @@ import ui.general.Frame;
 import ui.general.Frameable;
 import util.Index;
 
-public class MapView extends GridPane implements Frameable, MapViewAPI {
+public class OldMapView extends GridPane implements Frameable, MapViewAPI {
 	
 	private Frame myFrame;
 	
-	public MapView(Frame frame, MapData mapData){
+	public OldMapView(Frame frame, MapData mapData){
 		setFrame(frame);
 		setMapData(mapData);
 	}
