@@ -5,14 +5,13 @@ import ui.api_internal.MapViewAPI;
 import ui.authoring.map.PathTile;
 import ui.data.MapData;
 import ui.general.Frame;
-import ui.general.Frameable;
 import util.Index;
 
-public class MapView extends GridPane implements Frameable, MapViewAPI {
+public class OldMapView extends GridPane implements MapViewAPI {
 	
 	private Frame myFrame;
 	
-	public MapView(Frame frame, MapData mapData){
+	public OldMapView(Frame frame, MapData mapData){
 		setFrame(frame);
 		setMapData(mapData);
 	}
@@ -20,7 +19,6 @@ public class MapView extends GridPane implements Frameable, MapViewAPI {
 
 
 	//MARK: -Frameable Interface Implementation
-	@Override
 	public void setFrame(Frame frame) {
 		myFrame = frame;
 		this.setLayoutX(frame.getX());
@@ -29,7 +27,6 @@ public class MapView extends GridPane implements Frameable, MapViewAPI {
 		this.setPrefHeight(frame.getHeight());
 	}
 
-	@Override
 	public Frame getFrame() {
 		return myFrame;
 	}

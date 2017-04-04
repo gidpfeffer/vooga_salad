@@ -1,48 +1,35 @@
 package ui.authoring;
 
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.MeshView;
-import javafx.scene.shape.TriangleMesh;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.transform.Rotate;
-import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.level.LevelEditorView;
+import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
-import ui.general.Frame;
-import ui.general.ImageButton;
-import ui.general.UIView;
 
-public class AuthoringView extends UIView {
+import ui.general.UIHelper;
 
+
+public class AuthoringView extends BorderPane {
+
+	private final double SIDE_PANE_WIDTH = 200;
+	private final double SIDE_PANE_WIDTH_MIN = 160;
+	private final Color THEME_COLOR = CustomColors.GREEN_100;
+	
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
-	private UIView myLeftPane; //purpose of this pane is to flip animate 
-	private UIView myLeftPaneFront; //contains the buttons
-	private UIView myLeftPaneBack; //contains the views for buttons 
-	private PathEditorView myPathView;
-	private TowerEditorView myTowerView;
-	private EnemyEditorView myEnemyView;
+	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
+
 
 
 	public AuthoringView() {
-		this.setBackgroundColor(CustomColors.GREEN_200);
+		UIHelper.setBackgroundColor(this, Color.WHITE);
+	
 		setupViews();
 	}
 
@@ -51,8 +38,17 @@ public class AuthoringView extends UIView {
 		setupMapView();
 		setupLevelView();
 		setupLeftPane();
+		setupBottomPane();
+		setupMargins();
 	}
 	
+	private void setupMargins(){
+		double ins = 10;
+		BorderPane.setMargin(myLeftPane, new Insets(ins));
+		BorderPane.setMargin(myMapView, new Insets(ins));
+		BorderPane.setMargin(myLevelView, new Insets(ins));
+		
+	}
 
 	private void setupTitle() {
 		Label title = new Label("Game Authoring Environment");
@@ -60,86 +56,60 @@ public class AuthoringView extends UIView {
 		title.setPrefWidth(Preferences.SCREEN_WIDTH);
 		title.setTextFill(Color.rgb(0, 0, 0, 0.75));
 		title.setAlignment(Pos.CENTER);
-		title.setLayoutX(0);
-		title.setLayoutY(12);
-		this.getChildren().add(title);
+		title.setPrefHeight(60);
+		this.setTop(title);
 	}
 
 	private void setupMapView() {
 		//this calculation assumes that height < width
-		double inset = 60;
-		double height = Math.round(Preferences.SCREEN_HEIGHT - 2*inset);
-		int dim = 11;
-		height = height - dim%2;
-		myMapView = new MapEditorView(dim,dim, 
-				new Frame((Preferences.SCREEN_WIDTH - height)/2.0, inset, height, height)
-				);
-		this.getChildren().add(myMapView);
+
+		myMapView = new MapEditorView();
+		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
+		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
+		UIHelper.setDropShadow(myMapView);
+		this.setCenter(myMapView);
+		BorderPane.setAlignment(myMapView, Pos.CENTER);
+
 	}
 
 	private void setupLevelView() {
-		myLevelView = new LevelEditorView(
-				new Frame(myMapView.getFrame().getMaxX() + 12, myMapView.getFrame().getY(), 
-						Preferences.SCREEN_WIDTH - myMapView.getFrame().getMaxX() - 24, myMapView.getFrame().getHeight()));
-		this.getChildren().add(myLevelView);
+		myLevelView = new LevelEditorView();
+		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
+		UIHelper.setDropShadow(myLevelView);
+		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
+		myLevelView.setPrefWidth(SIDE_PANE_WIDTH);
+		
+		this.setRight(myLevelView);
+		
 	}
+	
+	
+	
+	
 
 
 	
 	private void setupLeftPane(){
-		myLeftPane = new UIView(
-				new Frame(12,myMapView.getFrame().getY(), myMapView.getFrame().getX() - 24, myMapView.getFrame().getHeight())
-				);
-		myLeftPaneFront = new UIView(myLeftPane.getBounds());
-		myLeftPaneBack = new UIView(myLeftPane.getBounds());
-		setupLeftPaneButtons();
-		setupPathView();
-		setupTowerView();
-		setupEnemyView();
-		myLeftPaneBack.setScaleX(0);
-		myLeftPane.getChildren().add(myLeftPaneBack);
-		myLeftPane.getChildren().add(myLeftPaneFront);
-		myLeftPane.setBackgroundColor(CustomColors.GREEN);
-		this.getChildren().add(myLeftPane);
+		myLeftPane = new LeftPaneView();
+		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
+		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
+		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
+		AnchorPane.setTopAnchor(myLeftPane, 12.0);
+		AnchorPane.setLeftAnchor(myLeftPane, 12.0);
+		UIHelper.setBackgroundColor(myLeftPane,THEME_COLOR);
+		UIHelper.setDropShadow(myLeftPane);
+		this.setLeft(myLeftPane);
 	}
 
-	private void setupLeftPaneButtons() {
-		VBox v = new VBox();
-		Button enemy = new Button();
-		
+	
+	private void setupBottomPane() {
+		Pane pane = new Pane();
+		pane.setPrefHeight(60);
+		this.setBottom(pane);
 	}
 
-	private void setupTowerView() {
-		myTowerView = new TowerEditorView();
-		addBackButtonToView(myTowerView);
-	}
+	
+	
 
-	private void setupPathView() {
-		myPathView = new PathEditorView();
-		addBackButtonToView(myPathView);
-	}
-	
-	private void setupEnemyView() {
-		myEnemyView = new EnemyEditorView();
-		addBackButtonToView(myEnemyView);
-	}
-	
-	private void addBackButtonToView(UIView view){
-		//TODO
-	}
-	
-	private void flipFromNodeToNode(Node fromNode, Node toNode){
-		ScaleTransition s1 = new ScaleTransition(Duration.millis(500), fromNode);
-		s1.setFromX(1);
-		s1.setToX(0);
-		ScaleTransition s2 = new ScaleTransition(Duration.millis(500), toNode);
-		s2.setFromX(0);
-		s2.setToX(1);
-		s1.setOnFinished(e -> {
-			s2.play();
-			});
-		s1.play();
-	}
-	
 
 }

@@ -17,7 +17,7 @@ public class Main extends Application{
 		UIMain view = new UIMain("English");
 		s.setScene(view.getScene());
 		s.setTitle("VOOGASalad");
-		s.setResizable(false);
+		//s.setResizable(false);
 		s.show();
 	}
 }
