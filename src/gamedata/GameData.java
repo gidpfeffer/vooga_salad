@@ -6,14 +6,26 @@ import java.util.Map;
 
 /**
  * 
+ * GameData is the over-arching data class that holds 
+ * all of the data requires to launch a game.
+ * It holds a Map of each actor type between
+ * Integers (representing Option numbers) and ActorDatas, 
+ * where the ActorData holds information about how to
+ * make that Actor.
+ * 
+ * The LevelData objects hold preferences for each
+ * Level -- these are saved and passed to the LevelController
+ * constructor whenever
+ * 
  * @author maddiebriere
  *
  */
 
 public class GameData {
+	//Level information (preferences, no & type of enemies)
 	List<LevelData> levels;
-	List<PreferencesData> levelSettings;
 	
+	//Actors available for entire game
 	private Map<Integer, ActorData> shots;
 	private Map<Integer, ActorData> towers;
 	private Map<Integer, ActorData> troops;
@@ -37,11 +49,12 @@ public class GameData {
 	 * It allows the front-end to add another List of
 	 * Data objects representing a possible object
 	 * 
+	 * Frontend must make an ActorData object and pass it in.
+	 * 
+	 * See ActorData for an example of how to
+	 * create and ActorData object
+	 * 
 	 */
-	
-	//TODO: Implement
-	//TODO: Limit input based on types of parameters required for type
-	//TODO: Get rid of dependency on enum actor type to match method header 
 	
 	public void addShot(ActorData data){
 		add(shots, data);
@@ -63,6 +76,28 @@ public class GameData {
 		map.put(numOptions++, data);
 	}
 	
+	/**
+	 * Easy way to add a level -- just pass in
+	 * the enemies used in this level
+	 * 
+	 * @param troops Enemies for the level
+	 */
+	public void addLevel(Map<ActorData, Integer> troops){
+		levels.add(new LevelData(troops));
+	}
+	
+	/**
+	 * More sophisticated way to add a level -- pass entire
+	 * level data with preferences, settings and troops
+	 * encapsulated in data structure
+	 * 
+	 * @param data LevelData holding level information
+	 */
+	public void addLevel(LevelData data){
+		levels.add(data);
+	}
+	
+	//Getters and setters
 	public List<LevelData> getLevels() {
 		return levels;
 	}

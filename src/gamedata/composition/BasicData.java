@@ -16,6 +16,13 @@ public class BasicData implements Data {
 	private String imagePath;
 	private double heading; //angle
 	
+	public BasicData(String name, String imagePath){
+		this.name=name;
+		this.imagePath = imagePath;
+		heading = 0;
+		isActive = true;
+	}
+	
 	public boolean isActive() {
 		return isActive;
 	}
