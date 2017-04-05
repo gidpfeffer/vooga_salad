@@ -10,9 +10,10 @@ public class Preferences {
 	//Fonts
 	public static final Font FONT_BIG = Font.font("HelveticaNeue", FontWeight.LIGHT, 24);
 	public static final Font FONT_MEDIUM = Font.font("HelveticaNeue", FontWeight.LIGHT, 18);
-	public static final Font FONT_SMALL = Font.font("HelveticaNeue", FontWeight.LIGHT, 13);
+	public static final Font FONT_SMALL_BOLD = Font.font("HelveticaNeue", FontWeight.BOLD, 14);
+	public static final Font FONT_SMALL = Font.font("HelveticaNeue", FontWeight.LIGHT, 14);
 	
 	//Display Size
-	public static final double SCREEN_WIDTH = 800;
+	public static final double SCREEN_WIDTH = 1000;
 	public static final double SCREEN_HEIGHT = 600;
 }

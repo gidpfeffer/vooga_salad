@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
+import util.Location;
 
 /**
  * A button with an image
@@ -14,12 +15,25 @@ import javafx.scene.layout.Border;
  * @author TNK
  *
  */
-public class ImageButton extends Button {
-
-	public void updateImages(final Image selected, final Image unselected) {
+public class ImageButton extends Button{
+	
+	public ImageButton(String imagePath,Location size){
+		this(imagePath, imagePath, size);
+	}
+	
+	public ImageButton(String selected, String unselected, Location size){
+		super();
+		updateImages(new Image(selected),
+				new Image(unselected), size);
+	}
+	
+	public void updateImages(final Image selected, final Image unselected, Location size) {
 		this.setBackground(Background.EMPTY);
 		this.setBorder(Border.EMPTY);
 		final ImageView iv = new ImageView(selected);
+		iv.setPreserveRatio(true);
+		iv.setFitWidth(size.getX());
+		iv.setFitHeight(size.getY());
 		this.getChildren().add(iv);
 		this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
 			iv.setImage(unselected);
@@ -33,4 +47,5 @@ public class ImageButton extends Button {
 		});
 		super.setGraphic(iv);
 	}
+
 }

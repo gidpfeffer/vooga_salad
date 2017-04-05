@@ -11,4 +11,5 @@ import gameengine.grid.ActorGrid;
 public class LevelController {
 	public int myLevel;
 	public ActorGrid myMap;
+	//Do you even need level controller?
 }

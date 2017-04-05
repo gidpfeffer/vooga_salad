@@ -23,7 +23,10 @@ import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+
 import gameengine.grid.interfaces.controllergrid.SteppableGrid;
+
+import util.PathUtil;
 
 public class ActorGrid implements ReadableGrid, 
 	ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
@@ -54,12 +57,6 @@ public class ActorGrid implements ReadableGrid,
 		actorList.add(enemyMap);
 		actorList.add(baseMap);
 		actorList.add(towerMap);
-	}
-
-	private double getDistance(double x1, double x2, double y1, double y2){
-		double squaredXDif = Math.pow(x2 - x1, 2);
-		double squaredYDif = Math.pow(y2 - y1, 2);
-		return Math.pow(squaredXDif + squaredYDif, 0.5);
 	}
 
 	@Override
@@ -225,8 +222,14 @@ public class ActorGrid implements ReadableGrid,
 	
 	private Collection<Grid2D> filterRadialLocations(Collection<Grid2D> allLocations,
 			double x, double y, double radius){
+
 		
 		return filter(allLocations, g -> getDistance(g.getX(), x, g.getY(), y) <= radius);
+
+		return filter(allLocations, 
+				g -> PathUtil.getDistance(new Coordinates(g.getX(), g.getY()), 
+						new Coordinates(x, y)) <= radius);
+
 	}
 	
 	
@@ -253,8 +256,9 @@ public class ActorGrid implements ReadableGrid,
 	public void step() {
 		for(Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map: actorList){
 			for(ActorLocator<? extends Actor<? extends ReadableGrid>> al: map.values()){
-				al.getActor().act((? extends ReadableGrid) this);
+				al.getActor().act( this);
 			}
+		}
 	}
 	
 }

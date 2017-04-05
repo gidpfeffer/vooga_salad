@@ -1,13 +1,24 @@
 package gameengine.actors;
 
+import java.util.List;
+
+import gameengine.actors.properties.HealthProperty;
+import gameengine.actors.properties.IActProperty;
+import gameengine.actors.properties.MoveWithDestinationProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 
 public class Projectile extends Shot{
+
 
 	private double mySpeed;
 	private double finalX;
 	private double finalY;
 	//private Path myPath;
+	
+	public Projectile(MoveWithDestinationProperty m, 
+			HealthProperty h, List<IActProperty> properties){	
+		//TODO: Complete
+	}
 	
 	public Projectile(double endX, double endY) {
 		finalX = endX;

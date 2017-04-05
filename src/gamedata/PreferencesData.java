@@ -8,7 +8,7 @@ import java.util.Optional;
  *
  */
 
-public class PreferencesData {
+public class PreferencesData{
 	static final int NUM_LIVES = 3;
 	static final boolean DEFAULT = false;
 	
