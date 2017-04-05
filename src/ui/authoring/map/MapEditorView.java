@@ -106,19 +106,19 @@ public class MapEditorView extends StackPane{
 		StackPane.setAlignment(b, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(b, new Insets(12));
 		b.setMaxSize(40, 40);
-		UIHelper.setBackgroundColor(b, Color.rgb(0, 0, 0, 0.1));
+		UIHelper.setBackgroundColor(b,CustomColors.GREEN_100);
 		
 		ImageView clearImage = new ImageView(new Image("clear_icon.png"));
 		clearImage.setFitWidth(32);
 		clearImage.setPreserveRatio(true);
-		Label lbl = new Label("Clear All");
-		lbl.setTextFill(CustomColors.GREEN_100);
-		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		StackPane c = UIHelper.buttonStack(e -> clearPointsAndLines(e), Optional.of(lbl), Optional.of(clearImage), Pos.CENTER_RIGHT, true);
-		c.setMaxSize(128, 40);
+//		Label lbl = new Label("Clear All");
+//		lbl.setTextFill(Color.BLACK);
+//		lbl.setFont(Preferences.FONT_SMALL_BOLD);
+		StackPane c = UIHelper.buttonStack(e -> clearPointsAndLines(e), Optional.ofNullable(null), Optional.of(clearImage), Pos.CENTER_RIGHT, true);
+		c.setMaxSize(40, 40);
 		StackPane.setAlignment(c, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(c, new Insets(0,72,12,0));
-		UIHelper.setBackgroundColor(c, Color.rgb(0, 0, 0, 0.1));
+		UIHelper.setBackgroundColor(c, CustomColors.GREEN_100);
 		
 		this.getChildren().addAll(b,c);
 	}

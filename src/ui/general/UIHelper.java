@@ -102,9 +102,10 @@ public class UIHelper {
 		});
 		optionalLabel.ifPresent(lbl -> {
 			if(iconPos.equals(Pos.CENTER_RIGHT))
-				StackPane.setMargin(lbl, new Insets(8, 40,8,8));
+				StackPane.setMargin(lbl, new Insets(6,40,6,6));
 			else if(iconPos.equals(Pos.CENTER_LEFT))
-				StackPane.setMargin(lbl, new Insets(8,8,8,40));
+				StackPane.setMargin(lbl, new Insets(6,6,6,40));
+			lbl.setAlignment(Pos.CENTER);
 			view.getChildren().add(lbl);
 			});
 		if(addDropShadow)
