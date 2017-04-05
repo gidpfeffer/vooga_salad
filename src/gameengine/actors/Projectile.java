@@ -7,7 +7,7 @@ import gameengine.actors.properties.IActProperty;
 import gameengine.actors.properties.MoveWithDestinationProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 
-public class Projectile extends Shot{
+public class Projectile extends AbstractActor {
 
 
 	private double mySpeed;
