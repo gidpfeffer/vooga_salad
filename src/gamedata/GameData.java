@@ -42,9 +42,17 @@ public class GameData {
 	}
 	
 	/**
-	 * This is for use in the GamePlayer
+	 * This is for use in the GamePlayer. Returns
+	 * all of possible options for creation in the 
 	 */
-	
+	public Map<Integer,ActorData> getOptions(){
+		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
+		toRet.putAll(shots);
+		toRet.putAll(towers);
+		toRet.putAll(troops);
+		toRet.putAll(bases);
+		return toRet;
+	}
 	
 	
 	/**
@@ -76,8 +84,7 @@ public class GameData {
 	
 	
 	/**
-	 * This is implementation for use in the front-end.
-	 * (Authoring Environment).
+	 * This is implementation for use in the (Authoring Environment
 	 * 
 	 * It allows the front-end to add another List of
 	 * Data objects representing a possible object
@@ -130,6 +137,9 @@ public class GameData {
 		levels.add(data);
 	}
 	
+	
+	
+	
 	//Getters and setters
 	public List<LevelData> getLevels() {
 		return levels;
@@ -141,7 +151,6 @@ public class GameData {
 		this.levels = level;
 	}
 	
-
 	public Map<Integer, ActorData> getShots() {
 		return shots;
 	}
