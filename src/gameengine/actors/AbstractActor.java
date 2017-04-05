@@ -8,15 +8,14 @@ import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
 public abstract class AbstractActor <T extends ReadableGrid> implements Actor<T>{
 	
-	private Integer myID;
-	private HealthProperty myHealth;
+	protected Integer myID;
+	protected HealthProperty myHealth;
 	
-	public AbstractActor(HealthProperty health) {
+	public AbstractActor(Integer id, HealthProperty health) {
+		myID = id;
 		myHealth = health;
 	}
-	
-	public abstract void act();
-	
+		
 	public boolean isActive() {
 		return myHealth.isAlive();
 	}

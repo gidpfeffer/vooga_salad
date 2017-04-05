@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -17,25 +16,23 @@ import gameengine.actors.management.Actor;
 import gameengine.actors.towers.ATower;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
-
 import gameengine.grid.interfaces.controllergrid.SteppableGrid;
 
-import util.PathUtil;
-
-public class ActorGrid implements ReadableGrid, 
+public class ActorGrid implements ReadableGrid, MasterGrid,
 	ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
 	
-	private Map<Integer, ActorLocator<Shot<? extends ReadableGrid>>> projectileMap;
-	private Map<Integer, ActorLocator<Troop<? extends ReadableGrid>>> enemyMap;
-	private Map<Integer, ActorLocator<Base<? extends ReadableGrid>>> baseMap;
-	private Map<Integer, ActorLocator<ATower<? extends ReadableGrid>>> towerMap;
-	private List<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> actorList;
+	private Map<Integer, ActorLocator<Shot>> projectileMap;
+	private Map<Integer, ActorLocator<Troop>> enemyMap;
+	private Map<Integer, ActorLocator<Base>> baseMap;
+	private Map<Integer, ActorLocator<ATower>> towerMap;
+	private List<Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>>> actorList;
 	private Coordinates limits;
 	
 	public ActorGrid(double maxX, double maxY){
@@ -60,17 +57,128 @@ public class ActorGrid implements ReadableGrid,
 	}
 
 	@Override
-	public Grid2D getLocationOf(int ID) {
-		Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map = findRelevantMap(ID);
-		return map.get(ID).getLocation();
+	public void step() {
+		for(Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>> map: actorList){
+			map = map.entrySet().stream()
+					.filter(e -> e.getValue().getActor().isActive())
+					.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+			
+			map.values().forEach(al -> al.getActor().act(this));
+		}
+	}
+
+	@Override
+	public void addEnemy(Troop enemy, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addBase(Base base, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addTower(ATower tower, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeActor(int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeEnemy(Troop newEnemy, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeProjectile(Shot newShot, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeBase(Base newBase, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeTower(ATower newTower, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addProjectile(Shot shot, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void move(int ID, double newX, double newY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Grid2D> getBasesInRadius(double x, double y, double radius) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Grid2D> getProjectilesInRadius(double x, double y, double radius) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Grid2D> getTowersInRadius(double x, double y, double radius) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Grid2D getLocationOf(int id) {
+		return findMapThatContainsID(actorList, id).get(id).getLocation();
+	}
+
+	@Override
+	public Collection<Grid2D> getEnemyLocations() {
+		return Collections.unmodifiableCollection(getActorLocatorMap(enemyMap).values());
+	}
+
+	@Override
+	public Collection<Grid2D> getTowerLocations() {
+		return Collections.unmodifiableCollection(getActorLocatorMap(towerMap).values());
+	}
+
+	@Override
+	public Collection<Grid2D> getBaseLocations() {
+		return Collections.unmodifiableCollection(getActorLocatorMap(baseMap).values());
+	}
+
+	@Override
+	public Collection<Grid2D> getProjectileLocations() {
+		return Collections.unmodifiableCollection(getActorLocatorMap(projectileMap).values());
 	}
 
 	@Override
 	public boolean isValidLoc(double x, double y) {
-		if(x < 0 || y < 0){
-			return false;
-		}
-		return x <= limits.getX() && y < limits.getY();
+		return x >= 0 && y >= 0 && x <= getMaxX() && y <= getMaxY();
 	}
 
 	@Override
@@ -82,183 +190,31 @@ public class ActorGrid implements ReadableGrid,
 	public double getMaxY() {
 		return limits.getY();
 	}
-
-	@Override
-	public void move(int ID, double newX, double newY) {
-		Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map = findRelevantMap(ID);
-		map.get(ID).setLocation(newX, newY);
-	}
-
-	private Collection<Grid2D> getLocationsFromMap(Map<Integer, 
-			? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map){
-		
-		List<Grid2D> locations = map.values().stream()
-				.map(a -> a.getLocation())
-				.collect(Collectors.toList());
-		return Collections.unmodifiableCollection(locations);
-	}
-
-	@Override
-	public Collection<Grid2D> getEnemyLocations() {
-		return Collections.unmodifiableCollection(getLocationsFromMap(enemyMap));
-	}
-
-	@Override
-	public Collection<Grid2D> getTowerLocations() {
-		return Collections.unmodifiableCollection(getLocationsFromMap(towerMap));
-	}
-
-	@Override
-	public Collection<Grid2D> getBaseLocations() {
-		return Collections.unmodifiableCollection(getLocationsFromMap(baseMap));
-	}
-
-	@Override
-	public Collection<Grid2D> getProjectileLocations() {
-		return Collections.unmodifiableCollection(getLocationsFromMap(projectileMap));
-	}
-
-	@Override
-	public void addEnemy(Troop<? extends ReadableGrid> enemy, int ID, double startX, double startY) {
-		Coordinates location = new Coordinates(startX, startY);
-		ActorLocator<Troop<? extends ReadableGrid>> troop = new ActorLocator<>(location, enemy);
-		enemyMap.put(ID, troop);
-	}
-
-	@Override
-	public void addProjectile(Shot<? extends ReadableGrid> shot, int ID, double startX, double startY) {
-		addActorToMap(shot, ID, startX, startY, projectileMap);
-	}
-
-	@Override
-	public void addBase(Base<? extends ReadableGrid> base, int ID, double startX, double startY) {
-		addActorToMap(base, ID, startX, startY, baseMap);
-	}
-
-	@Override
-	public void addTower(ATower<? extends ReadableGrid> tower, int ID, double startX, double startY) {
-		addActorToMap(tower, ID, startX, startY, towerMap);
-	}
 	
-	private <T extends Actor<? extends ReadableGrid>> void addActorToMap(T actor, 
-			int ID, double startX, double startY, Map<Integer, ActorLocator<T>> map){
+	private <T extends Actor<MasterGrid>> Map<T, Grid2D> getActorLocatorMap(
+			Map<Integer, ActorLocator<T>> map){
 		
-		Coordinates location = new Coordinates(startX, startY);
-		ActorLocator<T> actorLocator = new ActorLocator<>(location, actor);
-		map.put(ID, actorLocator);
+		return map.values().stream()
+				.collect(Collectors.toMap(ActorLocator<T>::getActor, ActorLocator<T>::getLocation));	
 	}
 
-	@Override
-	public void removeActor(int ID) {
-		Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map = findRelevantMap(ID);
-		map.remove(ID);
-	}
-
-	@Override
-	public void upgradeEnemy(Troop<? extends ReadableGrid> newEnemy, int ID) {
-		assertIDExists(enemyMap, ID);
-		upgradeActor(enemyMap.get(ID).getActor(), newEnemy, enemyMap);
-	}
-
-	@Override
-	public void upgradeProjectile(Shot<? extends ReadableGrid> newShot, int ID) {
-		assertIDExists(projectileMap, ID);
-		upgradeActor(projectileMap.get(ID).getActor(), newShot, projectileMap);
-	}
-
-	@Override
-	public void upgradeBase(Base<? extends ReadableGrid> newBase, int ID) {
-		assertIDExists(baseMap, ID);
-		upgradeActor(baseMap.get(ID).getActor(), newBase, baseMap);
-	}
-
-	@Override
-	public void upgradeTower(ATower<? extends ReadableGrid> newTower, int ID) {
-		assertIDExists(towerMap, ID);
-		upgradeActor(towerMap.get(ID).getActor(), newTower, towerMap);
-	}
-	
-	private <T extends Actor<? extends ReadableGrid>> void assertIDExists(Map<Integer, ActorLocator<T>> map, int ID){
-		if(!map.containsKey(ID)){
-			throw new IllegalArgumentException("Attempted to upgrade an Actor that doesn't exist. "
-				+ "See ActorGrid line ~ 210");
-		}
-	}
-	
-	private <T extends Actor<? extends ReadableGrid>>
-		void upgradeActor(T oldActor, T newActor, Map<Integer, ActorLocator<T>> map){
+	private Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>> findMapThatContainsID(
+			Collection<Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>>> actorCollection, int ID){
 		
-		for(Entry<Integer, ActorLocator<T>> entry : map.entrySet()){
-			if(entry.getValue().getActor().equals(oldActor)){
-				entry.getValue().UpgradeActor(newActor);
-			}
+		Collection<Map<Integer,? extends ActorLocator<? extends Actor<MasterGrid>>>> mapCol = 
+				filter(actorCollection, a -> a.keySet().contains(ID));
+		if(mapCol.size() != 1){
+			throw new IllegalStateException("Illegal ID, see ActorGrid ~215");
 		}
 		
-	}
-
-	@Override
-	public Collection<Grid2D> getBasesInRadius(double x, double y, double radius) {
-		return Collections.unmodifiableCollection(
-				filterRadialLocations(getLocationsFromMap(baseMap), x, y, radius));
-	}
-
-	@Override
-	public Collection<Grid2D> getProjectilesInRadius(double x, double y, double radius) {
-		return Collections.unmodifiableCollection(
-				filterRadialLocations(getLocationsFromMap(projectileMap), x, y, radius));
-	}
-
-	@Override
-	public Collection<Grid2D> getTowersInRadius(double x, double y, double radius) {
-		return Collections.unmodifiableCollection(
-				filterRadialLocations(getLocationsFromMap(towerMap), x, y, radius));
+		return mapCol.iterator().next();
 	}
 	
-	@Override
-	public Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius) {
-		return Collections.unmodifiableCollection(
-				filterRadialLocations(getLocationsFromMap(enemyMap), x, y, radius));
-	}
-	
-	private Collection<Grid2D> filterRadialLocations(Collection<Grid2D> allLocations,
-			double x, double y, double radius){
-
-		
-		return filter(allLocations, g -> getDistance(g.getX(), x, g.getY(), y) <= radius);
-
-		return filter(allLocations, 
-				g -> PathUtil.getDistance(new Coordinates(g.getX(), g.getY()), 
-						new Coordinates(x, y)) <= radius);
-
-	}
-	
-	
-	private Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> findRelevantMap(int ID){	
-		
-		Collection<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> 
-				idCollection = filter(actorList, map -> map.containsKey(ID));
-		
-		if(idCollection.size() < 1 || idCollection.size() > 1){
-			throw new IllegalArgumentException("Invalid id was called, see ActorGrid 235");
-		}
-		
-		return idCollection.iterator().next();
-	}
-	
-	
-	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
-		return items.stream()
+	private <T> Collection<T> filter(Collection<T> collection, Predicate<T> predicate){
+		return collection.stream()
 				.filter(t -> predicate.test(t))
 				.collect(Collectors.toList());
 	}
 
-	@Override
-	public void step() {
-		for(Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map: actorList){
-			for(ActorLocator<? extends Actor<? extends ReadableGrid>> al: map.values()){
-				al.getActor().act( this);
-			}
-		}
-	}
 	
 }
