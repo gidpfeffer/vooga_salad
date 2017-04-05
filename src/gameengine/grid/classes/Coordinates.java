@@ -12,7 +12,7 @@ public class Coordinates implements Grid2D{
 		this.y = y;
 	}
 	
-	public Coordinates(Coordinates other){
+	public Coordinates(Grid2D other){
 		this.x = other.getX();
 		this.y = other.getY();
 	}

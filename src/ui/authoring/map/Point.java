@@ -19,9 +19,27 @@ public class Point extends Circle{
 
         //etc
     }};
-	public Point(Location loc, PointType pointType){
-		super(loc.getX(), loc.getY(), 12);
+    
+    private Location myGridLocation;
+    
+    /**
+     * 
+     * @param gridLocation this Location object should be between 1 and 0. It 
+     * represents the ratio on the view 
+     * @param pointType determines what kinds of point it is. Entry, Exit, Path, etc
+     */
+	public Point(Location gridLocation, PointType pointType, double viewWidth, double viewHeight){
+		super();
+		myGridLocation = gridLocation;
 		setFill(pointTypeToColor.get(pointType));
+		updateLocation(viewWidth, viewHeight);
+		this.setRadius(8);
 	}
 	
+	public void updateLocation(double viewWidth, double viewHeight){
+		Location loc = new Location(myGridLocation.getX()*viewWidth, myGridLocation.getY()*viewHeight);
+		this.setCenterX(loc.getX());
+		this.setCenterY(loc.getY());
+	}
+
 }

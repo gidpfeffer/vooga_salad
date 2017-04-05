@@ -14,7 +14,6 @@ public class LevelEditorView extends StackPane{
 	
 	public LevelEditorView(){
 		super();
-		UIHelper.setBackgroundColor(this, CustomColors.GREEN);
 	}
 
 }

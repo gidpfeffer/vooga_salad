@@ -1,53 +1,40 @@
 package ui.authoring;
 
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.MeshView;
-import javafx.scene.shape.TriangleMesh;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import ui.Preferences;
+import ui.authoring.delegates.MenuDelegate;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
-import ui.general.Frame;
 import ui.general.ImageButton;
 import ui.general.UIHelper;
-import ui.general.UIView;
+import util.Location;
 
-public class AuthoringView extends BorderPane {
 
+public class AuthoringView extends AnchorPane {
+
+	private final double SIDE_PANE_WIDTH = 200;
+	private final double SIDE_PANE_WIDTH_MIN = 160;
+	private final Color THEME_COLOR = CustomColors.GREEN_100;
+	
+	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
-	private StackPane myLeftPane; //purpose of this pane is to flip animate 
-	private StackPane myLeftPaneFront; //contains the buttons
-	private StackPane myLeftPaneBack; //contains the views for buttons 
-	private PathEditorView myPathView;
-	private TowerEditorView myTowerView;
-	private EnemyEditorView myEnemyView;
+	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
+	private MenuView myMenuView;
 
 
 	public AuthoringView() {
-		//this.setBackgroundColor(CustomColors.GREEN_200); TODO
+		UIHelper.setBackgroundColor(this, Color.WHITE);
 	
 		setupViews();
 	}
@@ -58,6 +45,47 @@ public class AuthoringView extends BorderPane {
 		setupLevelView();
 		setupLeftPane();
 		setupBottomPane();
+		setupMargins();
+		setupBorderPane();
+		setupMenuView();
+	}
+	
+	private void setupBorderPane() {
+		AnchorPane.setBottomAnchor(myBorderPane, 0.0);
+		AnchorPane.setTopAnchor(myBorderPane, 0.0);
+		AnchorPane.setLeftAnchor(myBorderPane, 0.0);
+		AnchorPane.setRightAnchor(myBorderPane, 0.0);
+		this.getChildren().add(myBorderPane);
+		
+	}
+
+	private void setupMenuView() {
+		
+		ImageButton menuButton = new ImageButton("menu_icon.png", new Location(48.0,48.0));
+		menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> slideMenuIn());
+		AnchorPane.setLeftAnchor(menuButton, 12.0);
+		AnchorPane.setTopAnchor(menuButton, 6.0);
+		UIHelper.setDropShadow(menuButton);
+		this.getChildren().add(menuButton);
+		
+		double width = 300;
+		myMenuView = new MenuView(new MenuViewDelegate());
+		myMenuView.setLayoutX(-width - 5);
+		myMenuView.setPrefWidth(width);
+		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
+		UIHelper.setDropShadow(myMenuView);
+		AnchorPane.setTopAnchor(myMenuView, 0.0);
+		AnchorPane.setBottomAnchor(myMenuView, 0.0);
+		this.getChildren().add(myMenuView);
+
+	}
+
+	private void setupMargins(){
+		double ins = 10;
+		BorderPane.setMargin(myLeftPane, new Insets(ins));
+		BorderPane.setMargin(myMapView, new Insets(ins));
+		BorderPane.setMargin(myLevelView, new Insets(ins));
+		
 	}
 
 	private void setupTitle() {
@@ -67,95 +95,79 @@ public class AuthoringView extends BorderPane {
 		title.setTextFill(Color.rgb(0, 0, 0, 0.75));
 		title.setAlignment(Pos.CENTER);
 		title.setPrefHeight(60);
-		this.setTop(title);
+		this.myBorderPane.setTop(title);
 	}
 
 	private void setupMapView() {
 		//this calculation assumes that height < width
-		double inset = 60;
-		double height = Math.round(Preferences.SCREEN_HEIGHT - 2*inset);
-		int dim = 11;
-		height = height - dim%2;
+
 		myMapView = new MapEditorView();
-		this.setCenter(myMapView);
+		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
+		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
+		UIHelper.setDropShadow(myMapView);
+		myBorderPane.setCenter(myMapView);
+		BorderPane.setAlignment(myMapView, Pos.CENTER);
+
 	}
 
 	private void setupLevelView() {
 		myLevelView = new LevelEditorView();
-		myLevelView.setMinWidth(100);
-		this.setRight(myLevelView);
+		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
+		UIHelper.setDropShadow(myLevelView);
+		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
+		myLevelView.setPrefWidth(SIDE_PANE_WIDTH);
+		
+		this.myBorderPane.setRight(myLevelView);
 		
 	}
 	
-	private StackPane stackWithButton(){
-		//TODO
-		return null;
-	}
-
-
-	
 	private void setupLeftPane(){
-		myLeftPane = new StackPane();
-		myLeftPaneFront = new StackPane();
-		myLeftPaneBack = new StackPane();
-		myLeftPaneBack.setMinWidth(100);
+		myLeftPane = new LeftPaneView();
+		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
+		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
 		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
 		AnchorPane.setTopAnchor(myLeftPane, 12.0);
 		AnchorPane.setLeftAnchor(myLeftPane, 12.0);
-		
-		setupLeftPaneButtons();
-		setupPathView();
-		setupTowerView();
-		setupEnemyView();
-		myLeftPaneBack.setScaleX(0);
-		myLeftPane.getChildren().add(myLeftPaneBack);
-		myLeftPane.getChildren().add(myLeftPaneFront);
-		UIHelper.setBackgroundColor(myLeftPane,CustomColors.GREEN);
-		this.setLeft(myLeftPane);
+		UIHelper.setBackgroundColor(myLeftPane,THEME_COLOR);
+		UIHelper.setDropShadow(myLeftPane);
+		this.myBorderPane.setLeft(myLeftPane);
 	}
 
-	private void setupLeftPaneButtons() {
-		//TODO
-	}
 	
 	private void setupBottomPane() {
 		Pane pane = new Pane();
 		pane.setPrefHeight(60);
-		this.setBottom(pane);
+		this.myBorderPane.setBottom(pane);
 	}
+	
+	private void slideMenuIn(){
+		System.out.println("menu pressed");
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		t.setNode(myMenuView);
+		t.setByX(myMenuView.widthProperty().doubleValue());
+		t.play();
+	}
+	private void slideMenuOut(){
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		t.setNode(myMenuView);
+		t.setToX(0);
+		t.play();
+	}
+	
+	
+	//MARK: delegate classs
+	
+	class MenuViewDelegate implements MenuDelegate{
 
-	
-	private void setupTowerView() {
-		myTowerView = new TowerEditorView();
-		addBackButtonToView(myTowerView);
+		@Override
+		public void didPressBackButton() {
+			slideMenuOut();
+			
+		}
+		
 	}
+	
+	
 
-	private void setupPathView() {
-		myPathView = new PathEditorView();
-		addBackButtonToView(myPathView);
-	}
-	
-	private void setupEnemyView() {
-		myEnemyView = new EnemyEditorView();
-		addBackButtonToView(myEnemyView);
-	}
-	
-	private void addBackButtonToView(Pane view){
-		//TODO
-	}
-	
-	private void flipFromNodeToNode(Node fromNode, Node toNode){
-		ScaleTransition s1 = new ScaleTransition(Duration.millis(500), fromNode);
-		s1.setFromX(1);
-		s1.setToX(0);
-		ScaleTransition s2 = new ScaleTransition(Duration.millis(500), toNode);
-		s2.setFromX(0);
-		s2.setToX(1);
-		s1.setOnFinished(e -> {
-			s2.play();
-			});
-		s1.play();
-	}
-	
 
 }
