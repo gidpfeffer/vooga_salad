@@ -30,8 +30,9 @@ public class tester {
 		data.addFullPath(path);
 		IActProperty<MasterGrid> prop = new MoveWithSetPathProperty<>(data);
 		HealthProperty health = new LimitedHealthProperty(100);
-		Troop<MasterGrid> troop = new Troop<>(1, health, prop);
-		MasterGrid actor = new ActorGrid(10,10);
-		troop.act(actor);
+		Troop troop = new Troop(1, health, prop);
+		ActorGrid actor = new ActorGrid(10,10);
+		actor.addEnemy(troop, 1, 3, 3);
+		actor.step();
 	}
 }
