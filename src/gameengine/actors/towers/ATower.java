@@ -5,7 +5,7 @@ import gameengine.actors.properties.HealthProperty;
 import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
-public class Tower <T extends ReadableGrid> extends AbstractActor<T>{
+public abstract class ATower extends AbstractActor{
 	
 	public Tower(HealthProperty health, IActProperty<? extends ReadableGrid>... properties) {
 
