@@ -1,13 +1,14 @@
 package gameengine.actors;
 
+import java.util.List;
+
 import gameengine.actors.properties.HealthProperty;
 import gameengine.actors.properties.IActProperty;
 import gameengine.actors.properties.MoveWithDestinationProperty;
-import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 
-import java.util.List;
+public class Projectile extends Shot{
 
-public class Projectile extends Shot<ReadAndMoveGrid>{
 
 	private double mySpeed;
 	private double finalX;
@@ -28,7 +29,7 @@ public class Projectile extends Shot<ReadAndMoveGrid>{
 	 * @see gameengine.actors.management.Actor#act(java.lang.Object)
 	 */
 	@Override
-	public void act(ReadAndMoveGrid grid) {
+	public void act(MasterGrid grid) {
 		// TODO Auto-generated method stub
 		
 	}
