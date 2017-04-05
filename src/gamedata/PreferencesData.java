@@ -18,6 +18,7 @@ public class PreferencesData{
 	private Optional<Boolean> wantMoney;
 	private Optional<Boolean> expByLevel;
 	private Optional<Boolean> pauseBetweenWaves;
+	private Optional<Boolean> cleanLevel;
 	
 	public int getNumLives(){
 		return numLives.orElse(NUM_LIVES);
@@ -41,6 +42,10 @@ public class PreferencesData{
 	
 	public boolean pauseBetweenWaves(){
 		return pauseBetweenWaves.orElse(DEFAULT);
+	}
+	
+	public boolean cleanLevel(){
+		return cleanLevel.orElse(DEFAULT);
 	}
 
 	public void setNumLives(Optional<Integer> numLives) {
@@ -66,6 +71,17 @@ public class PreferencesData{
 	public void setPauseBetweenWaves(Optional<Boolean> pauseBetweenWaves) {
 		this.pauseBetweenWaves = pauseBetweenWaves;
 	}
+
+	public Optional<Boolean> getCleanLevel() {
+		return cleanLevel;
+	}
+
+	public void setCleanLevel(Optional<Boolean> cleanLevel) {
+		this.cleanLevel = cleanLevel;
+	}
+	
+	
+
 	
 	//TODO: Generate more preferences
 	

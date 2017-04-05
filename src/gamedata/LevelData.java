@@ -27,26 +27,43 @@ public class LevelData {
 		myMaxY = maxY;
 	}
 	
+	public Map<Integer, ActorData> getOptions(){
+		
+	}
+	
+	public List<String> getNames(){
+		//TODO: Implement
+		return null;
+	}
+	
+	/**
+	 * This is implementation for use in the front-end.
+	 * (Authoring Environment).
+	 * 
+	 * It allows the front-end to add another List of
+	 * Data objects representing a possible object
+	 * 
+	 */
+	
 	//TODO: Implement
 	//TODO: Limit input based on types of parameters required for type
 	//TODO: Get rid of dependency on enum actor type to match method header 
-	public void addShot(ActorData actor, 
-			MoveWithDestinationData move, HealthData data, 
+	public void addShot(ActorData actor, HealthData data, 
 			Data...datas){
 		
 	}
 	
-	public void addTower(HealthData data, 
+	public void addTower(ActorData actor, HealthData data, 
 			Data...datas){
 		
 	}
 	
-	public void addTroop(HealthData data, 
+	public void addTroop(ActorData actor, HealthData data, 
 			Data...datas){
 		
 	}
 	
-	public void addBase(HealthData data, 
+	public void addBase(ActorData actor,HealthData data, 
 			Data...datas){
 		
 	}
