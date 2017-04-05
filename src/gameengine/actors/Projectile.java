@@ -1,10 +1,8 @@
 package gameengine.actors;
 
-import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 
-import gamedata.ProjectileData;
-
-public class Projectile extends Shot<ReadAndMoveGrid>{
+public class Projectile extends Shot{
 
 	private double mySpeed;
 	private double finalX;
@@ -20,7 +18,7 @@ public class Projectile extends Shot<ReadAndMoveGrid>{
 	 * @see gameengine.actors.management.Actor#act(java.lang.Object)
 	 */
 	@Override
-	public void act(ReadAndMoveGrid grid) {
+	public void act(MasterGrid grid) {
 		// TODO Auto-generated method stub
 		
 	}
