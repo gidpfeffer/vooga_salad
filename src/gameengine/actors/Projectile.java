@@ -17,9 +17,14 @@ public class Projectile extends AbstractActor<ReadShootMoveGrid> {
 	private double myPower;
 	private MoveWithDestinationProperty myMovement;
 
-	public Projectile(MoveWithDestinationProperty m, HealthProperty h) {
-		super(h);
-		myMovement = m;
+	public Projectile(MoveWithDestinationProperty movement, HealthProperty health, 
+			boolean attacksEnemy, boolean attacksTower, double power, double hitRadius) {
+		super(health);
+		myMovement = movement;
+		myHitRadius = hitRadius;
+		myPower = power;
+		this.attacksEnemy = attacksEnemy;
+		this.attacksTower = attacksTower;
 	}
 	
 	/*
