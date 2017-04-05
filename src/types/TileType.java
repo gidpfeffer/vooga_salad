@@ -1,4 +1,4 @@
-package ui.authoring.map;
+package types;
 
 public enum TileType {
 	NORMAL,ENTRY,EXIT

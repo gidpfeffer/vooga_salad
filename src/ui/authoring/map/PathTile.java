@@ -3,6 +3,8 @@ package ui.authoring.map;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import ui.data.TileData;
+import util.Index;
 import util.Tuple;
 
 public class PathTile extends StackPane{
@@ -38,8 +40,8 @@ public class PathTile extends StackPane{
 	 * returns a clone of whatever the object is with the same data
 	 * @param tuple 
 	 */
-	public PathTile clone(Tuple<Integer, Integer> newIndex){
-		TileData newData= new TileData(myTileData.getImagePath(), newIndex, myTileData.getTileType());
+	public PathTile clone(Index index){
+		TileData newData= new TileData(myTileData.getImagePath(), index, myTileData.getTileType());
 		return new PathTile(newData,myTileSize.x, myTileSize.y);
 	}
 
