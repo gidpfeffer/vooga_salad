@@ -44,16 +44,19 @@ public class MapEditorView extends StackPane{
 	}
 	
 	private void handleMouseClick(MouseEvent e){
-		if(this.myBackgroundView.intersects(e.getX(), e.getY(), 1, 1));
-			addPointToMap(e);
+		addPointToMap(e);
 	}
 	
 	private void addPointToMap(MouseEvent e){
 		//TODO backend data
 		Location loc = pixelToGridLocation( new Location(e.getX(),e.getY()));
 		Point p;
-		double width = this.widthProperty().get();
-		double height = this.heightProperty().get();
+		double xratio = getScaleXRatio(this.myBackgroundView.getImageView());
+		double yratio =getScaleYRatio(this.myBackgroundView.getImageView());
+		System.out.println(xratio + " " + yratio);
+		double width = this.myBackgroundView.getWidth();
+		double height = this.myBackgroundView.getHeight();
+		System.out.println("width " + width + "\theight " + height);
 		
 		if(e.getButton().equals(MouseButton.SECONDARY)){
 			p = new Point(loc, PointType.EXIT, width, height);
@@ -66,7 +69,16 @@ public class MapEditorView extends StackPane{
 		}
 		this.pointsLayerView.getChildren().add(p);
 		this.myPoints.add(p);
+		System.out.println(p.getLocation().getX()+" "+p.getLocation().getY());
 		
+	}
+	
+	private double getScaleXRatio(ImageView imageView){ 
+	    return imageView.getBoundsInParent().getWidth()/imageView.getImage().getWidth();
+	}
+
+	private double getScaleYRatio(ImageView imageView){ 
+	    return imageView.getBoundsInParent().getHeight()/imageView.getImage().getHeight();
 	}
 	
 	private void setupViews() {
@@ -102,7 +114,7 @@ public class MapEditorView extends StackPane{
 		Label lbl = new Label("Clear All");
 		lbl.setTextFill(CustomColors.GREEN_100);
 		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		StackPane c = UIHelper.buttonStack(e -> clearPointsAndLines(), Optional.of(lbl), Optional.of(clearImage), Pos.CENTER_RIGHT, true);
+		StackPane c = UIHelper.buttonStack(e -> clearPointsAndLines(e), Optional.of(lbl), Optional.of(clearImage), Pos.CENTER_RIGHT, true);
 		c.setMaxSize(128, 40);
 		StackPane.setAlignment(c, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(c, new Insets(0,72,12,0));
@@ -116,7 +128,8 @@ public class MapEditorView extends StackPane{
 		System.out.println("undo clicked");
 	}
 	
-	private void clearPointsAndLines(){
+	private void clearPointsAndLines(MouseEvent e){
+		e.consume();
 		for(Point p: this.myPoints)
 			this.pointsLayerView.getChildren().remove(p);
 	}

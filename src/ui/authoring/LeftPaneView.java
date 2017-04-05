@@ -44,24 +44,29 @@ public class LeftPaneView extends StackPane{
 	}
 	
 	private void setupLeftPaneButtons() {
-		StackPane enemy = UIHelper.buttonStack(e -> System.out.println("e"), 
+		StackPane enemy = UIHelper.buttonStack(e -> System.out.println(e), 
 				Optional.of(labelForStackButton("Enemy Editor")), 
 				Optional.of(imageForStackButton("enemy_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane tower = UIHelper.buttonStack(e -> System.out.println("e"), 
+		StackPane tower = UIHelper.buttonStack(e -> System.out.println(e), 
 				Optional.of(labelForStackButton("Tower Editor")), 
 				Optional.of(imageForStackButton("tower_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane splash = UIHelper.buttonStack(e -> System.out.println("e"), 
+		StackPane splash = UIHelper.buttonStack(e -> System.out.println(e), 
 				Optional.of(labelForStackButton("Splash Editor")), 
 				Optional.of(imageForStackButton("splash_icon.png")), 
+				Pos.CENTER_RIGHT, true);
+		StackPane projectile = UIHelper.buttonStack(e -> System.out.println(e), 
+				Optional.of(labelForStackButton("Projectile Editor")), 
+				Optional.of(imageForStackButton("projectile_icon.png")), 
 				Pos.CENTER_RIGHT, true);
 		
 		enemy.setPrefHeight(56);
 		tower.setPrefHeight(56);
 		splash.setPrefHeight(56);
+		projectile.setPrefHeight(56);
 		
-		myLeftPaneFront.getChildren().addAll(enemy, tower, splash);
+		myLeftPaneFront.getChildren().addAll(enemy, tower, projectile, splash);
 	}
 	private Label labelForStackButton(String title){
 		Label lbl = new Label(title);

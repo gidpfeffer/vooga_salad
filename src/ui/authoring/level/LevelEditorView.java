@@ -8,7 +8,6 @@ import javafx.scene.layout.StackPane;
 import ui.general.CustomColors;
 import ui.general.Frame;
 import ui.general.UIHelper;
-import ui.general.UIView;
 
 public class LevelEditorView extends StackPane{
 	

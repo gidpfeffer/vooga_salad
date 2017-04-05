@@ -24,7 +24,7 @@ public class AuthoringView extends AnchorPane {
 
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 160;
-	private final Color THEME_COLOR = CustomColors.GREEN_100;
+	private final Color THEME_COLOR = CustomColors.GREEN_200;
 	
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
@@ -61,10 +61,10 @@ public class AuthoringView extends AnchorPane {
 
 	private void setupMenuView() {
 		
-		ImageButton menuButton = new ImageButton("menu_icon.png", new Location(48.0,48.0));
+		ImageButton menuButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
 		menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> slideMenuIn());
-		AnchorPane.setLeftAnchor(menuButton, 12.0);
-		AnchorPane.setTopAnchor(menuButton, 6.0);
+		AnchorPane.setLeftAnchor(menuButton, 4.0);
+		AnchorPane.setTopAnchor(menuButton, 12.0);
 		UIHelper.setDropShadow(menuButton);
 		this.getChildren().add(menuButton);
 		
@@ -89,12 +89,13 @@ public class AuthoringView extends AnchorPane {
 	}
 
 	private void setupTitle() {
-		Label title = new Label("Game Authoring Environment");
-		title.setFont(Preferences.FONT_BIG);
+		Label title = new Label("Authoring Environment");
+		title.setFont(Preferences.FONT_BIG_BOLD);
 		title.setPrefWidth(Preferences.SCREEN_WIDTH);
-		title.setTextFill(Color.rgb(0, 0, 0, 0.75));
+		title.setTextFill(Color.rgb(0, 0, 0, 0.8));
 		title.setAlignment(Pos.CENTER);
 		title.setPrefHeight(60);
+		UIHelper.setDropShadow(title);
 		this.myBorderPane.setTop(title);
 	}
 
