@@ -13,7 +13,7 @@ import gameengine.actors.Base;
 import gameengine.actors.Shot;
 import gameengine.actors.Troop;
 import gameengine.actors.management.Actor;
-import gameengine.actors.towers.ATower;
+import gameengine.actors.towers.Tower;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
@@ -28,11 +28,11 @@ import gameengine.grid.interfaces.controllergrid.SteppableGrid;
 public class ActorGrid implements ReadableGrid, MasterGrid,
 	ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
 	
-	private Map<Integer, ActorLocator<Shot>> projectileMap;
-	private Map<Integer, ActorLocator<Troop>> enemyMap;
-	private Map<Integer, ActorLocator<Base>> baseMap;
-	private Map<Integer, ActorLocator<ATower>> towerMap;
-	private List<Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>>> actorList;
+	private Map<Integer, ActorLocator<Shot<? extends ReadableGrid>>> projectileMap;
+	private Map<Integer, ActorLocator<Troop<? extends ReadableGrid>>> enemyMap;
+	private Map<Integer, ActorLocator<Base<? extends ReadableGrid>>> baseMap;
+	private Map<Integer, ActorLocator<Tower<? extends ReadableGrid>>> towerMap;
+	private List<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> actorList;
 	private Coordinates limits;
 	
 	public ActorGrid(double maxX, double maxY){
@@ -58,7 +58,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 
 	@Override
 	public void step() {
-		for(Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>> map: actorList){
+		for(Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map: actorList){
 			map = map.entrySet().stream()
 					.filter(e -> e.getValue().getActor().isActive())
 					.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
@@ -80,7 +80,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 	}
 
 	@Override
-	public void addTower(ATower tower, int ID, double startX, double startY) {
+	public void addTower(Tower tower, int ID, double startX, double startY) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -110,7 +110,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 	}
 
 	@Override
-	public void upgradeTower(ATower newTower, int ID) {
+	public void upgradeTower(Tower newTower, int ID) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -191,17 +191,17 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		return limits.getY();
 	}
 	
-	private <T extends Actor<MasterGrid>> Map<T, Grid2D> getActorLocatorMap(
+	private <T extends Actor<? extends ReadableGrid>> Map<T, Grid2D> getActorLocatorMap(
 			Map<Integer, ActorLocator<T>> map){
 		
 		return map.values().stream()
 				.collect(Collectors.toMap(ActorLocator<T>::getActor, ActorLocator<T>::getLocation));	
 	}
 
-	private Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>> findMapThatContainsID(
-			Collection<Map<Integer, ? extends ActorLocator<? extends Actor<MasterGrid>>>> actorCollection, int ID){
+	private Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> findMapThatContainsID(
+			Collection<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> actorCollection, int ID){
 		
-		Collection<Map<Integer,? extends ActorLocator<? extends Actor<MasterGrid>>>> mapCol = 
+		Collection<Map<Integer,? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> mapCol = 
 				filter(actorCollection, a -> a.keySet().contains(ID));
 		if(mapCol.size() != 1){
 			throw new IllegalStateException("Illegal ID, see ActorGrid ~215");
