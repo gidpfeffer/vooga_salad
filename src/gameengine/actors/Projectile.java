@@ -15,7 +15,7 @@ public class Projectile extends Shot<ReadAndMoveGrid>{
 	//private Path myPath;
 	
 	public Projectile(MoveWithDestinationProperty m, 
-			HealthProperty h, List<IActProperty> properties){	
+			HealthProperty h, List<IActProperty> properties) {	
 		//TODO: Complete
 	}
 	
