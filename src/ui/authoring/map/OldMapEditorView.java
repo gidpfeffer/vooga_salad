@@ -1,4 +1,4 @@
-package ui.authoring;
+package ui.authoring.map;
 
 import java.util.Optional;
 
@@ -16,18 +16,17 @@ import types.TileType;
 import ui.authoring.map.PathTile;
 import ui.data.MapData;
 import ui.data.TileData;
+
 import ui.general.CustomColors;
 import ui.general.Frame;
-import ui.general.Frameable;
 import ui.general.UIView;
-import ui.map.MapView;
 import util.Index;
 import util.Tuple;
 
-public class MapEditorView extends UIView{
+public class OldMapEditorView extends UIView{
 	
 	//private GridPane myGridPane;
-	private MapView myMapView;
+	private OldMapView myMapView;
 	private Tuple<Integer, Integer> myDimensions;
 	private final String defaultBlockImage = "grass.png";
 	private final String defaultWalkImage = "dirt.png";
@@ -42,11 +41,11 @@ public class MapEditorView extends UIView{
 	 * sets up a MapEditorView with dimensions set to 20x20 by default
 	 * @param frame
 	 */
-	public MapEditorView(Frame frame){
+	public OldMapEditorView(Frame frame){
 		this(20,20,frame);
 	}
 	
-	public MapEditorView(int xDim, int yDim, Frame frame){
+	public OldMapEditorView(int xDim, int yDim, Frame frame){
 		super(frame);
 		this.setBackgroundColor(CustomColors.GREEN_200);
 		
@@ -56,7 +55,7 @@ public class MapEditorView extends UIView{
 		mySelectedTile = new PathTile(new TileData(defaultWalkImage, new Index(0,0), TileType.WALK), myTileWidth,myTileHeight);
 		myMapData = new MapData(xDim, yDim);
 		setupDefaultMapData();
-		myMapView = new MapView(this.getBounds(), myMapData);
+		myMapView = new OldMapView(this.getBounds(), myMapData);
 		
 		setupViews();
 		setupMouseEvents();
