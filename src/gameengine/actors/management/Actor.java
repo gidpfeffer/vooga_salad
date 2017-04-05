@@ -1,6 +1,8 @@
 package gameengine.actors.management;
 
-public interface Actor <G>{
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+
+public interface Actor <G extends ReadableGrid>{
 
 	public void act(G grid);
 		
