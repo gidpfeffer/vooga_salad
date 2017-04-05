@@ -1,6 +1,3 @@
 package gamedata.composition;
 
-public interface Data {
-
-	
-}
+public interface Data{}
