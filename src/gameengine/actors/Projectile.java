@@ -36,11 +36,11 @@ public class Projectile extends AbstractActor<ReadShootMoveGrid> {
 	public void act(ReadShootMoveGrid grid) {
 		// TODO Auto-generated method stub
 		if (attacksEnemy) {
-			Collection<Actor<?>> enemies = new ArrayList<>();// grid.getEnemiesInRadius()
+			Collection<Actor<?>> enemies = new ArrayList<>();// grid.getEnemiesInRadius() to apply damage
 			attack(enemies);
 		}
 		if (attacksTower) {
-			Collection<Actor<?>> enemies = new ArrayList<>();// grid.getTowersInRadius()
+			Collection<Actor<?>> enemies = new ArrayList<>();// grid.getTowersInRadius() to apply damage
 			attack(enemies);
 		}
 		// MAYBE ADD CASE FOR ATTACKING BASE?
