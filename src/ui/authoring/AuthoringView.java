@@ -1,30 +1,36 @@
 package ui.authoring;
 
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import ui.Preferences;
+import ui.authoring.delegates.MenuDelegate;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
-
+import ui.general.ImageButton;
 import ui.general.UIHelper;
+import util.Location;
 
 
-public class AuthoringView extends BorderPane {
+public class AuthoringView extends AnchorPane {
 
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 160;
 	private final Color THEME_COLOR = CustomColors.GREEN_100;
 	
+	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
 	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
-
+	private MenuView myMenuView;
 
 
 	public AuthoringView() {
@@ -40,8 +46,40 @@ public class AuthoringView extends BorderPane {
 		setupLeftPane();
 		setupBottomPane();
 		setupMargins();
+		setupBorderPane();
+		setupMenuView();
 	}
 	
+	private void setupBorderPane() {
+		AnchorPane.setBottomAnchor(myBorderPane, 0.0);
+		AnchorPane.setTopAnchor(myBorderPane, 0.0);
+		AnchorPane.setLeftAnchor(myBorderPane, 0.0);
+		AnchorPane.setRightAnchor(myBorderPane, 0.0);
+		this.getChildren().add(myBorderPane);
+		
+	}
+
+	private void setupMenuView() {
+		
+		ImageButton menuButton = new ImageButton("menu_icon.png", new Location(48.0,48.0));
+		menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> slideMenuIn());
+		AnchorPane.setLeftAnchor(menuButton, 12.0);
+		AnchorPane.setTopAnchor(menuButton, 6.0);
+		UIHelper.setDropShadow(menuButton);
+		this.getChildren().add(menuButton);
+		
+		double width = 300;
+		myMenuView = new MenuView(new MenuViewDelegate());
+		myMenuView.setLayoutX(-width - 5);
+		myMenuView.setPrefWidth(width);
+		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
+		UIHelper.setDropShadow(myMenuView);
+		AnchorPane.setTopAnchor(myMenuView, 0.0);
+		AnchorPane.setBottomAnchor(myMenuView, 0.0);
+		this.getChildren().add(myMenuView);
+
+	}
+
 	private void setupMargins(){
 		double ins = 10;
 		BorderPane.setMargin(myLeftPane, new Insets(ins));
@@ -57,7 +95,7 @@ public class AuthoringView extends BorderPane {
 		title.setTextFill(Color.rgb(0, 0, 0, 0.75));
 		title.setAlignment(Pos.CENTER);
 		title.setPrefHeight(60);
-		this.setTop(title);
+		this.myBorderPane.setTop(title);
 	}
 
 	private void setupMapView() {
@@ -67,7 +105,7 @@ public class AuthoringView extends BorderPane {
 		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
-		this.setCenter(myMapView);
+		myBorderPane.setCenter(myMapView);
 		BorderPane.setAlignment(myMapView, Pos.CENTER);
 
 	}
@@ -79,15 +117,9 @@ public class AuthoringView extends BorderPane {
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLevelView.setPrefWidth(SIDE_PANE_WIDTH);
 		
-		this.setRight(myLevelView);
+		this.myBorderPane.setRight(myLevelView);
 		
 	}
-	
-	
-	
-	
-
-
 	
 	private void setupLeftPane(){
 		myLeftPane = new LeftPaneView();
@@ -98,16 +130,42 @@ public class AuthoringView extends BorderPane {
 		AnchorPane.setLeftAnchor(myLeftPane, 12.0);
 		UIHelper.setBackgroundColor(myLeftPane,THEME_COLOR);
 		UIHelper.setDropShadow(myLeftPane);
-		this.setLeft(myLeftPane);
+		this.myBorderPane.setLeft(myLeftPane);
 	}
 
 	
 	private void setupBottomPane() {
 		Pane pane = new Pane();
 		pane.setPrefHeight(60);
-		this.setBottom(pane);
+		this.myBorderPane.setBottom(pane);
 	}
+	
+	private void slideMenuIn(){
+		System.out.println("menu pressed");
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		t.setNode(myMenuView);
+		t.setByX(myMenuView.widthProperty().doubleValue());
+		t.play();
+	}
+	private void slideMenuOut(){
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		t.setNode(myMenuView);
+		t.setToX(0);
+		t.play();
+	}
+	
+	
+	//MARK: delegate classs
+	
+	class MenuViewDelegate implements MenuDelegate{
 
+		@Override
+		public void didPressBackButton() {
+			slideMenuOut();
+			
+		}
+		
+	}
 	
 	
 
