@@ -52,7 +52,6 @@ public class Passwords {
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			System.out.println("Hashing Error");
-			// handle error here.
 		}
 
 		return hash.toString();

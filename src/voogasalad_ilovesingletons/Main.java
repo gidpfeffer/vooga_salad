@@ -1,8 +1,8 @@
 package voogasalad_ilovesingletons;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import ui.UIMain;
 import ui.player.Login;
 
 public class Main extends Application{
@@ -14,6 +14,7 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage s) throws Exception {
+		s.getIcons().add(new Image("tower2.jpg"));
 		Login login = new Login(s, "loginScreen.css", "login");
 		s.setScene(login.getScene());
 		s.setTitle("Login");

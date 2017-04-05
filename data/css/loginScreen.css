@@ -1,3 +1,15 @@
+#towerBackground{
+    -fx-background-image: url("tower_background_2.jpg");
+    -fx-background-repeat: stretch;   
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
+}
+
+#root {
+	-fx-background-color:
+		linear-gradient(#1b7834, white);
+}
+
 .button { 
 	-fx-font-family: "HelveticaNeue";
 	-fx-alignment: CENTER;
