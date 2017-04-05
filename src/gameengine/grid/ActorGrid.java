@@ -27,12 +27,11 @@ import gameengine.grid.interfaces.controllergrid.SteppableGrid;
 
 public class ActorGrid implements ReadableGrid, MasterGrid,
 	ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
-	
-	private Map<Integer, ActorLocator<Shot<? extends ReadableGrid>>> projectileMap;
-	private Map<Integer, ActorLocator<Troop<? extends ReadableGrid>>> enemyMap;
-	private Map<Integer, ActorLocator<Base<? extends ReadableGrid>>> baseMap;
-	private Map<Integer, ActorLocator<Tower<? extends ReadableGrid>>> towerMap;
-	private List<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> actorList;
+	private Map<Integer, ActorLocator<Shot>> projectileMap;
+	private Map<Integer, ActorLocator<Troop>> enemyMap;
+	private Map<Integer, ActorLocator<Base>> baseMap;
+	private Map<Integer, ActorLocator<Tower>> towerMap;
+	private List<Map<Integer, ? extends ActorLocator<? extends Actor>>> actorList;
 	private Coordinates limits;
 	
 	public ActorGrid(double maxX, double maxY){
@@ -46,6 +45,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		baseMap = new HashMap<>();
 		towerMap = new HashMap<>();
 		initializeActorList();
+		ActorGrid.class.getGenericSuperclass();
 	}
 	
 	private void initializeActorList(){
@@ -58,10 +58,11 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 
 	@Override
 	public void step() {
-		for(Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> map: actorList){
-			map = map.entrySet().stream()
+		for(Map<Integer, ? extends ActorLocator<? extends Actor>> map: actorList){
+			/*map = map.entrySet().stream()
 					.filter(e -> e.getValue().getActor().isActive())
-					.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+					.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));*/
+			System.out.println("pls");
 			
 			map.values().forEach(al -> al.getActor().act(this));
 		}
@@ -69,7 +70,8 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 
 	@Override
 	public void addEnemy(Troop enemy, int ID, double startX, double startY) {
-		// TODO Auto-generated method stub
+		//Remove this line, this was added for testing
+		enemyMap.put(ID, new ActorLocator(limits, enemy));
 		
 	}
 
@@ -191,17 +193,17 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		return limits.getY();
 	}
 	
-	private <T extends Actor<? extends ReadableGrid>> Map<T, Grid2D> getActorLocatorMap(
+	private <T extends Actor> Map<T, Grid2D> getActorLocatorMap(
 			Map<Integer, ActorLocator<T>> map){
 		
 		return map.values().stream()
 				.collect(Collectors.toMap(ActorLocator<T>::getActor, ActorLocator<T>::getLocation));	
 	}
 
-	private Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>> findMapThatContainsID(
-			Collection<Map<Integer, ? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> actorCollection, int ID){
+	private Map<Integer, ? extends ActorLocator<? extends Actor>> findMapThatContainsID(
+			Collection<Map<Integer, ? extends ActorLocator<? extends Actor>>> actorCollection, int ID){
 		
-		Collection<Map<Integer,? extends ActorLocator<? extends Actor<? extends ReadableGrid>>>> mapCol = 
+		Collection<Map<Integer,? extends ActorLocator<? extends Actor>>> mapCol = 
 				filter(actorCollection, a -> a.keySet().contains(ID));
 		if(mapCol.size() != 1){
 			throw new IllegalStateException("Illegal ID, see ActorGrid ~215");

@@ -6,7 +6,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.MovableActor;
 import gameengine.grid.interfaces.Identifiers.SetableActor;
 
-public class ActorLocator <T extends Actor<? extends ReadableGrid>> implements MovableActor<T>, SetableActor<T>{
+public class ActorLocator <T extends Actor> implements MovableActor<T>, SetableActor<T>{
 	
 	private Grid2D location;
 	private T actor;

@@ -18,6 +18,7 @@ public class PreferencesData{
 	private Optional<Boolean> wantMoney;
 	private Optional<Boolean> expByLevel;
 	private Optional<Boolean> pauseBetweenWaves;
+	private Optional<Boolean> cleanLevel;
 	
 	public int getNumLives(){
 		return numLives.orElse(NUM_LIVES);
@@ -43,5 +44,46 @@ public class PreferencesData{
 		return pauseBetweenWaves.orElse(DEFAULT);
 	}
 	
+	public boolean cleanLevel(){
+		return cleanLevel.orElse(DEFAULT);
+	}
+
+	public void setNumLives(Optional<Integer> numLives) {
+		this.numLives = numLives;
+	}
+
+	public void setEnemyLoop(Optional<Boolean> enemyLoop) {
+		this.enemyLoop = enemyLoop;
+	}
+
+	public void setTowersAttackable(Optional<Boolean> towersAttackable) {
+		this.towersAttackable = towersAttackable;
+	}
+
+	public void setWantMoney(Optional<Boolean> wantMoney) {
+		this.wantMoney = wantMoney;
+	}
+
+	public void setExpByLevel(Optional<Boolean> expByLevel) {
+		this.expByLevel = expByLevel;
+	}
+
+	public void setPauseBetweenWaves(Optional<Boolean> pauseBetweenWaves) {
+		this.pauseBetweenWaves = pauseBetweenWaves;
+	}
+
+	public Optional<Boolean> getCleanLevel() {
+		return cleanLevel;
+	}
+
+	public void setCleanLevel(Optional<Boolean> cleanLevel) {
+		this.cleanLevel = cleanLevel;
+	}
+	
+	
+
+	
 	//TODO: Generate more preferences
+	
+	
 }

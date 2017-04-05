@@ -1,10 +1,11 @@
 package gameengine.actors.properties;
 
-import gameengine.actors.Projectile;
+import gamedata.composition.LimitedHealthData;
 
-public class ImmuneHealthProperty<G extends Projectile> extends LimitedHealthProperty{
-	public ImmuneHealthProperty(double health) {
-		super(health);
+public class ImmuneHealthProperty extends LimitedHealthProperty{
+	
+	public ImmuneHealthProperty(LimitedHealthData data) {
+		super(data);
 	}
 
 	public void apply(double damage) {
@@ -16,4 +17,5 @@ public class ImmuneHealthProperty<G extends Projectile> extends LimitedHealthPro
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

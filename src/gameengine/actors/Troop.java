@@ -6,17 +6,16 @@ import java.util.List;
 import gameengine.actors.properties.HealthProperty;
 import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
-public class Troop<G extends ReadableGrid> extends AbstractActor<G> {
+public class Troop extends AbstractActor {
 
-	private List<IActProperty<G>> myProperties; 
+	private List<IActProperty<MasterGrid>> myProperties; 
 	private int myID;
 	
-	public Troop(Integer id, HealthProperty h, IActProperty<G>... properties) {
+	public Troop(Integer id, HealthProperty h, IActProperty<MasterGrid>... properties) {
 		super(id, h);
 		myProperties = new ArrayList<>();
-		for (IActProperty<G> p:properties) {
+		for (IActProperty<MasterGrid> p:properties) {
 			myProperties.add(p);
 		}
 	}
@@ -24,7 +23,8 @@ public class Troop<G extends ReadableGrid> extends AbstractActor<G> {
 
 
 	@Override
-	public void act(G grid) {
+	public void act(MasterGrid grid) {
+		System.out.println("I tried");
 		myProperties.forEach(e -> e.action(grid,myID));
 	}
 	
@@ -32,7 +32,7 @@ public class Troop<G extends ReadableGrid> extends AbstractActor<G> {
 	@Override
 	public boolean isActive() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

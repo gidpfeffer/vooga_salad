@@ -4,10 +4,8 @@ import java.util.function.Consumer;
 
 import gameengine.actors.management.Actor;
 import gameengine.actors.properties.HealthProperty;
-import gameengine.grid.interfaces.ActorGrid.MasterGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
-public abstract class AbstractActor<G extends ReadableGrid> implements Actor<G>{
+public abstract class AbstractActor implements Actor {
 	
 	private Integer myID;
 	private HealthProperty myHealth;
