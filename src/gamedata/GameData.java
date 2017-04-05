@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * 
  * GameData is the over-arching data class that holds 
- * all of the data requires to launch a game.
+ * all of the data required to launch a game.
  * It holds a Map of each actor type between
  * Integers (representing Option numbers) and ActorDatas, 
  * where the ActorData holds information about how to
@@ -24,6 +24,9 @@ import java.util.Map;
 public class GameData {
 	//Level information (preferences, no & type of enemies)
 	List<LevelData> levels;
+	
+	//Information about how the game is visually displayed
+	DisplayData display;
 	
 	//Actors available for entire game
 	private Map<Integer, ActorData> shots;
