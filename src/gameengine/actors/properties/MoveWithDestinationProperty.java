@@ -19,12 +19,10 @@ public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid
 	
 	private Queue<Grid2D> myPathCoordinates;
 	private Coordinates finalLocation;
-	private double mySpeed;
 	
 	public MoveWithDestinationProperty(MoveWithDestinationData data){
 		myPathCoordinates = new LinkedList<>(data.getStraightPath());
 		finalLocation = data.getFinalLocation();
-		mySpeed = data.getMySpeed();
 	}
 	
 	@Override
