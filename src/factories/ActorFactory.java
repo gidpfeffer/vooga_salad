@@ -1,5 +1,6 @@
 package factories;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import util.VoogaException;
@@ -29,7 +30,7 @@ public abstract class ActorFactory<A> extends AbstractFactory<A>{
 		return null;
 	}
 	
-	private Class getClass(String name){
+	private Class<?> getClass(String name){
 		try {
 			return Class.forName(name);
 		} catch (ClassNotFoundException e) {
@@ -42,14 +43,22 @@ public abstract class ActorFactory<A> extends AbstractFactory<A>{
 	@Override
 	protected Class<?>[] getClasses(Object... args) {
 		//Convert Data objects to Property names
+		Class <?>ID = args[0].getClass();
 		String [] classNames =  Arrays.asList(args)
 				.stream()
-				.map(p -> p.getClass().getName().replace("Data", ""))
+				.filter(e -> !(e==args[0]))
+				.map(p -> p.getClass().getName().replace("Data", "Property"))
 				.toArray(String[]::new);
-		return Arrays.asList(classNames)
+		Class<?>[] remaining = Arrays.asList(classNames)
 				.stream()
 				.map(p -> getClass(p))
 				.toArray(Class[]::new);
+		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+		classes.add(ID);
+		classes.addAll(Arrays.asList(remaining));
+		Class<?> [] toRet = new Class[remaining.length+1];
+		classes.toArray(toRet);
+		return toRet;
 	}
 
 }

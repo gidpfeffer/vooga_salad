@@ -10,7 +10,8 @@ import types.ActorType;
  *
  */
 
-public class ActorData implements Data {
+public class BasicData implements Data {
+	private String name;
 	private boolean isActive;
 	private String imagePath;
 	private double heading; //angle
@@ -37,6 +38,14 @@ public class ActorData implements Data {
 
 	public void setHeading(double heading) {
 		this.heading = heading;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
