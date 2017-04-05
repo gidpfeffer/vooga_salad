@@ -13,16 +13,18 @@ public class Projectile extends AbstractActor<ReadShootMoveGrid> {
 
 	private boolean attacksEnemy;
 	private boolean attacksTower;
+	private boolean attacksBase;
 	private double myHitRadius;
 	private double myPower;
 	private MoveWithDestinationProperty myMovement;
 
 	public Projectile(MoveWithDestinationProperty movement, HealthProperty health, 
-			boolean attacksEnemy, boolean attacksTower, double power, double hitRadius) {
+			boolean attacksEnemy, boolean attacksTower, boolean attacksBase, double power, double hitRadius) {
 		super(health);
 		myMovement = movement;
 		myHitRadius = hitRadius;
 		myPower = power;
+		this.attacksBase = attacksBase;
 		this.attacksEnemy = attacksEnemy;
 		this.attacksTower = attacksTower;
 	}
@@ -40,14 +42,17 @@ public class Projectile extends AbstractActor<ReadShootMoveGrid> {
 			attack(enemies);
 		}
 		if (attacksTower) {
-			Collection<Actor<?>> enemies = new ArrayList<>();// grid.getTowersInRadius() to apply damage
-			attack(enemies);
+			Collection<Actor<?>> towers = new ArrayList<>();// grid.getTowersInRadius() to apply damage
+			attack(towers);
 		}
-		// MAYBE ADD CASE FOR ATTACKING BASE?
-		myMovement.action(grid, myID);
+		if (attacksBase) {
+			Collection<Actor<?>> base = new ArrayList<>();// grid.getTowersInRadius() to apply damage
+			attack(base);
+		}
 	}
 
 	private void attack(Collection<Actor<?>> actors) {
+		if (!isActive()) return;
 		for (Actor<?> a : actors) {
 			if (isActive()) {
 				a.applyDamage(myPower);
