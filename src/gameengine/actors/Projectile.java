@@ -1,51 +1,68 @@
 package gameengine.actors;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import gameengine.actors.management.Actor;
 import gameengine.actors.properties.HealthProperty;
-import gameengine.actors.properties.IActProperty;
 import gameengine.actors.properties.MoveWithDestinationProperty;
-import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
 
-public class Projectile extends Shot{
+public class Projectile extends AbstractActor<ReadShootMoveGrid> {
 
+	private boolean attacksEnemy;
+	private boolean attacksTower;
+	private double myHitRadius;
+	private double myPower;
+	private MoveWithDestinationProperty myMovement;
 
-	private double mySpeed;
-	private double finalX;
-	private double finalY;
-	//private Path myPath;
-	
-	public Projectile(MoveWithDestinationProperty m, 
-			HealthProperty h, List<IActProperty> properties){	
-		//TODO: Complete
+	public Projectile(MoveWithDestinationProperty m, HealthProperty h) {
+		super(h);
+		myMovement = m;
 	}
 	
-	public Projectile(double endX, double endY) {
-		finalX = endX;
-		finalY = endY;
-	}
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see gameengine.actors.management.Actor#act(java.lang.Object)
 	 */
 	@Override
-	public void act(MasterGrid grid) {
+	public void act(ReadShootMoveGrid grid) {
 		// TODO Auto-generated method stub
-		
+		if (attacksEnemy) {
+			Collection<Actor<?>> enemies = new ArrayList<>();// grid.getEnemiesInRadius()
+			attack(enemies);
+		}
+		if (attacksTower) {
+			Collection<Actor<?>> enemies = new ArrayList<>();// grid.getTowersInRadius()
+			attack(enemies);
+		}
+		// MAYBE ADD CASE FOR ATTACKING BASE?
+		myMovement.action(grid, myID);
 	}
 
-	/* (non-Javadoc)
-	 * @see gameengine.actors.management.Actor#isActive()
+	private void attack(Collection<Actor<?>> actors) {
+		for (Actor<?> a : actors) {
+			if (isActive()) {
+				a.applyDamage(myPower);
+				myHealth.apply(1);
+			} else {
+				break;
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gameengine.actors.management.Actor#applyDamage(double)
 	 */
-	@Override
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Override
 	public void applyDamage(double health) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+
 }
