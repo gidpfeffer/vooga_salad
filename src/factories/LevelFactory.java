@@ -17,10 +17,11 @@ import gameengine.grid.ActorGrid;
 
 public class LevelFactory {
 
+	//TODO: How do we want to build a level?
 	//TODO: Remove parameters from ActorGrid
 	public LevelController buildLevel(GameData current, int level){
 		LevelData curr = current.getLevel(level);
-		ActorGrid grid = new ActorGrid();
+		ActorGrid grid = new ActorGrid(0,1);
 		addPieces(curr, grid);
 		//TODO: complete
 		

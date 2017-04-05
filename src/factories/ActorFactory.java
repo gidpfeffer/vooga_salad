@@ -3,6 +3,7 @@ package factories;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import gameengine.actors.management.Actor;
 import util.VoogaException;
 
 /**
@@ -12,7 +13,7 @@ import util.VoogaException;
  *
  */
 
-public abstract class ActorFactory<A> extends AbstractFactory<A>{
+public class ActorFactory extends AbstractFactory<Actor>{
 
 	private static final String PATH = "gameengine.actors.";
 	
@@ -21,7 +22,7 @@ public abstract class ActorFactory<A> extends AbstractFactory<A>{
 	}
 
 	@Override
-	protected A failResponse() {
+	protected Actor failResponse() {
 		try {
 			throw new VoogaException("Reflection Error: No such property/actor");
 		} catch (VoogaException e) {
@@ -59,6 +60,11 @@ public abstract class ActorFactory<A> extends AbstractFactory<A>{
 		Class<?> [] toRet = new Class[remaining.length+1];
 		classes.toArray(toRet);
 		return toRet;
+	}
+
+	@Override
+	protected String generateObjectType(String name) {
+		return name;
 	}
 
 }

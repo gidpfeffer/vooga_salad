@@ -13,6 +13,7 @@ import util.VoogaException;
 public class GameController {
 	private GameStatus myGameStatus;
 	private GameData myGameData;
+	
 	private UIHandler myUIHandler;
 	private LevelController myLevelController;
 	private IDGenerator myIDGenerator;
@@ -26,6 +27,7 @@ public class GameController {
 	}
 	
 	public void step() {
+		
 	}
 	
 	private void initializeUIHandler() {

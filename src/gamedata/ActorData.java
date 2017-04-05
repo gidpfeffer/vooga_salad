@@ -7,6 +7,8 @@ import gamedata.composition.BasicData;
 import gamedata.composition.Data;
 import gamedata.composition.HealthData;
 import gamedata.composition.LimitedHealthData;
+import types.ActorType;
+import types.BasicActorType;
 
 /**
  * Information required to construct a certain, 
@@ -27,24 +29,27 @@ public class ActorData {
 	
 	private List<Data> myData;
 	private String name;
+	private BasicActorType actor;
 	
 	/**
 	 * Easy implementation example:
 	 * 
+	 * Creation of a tower named Bob
 	 * ActorData myActor = new ActorData 
-	 * 		(new BasicData("Bob", images/bob));
+	 * 		(ActorType.TOWER, new BasicData("Bob", images/bob));
 	 * 
 	 * @param data BasicData object with name and imagepath
 	 */
-	public ActorData(BasicData data){
-		this(data, new LimitedHealthData(HEALTH));
+	public ActorData(BasicActorType actor, BasicData data){
+		this(actor, data, new LimitedHealthData(HEALTH));
 	}
 	
-	public ActorData(BasicData data, HealthData health){
+	public ActorData(BasicActorType actor, BasicData data, HealthData health){
 		myData = new ArrayList<Data>();
 		myData.add(data);
 		myData.add(health);
 		name = data.getName();
+		this.actor=actor;
 	}
 
 	public List<Data> getMyData() {
@@ -62,6 +67,15 @@ public class ActorData {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public BasicActorType getActor() {
+		return actor;
+	}
+
+	public void setActor(BasicActorType actor) {
+		this.actor = actor;
+	}
+	
 	
 	
 }

@@ -41,6 +41,39 @@ public class GameData {
 		numOptions = 0;
 	}
 	
+	/**
+	 * This is for use in the GamePlayer
+	 */
+	
+	
+	
+	/**
+	 * This is for use in the GameController.
+	 * 
+	 * This returns you the ActorData matching to 
+	 * the requested option. This ActorData can then be
+	 * passed to ActorGenerator in order to create the Actor.
+	 * 
+	 * @param option Integer representing the option
+	 * @return ActorData mapping to that option
+	 */
+	public ActorData getOption(Integer option){
+		//TODO: Clean-up implementation
+		if(shots.containsKey(option)){
+			return shots.get(option);
+		}
+		if(towers.containsKey(option)){
+			return towers.get(option);
+		}
+		if(troops.containsKey(option)){
+			return troops.get(option);
+		}
+		if(bases.containsKey(option)){
+			return bases.get(option);
+		}
+		return null;//Non-existent request
+	}
+	
 	
 	/**
 	 * This is implementation for use in the front-end.
