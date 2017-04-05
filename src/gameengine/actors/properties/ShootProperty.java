@@ -1,11 +1,10 @@
-package gameengine.actors.properties.shoots;
+package gameengine.actors.properties;
 
 import java.util.List;
 
 import gamedata.composition.ShootData;
 import gameengine.actors.Projectile;
 import gameengine.actors.management.Actor;
-import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
