@@ -11,7 +11,8 @@ public abstract class AbstractActor <T extends ReadableGrid> implements Actor<T>
 	protected Integer myID;
 	protected HealthProperty myHealth;
 	
-	public AbstractActor(HealthProperty health) {
+	public AbstractActor(Integer id, HealthProperty health) {
+		myID = id;
 		myHealth = health;
 	}
 		
