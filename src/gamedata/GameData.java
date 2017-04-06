@@ -17,7 +17,27 @@ import types.BasicActorType;
  * 
  * The LevelData objects hold preferences for each
  * Level -- these are saved and passed to the LevelController
- * constructor whenever
+ * constructor whenever a new Level is created.
+ * 
+ * USES:
+ * 
+ * GAME PLAYER:
+ * -getOptions --> return all pieces (ActorData) mapped to order numbers (Integers)
+ * -getTowerOptions --> return all Tower pieces
+ * -getTroopOptions --> return all Troop pieces
+ * -getBaseOptions --> return all Base pieces
+ * -getShotOptions --> return all Shot pieces
+ * 
+ * GAME CONTROLLER:
+ * -getOption(Integer index) --> return the ActorData associated with that order number
+ * 
+ * 
+ * GAME AUTHORING ENVIRONMENT:
+ * -add(ActorData a) --> Add an ActorData (blueprint for an Actor) 
+ * 			to the current representation of the game
+ * -addLevel(LevelData l) --> Add a LevelData to represent the preferences and 
+ * 			enemies for that level
+ * 
  * 
  * @author maddiebriere
  *
@@ -92,7 +112,6 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
-	
 	public void add(ActorData data){
 		pieces.put(numOptions++, data);
 	}
