@@ -6,4 +6,6 @@ public interface IActProperty<G extends ReadableGrid> {
 
 	public void action(G grid, Integer actorID);
 	
+	public boolean isOn();
+	
 }
