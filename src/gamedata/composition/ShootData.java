@@ -4,6 +4,7 @@ public class ShootData implements Data{
 	
 	private double mySpeed;
 	private double myRange;
+	private int fireRate;
 
 	public double getRange() {
 		return myRange;
@@ -19,6 +20,10 @@ public class ShootData implements Data{
 
 	public void setSpeed(double speed) {
 		this.myRange = speed;
+	}
+
+	public int getFireRate() {
+		return fireRate;
 	}
 	
 }
