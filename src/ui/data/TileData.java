@@ -17,7 +17,9 @@ public class TileData {
 	
 	private String imagePath;
 	private TileType tileType;
+
 	private Index index; 
+
 	
 	public TileData(String imagePath,Index index, TileType tileType) {
 		check();
