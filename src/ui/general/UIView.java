@@ -44,7 +44,7 @@ import javafx.scene.paint.Color;
  * @author TNK
  *
  */
-public class UIView extends Pane implements Frameable{
+public class UIView extends Pane{
 	
 	private Frame _frame;
 	private Frame _bounds;

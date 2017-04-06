@@ -1,33 +1,53 @@
 package gameengine.actors.enemy;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
-import gameengine.ActorResult;
-import usecases.IActor;
+import gameengine.actors.Troop;
+import gameengine.actors.properties.HealthProperty;
+import gameengine.actors.properties.IActProperty;
+import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 
-public abstract class Enemy <O> implements IActor<O> {
-		
+
+/**
+ * @author Anh
+ *
+ */
+
+public class Enemy extends Troop<ReadableGrid> {
+
+	List<IActProperty<ReadableGrid>> myProperties; 
+	private int myID;
+	public Enemy(HealthProperty h, List<IActProperty<ReadableGrid>> properties) {
+		super(h, properties);
+		myProperties = properties;
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	@Override
-	public abstract ActorResult act(O out) ;
-		// TODO Auto-generated method stub
+	public void act(ReadableGrid grid) {
+		myProperties.forEach(e -> e.action(grid,myID));
+	}
 	
+	
+	@Override
+	public boolean isActive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
-	public abstract void deactivate() ;
+	public void applyDamage(double health) {
 		// TODO Auto-generated method stub
 		
-	
-
-	@Override
-	public abstract boolean isActive();
-
-	@Override
-	public abstract double getHealth() ;
-		// TODO Auto-generated method stub
+	}
 
 
-	@Override
-	public abstract void setHealth(double health);
-		// TODO Auto-generated method stub
 	
 }

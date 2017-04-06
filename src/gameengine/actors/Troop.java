@@ -1,23 +1,38 @@
 package gameengine.actors;
 
-import gamedata.TroopData;
-import gameengine.actors.management.Actor;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Troop implements Actor{
+import gameengine.actors.properties.HealthProperty;
+import gameengine.actors.properties.IActProperty;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 
-	public Troop(TroopData troop){
-		//TODO: @Maddie complete
+public class Troop extends AbstractActor {
+
+	private List<IActProperty<MasterGrid>> myProperties; 
+	private int myID;
+	
+	public Troop(Integer id, HealthProperty h, IActProperty<MasterGrid>... properties) {
+		super(id, h);
+		myProperties = new ArrayList<>();
+		for (IActProperty<MasterGrid> p:properties) {
+			myProperties.add(p);
+		}
+	}
+
+
+
+	@Override
+	public void act(MasterGrid grid) {
+		System.out.println("I tried");
+		myProperties.forEach(e -> e.action(grid,myID));
 	}
 	
-	@Override
-	public void act(Object out) {
-		// TODO Auto-generated method stub
-	}
-
+	
 	@Override
 	public boolean isActive() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -26,4 +41,9 @@ public class Troop implements Actor{
 		
 	}
 
+
+
+
+	
 }
+

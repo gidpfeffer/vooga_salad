@@ -1,30 +1,91 @@
 package gamedata;
 
-import java.util.List;
+import java.util.Map;
 
 /**
- * holds all the data that is encoded for a level
- * such as enemies, towers, and map
- * @author TNK
+ * Holds all the data that is encoded for a level
+ * such as:
+ * 1) Enemies
+ * 2) Preferences (e.g., waves of attack)
+ * 3) Difficulty
+ * 4) Duration of enemy attack
+ * 5) Health, attack and speed multipliers
+ * (more of each with higher levels)
+ * 
+ * @author Maddie
  *
  */
 public class LevelData {
-	private MapData mapData;
-	private List<ActorData>actors;
+	private PreferencesData myPreferences;
+	private Map<ActorData, Integer> troops;
+	private int difficulty;
+	private double duration; //duration for enemy presence
 	
-	/* TODO
-	 * 
-	 * EnemyData // hp, speed, immunity, money-drop,attack
-	 * TowerData //pow, range, freq, anti-immunity, movability, (health v static)
-	 * power-up data
-	 * BaseData (optional)
-	 * PreferencesData (game type, optional functionality)
-	 	* Rules
-	 	* Are towers attackable
-	 	* Do enemies loop around when they get to the exit
-	 	* Is there going to be a base
-	 	* How many lives does the player have
-	 	* Interest on money?
-	 	* pause between waves?
-	 */
+	//Increase by level
+	private double healthMultiplier;
+	private double attackMultiplier;
+	private double speedMultiplier;
+
+	public LevelData(Map<ActorData, Integer> troops){
+		//TODO: Implement constructors
+	}
+
+	public PreferencesData getMyPreferences() {
+		return myPreferences;
+	}
+
+	public void setMyPreferences(PreferencesData myPreferences) {
+		this.myPreferences = myPreferences;
+	}
+
+	public Map<ActorData, Integer> getTroops() {
+		return troops;
+	}
+
+	public void setTroops(Map<ActorData, Integer> troops) {
+		this.troops = troops;
+	}
+
+	public int getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	public double getDuration() {
+		return duration;
+	}
+
+	public void setDuration(double duration) {
+		this.duration = duration;
+	}
+
+	public double getHealthMultiplier() {
+		return healthMultiplier;
+	}
+
+	public void setHealthMultiplier(double healthMultiplier) {
+		this.healthMultiplier = healthMultiplier;
+	}
+
+	public double getAttackMultiplier() {
+		return attackMultiplier;
+	}
+
+	public void setAttackMultiplier(double attackMultiplier) {
+		this.attackMultiplier = attackMultiplier;
+	}
+
+	public double getSpeedMultiplier() {
+		return speedMultiplier;
+	}
+
+	public void setSpeedMultiplier(double speedMultiplier) {
+		this.speedMultiplier = speedMultiplier;
+	}
+	
+	
+	
 }

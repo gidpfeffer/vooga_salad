@@ -1,24 +1,35 @@
 package gameengine.actors;
 
-import gamedata.ProjectileData;
-import gameengine.actors.management.Actor;
-import gameengine.grid.interfaces.ReadAndMoveGrid;
+import java.util.List;
 
-public class Projectile implements Actor<ReadAndMoveGrid> {
+import gameengine.actors.properties.HealthProperty;
+import gameengine.actors.properties.IActProperty;
+import gameengine.actors.properties.MoveWithDestinationProperty;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+
+public class Projectile extends Shot{
+
 
 	private double mySpeed;
+	private double finalX;
+	private double finalY;
 	//private Path myPath;
 	
-	public Projectile(ProjectileData proj) {
-		//DO PROJECTILES NEED HEALTH?
-		//TODO: @Maddie complete
+	public Projectile(MoveWithDestinationProperty m, 
+			HealthProperty h, List<IActProperty> properties){	
+		//TODO: Complete
+	}
+	
+	public Projectile(double endX, double endY) {
+		finalX = endX;
+		finalY = endY;
 	}
 	
 	/* (non-Javadoc)
 	 * @see gameengine.actors.management.Actor#act(java.lang.Object)
 	 */
 	@Override
-	public void act(ReadAndMoveGrid grid) {
+	public void act(MasterGrid grid) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -37,8 +48,4 @@ public class Projectile implements Actor<ReadAndMoveGrid> {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-
 }

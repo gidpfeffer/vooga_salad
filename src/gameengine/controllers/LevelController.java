@@ -1,6 +1,6 @@
 package gameengine.controllers;
 
-import gameengine.grid.interfaces.ActorMap;
+import gameengine.grid.ActorGrid;
 
 /**
  * Controls information about/behavior of a single level
@@ -10,6 +10,24 @@ import gameengine.grid.interfaces.ActorMap;
 
 public class LevelController {
 	public int myLevel;
-	public ActorMap myMap;
-	//TODO: understand map implementation more thoroughly
+	public ActorGrid myMap;
+	
+	public LevelController(ActorGrid grid, int level) {
+		myLevel = level;
+		myMap = grid;
+	}
+	public int getMyLevel() {
+		return myLevel;
+	}
+	public void setMyLevel(int myLevel) {
+		this.myLevel = myLevel;
+	}
+	public ActorGrid getMyMap() {
+		return myMap;
+	}
+	public void setMyMap(ActorGrid myMap) {
+		this.myMap = myMap;
+	}
+	
+	
 }

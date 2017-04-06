@@ -1,63 +1,149 @@
 package gameengine.grid;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import gameengine.actors.Projectile;
+import java.util.Collection;
+import gameengine.actors.Base;
+import gameengine.actors.Shot;
+import gameengine.actors.Troop;
 import gameengine.actors.management.Actor;
-import gameengine.grid.interfaces.Grid2D;
-import gameengine.grid.interfaces.ReadShootMoveGrid;
-import gameengine.grid.interfaces.ReadableGrid;
+import gameengine.actors.towers.Tower;
+import gameengine.grid.classes.Coordinates;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
+import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import gameengine.grid.interfaces.controllergrid.SteppableGrid;
 
-public class ActorGrid implements ReadShootMoveGrid{
+public class ActorGrid implements ReadableGrid, MasterGrid,
+	ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
 	
-	List<ActorMapIdentifier> actorList;
+	private Coordinates limits;
+	private Collection<Actor> actors;
 	
-	public ActorGrid(){
-		actorList = new ArrayList<>();
-		initializeActorMaps();
-	}
-	
-	private void initializeActorMaps(){
-		for(ActorType a: ActorType.values()){
-			actorList.add(new ActorMapIdentifier(new HashMap<>(), a));
-		}
+	public ActorGrid(double maxX, double maxY){
+		limits = new Coordinates(maxX, maxY);
+		actors = new ArrayList<>();
 	}
 
 	@Override
-	public boolean addProjectile(Projectile projectile, double startX, double startY) {
+	public void step() {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
 	@Override
-	public List<Actor<? extends ReadableGrid>> getInRadius(double x, double y, double radius) {
+	public void addEnemy(Troop enemy, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addBase(Base base, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addTower(Tower tower, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeActor(int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeEnemy(Troop newEnemy, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeProjectile(Shot newShot, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeBase(Base newBase, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void upgradeTower(Tower newTower, int ID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addProjectile(Shot shot, int ID, double startX, double startY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void move(int ID, double newX, double newY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Grid2D getLocationOf(Actor<? extends ReadableGrid> t) {
+	public Collection<Grid2D> getBasesInRadius(double x, double y, double radius) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Actor<? extends ReadableGrid>, Grid2D> getEnemyMap() {
+	public Collection<Grid2D> getProjectilesInRadius(double x, double y, double radius) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Actor<? extends ReadableGrid>, Grid2D> getTowerMap() {
+	public Collection<Grid2D> getTowersInRadius(double x, double y, double radius) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<Actor<? extends ReadableGrid>, Grid2D> getBaseMap() {
+	public Grid2D getLocationOf(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Grid2D> getEnemyLocations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Grid2D> getTowerLocations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Grid2D> getBaseLocations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<Grid2D> getProjectileLocations() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -78,12 +164,6 @@ public class ActorGrid implements ReadShootMoveGrid{
 	public double getMaxY() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public boolean move(double ID, double newX, double newY) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
