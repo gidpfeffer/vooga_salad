@@ -26,7 +26,6 @@ public class LevelFactory {
 		ActorGrid grid = new ActorGrid(0,1);
 		addPieces(curr, grid);
 		//TODO: complete
-		
 		LevelController toRet = new LevelController(grid, level);
 		return toRet;
 	}

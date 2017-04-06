@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import types.BasicActorType;
+
 /**
  * 
  * GameData is the over-arching data class that holds 
@@ -47,23 +49,19 @@ public class GameData {
 	}
 	
 	public Map<Integer,ActorData> getTowerOptions(){
-		//TODO: Complete
-		return null;
+		return getOptionType(BasicActorType.Tower);
 	}
 	
 	public Map<Integer,ActorData> getTroopOptions(){
-		//TODO: Complete
-		return null;
+		return getOptionType(BasicActorType.Troop);
 	}
 	
 	public Map<Integer,ActorData> getBaseOptions(){
-		//TODO: Complete
-		return null;
+		return getOptionType(BasicActorType.Base);
 	}
 	
 	public Map<Integer,ActorData> getShotOptions(){
-		//TODO: Complete
-		return null;
+		return getOptionType(BasicActorType.Shot);
 	}
 	
 	
@@ -78,25 +76,12 @@ public class GameData {
 	 * @return ActorData mapping to that option
 	 */
 	public ActorData getOption(Integer option){
-		//TODO: Clean-up implementation
-		if(shots.containsKey(option)){
-			return shots.get(option);
-		}
-		if(towers.containsKey(option)){
-			return towers.get(option);
-		}
-		if(troops.containsKey(option)){
-			return troops.get(option);
-		}
-		if(bases.containsKey(option)){
-			return bases.get(option);
-		}
-		return null;//Non-existent request
+		return pieces.get(option);
 	}
 	
 	
 	/**
-	 * This is implementation for use in the (Authoring Environment
+	 * This is implementation for use in the Authoring Environment
 	 * 
 	 * It allows the front-end to add another List of
 	 * Data objects representing a possible object
@@ -108,24 +93,8 @@ public class GameData {
 	 * 
 	 */
 	
-	public void addShot(ActorData data){
-		add(shots, data);
-	}
-	
-	public void addTower(ActorData data){
-		add(towers, data);
-	}
-	
-	public void addTroop(ActorData data){
-		add(troops,data);
-	}
-	
-	public void addBase(ActorData data){
-		add(bases,data);
-	}
-	
-	public void add(Map<Integer,ActorData> map, ActorData data){
-		map.put(numOptions++, data);
+	public void add(ActorData data){
+		pieces.put(numOptions++, data);
 	}
 	
 	/**
@@ -150,6 +119,21 @@ public class GameData {
 	}
 	
 	
+	
+	/**
+	 * Get all option matching to a certain type (Troop, Tower, etc.) of
+	 * Actor. 
+	 * @param type Type to match
+	 * @return All Actors available matching this type
+	 */
+	private Map<Integer,ActorData> getOptionType(BasicActorType type){
+		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
+		pieces.forEach((key, value) 
+				-> {if (value.getBasic().equals(type)) {
+					toRet.put(key,value);
+					}});
+		return toRet;
+	}
 	
 	
 	//Getters and setters

@@ -3,9 +3,11 @@ package factories;
 import gameengine.actors.properties.IActProperty;
 
 public class PropertyFactory extends AbstractFactory <IActProperty> {
-
-	public PropertyFactory(String path) {
-		super(path);
+	//TODO: Confirm package
+	private static final String PATH = "gameengine.actors.properties";
+	
+	public PropertyFactory() {
+		super(PATH);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -17,7 +19,6 @@ public class PropertyFactory extends AbstractFactory <IActProperty> {
 
 	@Override
 	protected IActProperty failResponse() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
