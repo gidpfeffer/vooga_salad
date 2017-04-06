@@ -8,18 +8,25 @@ import gamedata.composition.BasicData;
 import gamedata.composition.Data;
 import gamedata.composition.HealthData;
 import gamedata.composition.LimitedHealthData;
-import types.ActorType;
 import types.BasicActorType;
 
 /**
  * Information required to construct a certain, 
- * user-created Actor. Holds a name (e.g., "MyCoolTower")
- * and a List of Data objects that represent the composition
- * of the Actor. This is like a blueprint for the factory --
+ * user-created Actor. This is effectively a "blueprint"
+ * class. The authoring environment will create a blueprint and save
+ * it, allowing for future game players to invoke that blueprint
+ * (pass it to a factory) and create an instance of the desired Actor.
+ * 
+ * This is like a blueprint for the factory --
  * when the user places one of these actors on the grid, 
  * the backend can take all of the data objects and convert
  * them to properties to create an Actor equivalent to the
  * ActorData.
+ * 
+ * Holds:
+ * 1) A name (e.g., "MyCoolTower")
+ * 2) A List of Data objects that represent the composition
+ * of the Actor. 
  * 
  * @author maddiebriere
  *
