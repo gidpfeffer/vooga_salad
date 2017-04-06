@@ -28,8 +28,8 @@ public class ActorData {
 	private final static double HEALTH = 100;
 	
 	private List<Data> myData;
-	private String name;
 	private BasicActorType actor;
+	private BasicData basic;
 	
 	/**
 	 * Easy implementation example:
@@ -48,24 +48,32 @@ public class ActorData {
 		myData = new ArrayList<Data>();
 		myData.add(data);
 		myData.add(health);
-		name = data.getName();
 		this.actor=actor;
+		this.basic = data;
+	}
+	
+	/**
+	 * GamePlayer: Useful methods for accessing information about an ActorData
+	 *
+	 */
+	public String getImagePath() {
+		return basic.getImagePath();
 	}
 
+	public String getName() {
+		return basic.getName();
+	}
+
+	/**
+	 * Getters and setters
+	 */
+	
 	public List<Data> getMyData() {
 		return myData;
 	}
 
 	public void setMyData(List<Data> myData) {
 		this.myData = myData;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public BasicActorType getActor() {
@@ -75,7 +83,16 @@ public class ActorData {
 	public void setActor(BasicActorType actor) {
 		this.actor = actor;
 	}
+
+	public BasicData getBasic() {
+		return basic;
+	}
+
+	public void setBasic(BasicData basic) {
+		this.basic = basic;
+	}
 	
+
 	
 	
 }

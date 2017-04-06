@@ -4,6 +4,7 @@ import java.util.List;
 
 import gamedata.GameData;
 import gamedata.LevelData;
+import gamedata.PreferencesData;
 import gamedata.composition.Data;
 import gameengine.controllers.LevelController;
 import gameengine.grid.ActorGrid;
@@ -19,12 +20,12 @@ public class LevelFactory {
 
 	//TODO: How do we want to build a level?
 	//TODO: Remove parameters from ActorGrid
-	public LevelController buildLevel(GameData current, int level){
+	public LevelController buildLevel(GameData current, LevelController prev, int level){
 		LevelData curr = current.getLevel(level);
+		PreferencesData preferences = curr.getMyPreferences();
 		ActorGrid grid = new ActorGrid(0,1);
 		addPieces(curr, grid);
 		//TODO: complete
-		
 		LevelController toRet = new LevelController(grid, level);
 		return toRet;
 	}
