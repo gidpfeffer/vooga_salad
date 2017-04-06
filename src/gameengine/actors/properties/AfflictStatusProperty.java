@@ -11,4 +11,7 @@ public class AfflictStatusProperty<G extends IStatus> implements IActProperty<Re
 		
 	}
 
+	
+	
+
 }

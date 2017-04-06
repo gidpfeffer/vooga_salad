@@ -10,20 +10,19 @@ import types.ActorType;
  *
  */
 
-public class ActorData implements Data {
-	private ActorType myType;
+public class BasicData implements Data {
+	private String name;
 	private boolean isActive;
 	private String imagePath;
 	private double heading; //angle
 	
-	public ActorType getMyType() {
-		return myType;
+	public BasicData(String name, String imagePath){
+		this.name=name;
+		this.imagePath = imagePath;
+		heading = 0;
+		isActive = true;
 	}
-
-	public void setMyType(ActorType myType) {
-		this.myType = myType;
-	}
-
+	
 	public boolean isActive() {
 		return isActive;
 	}
@@ -46,6 +45,14 @@ public class ActorData implements Data {
 
 	public void setHeading(double heading) {
 		this.heading = heading;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
