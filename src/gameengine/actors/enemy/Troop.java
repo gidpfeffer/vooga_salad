@@ -18,11 +18,11 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  *
  */
 
-public class Enemy extends Troop<ReadableGrid> {
+public class Troop extends Troop<ReadableGrid> {
 
 	List<IActProperty<ReadableGrid>> myProperties; 
 	private int myID;
-	public Enemy(HealthProperty h, List<IActProperty<ReadableGrid>> properties) {
+	public Troop(HealthProperty h, List<IActProperty<ReadableGrid>> properties) {
 		super(h, properties);
 		myProperties = properties;
 		// TODO Auto-generated constructor stub
