@@ -92,7 +92,6 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
-	
 	public void add(ActorData data){
 		pieces.put(numOptions++, data);
 	}

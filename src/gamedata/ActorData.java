@@ -1,6 +1,7 @@
 package gamedata;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import gamedata.composition.BasicData;
@@ -45,9 +46,14 @@ public class ActorData {
 	}
 	
 	public ActorData(BasicActorType actor, BasicData data, HealthData health){
+		this(actor, data, health, new Data[0]);
+	}
+	
+	public ActorData(BasicActorType actor, BasicData data, HealthData health, Data... properties){
 		myData = new ArrayList<Data>();
 		myData.add(data);
 		myData.add(health);
+		myData.addAll(Arrays.asList(properties));
 		this.actor=actor;
 		this.basic = data;
 	}
