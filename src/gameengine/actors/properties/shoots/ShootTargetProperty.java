@@ -4,20 +4,26 @@ import java.util.Collection;
 
 import gamedata.composition.ShootData;
 import gameengine.actors.properties.IActProperty;
-import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
+import types.BasicActorType;
+import util.Delay;
 
-public abstract class ShootTargetProperty<G extends ReadAndShootGrid> implements IActProperty<G>{
+public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements IActProperty<G>{
+	
+	private final BasicActorType target = BasicActorType.Troop;
 	
 	private double myRange;
+	private Delay myDelay;
 	
 	public ShootTargetProperty(ShootData myData) {
 		myRange = myData.getMyRange();
+		myDelay = new Delay(myData.getFireRate());
 	}
 	
 	@Override
 	public void action(G grid, Integer actorID) {
-		Collection<Grid2D> dirCoordinates = getEnemyToShoot(grid.getEnemiesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getX(), myRange), grid.getLocationOf(actorID));
+		Collection<Grid2D> dirCoordinates = getEnemyToShoot(grid.getActorLocationsInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getX(), myRange, target), grid.getLocationOf(actorID));
 		spawnProjectiles(dirCoordinates);
 	}
 	
@@ -27,5 +33,9 @@ public abstract class ShootTargetProperty<G extends ReadAndShootGrid> implements
 	
 	protected double getAngle(Grid2D origin, Grid2D target) {
 		return Math.toDegrees(Math.atan((target.getY()-origin.getY())/(target.getX()-origin.getX())));
+	}
+	
+	public boolean isOn() {
+		return myDelay.delayAction();
 	}
 }
