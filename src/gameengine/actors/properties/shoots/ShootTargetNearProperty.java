@@ -1,5 +1,7 @@
 package gameengine.actors.properties.shoots;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import gamedata.composition.ShootData;
@@ -13,9 +15,19 @@ public class ShootTargetNearProperty<G extends ReadAndSpawnGrid> extends ShootTa
 	}
 	
 	@Override
-	protected Collection<Grid2D> getEnemyToShoot(Collection<Grid2D> points, Grid2D myID) {
-		// TODO Auto-generated method stub
-		return null;
+	protected Collection<Grid2D> getEnemyToShoot(Collection<Grid2D> points, Grid2D myLocation) {
+		// WHY DOES THIS RETURN A COLLECTION OF POINTS?
+		double shortestDistance = Double.POSITIVE_INFINITY;
+		Grid2D closestTarget = null;
+		for (Grid2D loc : points) {
+			double distanceToActor = Math.sqrt(Math.pow(loc.getX() - myLocation.getX(), 2) 
+					+ Math.pow(loc.getY() - myLocation.getY(), 2));
+			if (distanceToActor < shortestDistance) {
+				shortestDistance = distanceToActor;
+				closestTarget = loc;
+			}
+		}
+		return new ArrayList<>(Arrays.asList(closestTarget));
 	}
 
 	@Override
