@@ -29,18 +29,12 @@ public class GameData {
 	DisplayData display;
 	
 	//Actors available for entire game
-	private Map<Integer, ActorData> shots;
-	private Map<Integer, ActorData> towers;
-	private Map<Integer, ActorData> troops;
-	private Map<Integer, ActorData> bases;
+	private Map<Integer, ActorData> pieces;
 	
 	private int numOptions;
 	
 	public GameData(){
-		shots = new HashMap<Integer, ActorData>();
-		towers = new HashMap<Integer, ActorData>();
-		troops = new HashMap<Integer, ActorData>();
-		bases = new HashMap<Integer, ActorData>();
+		pieces = new HashMap<Integer, ActorData>();
 		numOptions = 0;
 	}
 	
@@ -49,12 +43,27 @@ public class GameData {
 	 * all of possible options for creation in the 
 	 */
 	public Map<Integer,ActorData> getOptions(){
-		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
-		toRet.putAll(shots);
-		toRet.putAll(towers);
-		toRet.putAll(troops);
-		toRet.putAll(bases);
-		return toRet;
+		return pieces;
+	}
+	
+	public Map<Integer,ActorData> getTowerOptions(){
+		//TODO: Complete
+		return null;
+	}
+	
+	public Map<Integer,ActorData> getTroopOptions(){
+		//TODO: Complete
+		return null;
+	}
+	
+	public Map<Integer,ActorData> getBaseOptions(){
+		//TODO: Complete
+		return null;
+	}
+	
+	public Map<Integer,ActorData> getShotOptions(){
+		//TODO: Complete
+		return null;
 	}
 	
 	
@@ -152,38 +161,6 @@ public class GameData {
 	}
 	public void setLevel(List<LevelData> level) {
 		this.levels = level;
-	}
-	
-	public Map<Integer, ActorData> getShots() {
-		return shots;
-	}
-
-	public void setShots(Map<Integer, ActorData> shots) {
-		this.shots = shots;
-	}
-
-	public Map<Integer, ActorData> getTowers() {
-		return towers;
-	}
-
-	public void setTowers(Map<Integer, ActorData> towers) {
-		this.towers = towers;
-	}
-
-	public Map<Integer, ActorData> getTroops() {
-		return troops;
-	}
-
-	public void setTroops(Map<Integer, ActorData> troops) {
-		this.troops = troops;
-	}
-
-	public Map<Integer, ActorData> getBases() {
-		return bases;
-	}
-
-	public void setBases(Map<Integer, ActorData> bases) {
-		this.bases = bases;
 	}
 
 	public int getNumOptions() {

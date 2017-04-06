@@ -22,6 +22,7 @@ public class ActorGenerator{
 	 * @return Actor
 	 */
 	public static Actor makeActor(Integer ID, ActorData data){
+		//Change to property factory
 		ActorFactory factory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
 		toBuild.add(ID);
