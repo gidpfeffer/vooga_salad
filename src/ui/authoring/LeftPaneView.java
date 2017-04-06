@@ -12,20 +12,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import ui.Preferences;
+import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
 public class LeftPaneView extends StackPane{
+	private PopViewDelegate myDelegate;
 	private VBox myLeftPaneFront; //contains the buttons
 	private StackPane myLeftPaneBack; //contains the views for buttons 
-	private PathEditorView myPathView;
 	private TowerEditorView myTowerView;
 	private EnemyEditorView myEnemyView;
 	
-	public LeftPaneView(){
+	
+	public LeftPaneView(PopViewDelegate delegate){
 		super();
+		myDelegate = delegate;
 		setupViews();
 	}
 
@@ -35,7 +39,6 @@ public class LeftPaneView extends StackPane{
 		myLeftPaneFront.setAlignment(Pos.CENTER);
 		StackPane.setMargin(myLeftPaneFront, new Insets(10));
 		setupLeftPaneButtons();
-		setupPathView();
 		setupTowerView();
 		setupEnemyView();
 		myLeftPaneBack.setScaleX(0);
@@ -44,11 +47,11 @@ public class LeftPaneView extends StackPane{
 	}
 	
 	private void setupLeftPaneButtons() {
-		StackPane enemy = UIHelper.buttonStack(e -> System.out.println(e), 
+		StackPane enemy = UIHelper.buttonStack(e -> {}, 
 				Optional.of(labelForStackButton("Enemy Editor")), 
 				Optional.of(imageForStackButton("enemy_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane tower = UIHelper.buttonStack(e -> System.out.println(e), 
+		StackPane tower = UIHelper.buttonStack(e -> myDelegate.openView(myTowerView), 
 				Optional.of(labelForStackButton("Tower Editor")), 
 				Optional.of(imageForStackButton("tower_icon.png")), 
 				Pos.CENTER_RIGHT, true);
@@ -66,7 +69,7 @@ public class LeftPaneView extends StackPane{
 		splash.setPrefHeight(56);
 		projectile.setPrefHeight(56);
 		
-		myLeftPaneFront.getChildren().addAll(enemy, tower, projectile, splash);
+		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile, splash);
 	}
 	private Label labelForStackButton(String title){
 		Label lbl = new Label(title);
@@ -82,36 +85,16 @@ public class LeftPaneView extends StackPane{
 	}
 
 	private void setupTowerView() {
-		myTowerView = new TowerEditorView();
-		addBackButtonToView(myTowerView);
+		myTowerView = new TowerEditorView(myDelegate);
+		UIHelper.setBackgroundColor(myTowerView, Color.WHITE);
 	}
 
-	private void setupPathView() {
-		myPathView = new PathEditorView();
-		addBackButtonToView(myPathView);
-	}
 	
 	private void setupEnemyView() {
 		myEnemyView = new EnemyEditorView();
-		addBackButtonToView(myEnemyView);
+		UIHelper.setBackgroundColor(myEnemyView, Color.WHITE);
 	}
 	
-	private void addBackButtonToView(Pane view){
-		//TODO
-	}
-	
-	private void flipFromNodeToNode(Node fromNode, Node toNode){
-		ScaleTransition s1 = new ScaleTransition(Duration.millis(500), fromNode);
-		s1.setFromX(1);
-		s1.setToX(0);
-		ScaleTransition s2 = new ScaleTransition(Duration.millis(500), toNode);
-		s2.setFromX(0);
-		s2.setToX(1);
-		s1.setOnFinished(e -> {
-			s2.play();
-			});
-		s1.play();
-	}
 	
 	
 }

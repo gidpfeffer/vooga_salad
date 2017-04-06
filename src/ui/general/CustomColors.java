@@ -17,7 +17,10 @@ public class CustomColors {
 	public static final Color GREEN_900 = Color.rgb(0,77,64);
 	public static final Color AMBER = Color.rgb(255,202,40);
 	public static final Color INDIGO = Color.rgb(92,107,192);
+	public static final Color INDIGO_100 = Color.rgb(197,202,233);
+	public static final Color INDIGO_200 = Color.rgb(159,168,218);
 	public static final Color RED = Color.rgb(244,67,54);
+	
 
 	
 	
