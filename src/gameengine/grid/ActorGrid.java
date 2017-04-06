@@ -3,179 +3,93 @@ package gameengine.grid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import gameengine.actors.Base;
-import gameengine.actors.Shot;
-import gameengine.actors.Troop;
 import gameengine.actors.management.Actor;
-import gameengine.actors.towers.Tower;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
+import gameengine.grid.interfaces.Identifiers.MovableActor;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.controllergrid.SteppableGrid;
+import types.BasicActorType;
 
 public class ActorGrid implements ReadableGrid, MasterGrid,
-	ReadAndMoveGrid, ReadAndShootGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
-	private Map<Integer, ActorLocator<Shot>> projectileMap;
-	private Map<Integer, ActorLocator<Troop>> enemyMap;
-	private Map<Integer, ActorLocator<Base>> baseMap;
-	private Map<Integer, ActorLocator<Tower>> towerMap;
-	private List<Map<Integer, ? extends ActorLocator<? extends Actor>>> actorList;
+	ReadAndMoveGrid, ReadAndSpawnGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
+	
 	private Coordinates limits;
+	private Collection<MovableActor> actors;
 	
 	public ActorGrid(double maxX, double maxY){
 		limits = new Coordinates(maxX, maxY);
-		initializeInstances();
-	}
-	
-	private void initializeInstances(){
-		projectileMap = new HashMap<>();
-		enemyMap = new HashMap<>();
-		baseMap = new HashMap<>();
-		towerMap = new HashMap<>();
-		initializeActorList();
-		ActorGrid.class.getGenericSuperclass();
-	}
-	
-	private void initializeActorList(){
-		actorList = new ArrayList<>();
-		actorList.add(projectileMap);
-		actorList.add(enemyMap);
-		actorList.add(baseMap);
-		actorList.add(towerMap);
+		actors = new ArrayList<>();
 	}
 
 	@Override
 	public void step() {
-		for(Map<Integer, ? extends ActorLocator<? extends Actor>> map: actorList){
-			/*map = map.entrySet().stream()
-					.filter(e -> e.getValue().getActor().isActive())
-					.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));*/
-			System.out.println("pls");
-			
-			map.values().forEach(al -> al.getActor().act(this));
-		}
+		actors.forEach(a -> a.getActor().act(this));
+		actors = filter(actors, a -> a.getActor().isActive());
 	}
 
-	@Override
-	public void addEnemy(Troop enemy, int ID, double startX, double startY) {
-		//Remove this line, this was added for testing
-		enemyMap.put(ID, new ActorLocator(limits, enemy));
-		
+	
+	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
+		return items.stream()
+				.filter(t -> predicate.test(t))
+				.collect(Collectors.toList());
 	}
-
-	@Override
-	public void addBase(Base base, int ID, double startX, double startY) {
-		// TODO Auto-generated method stub
-		
+	
+	private <I,O> Collection<O> map(Collection<I> items, Function<I,O> function){
+		return items.stream()
+				.map(i -> function.apply(i))
+				.collect(Collectors.toList());
 	}
-
-	@Override
-	public void addTower(Tower tower, int ID, double startX, double startY) {
-		// TODO Auto-generated method stub
-		
+	
+	private double distance(double x1, double x2, double y1, double y2){
+		double xDifSquared = Math.pow(x2-x1, 2);
+		double yDifSquared = Math.pow(y2-y1, 2);
+		return Math.pow(xDifSquared + yDifSquared, 0.5);
 	}
-
-	@Override
-	public void removeActor(int ID) {
-		// TODO Auto-generated method stub
-		
+	
+	private Collection<MovableActor> specificActorTypes(BasicActorType type){
+		return filter(actors, a -> a.getActor().getType() == type);
 	}
-
-	@Override
-	public void upgradeEnemy(Troop newEnemy, int ID) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void upgradeProjectile(Shot newShot, int ID) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void upgradeBase(Base newBase, int ID) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void upgradeTower(Tower newTower, int ID) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addProjectile(Shot shot, int ID, double startX, double startY) {
-		// TODO Auto-generated method stub
-		
+	
+	private MovableActor getActorFromID(int ID){
+		Collection<MovableActor> foundIDs = filter(actors, a-> a.getActor().getID() == ID);
+		if(foundIDs.size() != 1) 
+			throw new IllegalStateException("found an invalid number of id's ~ lines 75 ActorGrid");
+		return foundIDs.iterator().next();
 	}
 
 	@Override
 	public void move(int ID, double newX, double newY) {
-		// TODO Auto-generated method stub
-		
+		MovableActor actor = getActorFromID(ID);
+		actor.setLocation(newX, newY);
 	}
 
 	@Override
-	public Collection<Grid2D> getEnemiesInRadius(double x, double y, double radius) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Grid2D> getActorLocationsInRadius(double x, double y, double radius, BasicActorType type) {
+		Collection<MovableActor> filteredTypes = specificActorTypes(type);
+		Collection<MovableActor> filteredLoc = filter(filteredTypes,
+				a -> distance(a.getLocation().getX(), x, a.getLocation().getY(), y) <= radius);
+		return Collections.unmodifiableCollection(map(filteredLoc, a -> a.getLocation()));
 	}
 
 	@Override
-	public Collection<Grid2D> getBasesInRadius(double x, double y, double radius) {
-		// TODO Auto-generated method stub
-		return null;
+	public Grid2D getLocationOf(int ID) {
+		return getActorFromID(ID).getLocation();
 	}
 
 	@Override
-	public Collection<Grid2D> getProjectilesInRadius(double x, double y, double radius) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<Grid2D> getTowersInRadius(double x, double y, double radius) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Grid2D getLocationOf(int id) {
-		return findMapThatContainsID(actorList, id).get(id).getLocation();
-	}
-
-	@Override
-	public Collection<Grid2D> getEnemyLocations() {
-		return Collections.unmodifiableCollection(getActorLocatorMap(enemyMap).values());
-	}
-
-	@Override
-	public Collection<Grid2D> getTowerLocations() {
-		return Collections.unmodifiableCollection(getActorLocatorMap(towerMap).values());
-	}
-
-	@Override
-	public Collection<Grid2D> getBaseLocations() {
-		return Collections.unmodifiableCollection(getActorLocatorMap(baseMap).values());
-	}
-
-	@Override
-	public Collection<Grid2D> getProjectileLocations() {
-		return Collections.unmodifiableCollection(getActorLocatorMap(projectileMap).values());
+	public Collection<Grid2D> getActorLocations(BasicActorType type) {
+		return Collections.unmodifiableCollection(map(specificActorTypes(type), a -> a.getLocation()));
 	}
 
 	@Override
@@ -185,38 +99,19 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 
 	@Override
 	public double getMaxX() {
-		return limits.getX();
+		return limits.getY();
 	}
 
 	@Override
 	public double getMaxY() {
 		return limits.getY();
 	}
-	
-	private <T extends Actor> Map<T, Grid2D> getActorLocatorMap(
-			Map<Integer, ActorLocator<T>> map){
-		
-		return map.values().stream()
-				.collect(Collectors.toMap(ActorLocator<T>::getActor, ActorLocator<T>::getLocation));	
+
+	@Override
+	public void spawn(Actor newActor, double startX, double startY) {
+		Grid2D location = new Coordinates(startX, startY);
+		MovableActor actor = new ActorLocator(location, newActor);
+		actors.add(actor);
 	}
 
-	private Map<Integer, ? extends ActorLocator<? extends Actor>> findMapThatContainsID(
-			Collection<Map<Integer, ? extends ActorLocator<? extends Actor>>> actorCollection, int ID){
-		
-		Collection<Map<Integer,? extends ActorLocator<? extends Actor>>> mapCol = 
-				filter(actorCollection, a -> a.keySet().contains(ID));
-		if(mapCol.size() != 1){
-			throw new IllegalStateException("Illegal ID, see ActorGrid ~215");
-		}
-		
-		return mapCol.iterator().next();
-	}
-	
-	private <T> Collection<T> filter(Collection<T> collection, Predicate<T> predicate){
-		return collection.stream()
-				.filter(t -> predicate.test(t))
-				.collect(Collectors.toList());
-	}
-
-	
 }

@@ -45,6 +45,15 @@ public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid
 	public void setFinalLocation(Coordinates finalLocation) {
 		this.finalLocation = finalLocation;
 	}
+
+	/* (non-Javadoc)
+	 * @see gameengine.actors.properties.IActProperty#isOn()
+	 */
+	@Override
+	public boolean isOn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 	
