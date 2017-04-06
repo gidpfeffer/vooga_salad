@@ -1,5 +1,6 @@
 package gameengine.actors.management;
 
+import gameengine.actors.properties.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 
 public interface Actor {
@@ -10,4 +11,5 @@ public interface Actor {
 	
 	public void applyDamage(double health);
 
+	public void addProperty(IActProperty<MasterGrid> newProperty);
 }
