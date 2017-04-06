@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import gamedata.composition.MoveWithDestinationData;
 import gameengine.grid.classes.Coordinates;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 /**
@@ -15,7 +16,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  *
  */
 
-public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid>{
+public class MoveWithDestinationProperty implements IActProperty<MasterGrid>{
 	
 	private Queue<Grid2D> myPathCoordinates;
 	private Coordinates finalLocation;
@@ -26,7 +27,7 @@ public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid
 	}
 	
 	@Override
-	public void action(ReadAndMoveGrid grid, Integer actorID) {
+	public void action(MasterGrid grid, Integer actorID) {
 		// TODO Auto-generated method stub
 	}
 

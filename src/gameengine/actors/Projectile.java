@@ -9,13 +9,13 @@ import gameengine.actors.properties.IActProperty;
 import gameengine.actors.properties.MoveWithDestinationProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import types.ActorType;
+import types.BasicActorType;
 
 public class Projectile extends MainActor {
 	
 	private boolean attacksEnemy;
 	private boolean attacksTower;
 	private boolean attacksBase;
-	private final Integer myID;
 	private double myHitRadius;
 	private double myPower;
 	private HealthProperty myHealth;
@@ -26,7 +26,7 @@ public class Projectile extends MainActor {
 			boolean attacksEnemy, boolean attacksTower, boolean attacksBase, double power, double hitRadius) {
 		
 		//IS THIS RIGHT??
-		super((BasicActorType) ActorType.PROJECTILE, id, health, new IActProperty<MasterGrid>[] { movement });
+		super(BasicActorType.Shot, id, health, movement);
 		
 		myHitRadius = hitRadius;
 		myPower = power;
