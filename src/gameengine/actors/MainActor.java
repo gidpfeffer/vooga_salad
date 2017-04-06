@@ -12,8 +12,8 @@ import types.BasicActorType;
 
 public class MainActor implements Actor {
 
-	private Integer myID;
-	private HealthProperty myHealth;
+	protected Integer myID;
+	protected HealthProperty myHealth;
 	private BasicActorType myType;
 	private List<IActProperty<MasterGrid>> myProperties;
 

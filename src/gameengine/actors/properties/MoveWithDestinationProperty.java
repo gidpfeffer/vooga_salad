@@ -6,7 +6,6 @@ import java.util.Queue;
 import gamedata.composition.MoveWithDestinationData;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 /**
  * Used in projectiles -- for items that move with a set final

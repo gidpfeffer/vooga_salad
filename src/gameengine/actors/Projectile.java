@@ -1,14 +1,10 @@
 package gameengine.actors;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
-import gameengine.actors.management.Actor;
 import gameengine.actors.properties.HealthProperty;
-import gameengine.actors.properties.IActProperty;
 import gameengine.actors.properties.MoveWithDestinationProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
-import types.ActorType;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
 public class Projectile extends MainActor {
@@ -22,7 +18,8 @@ public class Projectile extends MainActor {
 	private MoveWithDestinationProperty myMovement;
 	
 	
-	public Projectile(Integer id, MoveWithDestinationProperty movement, HealthProperty health, 
+	@SuppressWarnings("unchecked")
+	public Projectile(Integer id, HealthProperty health, MoveWithDestinationProperty movement, 
 			boolean attacksEnemy, boolean attacksTower, boolean attacksBase, double power, double hitRadius) {
 		
 		//IS THIS RIGHT??
@@ -42,15 +39,18 @@ public class Projectile extends MainActor {
 	public void act(MasterGrid grid) {
 		// TODO Auto-generated method stub
 		if (attacksEnemy) {
-			Collection<Actor> enemies = new ArrayList<>();// grid.getEnemiesInRadius() to apply damage
+			Collection<Grid2D> enemies = grid.getActorLocationsInRadius(grid.getLocationOf(myID).getX(), grid.getLocationOf(myID).getY(),
+					myHitRadius, BasicActorType.Troop);
 			attack(enemies);
 		}
 		if (attacksTower) {
-			Collection<Actor> towers = new ArrayList<>();// grid.getTowersInRadius() to apply damage
+			Collection<Grid2D> towers = grid.getActorLocationsInRadius(grid.getLocationOf(myID).getX(), grid.getLocationOf(myID).getY(),
+					myHitRadius, BasicActorType.Tower);
 			attack(towers);
 		}
 		if (attacksBase) {
-			Collection<Actor> base = new ArrayList<>();// grid.getTowersInRadius() to apply damage
+			Collection<Grid2D> base = grid.getActorLocationsInRadius(grid.getLocationOf(myID).getX(), grid.getLocationOf(myID).getY(),
+					myHitRadius, BasicActorType.Base);
 			attack(base);
 		}
 		
@@ -65,11 +65,11 @@ public class Projectile extends MainActor {
 		return myHealth.isAlive();
 	}
 
-	private void attack(Collection<Actor> actors) {
+	private void attack(Collection<Grid2D> actors) {
 		if (!isActive()) return;
-		for (Actor a : actors) {
+		for (Grid2D a : actors) {
 			if (isActive()) {
-				a.applyDamage();
+				//apply damage to actor
 				myHealth.apply(1);
 			} else {
 				break;
