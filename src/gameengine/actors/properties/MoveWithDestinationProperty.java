@@ -15,7 +15,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  *
  */
 
-public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid>{
+public class MoveWithDestinationProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
 	
 	private Queue<Grid2D> myPathCoordinates;
 	private Coordinates finalLocation;
@@ -26,7 +26,7 @@ public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid
 	}
 	
 	@Override
-	public void action(ReadAndMoveGrid grid, Integer actorID) {
+	public void action(G grid, Integer actorID) {
 		// TODO Auto-generated method stub
 	}
 
@@ -45,9 +45,11 @@ public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid
 	public void setFinalLocation(Coordinates finalLocation) {
 		this.finalLocation = finalLocation;
 	}
-	
-	
-	
-	
 
+	@Override
+	public boolean isOn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }
