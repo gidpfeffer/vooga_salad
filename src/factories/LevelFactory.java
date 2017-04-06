@@ -1,11 +1,8 @@
 package factories;
 
-import java.util.List;
-
 import gamedata.GameData;
 import gamedata.LevelData;
 import gamedata.PreferencesData;
-import gamedata.composition.Data;
 import gameengine.controllers.LevelController;
 import gameengine.grid.ActorGrid;
 
@@ -24,11 +21,19 @@ public class LevelFactory {
 		LevelData curr = current.getLevel(level);
 		PreferencesData preferences = curr.getMyPreferences();
 		ActorGrid grid = new ActorGrid(0,1);
-		addPieces(curr, grid);
-		//TODO: complete
+		
+		if(!preferences.cleanLevel()){ //add old actors
+			grid = prev.getMyMap();
+			//TODO: filter out enemies?
+		}
+		addPieces(curr, grid);//add new level actors
+		
+		//TODO: Add-on other LevelData measures like difficulty
+		
 		LevelController toRet = new LevelController(grid, level);
 		return toRet;
 	}
+
 	
 	/**
 	 * Use Actor factory to add all of the actors
@@ -39,6 +44,7 @@ public class LevelFactory {
 	 */
 	private void addPieces(LevelData curr, ActorGrid toModify){
 		//TODO: Implement
+		//Need ID Generator here
 	}
 	
 }
