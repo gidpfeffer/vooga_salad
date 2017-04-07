@@ -12,17 +12,31 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import ui.general.UIHelper;
 
 public class OptionsPane{
 
 	private AnchorPane buttonPane;
+	private UIHelper helper = new UIHelper();
 	private Map<String, String> mapOfMainOptions;
 	private Map<Integer, ActorData> mapOfOptions;
 	private Collection<Button> listOfButtons;
-	private int width;
 	
-	public int getWidth() {
-		return width;
+	
+	public void setHeight(double height) {
+		buttonPane.setPrefHeight(height);
+	}
+	
+	public double getHeight() {
+		return buttonPane.getPrefHeight();
+	}
+	
+	public void setWidth(double width) {
+		buttonPane.setPrefWidth(width);
+	}
+	
+	public double getWidth() {
+		return buttonPane.getPrefWidth();
 	}
 
 	public AnchorPane getPane() {
@@ -43,7 +57,6 @@ public class OptionsPane{
 	
 	public OptionsPane() {
 		buttonPane = new AnchorPane();
-		buttonPane.setPrefWidth(width);
 		mapOfOptions = new HashMap<>();
 		listOfButtons = new ArrayList<>();
 	}
@@ -53,6 +66,10 @@ public class OptionsPane{
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
+	}
+	
+	public AnchorPane addEmptyPane(int spacing){
+		return buttonPane;
 	}
 	
 	public void addButtonPane(int spacing, EventHandler<MouseEvent> clicked) {

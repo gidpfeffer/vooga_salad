@@ -29,8 +29,20 @@ public class PaneController {
 		this.uihandler = uihandler;
 	}
 	
-	public int getWidth() {
+	public void setWidth(double width) {
+		pane.setWidth(width);
+	}
+	
+	public double getWidth() {
 		return pane.getWidth();
+	}
+	
+	public void setHeight(double height) {
+		pane.setHeight(height);
+	}
+	
+	public double getHeight() {
+		return pane.getHeight();
 	}
 	
 	public void setMap(Map<Integer, ActorData> map) {

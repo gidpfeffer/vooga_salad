@@ -28,16 +28,17 @@ public class SidePanelPanes {
 	private PaneController bases;
 	private List<PaneController> listOfControllers;
 	private int spacing = 10;
+	private static final double paneWidth = 150.;
 	
 	public List<PaneController> getListOfControllers(){
 		return listOfControllers;
 	}
 	
-	public AnchorPane getMainMenu() {
+	public AnchorPane getMainPane() {
 		return main.getPane();
 	}
 	
-	public AnchorPane getShotsMenu() {
+/*	public AnchorPane getShotsMenu() {
 		return shots.getPane();
 	}
 	
@@ -51,7 +52,7 @@ public class SidePanelPanes {
 	
 	public AnchorPane getBaseMenu() {
 		return bases.getPane();
-	}
+	}*/
 	
 	public SidePanelPanes(UIHandler uihandler, Map<String, String> mainMenu, List<PaneController> listOfControllers) {
 		this.uihandler = uihandler;
@@ -100,8 +101,10 @@ public class SidePanelPanes {
 	
 	private void createPanes() {//images saved in actor data get string path
 		for (PaneController controller : listOfControllers) {
+			controller.setWidth(paneWidth);
 			controller.addButtonPane(spacing, controller.clicked, controller.dragged, controller.done);
 			controller.addBackButton(closePane);
+			
 		}
 	}
 	
@@ -116,7 +119,7 @@ public class SidePanelPanes {
 	        		if (((Button) obj).getText().equals(controller.getClass().getSimpleName())) {
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
 	    	    		t.setNode(controller.getPane());
-	    	    		t.setToX(0);
+	    	    		t.setToX(-(controller.getWidth()));
 	    	    		t.play();
 	        		}
 	        	}
