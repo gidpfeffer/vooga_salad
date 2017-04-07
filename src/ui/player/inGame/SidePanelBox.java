@@ -4,6 +4,7 @@ import gamedata.GameData;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import ui.player.InGameModel;
 
 public class SidePanelBox {
@@ -14,20 +15,20 @@ public class SidePanelBox {
 	private InGameController troops;
 	private InGameController base;
 	
-	public VBox getShotsMenu() {
-		return shots.getMenu();
+	public StackPane getShotsMenu() {
+		return new StackPane(shots.getMenu());
 	}
 	
-	public VBox getTowersMenu() {
-		return towers.getMenu();
+	public StackPane getTowersMenu() {
+		return new StackPane(towers.getMenu());
 	}
 	
-	public VBox getTroopsMenu() {
-		return troops.getMenu();
+	public StackPane getTroopsMenu() {
+		return new StackPane(troops.getMenu());
 	}
 	
-	public VBox getBaseMenu() {
-		return troops.getMenu();
+	public StackPane getBaseMenu() {
+		return new StackPane(troops.getMenu());
 	}
 	
 	public SidePanelBox(GameData gameData) {
@@ -50,10 +51,10 @@ public class SidePanelBox {
 	}
 	
 	private void setupMaps() {
-		shots.setMap(gameData.getShotsOptions());
-		towers.setMap(gameData.getTowersOptions());
-		troops.setMap(gameData.getTroopsOptions());
-		base.setMap(gameData.getBasesOptions());
+		shots.setMap(gameData.getShotOptions());
+		towers.setMap(gameData.getTowerOptions());
+		troops.setMap(gameData.getTroopOptions());
+		base.setMap(gameData.getBaseOptions());
 	}
 	
 	private void createVBoxes() {
