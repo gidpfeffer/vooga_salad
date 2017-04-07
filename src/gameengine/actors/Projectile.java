@@ -1,8 +1,8 @@
 package gameengine.actors;
 import java.util.Collection;
 
-import gameengine.actors.properties.HealthProperty;
 import gameengine.actors.properties.MoveWithDestinationProperty;
+import gameengine.actors.propertygen.HealthProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;

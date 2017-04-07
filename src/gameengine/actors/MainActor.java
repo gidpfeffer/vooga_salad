@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import gameengine.actors.management.Actor;
-import gameengine.actors.properties.HealthProperty;
-import gameengine.actors.properties.IActProperty;
+import gameengine.actors.propertygen.HealthProperty;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import types.BasicActorType;
 

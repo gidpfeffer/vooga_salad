@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import gamedata.composition.MoveWithSetPathData;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 /**

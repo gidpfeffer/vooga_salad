@@ -6,7 +6,7 @@ import java.util.List;
 import gamedata.ActorData;
 import gamedata.composition.Data;
 import gameengine.actors.management.Actor;
-import gameengine.actors.properties.IActProperty;
+import gameengine.actors.propertygen.IActProperty;
 
 /**
  * Builds an Actor using the ActorFactory. This should

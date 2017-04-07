@@ -1,4 +1,4 @@
-package gameengine.actors.properties;
+package gameengine.actors.propertygen;
 
 import java.util.Collection;
 

@@ -60,7 +60,7 @@ public class ActorData {
 	 * 
 	 * Creation of a tower named Bob
 	 * ActorData myActor = new ActorData 
-	 * 		(ActorType.TOWER, new BasicData("Bob", images/bob));
+	 * 		(BasicActorType.TOWER, new BasicData("Bob", images/bob));
 	 * 
 	 * @param data BasicData object with name and imagepath
 	 */
