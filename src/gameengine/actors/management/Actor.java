@@ -1,11 +1,22 @@
 package gameengine.actors.management;
 
-public interface Actor <G>{
+import java.util.function.Consumer;
 
-	public void act(G grid);
+import gameengine.actors.properties.IActProperty;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import types.BasicActorType;
+
+public interface Actor {
+
+	public void act(MasterGrid grid);
 		
 	public boolean isActive();
 	
-	public void applyDamage(double health);
+	public Consumer<Double> applyDamage();
 
+	public Consumer<IActProperty<MasterGrid>> addProperty();
+	
+	public Integer getID();
+	
+	public BasicActorType getType();
 }

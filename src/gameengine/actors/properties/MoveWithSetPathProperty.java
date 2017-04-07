@@ -15,7 +15,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  * @author Maddie
  *
  */
-public class MoveWithSetPathProperty implements IActProperty<ReadAndMoveGrid>{
+public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
 	private Queue<Grid2D> myPathCoordinates;
 	
 	public MoveWithSetPathProperty(MoveWithSetPathData data){
@@ -24,12 +24,13 @@ public class MoveWithSetPathProperty implements IActProperty<ReadAndMoveGrid>{
 	}
 	
 	@Override
-	public void action(ReadAndMoveGrid grid, Integer actorID) {
+	public void action(G grid, Integer actorID) {
 		// TODO Auto-generated method stub
 		if (!myPathCoordinates.isEmpty()){
 			// poll a coordinate from myPathCoordinates to set the enemy location to
 			Grid2D newLoc = myPathCoordinates.poll();
 			grid.move(actorID, newLoc.getX(), newLoc.getY()); 
+			System.out.println("this shouldn't print");
 		}
 	}
 
