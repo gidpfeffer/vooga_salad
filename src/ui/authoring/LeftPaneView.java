@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.delegates.PopViewDelegate;
+import ui.authoring.tower.TowerEditorView;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
@@ -86,13 +87,13 @@ public class LeftPaneView extends StackPane{
 
 	private void setupTowerView() {
 		myTowerView = new TowerEditorView(myDelegate);
-		UIHelper.setBackgroundColor(myTowerView, Color.WHITE);
+		UIHelper.setBackgroundColor(myTowerView, CustomColors.GREEN_100);
 	}
 
 	
 	private void setupEnemyView() {
 		myEnemyView = new EnemyEditorView();
-		UIHelper.setBackgroundColor(myEnemyView, Color.WHITE);
+		UIHelper.setBackgroundColor(myEnemyView, CustomColors.GREEN_100);
 	}
 	
 	

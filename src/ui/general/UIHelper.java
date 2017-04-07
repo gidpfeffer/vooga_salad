@@ -107,10 +107,11 @@ public class UIHelper {
 			StackPane.setMargin(img, new Insets(8));
 		});
 		optionalTextNode.ifPresent(lbl -> {
+			double inset = optionalIcon.isPresent()? optionalIcon.get().getFitWidth() + 16 : 0;
 			if(iconPos.equals(Pos.CENTER_RIGHT))
-				StackPane.setMargin(lbl, new Insets(6,40,6,6));
+				StackPane.setMargin(lbl, new Insets(8,inset,8,8));
 			else if(iconPos.equals(Pos.CENTER_LEFT))
-				StackPane.setMargin(lbl, new Insets(6,6,6,40));
+				StackPane.setMargin(lbl, new Insets(8,8,8,inset));
 			view.getChildren().add(lbl);
 			});
 		if(addDropShadow)
