@@ -2,9 +2,13 @@ package gamedata.composition;
 
 public class ShootData implements Data{
 	
-	private double mySpeed;
 	private double myRange;
 	private int fireRate;
+	
+	public ShootData(double range, int rate) {
+		myRange = range;
+		fireRate = rate;
+	}
 
 	public double getRange() {
 		return myRange;
@@ -12,14 +16,6 @@ public class ShootData implements Data{
 
 	public void setRange(double range) {
 		this.myRange = range;
-	}
-	
-	public double getSpeed() {
-		return myRange;
-	}
-
-	public void setSpeed(double speed) {
-		this.myRange = speed;
 	}
 
 	public int getFireRate() {
