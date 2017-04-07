@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -32,6 +33,7 @@ public class MapEditorView extends StackPane{
 	
 	public MapEditorView(){
 		super();
+
 		setupViews();
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
@@ -65,6 +67,7 @@ public class MapEditorView extends StackPane{
 				p = new Point(loc,PointType.ENTRY, width, height); //TODO remove magic nums
 			else
 				p = new Point(loc, PointType.PATH, width, height);
+
 
 		}
 		this.pointsLayerView.getChildren().add(p);
@@ -152,4 +155,5 @@ public class MapEditorView extends StackPane{
 		this.myBackgroundView.setImageView(new ImageView(image));;
 	}
 	
+
 }

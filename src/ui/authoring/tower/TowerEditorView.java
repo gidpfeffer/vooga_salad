@@ -1,0 +1,209 @@
+package ui.authoring.tower;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+
+import gamedata.composition.ActorData;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import ui.Preferences;
+import ui.authoring.delegates.PopViewDelegate;
+import ui.general.CustomColors;
+import ui.general.ImageButton;
+import ui.general.UIHelper;
+import util.Location;
+
+/**
+ * Provides the user the ability to add new types of towers and customize their
+ * properties
+ * 
+ * @author TNK
+ *
+ */
+public class TowerEditorView extends AnchorPane {
+	private static final Map<String, Image> DEFAULT_TOWERS;
+	static {
+		String path = "Pokemon Icons/";
+		HashMap<String, Image> map = new HashMap<String, Image>();
+		map.put("Pikachu", new Image(path + "pikachu.png"));
+		map.put("Bullbasaur", new Image(path + "bullbasaur.png"));
+		map.put("Charmander", new Image(path + "charmander.png"));
+		map.put("Snorlax", new Image(path + "snorlax.png"));
+		map.put("Jigglypuff", new Image(path + "jigglypuff.png"));
+		DEFAULT_TOWERS = map;
+	}
+	
+	private HashMap<StackPane, List<ActorData>> myTowers;
+	private PopViewDelegate myDelegate;
+	private VBox myTowersView;
+	private TowerInfoView myTowerInfoView;
+
+	// TODO get projectile data first
+	public TowerEditorView(PopViewDelegate delegate) {
+		super();
+		myDelegate = delegate;
+		myTowers = new HashMap<StackPane, List<ActorData>>();
+		setupViews();
+
+	}
+
+	private void setupBackButton() {
+		ImageButton b = new ImageButton("back_icon.png", new Location(30., 30.));
+		AnchorPane.setTopAnchor(b, 4.0);
+		AnchorPane.setLeftAnchor(b, 4.0);
+		b.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> myDelegate.closeView(this));
+		this.getChildren().add(b);
+	}
+
+	private void setupViews() {
+		ScrollPane leftSide = new ScrollPane();
+		ScrollPane rightSide = new ScrollPane();
+		setupSides(leftSide, rightSide);
+		setupVBox(leftSide);
+		setupAddTowerButton();
+		setupDefaultTowers();
+		setupInfoView(rightSide);
+		setupBackButton();
+		
+	}
+	
+	private void setupInfoView(ScrollPane scroll){
+		if(!this.myTowers.isEmpty()){
+			myTowerInfoView = new TowerInfoView(myTowers.get(myTowers.keySet().iterator().next()));
+		}else{
+			myTowerInfoView = new TowerInfoView();
+		}
+		
+		scroll.setContent(myTowerInfoView);
+	}
+	
+	private void setupAddTowerButton() {
+		//this.addTower(new Image("add_icon.png"), "Add New Tower");
+		Label label = new Label("Add New Tower");
+		label.setFont(Preferences.FONT_MEDIUM);
+		label.setTextFill(CustomColors.GREEN_100);
+		ImageView imageView = new ImageView(new Image("add_icon_w.png"));
+		imageView.setFitHeight(40);
+		imageView.setPreserveRatio(true);
+		StackPane view = UIHelper.buttonStack(e -> {}, 
+				Optional.of(label), Optional.of(imageView), 
+				Pos.CENTER_LEFT, true);
+		view.setPrefHeight(64);
+		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
+		VBox.setMargin(view, new Insets(8,24,8,8));
+		this.myTowersView.getChildren().add( view);
+
+	}
+
+	private void setupSides(ScrollPane leftSide, ScrollPane rightSide) {
+		double inset = 12.0;
+
+		AnchorPane.setBottomAnchor(rightSide, inset);
+		AnchorPane.setBottomAnchor(leftSide, inset);
+		AnchorPane.setTopAnchor(rightSide, 48.0);
+		AnchorPane.setTopAnchor(leftSide, 48.0);
+		AnchorPane.setRightAnchor(rightSide, inset);
+		AnchorPane.setLeftAnchor(leftSide, inset);
+
+		rightSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+		rightSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+		leftSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+		leftSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+
+		leftSide.setHbarPolicy(ScrollBarPolicy.NEVER);
+		rightSide.setHbarPolicy(ScrollBarPolicy.NEVER);
+
+		UIHelper.setDropShadow(rightSide);
+		UIHelper.setDropShadow(leftSide);
+		rightSide.prefWidthProperty().bind(this.widthProperty().divide(3.0/2).subtract(inset * 3 / 2));
+		leftSide.prefWidthProperty().bind(this.widthProperty().divide(3.0).subtract(inset * 3 / 2));
+
+		this.getChildren().addAll(leftSide, rightSide);
+
+	}
+
+	private void setupVBox(ScrollPane pane) {
+		myTowersView = new VBox();
+		myTowersView.setAlignment(Pos.CENTER);
+		myTowersView.prefWidthProperty().bind(pane.widthProperty());
+		pane.setContent(myTowersView);
+	}
+
+	private void setupDefaultTowers() {
+
+		for (Entry<String, Image> entry : DEFAULT_TOWERS.entrySet()) {
+			addTower(entry.getValue(), entry.getKey());
+		}
+	}
+
+	private void addTower(Image img, String name){
+		StackPane view;
+		ImageView imageView = new ImageView(img);
+		imageView.setFitWidth(40);
+		imageView.setPreserveRatio(true);
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(name);
+		field.setFont(Preferences.FONT_MEDIUM);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(CustomColors.GREEN));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+		StackPane.setMargin(field, new Insets(8,8,8,64));
+		lblWrapper.getChildren().add(field);
+		
+		view = UIHelper.buttonStack(e -> {}, 
+				Optional.of(field), Optional.of(imageView), 
+				Pos.CENTER_LEFT, true);
+		view.setPrefHeight(64);
+		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
+		VBox.setMargin(view, new Insets(8,24,8,8));
+		myTowers.put(view, Arrays.asList(new ActorData[] { new ActorData()}));
+		this.myTowersView.getChildren().add(myTowersView.getChildren().size() - 1, view);		
+	}
+
+	private void addNewTower() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Resource File");
+		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Text Files", "*.txt"),
+				new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+				new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"), new ExtensionFilter("All Files", "*.*"));
+		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
+
+		// addTower();
+	}
+	
+	private void selectTower(StackPane stackButton){
+		List<ActorData> data = this.myTowers.get(stackButton);
+		
+	}
+
+	public void getTowerData() {
+		// TODO
+	}
+
+}

@@ -5,9 +5,9 @@ import gamedata.LevelData;
 public class LevelView {
 	
 	private LevelData myLevelData;
-	
+	//
 	public LevelView(){
-		myLevelData = new LevelData(); //default object with 
+		myLevelData = new LevelData(0,0); //default object with 
 	}
 	
 	public LevelView(LevelData levelData){

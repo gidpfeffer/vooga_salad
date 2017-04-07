@@ -1,17 +1,23 @@
 package ui.authoring;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import ui.Preferences;
-import ui.authoring.delegates.MenuDelegate;
+import ui.authoring.delegates.*;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
@@ -31,6 +37,8 @@ public class AuthoringView extends AnchorPane {
 	private MapEditorView myMapView;
 	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
 	private MenuView myMenuView;
+	private Pane myDimmerView;
+	private FadeTransition dimAnimator;
 
 
 	public AuthoringView() {
@@ -48,8 +56,39 @@ public class AuthoringView extends AnchorPane {
 		setupMargins();
 		setupBorderPane();
 		setupMenuView();
+		setupDimmerView();
 	}
 	
+	private void setupDimmerView() {
+		myDimmerView = new Pane();
+		UIHelper.setBackgroundColor(myDimmerView, Color.rgb(0, 0, 0, 0.5));
+		AnchorPane.setBottomAnchor(myDimmerView, 0.0);
+		AnchorPane.setTopAnchor(myDimmerView, 0.0);
+		AnchorPane.setRightAnchor(myDimmerView, 0.0);
+		AnchorPane.setLeftAnchor(myDimmerView, 0.0);
+		this.getChildren().add(myDimmerView);
+		myDimmerView.setPickOnBounds(false);
+		dimAnimator = new FadeTransition(Duration.seconds(0.4));
+		dimAnimator.setNode(myDimmerView);
+		setDim(false, Duration.seconds(1));
+		
+	}
+	
+	private void setDim(boolean b, Duration d){
+		if(b){
+			dimAnimator.setToValue(1.0);
+			dimAnimator.setOnFinished(e -> {});
+			this.getChildren().add(myDimmerView);
+		}
+		else{
+			dimAnimator.setToValue(0.0);
+			dimAnimator.setOnFinished(e -> this.getChildren().remove(myDimmerView));
+		}
+		dimAnimator.setDuration(d);
+		dimAnimator.play();
+			
+	}
+
 	private void setupBorderPane() {
 		AnchorPane.setBottomAnchor(myBorderPane, 0.0);
 		AnchorPane.setTopAnchor(myBorderPane, 0.0);
@@ -123,7 +162,7 @@ public class AuthoringView extends AnchorPane {
 	}
 	
 	private void setupLeftPane(){
-		myLeftPane = new LeftPaneView();
+		myLeftPane = new LeftPaneView(new PopDelegate());
 		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
 		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
@@ -154,6 +193,34 @@ public class AuthoringView extends AnchorPane {
 		t.setToX(0);
 		t.play();
 	}
+	private void openPaneWithAnimation(Pane pane){
+		setDim(true, Duration.seconds(0.4));//dim background
+
+		double inset = 32;
+		AnchorPane.setBottomAnchor(pane, inset);
+		AnchorPane.setTopAnchor(pane, inset);
+		AnchorPane.setLeftAnchor(pane, inset);
+		AnchorPane.setRightAnchor(pane, inset);
+		pane.setScaleX(0);
+		pane.setScaleY(0);
+		this.getChildren().add(pane);
+		
+		Duration dur = Duration.seconds(0.5);
+		ScaleTransition st = new ScaleTransition(dur);
+		st.setNode(pane);
+		st.setToX(1);
+		st.setToY(1);
+		st.play();
+	}
+	private void closePaneWithAnimation(Pane pane){
+		setDim(false, Duration.seconds(0.4));
+		ScaleTransition s = new ScaleTransition(Duration.seconds(0.5));
+		s.setNode(pane);
+		s.setToX(0);
+		s.setToY(0);
+		s.play();
+		s.setOnFinished(e -> this.getChildren().remove(pane));
+	}
 	
 	
 	//MARK: delegate classs
@@ -167,8 +234,22 @@ public class AuthoringView extends AnchorPane {
 		}
 		
 	}
-	
-	
 
+	
+	class PopDelegate implements PopViewDelegate{
+
+		@Override
+		public void openView(Pane pane) {
+			openPaneWithAnimation(pane);
+		}
+
+		@Override
+		public void closeView(Pane pane) {
+			closePaneWithAnimation(pane);
+		}
+
+		
+		
+	}
 
 }
