@@ -3,7 +3,17 @@ package gamedata;
 import java.util.Optional;
 
 /**
- * Preferences set in authoring stage
+ * Preferences set in authoring stage.
+ * Includes the number of lives a player
+ * is allowed and several boolean for settings 
+ * like:
+ * 1) Do the enemies loop back around
+ * 2) Can you attack the towers
+ * 3) Do you want money 
+ * 4) Do you want experience
+ * 5) Are there pauses between waves
+ * 6) Should actors be cleared with each level
+ * 
  * @author maddiebriere
  *
  */
