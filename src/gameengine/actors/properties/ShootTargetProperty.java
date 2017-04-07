@@ -16,7 +16,7 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 	private Delay myDelay;
 	
 	public ShootTargetProperty(ShootData myData) {
-		myRange = myData.getMyRange();
+		myRange = myData.getRange();
 		myDelay = new Delay(myData.getFireRate());
 	}
 	
