@@ -54,7 +54,7 @@ public class OptionGenerator {
 	public static Map<String, List<String>> getPropertyTypesWithArgs(){
 		//TODO: Implement
 		List<String> datas = getPropertyTypes();
-		//for(int i=0; i<)
+		/*//for(int i=0; i<)
 		{
 			property = property+"Data";
 		}
@@ -63,7 +63,7 @@ public class OptionGenerator {
 		    NotNull notNull = field.getAnnotation(NotNull.class);
 		    field.setAccessible(true);
 		}
-		
+		*/
 		return null;
 	}
 }
