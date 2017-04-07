@@ -1,9 +1,9 @@
 package gameengine.actors.properties.shoots;
 
 import gameengine.actors.properties.IActProperty;
-import gameengine.grid.interfaces.ActorGrid.ReadAndShootGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 
-public abstract class ShootableProperty <G extends ReadAndShootGrid> implements IActProperty<G>{
+public abstract class ShootableProperty <G extends ReadAndSpawnGrid> implements IActProperty<G>{
 	
 	public boolean shoot(G grid);
 }

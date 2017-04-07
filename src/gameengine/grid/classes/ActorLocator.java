@@ -1,17 +1,15 @@
 package gameengine.grid.classes;
 
 import gameengine.actors.management.Actor;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.MovableActor;
-import gameengine.grid.interfaces.Identifiers.SetableActor;
 
-public class ActorLocator <T extends Actor> implements MovableActor<T>, SetableActor<T>{
+public class ActorLocator implements MovableActor{
 	
 	private Grid2D location;
-	private T actor;
+	private Actor actor;
 
-	public ActorLocator(Grid2D location, T actor){
+	public ActorLocator(Grid2D location, Actor actor){
 		this.actor = actor;
 		this.location = location;
 	}
@@ -29,14 +27,8 @@ public class ActorLocator <T extends Actor> implements MovableActor<T>, SetableA
 
 
 	@Override
-	public T getActor() {
+	public Actor getActor() {
 		return actor;
-	}
-
-
-	@Override
-	public void UpgradeActor(T t) {
-		this.actor = t;
 	}
 
 }
