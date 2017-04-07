@@ -1,0 +1,46 @@
+#towerBackground{
+    -fx-background-image: url("tower_background_2.jpg");
+    -fx-background-repeat: stretch;   
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
+}
+
+#root {
+	-fx-background-color:
+		linear-gradient(#1b7834, white);
+}
+
+.button { 
+	-fx-font-family: "HelveticaNeue";
+	-fx-alignment: CENTER;
+    -fx-background-color: #1fb58f;
+    -fx-font-weight: lighter;
+    -fx-text-fill: white;
+    -fx-font-size: 1.875em;
+    -fx-scale-x: 1;
+    -fx-stroke: #42dfb8;
+    -fx-stroke-width: 2;
+}
+
+.button:hover {
+	-fx-font-family: "HelveticaNeue";
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+    -fx-background-color: #42dfb8;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 1.875em;
+    -fx-scale-x: 1.1;
+    -fx-stroke: #42dfb8;
+    -fx-stroke-width: 2;
+}
+
+.grid {
+	-fx-grid-lines-visible: false;
+	-fx-background: #1fb58f
+}
+
+.text {
+	-fx-font-family: "Tahoma";
+	-fx-font-weight: NORMAL;
+}

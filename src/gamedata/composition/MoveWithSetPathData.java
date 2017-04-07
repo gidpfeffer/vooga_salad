@@ -1,5 +1,6 @@
 package gamedata.composition;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -18,6 +19,17 @@ public class MoveWithSetPathData implements Data{
 	 * 
 	 * @param newPath Path to add
 	 */
+	
+//	public MoveWithSetPathData() {
+//		allPaths = new HashMap<>();
+//		mySpeed = 0.3;
+//	}
+	
+	public MoveWithSetPathData(Map<Integer,List<Grid2D>> allpaths, double speed){
+		allPaths = allpaths;
+		mySpeed = speed;
+	}
+	
 	public void addFullPath(List<Grid2D> newPath){
 		int index = allPaths.size();
 		allPaths.put(index, newPath);
