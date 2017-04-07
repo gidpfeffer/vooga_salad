@@ -20,7 +20,7 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 	
 	public MoveWithSetPathProperty(MoveWithSetPathData data){
 		//Apply random path to current actor
-		myPathCoordinates = new LinkedList<>(data.getRandomSteps()); 
+		myPathCoordinates = new LinkedList<>(data.getPath());
 	}
 	
 	@Override
