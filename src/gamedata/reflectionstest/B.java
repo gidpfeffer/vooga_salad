@@ -1,5 +1,3 @@
 package gamedata.reflectionstest;
 
-public class B {
-
-}
+public class B {}

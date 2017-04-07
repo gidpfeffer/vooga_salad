@@ -47,6 +47,9 @@ public class GameData {
 	//Level information (preferences, no & type of enemies)
 	List<LevelData> levels;
 	
+	//Path information
+	PathData myPaths;
+	
 	//Information about how the game is visually displayed
 	DisplayData display;
 	
