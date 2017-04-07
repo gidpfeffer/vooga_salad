@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import gamedata.composition.ActorData;
+import gamedata.ActorData;
+import gamedata.composition.BasicData;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,6 +32,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
@@ -46,15 +48,15 @@ import util.Location;
  *
  */
 public class TowerEditorView extends AnchorPane {
-	private static final Map<String, Image> DEFAULT_TOWERS;
+	private static final Map<String, String> DEFAULT_TOWERS;
 	static {
 		String path = "Pokemon Icons/";
-		HashMap<String, Image> map = new HashMap<String, Image>();
-		map.put("Pikachu", new Image(path + "pikachu.png"));
-		map.put("Bullbasaur", new Image(path + "bullbasaur.png"));
-		map.put("Charmander", new Image(path + "charmander.png"));
-		map.put("Snorlax", new Image(path + "snorlax.png"));
-		map.put("Jigglypuff", new Image(path + "jigglypuff.png"));
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("Pikachu", path + "pikachu.png");
+		map.put("Bullbasaur", path + "bullbasaur.png");
+		map.put("Charmander", path + "charmander.png");
+		map.put("Snorlax", path + "snorlax.png");
+		map.put("Jigglypuff", path + "jigglypuff.png");
 		DEFAULT_TOWERS = map;
 	}
 	
@@ -156,13 +158,13 @@ public class TowerEditorView extends AnchorPane {
 
 	private void setupDefaultTowers() {
 
-		for (Entry<String, Image> entry : DEFAULT_TOWERS.entrySet()) {
+		for (Entry<String, String> entry : DEFAULT_TOWERS.entrySet()) {
 			addTower(entry.getValue(), entry.getKey());
 		}
 	}
 
-	private void addTower(Image img, String name){
-		StackPane view;
+	private void addTower(String imgPath, String name){
+		Image img = new Image(imgPath);
 		ImageView imageView = new ImageView(img);
 		imageView.setFitWidth(40);
 		imageView.setPreserveRatio(true);
@@ -176,13 +178,14 @@ public class TowerEditorView extends AnchorPane {
 		StackPane.setMargin(field, new Insets(8,8,8,64));
 		lblWrapper.getChildren().add(field);
 		
-		view = UIHelper.buttonStack(e -> {}, 
+		StackPane view = UIHelper.buttonStack(e -> {}, 
 				Optional.of(field), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(64);
+		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectTower(view));
 		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
 		VBox.setMargin(view, new Insets(8,24,8,8));
-		myTowers.put(view, Arrays.asList(new ActorData[] { new ActorData()}));
+		myTowers.put(view, Arrays.asList(new ActorData[] { new ActorData(BasicActorType.Tower, new BasicData(name, imgPath))}));
 		this.myTowersView.getChildren().add(myTowersView.getChildren().size() - 1, view);		
 	}
 
@@ -199,7 +202,7 @@ public class TowerEditorView extends AnchorPane {
 	
 	private void selectTower(StackPane stackButton){
 		List<ActorData> data = this.myTowers.get(stackButton);
-		
+		myTowerInfoView.setActorData(data);
 	}
 
 	public void getTowerData() {
