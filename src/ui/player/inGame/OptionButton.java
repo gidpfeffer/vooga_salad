@@ -46,12 +46,15 @@ public class OptionButton {
 		return button;
 	}
 
-	
-	public OptionButton(Integer id, String name, String image,
-			EventHandler<MouseEvent> dragged, EventHandler<DragEvent> done) {
+	private OptionButton(Integer id, String name, String image) {
 		this.id = id;
 		this.name = name;
 		this.image = image;
+	}
+	
+	public OptionButton(Integer id, String name, String image,
+			EventHandler<MouseEvent> dragged, EventHandler<DragEvent> done) {
+		this(id, name, image);
 		this.eventClicked = (e -> doNothing());
 		this.eventDragged = dragged;
 		this.eventDraggedDone = done;
@@ -59,9 +62,7 @@ public class OptionButton {
 	}
 	
 	public OptionButton(Integer id, String name, String image, EventHandler<MouseEvent> clicked) {
-		this.id = id;
-		this.name = name;
-		this.image = image;
+		this(id, name, image);
 		this.eventClicked = clicked;
 		this.eventDragged = (e -> doNothing());
 		this.eventDraggedDone = (e -> doNothing());
@@ -70,9 +71,7 @@ public class OptionButton {
 	
 	public OptionButton(Integer id, String name, String image, EventHandler<MouseEvent> clicked,
 			EventHandler<MouseEvent> dragged, EventHandler<DragEvent> done) {
-		this.id = id;
-		this.name = name;
-		this.image = image;
+		this(id, name, image);
 		this.eventClicked = clicked;
 		this.eventDragged = dragged;
 		this.eventDraggedDone = done;

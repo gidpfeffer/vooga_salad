@@ -19,6 +19,11 @@ public class OptionsPane{
 	private Map<String, String> mapOfMainOptions;
 	private Map<Integer, ActorData> mapOfOptions;
 	private Collection<Button> listOfButtons;
+	private int width;
+	
+	public int getWidth() {
+		return width;
+	}
 
 	public AnchorPane getPane() {
 		return buttonPane;
@@ -38,15 +43,23 @@ public class OptionsPane{
 	
 	public OptionsPane() {
 		buttonPane = new AnchorPane();
+		buttonPane.setPrefWidth(width);
 		mapOfOptions = new HashMap<>();
 		listOfButtons = new ArrayList<>();
 	}
 
+	public void addBackButton(EventHandler<MouseEvent> clicked) {
+		Button back = createImageButton(0, "back", "back_icon", clicked, null, null);
+		AnchorPane.setTopAnchor(back, 10.0);
+		AnchorPane.setLeftAnchor(back, 10.0);
+		buttonPane.getChildren().add(back);
+	}
+	
 	public void addButtonPane(int spacing, EventHandler<MouseEvent> clicked) {
 		VBox buttonBox = new VBox(spacing);
 		mapOfMainOptions.forEach((n, p) -> createImageButton(0, n, p, clicked, null, null));
 		buttonBox.getChildren().addAll(listOfButtons);
-		//buttonPane.getChildren().add(buttonBox);
+		buttonPane.getChildren().add(buttonBox);
 		AnchorPane.setRightAnchor(buttonBox, 10.0);
 	}
 	
@@ -57,13 +70,14 @@ public class OptionsPane{
 			createImageButton(entry.getKey(), entry.getValue().getName(), entry.getValue().getImagePath(), clicked, dragged, done);
 		}
 		buttonBox.getChildren().addAll(listOfButtons);
-		//buttonPane.getChildren().add(buttonBox);
+		buttonPane.getChildren().add(buttonBox);
 		AnchorPane.setRightAnchor(buttonBox, 10.0);
 	}
 
-	private void createImageButton(Integer id, String name, String imagePath,
+	private Button createImageButton(Integer id, String name, String imagePath,
 			EventHandler<MouseEvent> clicked, EventHandler<MouseEvent> dragged, EventHandler<DragEvent> done) {
 		OptionButton optionButton = new OptionButton(id, name, imagePath, clicked, dragged, done);
 		listOfButtons.add(optionButton.getButton());
+		return optionButton.getButton();
 	}
 }
