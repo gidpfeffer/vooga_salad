@@ -100,6 +100,8 @@ public class GameData {
 	}
 	
 	
+	
+	
 	/**
 	 * This is implementation for use in the Authoring Environment
 	 * 
@@ -112,6 +114,7 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
+	
 	public void add(ActorData data){
 		pieces.put(numOptions++, data);
 	}

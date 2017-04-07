@@ -22,6 +22,7 @@ import java.util.Map;
 public class LevelData {
 	private PreferencesData myPreferences;
 	private Map<ActorData, Integer> troops;
+	//TODO: Map for waves
 	private int difficulty;
 	private double duration; //duration for enemy presence
 	
@@ -32,6 +33,7 @@ public class LevelData {
 
 	public LevelData(Map<ActorData, Integer> troops){
 		//TODO: Implement constructors
+		this.troops = troops;
 	}
 
 	public PreferencesData getMyPreferences() {
