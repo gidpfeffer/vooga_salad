@@ -46,6 +46,7 @@ import util.Location;
  *
  */
 public class TowerEditorView extends AnchorPane {
+	private static final double BUTTON_HEIGHT = 72;
 	private static final Map<String, String> DEFAULT_TOWERS;
 	static {
 		String path = "Pokemon Icons/";
@@ -111,7 +112,7 @@ public class TowerEditorView extends AnchorPane {
 		StackPane view = UIHelper.buttonStack(e -> addNewTower(), 
 				Optional.of(label), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
-		view.setPrefHeight(64);
+		view.setPrefHeight(BUTTON_HEIGHT);
 		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
 		VBox.setMargin(view, new Insets(8,24,8,8));
 		this.myTowersView.getChildren().add( view);
@@ -182,8 +183,9 @@ public class TowerEditorView extends AnchorPane {
 		StackPane view = UIHelper.buttonStack(e -> {}, 
 				Optional.of(field), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
-		view.setPrefHeight(64);
+		view.setPrefHeight(BUTTON_HEIGHT);
 		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectTower(view));
+		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
 		VBox.setMargin(view, new Insets(8,24,8,8));
 		myTowers.put(view, Arrays.asList(new ActorData[] { new ActorData(BasicActorType.Tower, new BasicData(name, imgPath))}));
@@ -210,9 +212,19 @@ public class TowerEditorView extends AnchorPane {
 		List<ActorData> data = this.myTowers.get(stackButton);
 		myTowerInfoView.setActorData(data);
 	}
-
+	
+	private void updateTowerName(StackPane pane, String text){
+		for(ActorData data : this.myTowers.get(pane)){
+			data.getBasic().setName(text);
+		}
+		System.out.println(this.myTowers.get(pane).get(0).getName());
+		
+	}
+	
 	public void getTowerData() {
 		// TODO
 	}
+	
+	
 
 }
