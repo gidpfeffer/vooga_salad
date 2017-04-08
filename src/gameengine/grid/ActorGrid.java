@@ -3,6 +3,7 @@ package gameengine.grid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import gameengine.actors.management.Actor;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
@@ -21,7 +23,7 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.controllergrid.SteppableGrid;
 import types.BasicActorType;
 
-public class ActorGrid implements ReadableGrid, MasterGrid,
+public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 	ReadAndMoveGrid, ReadAndSpawnGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
 	
 	private Coordinates limits;
@@ -73,13 +75,23 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		MovableActor actor = getActorFromID(ID);
 		actor.setLocation(newX, newY);
 	}
+	
+	private Collection<MovableActor> getActorsInRadius(double x, double y, double radius, BasicActorType type){
+		Collection<MovableActor> filteredTypes = specificActorTypes(type);
+		return filter(filteredTypes, a -> distance(a.getLocation().getX(), x, a.getLocation().getY(), y) <= radius);
+	}
 
 	@Override
 	public Collection<Grid2D> getActorLocationsInRadius(double x, double y, double radius, BasicActorType type) {
-		Collection<MovableActor> filteredTypes = specificActorTypes(type);
-		Collection<MovableActor> filteredLoc = filter(filteredTypes,
-				a -> distance(a.getLocation().getX(), x, a.getLocation().getY(), y) <= radius);
-		return Collections.unmodifiableCollection(map(filteredLoc, a -> a.getLocation()));
+		Collection<MovableActor> actorsinRadius = getActorsInRadius(x, y, radius, type);
+		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getLocation()));
+	}
+	
+	@Override
+	public Collection<Consumer<Double>> getActorDamagablesInRadius(double x,
+			double y, double radius, BasicActorType type) {
+		Collection<MovableActor> actorsinRadius = getActorsInRadius(x, y, radius, type);
+		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getActor().applyDamage()));
 	}
 
 	@Override
