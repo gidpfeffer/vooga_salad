@@ -28,7 +28,9 @@ public class WaveData {
 	public void addEnemyWave(EnemyWaveData enemy){
 		enemyWaves.add(enemy); 
 	}
-		
+	public EnemyWaveData getEnemyWave(){
+		return enemyWaves;
+	}
 		
 	
 }
