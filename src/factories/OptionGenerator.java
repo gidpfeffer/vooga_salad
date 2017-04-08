@@ -70,6 +70,13 @@ public class OptionGenerator {
 				e.printStackTrace();
 			}
 			Field[] fields = propertyClass.getDeclaredFields();
+			if(fields.length == 0){
+				try{
+					fields = propertyClass.getSuperclass().getDeclaredFields();
+				}catch(Exception e){
+					//TODO: Complete
+				}
+			}
 			List<FieldData> fieldDatas = new ArrayList<FieldData>();
 			for(Field f : fields){
 				String name = f.getName();

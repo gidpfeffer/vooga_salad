@@ -12,6 +12,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  * from PathFinder.getPathCoordinates(Integer enemy Path Index,  double increment)  
  * turn that list into a queue, and poll a coordinate to move to at every
  * step. 
+ * 
  * @author Anh
  * @author Maddie
  *
