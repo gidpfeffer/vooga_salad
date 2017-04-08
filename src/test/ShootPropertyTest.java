@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import gamedata.composition.HealthData;
 import gamedata.composition.LimitedHealthData;
-import gamedata.composition.ShootData;
+import gamedata.compositiongen.HealthData;
+import gamedata.compositiongen.ShootData;
 import gameengine.actors.MainActor;
 import gameengine.actors.management.Actor;
 import gameengine.actors.properties.LimitedHealthProperty;

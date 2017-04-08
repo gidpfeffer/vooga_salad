@@ -2,7 +2,7 @@ package ui.handlers;
 
 import java.util.List;
 
-import gamedata.composition.Data;
+import gamedata.compositiongen.Data;
 import gameengine.actors.management.Actor;
 import gameengine.controllers.GameController;
 import util.VoogaException;
