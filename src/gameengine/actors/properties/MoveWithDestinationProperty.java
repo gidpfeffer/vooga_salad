@@ -1,9 +1,8 @@
 package gameengine.actors.properties;
-
 import java.util.LinkedList;
 import java.util.Queue;
-
 import gamedata.composition.MoveWithDestinationData;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -14,8 +13,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  * @author maddiebriere
  *
  */
-
-public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid>{
+public class MoveWithDestinationProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
 	
 	private Queue<Grid2D> myPathCoordinates;
 	private Coordinates finalLocation;
@@ -26,28 +24,25 @@ public class MoveWithDestinationProperty implements IActProperty<ReadAndMoveGrid
 	}
 	
 	@Override
-	public void action(ReadAndMoveGrid grid, Integer actorID) {
+	public void action(G grid, Integer actorID) {
 		// TODO Auto-generated method stub
 	}
-
 	public Queue<Grid2D> getMyPathCoordinates() {
 		return myPathCoordinates;
 	}
-
 	public void setMyPathCoordinates(Queue<Grid2D> myPathCoordinates) {
 		this.myPathCoordinates = myPathCoordinates;
 	}
-
 	public Coordinates getFinalLocation() {
 		return finalLocation;
 	}
-
 	public void setFinalLocation(Coordinates finalLocation) {
 		this.finalLocation = finalLocation;
 	}
+	@Override
+	public boolean isOn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
-	
-	
-	
-
 }

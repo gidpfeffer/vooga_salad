@@ -3,10 +3,10 @@ package test;
 import java.util.ArrayList;
 
 import gamedata.composition.MoveWithSetPathData;
-import gameengine.actors.properties.HealthProperty;
-import gameengine.actors.properties.IActProperty;
 import gameengine.actors.properties.LimitedHealthProperty;
 import gameengine.actors.properties.MoveWithSetPathProperty;
+import gameengine.actors.propertygen.HealthProperty;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.Troop;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.TestGrid;
