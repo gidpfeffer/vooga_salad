@@ -7,7 +7,7 @@ import gameengine.actors.management.Actor;
 import gameengine.actors.properties.LimitedHealthProperty;
 import gameengine.actors.properties.ShootTargetFarProperty;
 import gameengine.actors.properties.ShootTargetNearProperty;
-import gameengine.actors.properties.ShootTargetProperty;
+import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;

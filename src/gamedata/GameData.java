@@ -124,7 +124,9 @@ public class GameData {
 	
 	/**
 	 * Easy way to add a level -- just pass in
-	 * the enemies used in this level
+	 * the enemies used in this level.
+	 * 
+	 * Integer maps to the number of enemies on the level.
 	 * 
 	 * @param troops Enemies for the level
 	 */
@@ -179,6 +181,16 @@ public class GameData {
 	public void setNumOptions(int numOptions) {
 		this.numOptions = numOptions;
 	}
+
+	public PathData getMyPaths() {
+		return myPaths;
+	}
+
+	public void setMyPaths(PathData myPaths) {
+		this.myPaths = myPaths;
+	}
+	
+	
 	
 	
 	
