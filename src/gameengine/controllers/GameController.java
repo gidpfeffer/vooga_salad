@@ -32,8 +32,8 @@ public class GameController {
 	
 	private UIMain myUIMain;
 	
-	private final int MAX_X = 1000;
-	private final int MAX_Y =1000;
+	private final int MAX_X = 1;
+	private final int MAX_Y =1;
 	
 	private final double MILLISECOND_DELAY=17;
 
@@ -41,7 +41,7 @@ public class GameController {
 		myGameData = new GameData();
 		myGameStatus = new GameStatus();
 		myGrid = new ActorGrid(MAX_X,MAX_Y,
-				i -> ActorGenerator.makeActor(myGameData.getOption(i)));
+				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		myLevelController = new LevelController(myGrid,1);
 		initializeUIHandler();
 	}
@@ -49,7 +49,6 @@ public class GameController {
 	public void start() {
 		myUIMain = new UIMain("English",myUIHandler);
 		intitializeTimeline();
-		updateLevel();
 	}
 	
 	public void intitializeTimeline() {
@@ -107,7 +106,7 @@ public class GameController {
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
-				Actor actor = ActorGenerator.makeActor(actorData);
+				Actor actor = ActorGenerator.makeActor(option,actorData);
 				Location location = RatioToLocationTransformer.getLocation(xRatio, yRatio, getMapSizeX(), getMapSizeY());
 				if (myGrid.isValidLoc(location.getX(), location.getY())) {
 					myGrid.controllerSpawnActor(actor, location.getX(), location.getY());
@@ -157,11 +156,12 @@ public class GameController {
 			public Map<Integer, ActorData> getBaseOptions() {
 				return myGameData.getBaseOptions();
 			}
+
+			@Override
+			public void changeLevel(int level) {
+				myLevelController.changeLevel(myGameData, level);
+			}
 		};
 	}
 	
-	public void updateLevel() {
-		myLevelController.setMyLevel(myLevelController.getMyLevel()+1);
-		
-	}
 }

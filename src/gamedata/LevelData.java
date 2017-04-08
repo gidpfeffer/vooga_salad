@@ -1,5 +1,6 @@
 package gamedata;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,8 +22,9 @@ import java.util.Map;
  */
 public class LevelData {
 	private PreferencesData myPreferences;
-	private Map<ActorData, Integer> troops;
-	//TODO: WaveData 
+	
+	//TODO Upgrade to list later -- single wave for now
+	private WaveData myEnemyWave;
 	private int difficulty;
 	private double duration; //duration for enemy presence
 	
@@ -31,9 +33,12 @@ public class LevelData {
 	private double attackMultiplier;
 	private double speedMultiplier;
 
-	public LevelData(Map<ActorData, Integer> troops){
-		//TODO: Implement constructors
-		this.troops = troops;
+	public LevelData(double duration){
+		this.duration = duration;
+	}
+	
+	public void addEnemyWave(ActorData actor, Integer number, List<Integer> myPaths){
+		myEnemyWave.addEnemyWave(new EnemyWaveData(actor, number, myPaths));
 	}
 
 	public PreferencesData getMyPreferences() {
@@ -45,7 +50,7 @@ public class LevelData {
 	}
 
 	public Map<ActorData, Integer> getTroops() {
-		return troops;
+		return myEnemyWave
 	}
 
 	public void setTroops(Map<ActorData, Integer> troops) {

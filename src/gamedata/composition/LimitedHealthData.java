@@ -1,6 +1,8 @@
 package gamedata.composition;
 
-public class LimitedHealthData implements HealthData{
+import gamedata.compositiongen.HealthData;
+
+public class LimitedHealthData extends HealthData{
 	public double startHealth;
 	
 	public LimitedHealthData(double health){

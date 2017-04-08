@@ -1,28 +1,21 @@
 package gamedata.composition;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
+import gamedata.compositiongen.MoveData;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import gameengine.path.PathFinder;
 import util.PathUtil;
 /**
  * @author maddie
  * @author Anh
  *
  */
-public class MoveWithSetPathData implements Data{
+public class MoveWithSetPathData extends MoveData {
 
 	List<Grid2D>myPath;
-	private double mySpeed;
 	
-	/**
-	 * Add a path to the list of paths available for movement --
-	 * full path not taking into account speed
-	 */
 	
 	
 	/**
@@ -34,8 +27,8 @@ public class MoveWithSetPathData implements Data{
 	 * @param speed
 	 */
 	public MoveWithSetPathData(List<List<Grid2D>> myAssignedPaths, double speed){
+		super(speed);
 		myPath = getRandomSteps(myAssignedPaths);
-		mySpeed = speed;
 	}
 
 	/**
@@ -49,7 +42,7 @@ public class MoveWithSetPathData implements Data{
 	public List<Grid2D> getRandomSteps(List<List<Grid2D>> paths){
 
 		int rand = (new Random()).nextInt(paths.size());
-		return PathUtil.getPathCoordinates(paths.get(rand), mySpeed);
+		return PathUtil.getPathCoordinates(paths.get(rand), getMySpeed());
 	}
 
 	public List<Grid2D> getPath() {
