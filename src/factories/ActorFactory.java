@@ -13,7 +13,7 @@ import util.VoogaException;
  *
  */
 
-public class ActorFactory extends AbstractFactory<Actor>{
+public class ActorFactory extends AbstractFactory<MainActor>{
 
 	private static final String PATH = "gameengine.actors.";
 	
