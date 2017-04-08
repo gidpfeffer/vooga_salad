@@ -17,15 +17,38 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 
+/**
+ * A class that provides static methods for general purpose UI components
+ * 
+ * @author TNK
+ *
+ */
 public class UIHelper {
 	
-	public static void setBackgroundColor(Pane pane, Color c){
-		pane.setBackground(new Background(new BackgroundFill[] { new BackgroundFill(c, new CornerRadii(3.5), null)}));
+	/**
+	 * Sets the background color of a pane to the given color
+	 * 
+	 * @param pane Pane that the color is gonna be applied to
+	 * @param paint Color
+	 */
+	public static void setBackgroundColor(Region pane, Paint paint){
+		pane.setBackground(backgroundForColor(paint));
 	}
+	
+	public static Background backgroundForColor(Paint paint){
+		return new Background(new BackgroundFill[] { new BackgroundFill(paint, new CornerRadii(3.5), null)});
+	}
+	
+	/**
+	 * Adds drop shadow to a node.
+	 * @param node
+	 */
 	public static void setDropShadow(Node node){
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setRadius(5.0);
@@ -36,6 +59,13 @@ public class UIHelper {
 		
 	}
 	
+	/**
+	 * Adds click animation to a node.
+	 * Node grows on mouse press and 
+	 * shrinks on mouse release.
+	 * 
+	 * @param node
+	 */
 	public static void addClickAnimation(Node node){
 		ScaleTransition s = new ScaleTransition();
 		node.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
@@ -66,7 +96,7 @@ public class UIHelper {
 	 * the StackPane also has a default animation when clicked
 	 */
 	public static StackPane buttonStack(EventHandler<MouseEvent> event, 
-			Optional<Label> optionalLabel,Optional<ImageView> optionalIcon, Pos iconPos, boolean addDropShadow){
+			Optional<Node> optionalTextNode,Optional<ImageView> optionalIcon, Pos iconPos, boolean addDropShadow){
 		StackPane view = new StackPane();
 		UIHelper.setBackgroundColor(view, CustomColors.INDIGO); //default color
 		view.addEventHandler(MouseEvent.MOUSE_CLICKED, event);
@@ -76,16 +106,24 @@ public class UIHelper {
 			StackPane.setAlignment(img, iconPos);
 			StackPane.setMargin(img, new Insets(8));
 		});
-		optionalLabel.ifPresent(lbl -> {
+		optionalTextNode.ifPresent(lbl -> {
+			double inset = optionalIcon.isPresent()? optionalIcon.get().getFitWidth() + 16 : 0;
 			if(iconPos.equals(Pos.CENTER_RIGHT))
-				StackPane.setMargin(lbl, new Insets(8, 40,8,8));
+				StackPane.setMargin(lbl, new Insets(8,inset,8,8));
 			else if(iconPos.equals(Pos.CENTER_LEFT))
-				StackPane.setMargin(lbl, new Insets(8,8,8,40));
+				StackPane.setMargin(lbl, new Insets(8,8,8,inset));
 			view.getChildren().add(lbl);
 			});
 		if(addDropShadow)
 			setDropShadow(view);
 		return view;
+	}
+
+	public static String colorToHex(Color color) {
+		double r = 255*color.getRed();
+		double g = color.getGreen()*255;
+		double b = color.getBlue()*255;
+		return Integer.toHexString((int)r) + Integer.toHexString((int)g) + Integer.toHexString((int)b);
 	}
 	
 	
