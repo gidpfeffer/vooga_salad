@@ -13,12 +13,14 @@ import types.BasicActorType;
 public class MainActor implements Actor {
 
 	protected Integer myID;
+	protected Integer myOption;
 	protected HealthProperty myHealth;
 	private BasicActorType myType;
 	private List<IActProperty<MasterGrid>> myProperties;
 
 	@SuppressWarnings("unchecked")
-	public MainActor(BasicActorType type, Integer id, HealthProperty health, IActProperty<MasterGrid>... properties) {
+	public MainActor(BasicActorType type, Integer option, 
+			Integer id, HealthProperty health, IActProperty<MasterGrid>... properties) {
 		myType = type;
 		myID = id;
 		myHealth = health;
@@ -61,5 +63,11 @@ public class MainActor implements Actor {
 	public BasicActorType getType() {
 		return myType;
 	}
+
+	public Integer getMyOption() {
+		return myOption;
+	}
+	
+	
 
 }

@@ -9,7 +9,6 @@ public class EnemyWaveData {
 	private List<Integer> myPaths;
 	
 	public EnemyWaveData(ActorData myData, int myNumber, List<Integer> myPaths) {
-		super();
 		this.myData = myData;
 		this.myNumber = myNumber;
 		this.myPaths = myPaths;

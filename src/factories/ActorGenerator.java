@@ -32,7 +32,7 @@ public class ActorGenerator{
 	 * @return Actor
 	 */
 
-	public static Actor makeActor(ActorData data){
+	public static Actor makeActor(Integer option, ActorData data){
 		//Change to property factory
 		
 		//TODO: Add ID Generator
@@ -40,6 +40,7 @@ public class ActorGenerator{
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
 		toBuild.add(data.getActor()); //add type
+		toBuild.add(option);
 		toBuild.add(IDGenerator.getNewID()); //add ID
 		
 		List<Data> properties = data.getMyData();
