@@ -127,7 +127,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 	}
 	
 	@Override
-	public void controllerSpawnActor(Actor actor, int startX, int startY){
+	public void controllerSpawnActor(Actor actor, double startX, double startY){
 		addActor(actor, startX, startY);
 	}
 	
