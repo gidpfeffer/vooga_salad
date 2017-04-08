@@ -85,8 +85,20 @@ public class PaneController {
 	        Object obj = ME.getSource();
 
 	        if ( obj instanceof Button ) {
-	        	System.out.println("button was clicked");
-	            System.out.println( ((Button) obj).getText() );
+	            Button newButtonInstance = new Button();
+	            newButtonInstance.setId(((Button) obj).getId());
+	            newButtonInstance.setText(((Button) obj).getText());
+	            newButtonInstance.setGraphic(((Button) obj).getGraphic());
+	            MainPaneRootHere.getChildren().add(newButtonInstance);
+	            // this code drags the button
+	            newButtonInstance.setOnMouseDragged(e -> {
+	            	newButtonInstance.setLayoutX(e.getSceneX());
+	            	newButtonInstance.setLayoutY(e.getSceneY());
+	             });
+	            newButtonInstance.setOnMouseReleased(e -> {
+	            	uihandler.addGameObject((Integer.parseInt(((Button) obj).getId())), 
+	            			newButtonInstance.getLayoutX(), newButtonInstance.getLayoutY());
+	            });
 	        }
 	    }
 	};

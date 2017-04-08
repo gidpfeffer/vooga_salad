@@ -43,7 +43,7 @@ public class XStreamFileChooser {
 	 * @param mySerializer
 	 * @returns the class loaded from the serialized file
 	 * 
-	 * @TODO generalize!
+	 * @TO
 	 */
 	public Passwords readInPasswords(XStream mySerializer) {
 		Passwords passwords = new Passwords();
@@ -60,20 +60,16 @@ public class XStreamFileChooser {
 		return passwords;
 	}
 	
-/*	public Class<?> readInClass(XStream mySerializer, String className, ) {
-		Class<?> passwords;
+	public String readInClass() {
         try {
-    		Class<?> Clazz = Class.forName(className);
-			
-            Scanner scanner = new Scanner(new File(filename));
+        	Scanner scanner = new Scanner(new File(filename));
 			String content = scanner.useDelimiter("\\Z").next();
 			scanner.close();
-            passwords = (Clazz) mySerializer.fromXML(content);
+			return content;
         }
         catch (Exception ex) {
         	ex.printStackTrace();
         }
-		return passwords;
-	}*/
-	
+		return null;
+	}
 }

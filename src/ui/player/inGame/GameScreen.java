@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gamedata.ActorData;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,7 @@ public class GameScreen {
 
 	private AnchorPane anchorPaneRoot;
 	private Stage myStage;
+	private Scene myScene;
 	//private BorderPane borderPane;
 	private UIHandler uihandler;
 	private Map<String, String> iconImages;
@@ -26,9 +28,15 @@ public class GameScreen {
 	private double scrrenSizeHeight;
 	private String backgroundImagePath = "default_map_background_0.jpg";
 	
+
+	public Scene getScene() {
+		return myScene;
+	}
+	
 	public GameScreen(Stage stage, UIHandler uihandler, Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases){
 		this.anchorPaneRoot = new AnchorPane();
+		this.myScene = new Scene(anchorPaneRoot);
 		//this.borderPane = new BorderPane();
 		this.uihandler = uihandler;
 		myStage = stage;
@@ -94,6 +102,5 @@ public class GameScreen {
 		AnchorPane.setRightAnchor(hud.getGrid(), 10.);
 		anchorPaneRoot.getChildren().add(hud.getGrid());
 	}
-	
 	
 }

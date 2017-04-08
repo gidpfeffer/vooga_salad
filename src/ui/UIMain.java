@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import ui.authoring.AuthoringView;
 import ui.general.*;
+import ui.handlers.UIHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -31,12 +32,14 @@ public class UIMain{
 	
 	private Group myRoot;
 	private Scene myScene;
+	private UIHandler uihandler;
 	
-	public UIMain(String language){
+	public UIMain(String language, UIHandler uihandler){
 		super();
 		//_resources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		myRoot = new Group();
 		myScene = new Scene(myRoot, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
+		this.uihandler = uihandler;
 		setup();
 	}
 	

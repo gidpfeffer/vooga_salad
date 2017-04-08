@@ -68,10 +68,6 @@ public class OptionsPane{
 		buttonPane.getChildren().add(back);
 	}
 	
-	public AnchorPane addEmptyPane(int spacing){
-		return buttonPane;
-	}
-	
 	public void addButtonPane(int spacing, EventHandler<MouseEvent> clicked) {
 		VBox buttonBox = new VBox(spacing);
 		mapOfMainOptions.forEach((n, p) -> createImageButton(0, n, p, clicked, null, null));
