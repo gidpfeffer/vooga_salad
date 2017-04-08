@@ -1,5 +1,7 @@
 package gamedata.composition;
 
-public class IncapacitateData implements Data{
+import gamedata.compositiongen.StatusData;
+
+public class IncapacitateData extends StatusData{
 
 }

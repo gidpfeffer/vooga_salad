@@ -1,5 +1,6 @@
-package gamedata.composition;
+package gamedata;
 
+import gamedata.compositiongen.Data;
 import types.ActorType;
 
 /**

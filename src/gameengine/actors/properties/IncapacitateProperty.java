@@ -3,7 +3,7 @@ package gameengine.actors.properties;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 
-public class implements IActProperty<ReadableGrid>{
+public class IncapacitateProperty implements IActProperty<ReadableGrid>{
 
 	@Override
 	public void action(ReadableGrid grid, Integer actorID) {
@@ -11,9 +11,7 @@ public class implements IActProperty<ReadableGrid>{
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see gameengine.actors.properties.IActProperty#isOn()
-	 */
+
 	@Override
 	public boolean isOn() {
 		// TODO Auto-generated method stub
