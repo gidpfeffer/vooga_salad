@@ -1,6 +1,6 @@
 package gamedata.composition;
 
-public class ShootData implements Data{
+public class ShootData implements Data {
 	
 	private double myRange;
 	private int fireRate;

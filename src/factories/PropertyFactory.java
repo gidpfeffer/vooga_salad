@@ -1,6 +1,6 @@
 package factories;
 
-import gameengine.actors.properties.IActProperty;
+import gameengine.actors.propertygen.IActProperty;
 
 public class PropertyFactory extends AbstractFactory <IActProperty> {
 	//TODO: Confirm package
