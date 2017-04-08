@@ -1,25 +1,20 @@
 package gamedata.composition;
 
-public class ShootData implements Data {
+public abstract class ShootData implements Data {
 	
-	private double myRange;
-	private int fireRate;
+	//FIX DUPLICATION IN SUBCLASSES
 	
 	public ShootData(double range, int rate) {
-		myRange = range;
-		fireRate = rate;
+		setRange(range);
+		setFireRate(rate);
 	}
 
-	public double getRange() {
-		return myRange;
-	}
+	public abstract double getRange();
 
-	public void setRange(double range) {
-		this.myRange = range;
-	}
+	public abstract void setRange(double range);
 
-	public int getFireRate() {
-		return fireRate;
-	}
+	public abstract int getFireRate();
+	
+	public abstract void setFireRate(int fireRate);
 	
 }

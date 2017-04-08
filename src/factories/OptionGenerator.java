@@ -1,4 +1,4 @@
-package gamedata.util;
+package factories;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -29,13 +29,12 @@ public class OptionGenerator {
 	private static final String PROPERTY_PATH = "gameengine.actors.properties";
 	private static final String DATA_PATH = "gamedata.composition";
 	
-	
 	public static List<BasicActorType> getActorTypes(){
 		return Arrays.asList(BasicActorType.values());
 	}
 	
 	public static List<String> getPropertyTypes(){
-		Class [] properties = new Class[0]; 
+		Class<?> [] properties = new Class[0]; 
 		List<String>toRet = new ArrayList<String>();
 		try {
 			properties = Reflections.getClasses(PROPERTY_PATH);
@@ -63,7 +62,7 @@ public class OptionGenerator {
 		for(int i=0; i<datas.size(); i++)
 		{
 			String property = datas.get(i)+"Data";
-			Class propertyClass = null;
+			Class<?> propertyClass = null;
 			try {
 				propertyClass = Class.forName(DATA_PATH + "." + property);
 			} catch (ClassNotFoundException e) {
@@ -74,7 +73,7 @@ public class OptionGenerator {
 			List<FieldData> fieldDatas = new ArrayList<FieldData>();
 			for(Field f : fields){
 				String name = f.getName();
-				Class type = f.getType();
+				Class<?> type = f.getType();
 				FieldData toAdd = new FieldData(name,type);
 				fieldDatas.add(toAdd);
 			}

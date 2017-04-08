@@ -1,4 +1,4 @@
-package gamedata.util;
+package gamedata.testers;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import factories.OptionGenerator;
 import gamedata.FieldData;
 
 import java.lang.reflect.Field;

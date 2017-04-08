@@ -16,19 +16,24 @@ import util.PathUtil;
 
 public class MoveWithDestinationData implements Data{
 	private double mySpeed;
-	private Coordinates initialLocation;
-	private Coordinates finalLocation;
+	private double myStartX;
+	private double myStartY;
+	private double myFinalX;
+	private double myFinalY;
 	
 	public MoveWithDestinationData(double mySpeed, double startX,
 			double startY, double finalX, 
 			double finalY){
 		this.mySpeed = mySpeed;
-		initialLocation = new Coordinates(startX, startY);
-		finalLocation = new Coordinates(finalX, finalY);
+		myStartX = startX;
+		myStartY = startY;
+		myFinalX = finalX;
+		myFinalY = finalY;
 	}
 	
 	public List<Grid2D> getStraightPath(){
-		return PathUtil.getIncrementPoints(initialLocation, finalLocation, 
+		return PathUtil.getIncrementPoints(new Coordinates(myStartX, myStartY), 
+				new Coordinates(myFinalX, myFinalY), 
 				mySpeed);
 	}
 	
@@ -41,19 +46,21 @@ public class MoveWithDestinationData implements Data{
 	}
 
 	public Coordinates getInitialLocation() {
-		return initialLocation;
+		return new Coordinates(myStartX, myStartY);
 	}
 
 	public void setInitialLocation(Coordinates initialLocation) {
-		this.initialLocation = initialLocation;
+		myStartX = initialLocation.getX();
+		myStartY = initialLocation.getY();
 	}
 
 	public Coordinates getFinalLocation() {
-		return finalLocation;
+		return new Coordinates(myFinalX, myFinalY);
 	}
 
 	public void setFinalLocation(Coordinates finalLocation) {
-		this.finalLocation = finalLocation;
+		myFinalX = finalLocation.getX();
+		myFinalY = finalLocation.getY();
 	}
 	
 	

@@ -35,4 +35,10 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 		}
 	}
 
+	@Override
+	public boolean isOn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
