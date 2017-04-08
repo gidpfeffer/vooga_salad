@@ -46,10 +46,12 @@ public class LevelController {
 		//TODO: Add-on other LevelData measures like difficulty
 	}
 	
-	public void levelUp(GameData current) {
+	public void levelUp(GameData current) {	
 		myLevel++;
 		changeLevel(current,myLevel);
 	}
+	
+	
 
 	
 	/**
@@ -61,7 +63,9 @@ public class LevelController {
 	 */
 	private void addPieces(LevelData curr){
 		for (ActorData troop: curr.getTroops().keySet()) {
-			
+			//where to put the troops?
+			myGrid.controllerSpawnActor(troop, startX, startY);
+			//is there a wait time between spawning?
 		}
 		
 	}
