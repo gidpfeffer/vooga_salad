@@ -48,4 +48,15 @@ public class PathUtil {
 		return result; 
 	}
 	
+	public static List<Grid2D> getPathCoordinates(List<Grid2D> pathChosen , double increment){
+		
+		List<Grid2D> coordinatesToReturn = new ArrayList<Grid2D>(); 
+		for (int i = 0; i< pathChosen.size()-1; i++ ){
+			coordinatesToReturn.addAll(getIncrementPoints(pathChosen.get(i),pathChosen.get(i+1),increment));
+			coordinatesToReturn.remove(coordinatesToReturn.size()-1);
+		}
+		coordinatesToReturn.add(new Coordinates(pathChosen.get(pathChosen.size()-1))); // for the ending point
+		return coordinatesToReturn;
+	}
+	
 }

@@ -1,7 +1,7 @@
 package gameengine.grid.interfaces.controllergrid;
 
-public interface SteppableGrid extends ControllableGrid{
+public interface SteppableGrid{
 	
 	void step();
-
+	
 }

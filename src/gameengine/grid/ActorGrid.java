@@ -3,14 +3,17 @@ package gameengine.grid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import gameengine.actors.management.Actor;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
@@ -21,15 +24,17 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.controllergrid.SteppableGrid;
 import types.BasicActorType;
 
-public class ActorGrid implements ReadableGrid, MasterGrid,
+public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 	ReadAndMoveGrid, ReadAndSpawnGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
 	
 	private Coordinates limits;
 	private Collection<MovableActor> actors;
+	private Function<Integer, Actor> actorMaker;
 	
-	public ActorGrid(double maxX, double maxY){
+	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
+		this.actorMaker = actorMaker;
 	}
 
 	@Override
@@ -38,7 +43,6 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		actors = filter(actors, a -> a.getActor().isActive());
 	}
 
-	
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
 		return items.stream()
 				.filter(t -> predicate.test(t))
@@ -61,7 +65,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		return filter(actors, a -> a.getActor().getType() == type);
 	}
 	
-	private MovableActor getActorFromID(int ID){
+	public MovableActor getActorFromID(int ID){
 		Collection<MovableActor> foundIDs = filter(actors, a-> a.getActor().getID() == ID);
 		if(foundIDs.size() != 1) 
 			throw new IllegalStateException("found an invalid number of id's ~ lines 75 ActorGrid");
@@ -73,13 +77,23 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		MovableActor actor = getActorFromID(ID);
 		actor.setLocation(newX, newY);
 	}
+	
+	private Collection<MovableActor> getActorsInRadius(double x, double y, double radius, BasicActorType type){
+		Collection<MovableActor> filteredTypes = specificActorTypes(type);
+		return filter(filteredTypes, a -> distance(a.getLocation().getX(), x, a.getLocation().getY(), y) <= radius);
+	}
 
 	@Override
 	public Collection<Grid2D> getActorLocationsInRadius(double x, double y, double radius, BasicActorType type) {
-		Collection<MovableActor> filteredTypes = specificActorTypes(type);
-		Collection<MovableActor> filteredLoc = filter(filteredTypes,
-				a -> distance(a.getLocation().getX(), x, a.getLocation().getY(), y) <= radius);
-		return Collections.unmodifiableCollection(map(filteredLoc, a -> a.getLocation()));
+		Collection<MovableActor> actorsinRadius = getActorsInRadius(x, y, radius, type);
+		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getLocation()));
+	}
+	
+	@Override
+	public Collection<Consumer<Double>> getActorDamagablesInRadius(double x,
+			double y, double radius, BasicActorType type) {
+		Collection<MovableActor> actorsinRadius = getActorsInRadius(x, y, radius, type);
+		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getActor().applyDamage()));
 	}
 
 	@Override
@@ -106,12 +120,27 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 	public double getMaxY() {
 		return limits.getY();
 	}
+	
+	@Override
+	public void removeActor(int ID) {
+		actors = filter(actors, a -> a.getActor().getID() != ID);
+	}
+	
+	@Override
+	public void controllerSpawnActor(Actor actor, int startX, int startY){
+		addActor(actor, startX, startY);
+	}
+	
+	private void addActor(Actor newActor, double startX, double startY){
+		MovableActor movingActor = new ActorLocator(new Coordinates(startX, startY), newActor);
+		actors.add(movingActor);
+	}
 
 	@Override
-	public void spawn(Actor newActor, double startX, double startY) {
-		Grid2D location = new Coordinates(startX, startY);
-		MovableActor actor = new ActorLocator(location, newActor);
-		actors.add(actor);
+	public Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY) {
+		Actor newActor = actorMaker.apply(actorType);
+		addActor(newActor, startX, startY);
+		return newActor.addProperty();
 	}
 
 }

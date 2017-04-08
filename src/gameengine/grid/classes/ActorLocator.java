@@ -14,7 +14,6 @@ public class ActorLocator implements MovableActor{
 		this.location = location;
 	}
 	
-
 	@Override
 	public Grid2D getLocation() {
 		return location;
@@ -24,7 +23,6 @@ public class ActorLocator implements MovableActor{
 	public void setLocation(double x, double y) {
 		location = new Coordinates(x, y);
 	}
-
 
 	@Override
 	public Actor getActor() {

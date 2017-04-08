@@ -32,7 +32,6 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 			// poll a coordinate from myPathCoordinates to set the enemy location to
 			Grid2D newLoc = myPathCoordinates.poll();
 			grid.move(actorID, newLoc.getX(), newLoc.getY()); 
-			System.out.println("this shouldn't print");
 		}
 	}
 
