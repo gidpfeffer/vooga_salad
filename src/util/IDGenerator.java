@@ -4,17 +4,13 @@ import java.util.function.Supplier;
 
 public class IDGenerator {
 	
-	private int currentID;
+	private static int currentID = 0;
 	
-	public IDGenerator() {
-		currentID = 0;
-	}
-	
-	public Supplier<Integer> getNextID() {
+	public static Supplier<Integer> getNextID() {
 		return () -> getNewID();
 	}
 	
-	private int getNewID() {
+	public static int getNewID() {
 		return currentID++;
 	}
 
