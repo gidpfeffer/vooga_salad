@@ -22,13 +22,13 @@ public class WaveData {
 	List<EnemyWaveData> enemyWaves; 
 	
 	public WaveData(){
-		enemyWaves = new ArrayList<EnemyWaveData>; 
+		enemyWaves = new ArrayList<EnemyWaveData>(); 
 	}
 	
 	public void addEnemyWave(EnemyWaveData enemy){
 		enemyWaves.add(enemy); 
 	}
-	public EnemyWaveData getEnemyWave(){
+	public List<EnemyWaveData> getEnemyWave(){
 		return enemyWaves;
 	}
 		
