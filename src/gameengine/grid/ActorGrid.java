@@ -61,7 +61,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		return filter(actors, a -> a.getActor().getType() == type);
 	}
 	
-	private MovableActor getActorFromID(int ID){
+	public MovableActor getActorFromID(int ID){
 		Collection<MovableActor> foundIDs = filter(actors, a-> a.getActor().getID() == ID);
 		if(foundIDs.size() != 1) 
 			throw new IllegalStateException("found an invalid number of id's ~ lines 75 ActorGrid");
@@ -112,6 +112,10 @@ public class ActorGrid implements ReadableGrid, MasterGrid,
 		Grid2D location = new Coordinates(startX, startY);
 		MovableActor actor = new ActorLocator(location, newActor);
 		actors.add(actor);
+	}
+	
+	public void removeActor(int ID) {
+		//to do
 	}
 
 }
