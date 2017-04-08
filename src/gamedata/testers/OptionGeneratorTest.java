@@ -45,5 +45,23 @@ public class OptionGeneratorTest {
 			System.out.println();
 		}
 	}
+	
+	@Test
+	public void correctTypeProperties(){
+		List<String> properties = OptionGenerator.getGeneralPropertyTypes();
+		assertEquals(properties.get(0), "Status");
+		System.out.println("General Properties");
+		Arrays.asList(properties).stream().forEach(p -> System.out.println(p));
+	}
+	
+	
+	@Test
+	public void correctSubtypes(){
+		List<String> properties = OptionGenerator.getSubcategories("Shoot");
+		//assertEquals(properties.get(0), "");
+		assertEquals(properties.get(0), "ShootTargetFarData");
+		System.out.println("Shoot Properties");
+		Arrays.asList(properties).stream().forEach(System.out::println);
+	}
 
 }

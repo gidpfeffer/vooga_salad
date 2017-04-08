@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gamedata.composition.BasicData;
-import gamedata.composition.Data;
-import gamedata.composition.HealthData;
 import gamedata.composition.LimitedHealthData;
+import gamedata.compositiongen.Data;
+import gamedata.compositiongen.HealthData;
 import types.BasicActorType;
 
 /**

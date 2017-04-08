@@ -1,4 +1,4 @@
-package gamedata.composition;
+package gamedata.compositiongen;
 
 public class ShootData implements Data {
 	

@@ -2,6 +2,8 @@ package gamedata.composition;
 
 import java.util.List;
 
+import gamedata.compositiongen.Data;
+import gamedata.compositiongen.MoveData;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import util.PathUtil;
@@ -14,8 +16,7 @@ import util.PathUtil;
  *
  */
 
-public class MoveWithDestinationData implements Data{
-	private double mySpeed;
+public class MoveWithDestinationData extends MoveData{
 	private double myStartX;
 	private double myStartY;
 	private double myFinalX;
@@ -24,7 +25,7 @@ public class MoveWithDestinationData implements Data{
 	public MoveWithDestinationData(double mySpeed, double startX,
 			double startY, double finalX, 
 			double finalY){
-		this.mySpeed = mySpeed;
+		super(mySpeed);
 		myStartX = startX;
 		myStartY = startY;
 		myFinalX = finalX;
@@ -34,15 +35,7 @@ public class MoveWithDestinationData implements Data{
 	public List<Grid2D> getStraightPath(){
 		return PathUtil.getIncrementPoints(new Coordinates(myStartX, myStartY), 
 				new Coordinates(myFinalX, myFinalY), 
-				mySpeed);
-	}
-	
-	public double getMySpeed() {
-		return mySpeed;
-	}
-
-	public void setMySpeed(double mySpeed) {
-		this.mySpeed = mySpeed;
+				getMySpeed());
 	}
 
 	public Coordinates getInitialLocation() {

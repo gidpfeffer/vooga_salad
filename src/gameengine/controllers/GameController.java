@@ -3,7 +3,7 @@ package gameengine.controllers;
 import java.util.List;
 
 import gamedata.GameData;
-import gamedata.composition.Data;
+import gamedata.compositiongen.Data;
 import gameengine.player.GameStatus;
 import types.ActorType;
 import ui.handlers.UIHandler;

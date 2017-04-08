@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gamedata.ActorData;
-import gamedata.composition.Data;
+import gamedata.compositiongen.Data;
 import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
 
@@ -32,6 +32,9 @@ public class ActorGenerator{
 	 */
 	public static Actor makeActor(Integer ID, ActorData data){
 		//Change to property factory
+		
+		//TODO: Add ID Generator
+		
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
 		toBuild.add(data.getActor()); //add type
