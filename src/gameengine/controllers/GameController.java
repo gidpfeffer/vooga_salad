@@ -11,12 +11,17 @@ import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.MovableActor;
 import gameengine.player.GameStatus;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import types.ActorType;
 import ui.handlers.UIHandler;
 import util.IDGenerator;
 import util.VoogaException;
 
 public class GameController {
+	private Timeline animation;
+	
 	private GameStatus myGameStatus;
 	private GameData myGameData;
 	
@@ -27,6 +32,8 @@ public class GameController {
 	
 	private final int MAX_X = 1000;
 	private final int MAX_Y =1000;
+	
+	private final double MILLISECOND_DELAY=17;
 
 	public GameController() {
 		myIDGenerator = new IDGenerator();
@@ -34,6 +41,14 @@ public class GameController {
 		myGameStatus = new GameStatus();
 		myActorGrid = new ActorGrid(MAX_X,MAX_Y);
 		initializeUIHandler();
+	}
+	
+	public void intitializeTimeline() {
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+				d -> step());
+		animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
 	}
 	
 	public void step() {
@@ -82,6 +97,28 @@ public class GameController {
 				}
 				
 				return ID;
+			}
+
+			@Override
+			public void pause() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void play() {
+				animation.play();
+			}
+
+			@Override
+			public void stop() {
+				animation.stop();
+			}
+
+			@Override
+			public void exit() {
+				
+				
 			}
 			
 		};
