@@ -1,11 +1,14 @@
 package gameengine.controllers;
 
+import java.util.Map;
+
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
+import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.player.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,6 +16,8 @@ import javafx.util.Duration;
 import ui.UIMain;
 import ui.handlers.UIHandler;
 import util.IDGenerator;
+import util.Location;
+import util.RatioToLocationTransformer;
 import util.VoogaException;
 
 public class GameController {
@@ -23,8 +28,7 @@ public class GameController {
 	
 	private UIHandler myUIHandler;
 	private LevelController myLevelController;
-	private IDGenerator myIDGenerator;
-	private ActorGrid myActorGrid;
+	private ControllableGrid myGrid;
 	
 	private UIMain myUIMain;
 	
@@ -34,12 +38,18 @@ public class GameController {
 	private final double MILLISECOND_DELAY=17;
 
 	public GameController() {
-		myIDGenerator = new IDGenerator();
 		myGameData = new GameData();
 		myGameStatus = new GameStatus();
-		myActorGrid = new ActorGrid(MAX_X,MAX_Y,
+		myGrid = new ActorGrid(MAX_X,MAX_Y,
 				i -> ActorGenerator.makeActor(myGameData.getOption(i)));
+		myLevelController = new LevelController(myGrid,1);
 		initializeUIHandler();
+	}
+	
+	public void start() {
+		myUIMain = new UIMain("English",myUIHandler);
+		intitializeTimeline();
+		updateLevel();
 	}
 	
 	public void intitializeTimeline() {
@@ -51,34 +61,31 @@ public class GameController {
 	}
 	
 	public void step() {
-		myActorGrid.step();
+		myGrid.step();
 	}
 	
-	private double getScreenSizeX() {
+	private double getMapSizeX() {
 		//need getMap method in front end
 		return myUIMain.getScene().getWidth();
 	}
 	
-	private double getScreenSizeY() {
+	private double getMapSizeY() {
 		//need getMap method in front end
 		return myUIMain.getScene().getHeight();
 	}
-	
-	
-	
-	
+
 	private void initializeUIHandler() {
 		myUIHandler = new UIHandler() {
 
 			@Override
 			public void deleteGameObject(int id) {
-				myActorGrid.removeActor(id);
+				myGrid.removeActor(id);
 			}
 
 			@Override
 			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
-				if (myGameData.getOption(currentOption).getActor().equals(myGameData.getOption(newOption))) {
-					Grid2D location = myActorGrid.getActorFromID(id).getLocation();
+				if (myGameData.getOption(currentOption).getActor().equals(myGameData.getOption(newOption).getActor())) {
+					Grid2D location = myGrid.getLocationOf(id);
 					addGameObject(newOption,location.getX(),location.getY());
 					deleteGameObject(id);
 				} else {
@@ -89,8 +96,8 @@ public class GameController {
 
 			@Override
 			public void updateGameObjectLocation(int id, double x, double y) throws VoogaException {
-				if (myActorGrid.isValidLoc(x, y)) {
-					myActorGrid.getActorFromID(id).setLocation(x, y);
+				if (myGrid.isValidLoc(x, y)) {
+					myGrid.move(id,x, y);
 				} else {
 					throw new VoogaException(VoogaException.INVALID_LOCATION);
 				}
@@ -100,15 +107,15 @@ public class GameController {
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
-				int ID = myIDGenerator.getNewID();
 				Actor actor = ActorGenerator.makeActor(actorData);
-				if (myActorGrid.isValidLoc(x, y)) {
-					myActorGrid.spawn(actor, x, y);
+				Location location = RatioToLocationTransformer.getLocation(xRatio, yRatio, getMapSizeX(), getMapSizeY());
+				if (myGrid.isValidLoc(location.getX(), location.getY())) {
+					myGrid.controllerSpawnActor(actor, location.getX(), location.getY());
 				} else {
 					throw new VoogaException(VoogaException.INVALID_LOCATION);
 				}
 				
-				return ID;
+				return actor.getID();
 			}
 
 			@Override
@@ -128,13 +135,33 @@ public class GameController {
 
 			@Override
 			public void exit() {
-				
-				
+				System.exit(0);
 			}
-			
+
+			@Override
+			public Map<Integer, ActorData> getOptions() {
+				return myGameData.getOptions();
+			}
+
+			@Override
+			public Map<Integer, ActorData> getTroopOptions() {
+				return myGameData.getTroopOptions();
+			}
+
+			@Override
+			public Map<Integer, ActorData> getShotOptions() {
+				return myGameData.getShotOptions();
+			}
+
+			@Override
+			public Map<Integer, ActorData> getBaseOptions() {
+				return myGameData.getBaseOptions();
+			}
 		};
 	}
 	
 	public void updateLevel() {
+		myLevelController.setMyLevel(myLevelController.getMyLevel()+1);
+		
 	}
 }
