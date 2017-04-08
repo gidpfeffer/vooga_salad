@@ -2,6 +2,8 @@ package gamedata.composition;
 
 import java.util.List;
 
+import gamedata.compositiongen.Data;
+import gamedata.compositiongen.MoveData;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import util.PathUtil;
@@ -14,46 +16,44 @@ import util.PathUtil;
  *
  */
 
-public class MoveWithDestinationData implements Data{
-	private double mySpeed;
-	private Coordinates initialLocation;
-	private Coordinates finalLocation;
+public class MoveWithDestinationData extends MoveData{
+	private double myStartX;
+	private double myStartY;
+	private double myFinalX;
+	private double myFinalY;
 	
 	public MoveWithDestinationData(double mySpeed, double startX,
 			double startY, double finalX, 
 			double finalY){
-		this.mySpeed = mySpeed;
-		initialLocation = new Coordinates(startX, startY);
-		finalLocation = new Coordinates(finalX, finalY);
+		super(mySpeed);
+		myStartX = startX;
+		myStartY = startY;
+		myFinalX = finalX;
+		myFinalY = finalY;
 	}
 	
 	public List<Grid2D> getStraightPath(){
-		return PathUtil.getIncrementPoints(initialLocation, finalLocation, 
-				mySpeed);
-	}
-	
-	public double getMySpeed() {
-		return mySpeed;
-	}
-
-	public void setMySpeed(double mySpeed) {
-		this.mySpeed = mySpeed;
+		return PathUtil.getIncrementPoints(new Coordinates(myStartX, myStartY), 
+				new Coordinates(myFinalX, myFinalY), 
+				getMySpeed());
 	}
 
 	public Coordinates getInitialLocation() {
-		return initialLocation;
+		return new Coordinates(myStartX, myStartY);
 	}
 
 	public void setInitialLocation(Coordinates initialLocation) {
-		this.initialLocation = initialLocation;
+		myStartX = initialLocation.getX();
+		myStartY = initialLocation.getY();
 	}
 
 	public Coordinates getFinalLocation() {
-		return finalLocation;
+		return new Coordinates(myFinalX, myFinalY);
 	}
 
 	public void setFinalLocation(Coordinates finalLocation) {
-		this.finalLocation = finalLocation;
+		myFinalX = finalLocation.getX();
+		myFinalY = finalLocation.getY();
 	}
 	
 	

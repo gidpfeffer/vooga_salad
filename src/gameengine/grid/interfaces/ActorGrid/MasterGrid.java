@@ -1,5 +1,5 @@
 package gameengine.grid.interfaces.ActorGrid;
 
-public interface MasterGrid extends ReadShootMoveGrid{
+public interface MasterGrid extends ReadShootMoveGrid, ReadAndDamageGrid{
 
 }

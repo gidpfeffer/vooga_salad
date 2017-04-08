@@ -6,6 +6,5 @@ public interface FindableActor{
 
 	Actor getActor();
 	Grid2D getLocation();
-	
-	
+		
 }
