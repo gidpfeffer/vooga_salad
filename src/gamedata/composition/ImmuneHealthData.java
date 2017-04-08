@@ -1,5 +1,7 @@
 package gamedata.composition;
 
-public class ImmuneHealthData implements HealthData {
+import gamedata.compositiongen.HealthData;
+
+public class ImmuneHealthData extends HealthData {
 
 }

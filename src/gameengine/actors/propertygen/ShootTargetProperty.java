@@ -2,7 +2,7 @@ package gameengine.actors.propertygen;
 
 import java.util.Collection;
 
-import gamedata.composition.ShootData;
+import gamedata.compositiongen.ShootData;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;

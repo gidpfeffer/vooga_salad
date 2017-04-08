@@ -1,10 +1,12 @@
-package gamedata.reflections;
+package gamedata.testers;
 
 import static org.junit.Assert.*;
 
 import java.io.IOException;
 
 import org.junit.Test;
+
+import gamedata.reflections.Reflections;
 
 public class ReflectionsTest {
 

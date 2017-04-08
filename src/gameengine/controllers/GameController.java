@@ -5,6 +5,7 @@ import java.util.Map;
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
+import gamedata.compositiongen.Data;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
