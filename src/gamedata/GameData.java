@@ -47,6 +47,9 @@ public class GameData {
 	//Level information (preferences, no & type of enemies)
 	List<LevelData> levels;
 	
+	//Path information
+	PathData myPaths;
+	
 	//Information about how the game is visually displayed
 	DisplayData display;
 	
@@ -100,6 +103,8 @@ public class GameData {
 	}
 	
 	
+	
+	
 	/**
 	 * This is implementation for use in the Authoring Environment
 	 * 
@@ -112,13 +117,16 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
+	
 	public void add(ActorData data){
 		pieces.put(numOptions++, data);
 	}
 	
 	/**
 	 * Easy way to add a level -- just pass in
-	 * the enemies used in this level
+	 * the enemies used in this level.
+	 * 
+	 * Integer maps to the number of enemies on the level.
 	 * 
 	 * @param troops Enemies for the level
 	 */
@@ -173,6 +181,16 @@ public class GameData {
 	public void setNumOptions(int numOptions) {
 		this.numOptions = numOptions;
 	}
+
+	public PathData getMyPaths() {
+		return myPaths;
+	}
+
+	public void setMyPaths(PathData myPaths) {
+		this.myPaths = myPaths;
+	}
+	
+	
 	
 	
 	
