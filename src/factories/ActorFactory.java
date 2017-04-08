@@ -3,6 +3,7 @@ package factories;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import gameengine.actors.MainActor;
 import gameengine.actors.management.Actor;
 import util.VoogaException;
 
@@ -22,7 +23,7 @@ public class ActorFactory extends AbstractFactory<MainActor>{
 	}
 
 	@Override
-	protected Actor failResponse() {
+	protected MainActor failResponse() {
 		try {
 			throw new VoogaException("Reflection Error: No such property/actor");
 		} catch (VoogaException e) {
