@@ -10,7 +10,7 @@ import gameengine.path.PathFinder;
 
 public class MoveWithSetPathData implements Data{
 
-	Map<Integer,List<Grid2D>> allPaths;
+	List<Grid2D>myPath;
 	private double mySpeed;
 	
 	/**
@@ -25,34 +25,29 @@ public class MoveWithSetPathData implements Data{
 //		mySpeed = 0.3;
 //	}
 	
-	public MoveWithSetPathData(Map<Integer,List<Grid2D>> allpaths, double speed){
-		allPaths = allpaths;
+	public MoveWithSetPathData(Map<Integer,List<Grid2D>> allPaths, double speed){
+		myPath = getRandomSteps(allPaths);
 		mySpeed = speed;
 	}
-	
-	public void addFullPath(List<Grid2D> newPath){
-		int index = allPaths.size();
-		allPaths.put(index, newPath);
-	}
-	
+
 	/**
 	 * Get a random path of the available options, taking
 	 * into account how speed will affect step size.
 	 * 
 	 * @return Random path, accommodating speed
 	 */
-	public List<Grid2D> getRandomSteps(){
+	public List<Grid2D> getRandomSteps(Map<Integer,List<Grid2D>> allPaths){
 		PathFinder myPath = new PathFinder(allPaths);
 		int index = (new Random()).nextInt(allPaths.size());
 		return myPath.getPathCoordinates(index, mySpeed);
 	}
 
-	public Map<Integer, List<Grid2D>> getAllPaths() {
-		return allPaths;
+	public List<Grid2D> getPath() {
+		return myPath;
 	}
 
-	public void setAllPaths(Map<Integer, List<Grid2D>> allPaths) {
-		this.allPaths = allPaths;
+	public void setPathList(List<Grid2D> path) {
+		myPath = path;
 	}
 	
 	

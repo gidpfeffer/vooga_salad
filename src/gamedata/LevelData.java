@@ -16,12 +16,13 @@ import java.util.Map;
  * invoked in the GameController when 
  * new LevelControllers are created.
  * 
- * @author Maddie
+ * @author maddiebriere
  *
  */
 public class LevelData {
 	private PreferencesData myPreferences;
 	private Map<ActorData, Integer> troops;
+	//TODO: WaveData 
 	private int difficulty;
 	private double duration; //duration for enemy presence
 	
@@ -32,6 +33,7 @@ public class LevelData {
 
 	public LevelData(Map<ActorData, Integer> troops){
 		//TODO: Implement constructors
+		this.troops = troops;
 	}
 
 	public PreferencesData getMyPreferences() {

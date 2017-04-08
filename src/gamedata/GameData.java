@@ -47,6 +47,9 @@ public class GameData {
 	//Level information (preferences, no & type of enemies)
 	List<LevelData> levels;
 	
+	//Path information
+	PathData myPaths;
+	
 	//Information about how the game is visually displayed
 	DisplayData display;
 	
@@ -100,6 +103,8 @@ public class GameData {
 	}
 	
 	
+	
+	
 	/**
 	 * This is implementation for use in the Authoring Environment
 	 * 
@@ -112,6 +117,7 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
+	
 	public void add(ActorData data){
 		pieces.put(numOptions++, data);
 	}
