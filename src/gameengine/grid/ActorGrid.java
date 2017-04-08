@@ -28,10 +28,12 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 	
 	private Coordinates limits;
 	private Collection<MovableActor> actors;
+	private Function<Integer, Actor> actorMaker;
 	
-	public ActorGrid(double maxX, double maxY){
+	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
+		this.actorMaker = actorMaker;
 	}
 
 	@Override
