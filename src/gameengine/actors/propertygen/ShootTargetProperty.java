@@ -13,25 +13,31 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 	private double myRange;
 	private Delay myDelay;
 	private BasicActorType myTarget;
+	private Integer myProjectile;
 	
 	public ShootTargetProperty(ShootData myData) {
 		myRange = myData.getRange();
 		myDelay = new Delay(myData.getFireRate());
 		myTarget = myData.getTarget();
+		myProjectile = myData.getProjectile();
 	}
 	
 	@Override
 	public void action(G grid, Integer actorID) {
-		Collection<Grid2D> dirCoordinates = getEnemyToShoot(grid.getActorLocationsInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getX(), myRange, myTarget), grid.getLocationOf(actorID));
-		spawnProjectiles(grid, dirCoordinates);
+		Collection<Grid2D> dirCoordinates = getEnemyToShoot(grid.getActorLocationsInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRange, myTarget), grid.getLocationOf(actorID));
+		spawnProjectiles(grid, dirCoordinates,grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getX());
 	}
 	
 	protected abstract Collection<Grid2D> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos);
 	
-	protected abstract void spawnProjectiles(G grid, Collection<Grid2D> targets);
+	protected abstract void spawnProjectiles(G grid, Collection<Grid2D> targets, double myX, double myY);
 	
 	protected double getAngle(Grid2D origin, Grid2D target) {
 		return Math.toDegrees(Math.atan((target.getY()-origin.getY())/(target.getX()-origin.getX())));
+	}
+	
+	protected Integer getMyProjectile() {
+		return myProjectile;
 	}
 	
 	@Override

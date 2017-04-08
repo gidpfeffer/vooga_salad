@@ -1,18 +1,26 @@
 package gameengine.actors.status;
 
-/**
- * @author sarahzhou
- * Afflicted actor loses a set amount of HP at a specified time interval
- */
-public class Poisoned implements IStatus{
-	
-	public final static int HP_LOST = 10;
-	public final static int TIME_INTERVAL = 5;
+import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
+/**
+ * 
+ * 
+ * @author sarahzhou
+ */
+public class Poisoned<G extends ReadAndDamageGrid> extends IStatus<G>{
+
+	
+	
 	@Override
-	public void afflict(Integer id) {
-		// TODO Auto-generated method stub
+	public void action(G grid, Integer actorID) {
+		grid.getActorDamagablesInRadius(x, y, radius, grid.);
 		
 	}
 
+	@Override
+	public boolean isOn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }
