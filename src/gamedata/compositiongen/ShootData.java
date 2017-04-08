@@ -1,4 +1,4 @@
-package gamedata.composition;
+package gamedata.compositiongen;
 
 import types.BasicActorType;
 
@@ -8,6 +8,7 @@ public class ShootData implements Data{
 	private int fireRate;
 	private BasicActorType myTarget;
 	
+
 	public ShootData(double range, int rate, BasicActorType type) {
 		myRange = range;
 		fireRate = rate;
@@ -17,13 +18,14 @@ public class ShootData implements Data{
 	public double getRange() {
 		return myRange;
 	}
-
-	public void setRange(double range) {
-		this.myRange = range;
+	public void setRange(double myRange) {
+		this.myRange = myRange;
 	}
-
 	public int getFireRate() {
 		return fireRate;
+	}
+	public void setFireRate(int fireRate) {
+		this.fireRate = fireRate;
 	}
 
 	public BasicActorType getTarget() {

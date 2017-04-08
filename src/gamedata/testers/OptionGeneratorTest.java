@@ -1,4 +1,4 @@
-package gamedata.util;
+package gamedata.testers;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import factories.OptionGenerator;
 import gamedata.FieldData;
 
 import java.lang.reflect.Field;
@@ -43,6 +44,24 @@ public class OptionGeneratorTest {
 			}
 			System.out.println();
 		}
+	}
+	
+	@Test
+	public void correctTypeProperties(){
+		List<String> properties = OptionGenerator.getGeneralPropertyTypes();
+		assertEquals(properties.get(0), "Status");
+		System.out.println("General Properties");
+		Arrays.asList(properties).stream().forEach(p -> System.out.println(p));
+	}
+	
+	
+	@Test
+	public void correctSubtypes(){
+		List<String> properties = OptionGenerator.getSubcategories("Shoot");
+		//assertEquals(properties.get(0), "");
+		assertEquals(properties.get(0), "ShootTargetFarData");
+		System.out.println("Shoot Properties");
+		Arrays.asList(properties).stream().forEach(System.out::println);
 	}
 
 }

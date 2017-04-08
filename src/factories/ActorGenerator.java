@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gamedata.ActorData;
-import gamedata.composition.Data;
+import gamedata.compositiongen.Data;
 import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
 import util.IDGenerator;
@@ -32,11 +32,15 @@ public class ActorGenerator{
 	 * @return Actor
 	 */
 
-	public static Actor makeActor(ActorData data){
+	public static Actor makeActor(Integer option, ActorData data){
 		//Change to property factory
+		
+		//TODO: Add ID Generator
+		
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
 		toBuild.add(data.getActor()); //add type
+		toBuild.add(option);
 		toBuild.add(IDGenerator.getNewID()); //add ID
 		
 		List<Data> properties = data.getMyData();
