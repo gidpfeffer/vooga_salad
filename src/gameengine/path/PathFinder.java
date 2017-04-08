@@ -9,6 +9,9 @@ import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import util.PathUtil;
 
+// NOT USING THIS, USE UTIL.PATHUTIL instead
+
+
 /**
  * return a path as a list of all coordinates for an enemy to go for each step. It should know the path index and the
  * increment (amount of pixel it moves per step/ speed of the enemy). The factory instantiate this PathFinder class, 
