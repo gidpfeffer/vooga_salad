@@ -7,7 +7,7 @@ import gameengine.actors.management.Actor;
 import gameengine.actors.properties.LimitedHealthProperty;
 import gameengine.actors.properties.ShootTargetFarProperty;
 import gameengine.actors.properties.ShootTargetNearProperty;
-import gameengine.actors.properties.ShootTargetProperty;
+import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
@@ -23,7 +23,7 @@ public class ShootTest {
 		grid.spawn(actor, 3, 3);
 		grid.spawn(actor2, 2.5, 2.5);
 		MasterGrid myGrid = grid;
-		ShootData shootdata = new ShootData(10, 10);
+		ShootData shootdata = new ShootData(10, 10, BasicActorType.Troop);
 		ShootTargetProperty<MasterGrid> prop = new ShootTargetFarProperty<MasterGrid>(shootdata);
 		//prop.getEnemyToShoot(myGrid.getActorLocationsInRadius(1, 1, 10, BasicActorType.Troop), new Coordinates(1,1)).stream().forEach(point -> System.out.println(point.getX()+", "+point.getY()));
 	}

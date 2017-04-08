@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import gamedata.composition.MoveWithSetPathData;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 /**
@@ -20,7 +21,7 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 	
 	public MoveWithSetPathProperty(MoveWithSetPathData data){
 		//Apply random path to current actor
-		myPathCoordinates = new LinkedList<>(data.getRandomSteps()); 
+		myPathCoordinates = new LinkedList<>(data.getPath());
 	}
 	
 	@Override
