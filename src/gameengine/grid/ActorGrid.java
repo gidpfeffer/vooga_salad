@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import gameengine.actors.management.Actor;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
@@ -42,7 +43,6 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 		actors = filter(actors, a -> a.getActor().isActive());
 	}
 
-	
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
 		return items.stream()
 				.filter(t -> predicate.test(t))
@@ -120,16 +120,27 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 	public double getMaxY() {
 		return limits.getY();
 	}
-
+	
 	@Override
-	public void spawn(Actor newActor, double startX, double startY) {
-		Grid2D location = new Coordinates(startX, startY);
-		MovableActor actor = new ActorLocator(location, newActor);
-		actors.add(actor);
+	public void removeActor(int ID) {
+		actors = filter(actors, a -> a.getActor().getID() != ID);
 	}
 	
-	public void removeActor(int ID) {
-		//to do
+	@Override
+	public void controllerSpawnActor(Actor actor, int startX, int startY){
+		addActor(actor, startX, startY);
+	}
+	
+	private void addActor(Actor newActor, double startX, double startY){
+		MovableActor movingActor = new ActorLocator(new Coordinates(startX, startY), newActor);
+		actors.add(movingActor);
+	}
+
+	@Override
+	public Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY) {
+		Actor newActor = actorMaker.apply(actorType);
+		addActor(newActor, startX, startY);
+		return newActor.addProperty();
 	}
 
 }

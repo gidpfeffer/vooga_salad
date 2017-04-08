@@ -1,10 +1,11 @@
 package gameengine.grid.interfaces.ActorGrid;
 
-import gameengine.actors.management.Actor;
+import java.util.function.Consumer;
+
+import gameengine.actors.propertygen.IActProperty;
 
 public interface ReadAndSpawnGrid extends ReadableGrid{
 
-	//Someone needs to make a projectile class
-	void spawn(Actor newActor, double startX, double startY);
+	Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY);
 
 }
