@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gamedata.ActorData;
+import gamedata.composition.Data;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -52,6 +53,10 @@ public class TowerInfoView extends AnchorPane{
 	public void setActorData(List<ActorData> data){
 		//TODO
 		myData = data;
-		System.out.println("Selecting tower named: " + data.get(0).getName());
+		ActorData actor = data.get(0);
+		System.out.println("Selecting tower named: " + actor.getName());
+		for(Data d: actor.getMyData()){
+			System.out.println(d);
+		}
 	}
 }

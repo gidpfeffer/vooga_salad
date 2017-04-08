@@ -18,6 +18,7 @@ public class Main extends Application{
 		Login login = new Login(s, "loginScreen.css", "login");
 		s.setScene(login.getScene());
 		s.setTitle("Login");
+		s.setResizable(true);
 		s.show();
 	}
 }

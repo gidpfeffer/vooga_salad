@@ -16,11 +16,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -95,12 +93,10 @@ public class TowerEditorView extends AnchorPane {
 	}
 	
 	private void setupInfoView(ScrollPane scroll){
-		if(!this.myTowers.isEmpty()){
+		if(!this.myTowers.isEmpty())
 			myTowerInfoView = new TowerInfoView(myTowers.get(myTowers.keySet().iterator().next()));
-		}else{
+		else
 			myTowerInfoView = new TowerInfoView();
-		}
-		
 		scroll.setContent(myTowerInfoView);
 	}
 	
@@ -112,7 +108,7 @@ public class TowerEditorView extends AnchorPane {
 		ImageView imageView = new ImageView(new Image("add_icon_w.png"));
 		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
-		StackPane view = UIHelper.buttonStack(e -> {}, 
+		StackPane view = UIHelper.buttonStack(e -> addNewTower(), 
 				Optional.of(label), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(64);
@@ -124,7 +120,6 @@ public class TowerEditorView extends AnchorPane {
 
 	private void setupSides(ScrollPane leftSide, ScrollPane rightSide) {
 		double inset = 12.0;
-
 		AnchorPane.setBottomAnchor(rightSide, inset);
 		AnchorPane.setBottomAnchor(leftSide, inset);
 		AnchorPane.setTopAnchor(rightSide, 48.0);
@@ -157,12 +152,18 @@ public class TowerEditorView extends AnchorPane {
 	}
 
 	private void setupDefaultTowers() {
-
-		for (Entry<String, String> entry : DEFAULT_TOWERS.entrySet()) {
+		for (Entry<String, String> entry : DEFAULT_TOWERS.entrySet()) 
 			addTower(entry.getValue(), entry.getKey());
-		}
 	}
 
+	/**
+	 * This method adds a StackButton to the Vbox with the tower image
+	 * and name. It also creates an ActorData and stores it in the 
+	 * myTowers map, binding the ActorData to the StackButton
+	 * 
+	 * @param imgPath the fil path of the image
+	 * @param name the name of the tower, can be changed later.
+	 */
 	private void addTower(String imgPath, String name){
 		Image img = new Image(imgPath);
 		ImageView imageView = new ImageView(img);
@@ -189,14 +190,19 @@ public class TowerEditorView extends AnchorPane {
 		this.myTowersView.getChildren().add(myTowersView.getChildren().size() - 1, view);		
 	}
 
+	/**
+	 * the action when the plus button is pressed on the bottom of the screen
+	 * prompts user to select an image and adds a new tower with default values
+	 */
 	private void addNewTower() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
-		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Text Files", "*.txt"),
-				new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
-				new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"), new ExtensionFilter("All Files", "*.*"));
+		fileChooser.setTitle("Selectc Image File");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
-
+		if(selectedFile!= null){
+			String s = selectedFile.getName();
+			addTower(s,s.substring(0, s.indexOf(".")) );
+		}
 		// addTower();
 	}
 	
