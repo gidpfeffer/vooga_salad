@@ -18,7 +18,7 @@ public class LimitedHealthProperty implements HealthProperty {
 
 	@Override
 	public boolean isAlive() {
-		return myHealth>0;
+		return myHealth > 0;
 	}
 
 }
