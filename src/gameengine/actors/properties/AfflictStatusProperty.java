@@ -1,5 +1,6 @@
 package gameengine.actors.properties;
 
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.status.IStatus;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 

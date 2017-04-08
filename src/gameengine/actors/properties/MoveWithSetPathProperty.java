@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import gamedata.composition.MoveWithSetPathData;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 /**
@@ -20,7 +21,7 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 	
 	public MoveWithSetPathProperty(MoveWithSetPathData data){
 		//Apply random path to current actor
-		myPathCoordinates = new LinkedList<>(data.getRandomSteps()); 
+		myPathCoordinates = new LinkedList<>(data.getPath());
 	}
 	
 	@Override
@@ -30,8 +31,13 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 			// poll a coordinate from myPathCoordinates to set the enemy location to
 			Grid2D newLoc = myPathCoordinates.poll();
 			grid.move(actorID, newLoc.getX(), newLoc.getY()); 
-			System.out.println("this shouldn't print");
 		}
+	}
+
+	@Override
+	public boolean isOn() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
