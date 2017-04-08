@@ -9,5 +9,7 @@ public interface ReadAndDamageGrid extends ReadableGrid{
 	
 	Collection<Consumer<Double>>getActorDamagablesInRadius(double x, double y, 
 			double radius, BasicActorType type);
+	
+	Consumer<Double>getMyDamageable(int actorID);
 
 }

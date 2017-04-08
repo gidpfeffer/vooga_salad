@@ -11,6 +11,7 @@ public class IncapacitateProperty<G extends ReadableGrid> implements IActPropert
 		
 	}
 
+
 	@Override
 	public boolean isOn() {
 		// TODO Auto-generated method stub
