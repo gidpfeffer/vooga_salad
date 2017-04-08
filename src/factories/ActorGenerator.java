@@ -6,10 +6,16 @@ import java.util.List;
 import gamedata.ActorData;
 import gamedata.composition.Data;
 import gameengine.actors.management.Actor;
-import gameengine.actors.properties.IActProperty;
+import gameengine.actors.propertygen.IActProperty;
 
 /**
- * Builds an Actor using the ActorFactory
+ * Builds an Actor using the ActorFactory. This should
+ * be invoked by the GameController to generate new actors.
+ * This class should be used AFTER the number representing the 
+ * order has been used to invoke the correct ActorData from
+ * the GameData object (using getOption(Integer index)) as 
+ * its make function requires an IDGenerator-created ID and the
+ * ActorData (like a blueprint) corresponding to the desired Actor.
  * 
  * @author maddiebriere
  */
