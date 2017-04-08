@@ -65,7 +65,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 		return filter(actors, a -> a.getActor().getType() == type);
 	}
 	
-	public MovableActor getActorFromID(int ID){
+	private MovableActor getActorFromID(int ID){
 		Collection<MovableActor> foundIDs = filter(actors, a-> a.getActor().getID() == ID);
 		if(foundIDs.size() != 1) 
 			throw new IllegalStateException("found an invalid number of id's ~ lines 75 ActorGrid");
