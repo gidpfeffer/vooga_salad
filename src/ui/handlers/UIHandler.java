@@ -14,7 +14,7 @@ public interface UIHandler {
 	//question: how should we transfer information about the type of actor from front end to back end?
 	public void deleteGameObject(int id);
 	public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException;
-	void updateGameObjectLocation(int id, double x, double y);
-	int addGameObject(Integer option, double x, double y);
+	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
+	int addGameObject(Integer option, double x, double y) throws VoogaException;
 	
 }
