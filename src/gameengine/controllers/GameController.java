@@ -1,20 +1,16 @@
 package gameengine.controllers;
 
-import java.util.List;
-
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.composition.Data;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import gameengine.grid.interfaces.Identifiers.MovableActor;
 import gameengine.player.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import types.ActorType;
+import ui.UIMain;
 import ui.handlers.UIHandler;
 import util.IDGenerator;
 import util.VoogaException;
@@ -30,6 +26,8 @@ public class GameController {
 	private IDGenerator myIDGenerator;
 	private ActorGrid myActorGrid;
 	
+	private UIMain myUIMain;
+	
 	private final int MAX_X = 1000;
 	private final int MAX_Y =1000;
 	
@@ -39,7 +37,8 @@ public class GameController {
 		myIDGenerator = new IDGenerator();
 		myGameData = new GameData();
 		myGameStatus = new GameStatus();
-		myActorGrid = new ActorGrid(MAX_X,MAX_Y);
+		myActorGrid = new ActorGrid(MAX_X,MAX_Y,
+				i -> ActorGenerator.makeActor(myGameData.getOption(i)));
 		initializeUIHandler();
 	}
 	
@@ -54,6 +53,19 @@ public class GameController {
 	public void step() {
 		myActorGrid.step();
 	}
+	
+	private double getScreenSizeX() {
+		//need getMap method in front end
+		return myUIMain.getScene().getWidth();
+	}
+	
+	private double getScreenSizeY() {
+		//need getMap method in front end
+		return myUIMain.getScene().getHeight();
+	}
+	
+	
+	
 	
 	private void initializeUIHandler() {
 		myUIHandler = new UIHandler() {
@@ -86,10 +98,10 @@ public class GameController {
 			}
 
 			@Override
-			public int addGameObject(Integer option, double x, double y) throws VoogaException{
+			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
 				int ID = myIDGenerator.getNewID();
-				Actor actor = ActorGenerator.makeActor(ID, actorData);
+				Actor actor = ActorGenerator.makeActor(actorData);
 				if (myActorGrid.isValidLoc(x, y)) {
 					myActorGrid.spawn(actor, x, y);
 				} else {
@@ -101,8 +113,7 @@ public class GameController {
 
 			@Override
 			public void pause() {
-				// TODO Auto-generated method stub
-				
+				animation.pause();
 			}
 
 			@Override

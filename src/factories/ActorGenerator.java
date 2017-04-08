@@ -7,6 +7,7 @@ import gamedata.ActorData;
 import gamedata.composition.Data;
 import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
+import util.IDGenerator;
 
 /**
  * Builds an Actor using the ActorFactory. This should
@@ -30,12 +31,13 @@ public class ActorGenerator{
 	 * @param data ActorData holding information aobut how to make Actor
 	 * @return Actor
 	 */
-	public static Actor makeActor(Integer ID, ActorData data){
+
+	public static Actor makeActor(ActorData data){
 		//Change to property factory
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
 		toBuild.add(data.getActor()); //add type
-		toBuild.add(ID); //add ID
+		toBuild.add(IDGenerator.getNewID()); //add ID
 		
 		List<Data> properties = data.getMyData();
 		PropertyFactory propFactory = new PropertyFactory();
