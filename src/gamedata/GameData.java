@@ -133,10 +133,10 @@ public class GameData {
 	 * 
 	 * Integer maps to the number of enemies on the level.
 	 * 
-	 * @param troops Enemies for the level
+	 * @param duration representing level length
 	 */
-	public void addLevel(Map<ActorData, Integer> troops){
-		levels.add(new LevelData(troops));
+	public void addLevel(double duration){
+		levels.add(new LevelData(duration));
 	}
 	
 	/**
