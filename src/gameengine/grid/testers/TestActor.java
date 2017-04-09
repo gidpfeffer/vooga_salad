@@ -5,19 +5,22 @@ import java.util.function.Consumer;
 import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
 public class TestActor implements Actor{
-	boolean alive;
+	private boolean alive;
+	private int ID;
 	
-	public TestActor(){
+	public TestActor(int ID){
 		alive = true;
+		this.ID = ID;
 	}
 
 	@Override
 	public void act(MasterGrid grid) {
-		// TODO Auto-generated method stub
-		
+		Grid2D loc = grid.getLocationOf(ID);
+		grid.move(ID, loc.getX() + 2, loc.getY() - 5);
 	}
 
 	@Override
@@ -27,42 +30,32 @@ public class TestActor implements Actor{
 
 	@Override
 	public Consumer<Double> applyDamage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Consumer<IActProperty<MasterGrid>> addProperty() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Integer getID() {
-		// TODO Auto-generated method stub
-		return null;
+		return ID;
 	}
 
 	@Override
 	public BasicActorType getType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void deactivate(){
-		
+		return BasicActorType.Troop;
 	}
 
 	@Override
 	public Integer getMyOption() {
-		// TODO Auto-generated method stub
-		return null;
+		return -1;
 	}
 
 	@Override
 	public Double getPercentHealth() {
-		// TODO Auto-generated method stub
-		return null;
+		return 0.1;
 	}
 
 }

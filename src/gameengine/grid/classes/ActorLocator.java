@@ -2,9 +2,9 @@ package gameengine.grid.classes;
 
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import gameengine.grid.interfaces.Identifiers.LocationalActor;
+import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
 
-public class ActorLocator implements LocationalActor{
+public class ActorLocator implements SettableActorLocator{
 	
 	private Grid2D location;
 	private Actor actor;
