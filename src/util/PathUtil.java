@@ -36,14 +36,9 @@ public class PathUtil {
 	public static List<Grid2D> getIncrementPoints(Grid2D start,Grid2D end, double increment){
 		List<Grid2D> result = new ArrayList<Grid2D>();
 		double distance = getDistance(start, end); 
-		System.out.println("distance between " + start.asString() + " and " + end.asString() + " is: " + distance);
-		
 		double angle = getAngle(start,end);
-		System.out.println("angle between " + start.asString() + " and " + end.asString() + " is: " + angle);
-		
 		int numIncrements = (int) (distance % increment == 0 ? (distance/increment)-1: (distance/increment));
-		System.out.println("Num of increments " + numIncrements);
-		
+	
 		for (int i = 0; i <= numIncrements; i++){
 			double newX = start.getX() + increment* i * Math.cos(angle);
 			double newY = start.getY() + increment* i * Math.sin(angle);
@@ -51,6 +46,17 @@ public class PathUtil {
 		}
 		result.add(new Coordinates(end));
 		return result; 
+	}
+	
+	public static List<Grid2D> getPathCoordinates(List<Grid2D> pathChosen , double increment){
+		
+		List<Grid2D> coordinatesToReturn = new ArrayList<Grid2D>(); 
+		for (int i = 0; i< pathChosen.size()-1; i++ ){
+			coordinatesToReturn.addAll(getIncrementPoints(pathChosen.get(i),pathChosen.get(i+1),increment));
+			coordinatesToReturn.remove(coordinatesToReturn.size()-1);
+		}
+		coordinatesToReturn.add(new Coordinates(pathChosen.get(pathChosen.size()-1))); // for the ending point
+		return coordinatesToReturn;
 	}
 	
 }
