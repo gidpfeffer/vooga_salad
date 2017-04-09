@@ -5,8 +5,10 @@ import java.util.List;
 
 import gamedata.ActorData;
 import gamedata.compositiongen.Data;
+import gameengine.actors.MainActor;
 import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
+import gameengine.actors.propertygen.Property;
 import util.IDGenerator;
 
 /**
@@ -32,25 +34,29 @@ public class ActorGenerator{
 	 * @return Actor
 	 */
 
-	public static Actor makeActor(Integer option, ActorData data){
+	public static MainActor makeActor(Integer option, ActorData data){
 		//Change to property factory
 		
 		//TODO: Add ID Generator
 		
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
+		
 		toBuild.add(data.getActor()); //add type
 		toBuild.add(option);
-		toBuild.add(IDGenerator.getNewID()); //add ID
+		int index = IDGenerator.getNewID();
+		toBuild.add(index); //add ID
+	
 		
 		List<Data> properties = data.getMyData();
 		PropertyFactory propFactory = new PropertyFactory();
 		for(Data d: properties){
-			String dataName = d.getClass().getName();
+			String dataName = d.getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
-			IActProperty property = propFactory.make(propertyName, properties);
+			Property property = propFactory.make(propertyName, d);
 			toBuild.add(property);
 		}
-		return actorFactory.make(data.getActor().toString(), toBuild.toArray());
+		
+		return actorFactory.make(toBuild.toArray());
 	}
 }
