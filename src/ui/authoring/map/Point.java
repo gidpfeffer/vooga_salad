@@ -42,4 +42,9 @@ public class Point extends Circle{
 		this.setCenterY(loc.getY());
 	}
 
+	public Location getLocation() {
+		// TODO Auto-generated method stub
+		return myGridLocation;
+	}
+
 }

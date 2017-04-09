@@ -17,6 +17,11 @@ import util.Location;
  */
 public class ImageButton extends Button{
 	
+	/**
+	 * 
+	 * @param imagePath the path to the image file.
+	 * @param size A tuple describing the width and height of the image
+	 */
 	public ImageButton(String imagePath,Location size){
 		this(imagePath, imagePath, size);
 	}

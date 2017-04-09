@@ -12,16 +12,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ui.Preferences;
 import ui.general.CustomColors;
-import ui.general.Frame;
 import ui.general.UIHelper;
-import ui.general.UIView;
 
 public class LevelEditorView extends VBox{
 	//# of Enemies
