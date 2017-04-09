@@ -20,6 +20,15 @@ public class MainActor implements Actor {
 
 	@SuppressWarnings("unchecked")
 	public MainActor(BasicActorType type, Integer option, 
+			Integer id, HealthProperty health) {
+		myType = type;
+		myID = id;
+		myHealth = health;
+		myProperties = new ArrayList<>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public MainActor(BasicActorType type, Integer option, 
 			Integer id, HealthProperty health, IActProperty<MasterGrid>... properties) {
 		myType = type;
 		myID = id;
