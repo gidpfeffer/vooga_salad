@@ -67,6 +67,7 @@ public class TowerEditorView extends AnchorPane {
 	// TODO get projectile data first
 	public TowerEditorView(PopViewDelegate delegate) {
 		super();
+		//this.sceneProperty().addListener(scene -> { if(scene!=null){ this.getScene().getStylesheets().add("scroll.css"); } });
 		myDelegate = delegate;
 		myTowers = new HashMap<StackPane, List<ActorData>>();
 		setupViews();
@@ -132,7 +133,8 @@ public class TowerEditorView extends AnchorPane {
 		rightSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
 		leftSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
 		leftSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
-
+		//leftSide.setStyle(value);
+		
 		leftSide.setHbarPolicy(ScrollBarPolicy.NEVER);
 		rightSide.setHbarPolicy(ScrollBarPolicy.NEVER);
 
