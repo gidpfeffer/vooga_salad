@@ -3,6 +3,8 @@ package gameengine.grid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -13,27 +15,23 @@ import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadShootMoveGrid;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import gameengine.grid.interfaces.Identifiers.MovableActor;
+import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
-import gameengine.grid.interfaces.controllergrid.SteppableGrid;
 import types.BasicActorType;
+import java.util.Observable;
 
-public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
-	ReadAndMoveGrid, ReadAndSpawnGrid, ReadShootMoveGrid, ControllableGrid, SteppableGrid{
+public class ActorGrid extends Observable implements MasterGrid, ControllableGrid{
 	
 	private Coordinates limits;
-	private Collection<MovableActor> actors;
+	private Collection<SettableActorLocator> actors;
 	private Function<Integer, Actor> actorMaker;
+	private Map<Integer, Double> frontEndInfo;
 	
 	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
+		frontEndInfo = new HashMap<>();
 		this.actorMaker = actorMaker;
 	}
 
@@ -41,6 +39,11 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 	public void step() {
 		actors.forEach(a -> a.getActor().act(this));
 		actors = filter(actors, a -> a.getActor().isActive());
+		frontEndInfo = actors.stream()
+				.map(a -> a.getActor())
+				.collect(Collectors.toMap(Actor::getID, a -> a.getPercentHealth()));
+		setChanged();
+		notifyObservers(frontEndInfo);
 	}
 
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
@@ -61,12 +64,12 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 		return Math.pow(xDifSquared + yDifSquared, 0.5);
 	}
 	
-	private Collection<MovableActor> specificActorTypes(BasicActorType type){
+	private Collection<SettableActorLocator> specificActorTypes(BasicActorType type){
 		return filter(actors, a -> a.getActor().getType() == type);
 	}
 	
-	private MovableActor getActorFromID(int ID){
-		Collection<MovableActor> foundIDs = filter(actors, a-> a.getActor().getID() == ID);
+	private SettableActorLocator getActorFromID(int ID){
+		Collection<SettableActorLocator> foundIDs = filter(actors, a-> a.getActor().getID() == ID);
 		if(foundIDs.size() != 1) 
 			throw new IllegalStateException("found an invalid number of id's ~ lines 75 ActorGrid");
 		return foundIDs.iterator().next();
@@ -74,25 +77,25 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 
 	@Override
 	public void move(int ID, double newX, double newY) {
-		MovableActor actor = getActorFromID(ID);
+		SettableActorLocator actor = getActorFromID(ID);
 		actor.setLocation(newX, newY);
 	}
 	
-	private Collection<MovableActor> getActorsInRadius(double x, double y, double radius, BasicActorType type){
-		Collection<MovableActor> filteredTypes = specificActorTypes(type);
+	private Collection<SettableActorLocator> getActorsInRadius(double x, double y, double radius, BasicActorType type){
+		Collection<SettableActorLocator> filteredTypes = specificActorTypes(type);
 		return filter(filteredTypes, a -> distance(a.getLocation().getX(), x, a.getLocation().getY(), y) <= radius);
 	}
 
 	@Override
 	public Collection<Grid2D> getActorLocationsInRadius(double x, double y, double radius, BasicActorType type) {
-		Collection<MovableActor> actorsinRadius = getActorsInRadius(x, y, radius, type);
+		Collection<SettableActorLocator> actorsinRadius = getActorsInRadius(x, y, radius, type);
 		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getLocation()));
 	}
 	
 	@Override
 	public Collection<Consumer<Double>> getActorDamagablesInRadius(double x,
 			double y, double radius, BasicActorType type) {
-		Collection<MovableActor> actorsinRadius = getActorsInRadius(x, y, radius, type);
+		Collection<SettableActorLocator> actorsinRadius = getActorsInRadius(x, y, radius, type);
 		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getActor().applyDamage()));
 	}
 
@@ -132,7 +135,7 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 	}
 	
 	private void addActor(Actor newActor, double startX, double startY){
-		MovableActor movingActor = new ActorLocator(new Coordinates(startX, startY), newActor);
+		SettableActorLocator movingActor = new ActorLocator(new Coordinates(startX, startY), newActor);
 		actors.add(movingActor);
 	}
 
@@ -141,6 +144,11 @@ public class ActorGrid implements ReadableGrid, MasterGrid, ReadAndDamageGrid,
 		Actor newActor = actorMaker.apply(actorType);
 		addActor(newActor, startX, startY);
 		return newActor.addProperty();
+	}
+
+	@Override
+	public Consumer<Double> getMyDamageable(int actorID) {
+		return getActorFromID(actorID).getActor().applyDamage();
 	}
 
 }

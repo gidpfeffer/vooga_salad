@@ -73,6 +73,7 @@ public class MainActor implements Actor {
 		return myType;
 	}
 
+	@Override
 	public Integer getMyOption() {
 		return myOption;
 	}

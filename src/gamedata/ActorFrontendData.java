@@ -30,7 +30,7 @@ public class ActorFrontendData {
 		this.location = location;
 		this.heading = heading;
 		this.health = health;
-		this.ID= ID;
+		this.ID = ID;
 	}
 	public String getImagePath() {
 		return imagePath;
