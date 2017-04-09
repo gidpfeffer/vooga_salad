@@ -6,8 +6,6 @@ import java.util.List;
 import gamedata.ActorData;
 import gamedata.compositiongen.Data;
 import gameengine.actors.MainActor;
-import gameengine.actors.management.Actor;
-import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.Property;
 import util.IDGenerator;
 

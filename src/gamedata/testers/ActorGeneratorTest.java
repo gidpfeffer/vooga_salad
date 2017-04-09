@@ -10,7 +10,7 @@ import gamedata.BasicData;
 import gameengine.actors.MainActor;
 import types.BasicActorType;
 
-public class ActorGeneratorTester {
+public class ActorGeneratorTest {
 
 	//TODO: Fix
 	@Test
