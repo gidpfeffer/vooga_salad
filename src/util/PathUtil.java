@@ -18,8 +18,10 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 public class PathUtil {
 
 	public static double getDistance(Grid2D point1,Grid2D point2){
-		return Math.sqrt(Math.pow(point2.getX() - point1.getX(),2) 
-				+ Math.pow(point2.getY() - point1.getY(),2));
+		System.out.println(point1.getX() + " " + point1.getY());
+		System.out.println(point2.getX() + " " + point2.getY());
+		return Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) 
+				+ Math.pow(point2.getY() - point1.getY(), 2));
 	}
 	
 	public static double getAngle(Grid2D point1,Grid2D point2){
