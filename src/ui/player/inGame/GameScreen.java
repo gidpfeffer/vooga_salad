@@ -76,24 +76,21 @@ public class GameScreen {
 	
 	private void setupRight(UIHandler uihandler, Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
-		SidePanelPanes optionsPane = new SidePanelPanes(uihandler, shots, towers, troops, bases);
-		for (PaneController controller : optionsPane.getListOfControllers()) {
-			controller.getPane().setLayoutX(screenSizeWidth);
-			anchorPaneRoot.getChildren().add(controller.getPane());
-		}
-		SidePanelPanes mainPane = new SidePanelPanes(uihandler, iconImages, optionsPane.getListOfControllers());
-		anchorPaneRoot.getChildren().add(mainPane.getMainPane());
-		AnchorPane.setRightAnchor(mainPane.getMainPane(), 0.0);
+		SidePanel sidePanel = new SidePanel(uihandler, towers, shots, troops, bases);
+		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 0.0);
 		//borderPane.setRight(mainPane.getMainPane());
 	}
 	
 	private void setupLeft() {
 		// TODO Auto-generated method stub
-		SettingsPane settingsPane = new SettingsPane(uihandler);
+		SettingsPane settingsPane = new SettingsPane();
 		Button helpButton = settingsPane.getHelpButton();
+		AnchorPane settings = settingsPane.getHelpPane();
 		AnchorPane.setLeftAnchor(helpButton, 10.);
-		AnchorPane.setTopAnchor(helpButton, 10.0);
-		anchorPaneRoot.getChildren().addAll(helpButton, settingsPane.getHelpPane());
+		AnchorPane.setTopAnchor(helpButton, 10.);
+		anchorPaneRoot.getChildren().addAll(helpButton, settings);
+		settings.setLayoutX(-settings.getWidth());
+		
 		//borderPane.setLeft(settingsPane.getHelpPane());
 	}
 	

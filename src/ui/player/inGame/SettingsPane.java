@@ -18,16 +18,12 @@ import ui.player.InGameModel;
 
 public class SettingsPane {
 
-	private PaneController help;
 	private Button button;
 	private AnchorPane settings;
 	private static final double paneWidth = 150.;
 	private List<String> helpPaneOptions = new ArrayList<>(Arrays.asList("Help", "Settings", "Return to Main"));
 	private List<Hyperlink> helpLinks = new ArrayList<>();
 	
-	public PaneController getHelpController() {
-		return help;
-	}
 	
 	public Button getHelpButton(){
 		return button;
@@ -37,24 +33,31 @@ public class SettingsPane {
 		return settings;
 	}
 	
-	public SettingsPane(UIHandler uihandler) {
-		help = new PaneController(new InGameModel(), new OptionsPane(), uihandler);
+	public SettingsPane() {
 		setup();
 	}
 	
 	private void setup(){
-		help.setWidth(paneWidth);
-		settings = help.getPane();
-		help.addBackButton(closePane);
+		setupPane();
 		createHelpButton();
 		addHyperlinks();
 		}
 	
+	private void setupPane() {
+		settings.setPrefWidth(paneWidth);
+		addBackButton();
+	}
+	
+	private void addBackButton(){
+		OptionButton back = new OptionButton(0, "back", "back_icon", closePane);
+		settings.getChildren().add(back.getButton());
+		AnchorPane.setTopAnchor(back.getButton(), 10.0);
+		AnchorPane.setRightAnchor(back.getButton(), 10.0);
+	}
+	
 	private void createHelpButton() {
 		OptionButton back = new OptionButton(0, "back", "back_icon", openPane);
 		button = back.getButton();
-/*		AnchorPane.setLeftAnchor(button, 10.);
-		AnchorPane.setTopAnchor(button, 10.);*/
 	}
 	
 	private void addHyperlinks() {
@@ -86,7 +89,6 @@ public class SettingsPane {
 	        Object obj = ME.getSource();  //how to link to correct pane?? have to do correct controllers.getPane()
 
 	        if ( obj instanceof Button ) {
-	        	System.out.println("button should slide out");
 	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
 	    		t.setNode(settings);
 	    		t.setToX(paneWidth);
