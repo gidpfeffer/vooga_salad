@@ -48,7 +48,7 @@ public class LeftPaneView extends StackPane{
 	}
 	
 	private void setupLeftPaneButtons() {
-		StackPane enemy = UIHelper.buttonStack(e -> {}, 
+		StackPane enemy = UIHelper.buttonStack(e -> myDelegate.openView(myEnemyView), 
 				Optional.of(labelForStackButton("Enemy Editor")), 
 				Optional.of(imageForStackButton("enemy_icon.png")), 
 				Pos.CENTER_RIGHT, true);
@@ -92,7 +92,7 @@ public class LeftPaneView extends StackPane{
 
 	
 	private void setupEnemyView() {
-		myEnemyView = new EnemyEditorView();
+		myEnemyView = new EnemyEditorView(myDelegate);
 		UIHelper.setBackgroundColor(myEnemyView, CustomColors.GREEN_100);
 	}
 	
