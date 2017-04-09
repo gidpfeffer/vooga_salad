@@ -61,6 +61,20 @@ public abstract class AbstractFactory<A> {
 	public A make(String name, Object... args) {
 		return buildObject(generateClassPath(name), args);
 	}
+	
+	/**
+	 * Make an object of type A with the name 'name' (e.g., GroupStart) and the
+	 * arguments 'args' for the constructor
+	 * 
+	 * @param name
+	 *            Name of the object being created
+	 * @param args
+	 *            Arguments to pass to the constructor
+	 * @return Object of type A
+	 */
+	public A make(Object... args) {
+		return buildObject(generateClassPath(""), args);
+	}
 
 	/**
 	 * Generate the full class path to the object type

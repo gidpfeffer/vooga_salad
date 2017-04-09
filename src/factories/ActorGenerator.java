@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gamedata.ActorData;
-import gamedata.composition.Data;
-import gameengine.actors.management.Actor;
-import gameengine.actors.propertygen.IActProperty;
+import gamedata.compositiongen.Data;
+import gameengine.actors.MainActor;
+import gameengine.actors.propertygen.Property;
+import util.IDGenerator;
 
 /**
  * Builds an Actor using the ActorFactory. This should
@@ -30,21 +31,30 @@ public class ActorGenerator{
 	 * @param data ActorData holding information aobut how to make Actor
 	 * @return Actor
 	 */
-	public static Actor makeActor(Integer ID, ActorData data){
+
+	public static MainActor makeActor(Integer option, ActorData data){
 		//Change to property factory
+		
+		//TODO: Add ID Generator
+		
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
+		
 		toBuild.add(data.getActor()); //add type
-		toBuild.add(ID); //add ID
+		toBuild.add(option);
+		int index = IDGenerator.getNewID();
+		toBuild.add(index); //add ID
+	
 		
 		List<Data> properties = data.getMyData();
 		PropertyFactory propFactory = new PropertyFactory();
 		for(Data d: properties){
-			String dataName = d.getClass().getName();
+			String dataName = d.getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
-			IActProperty property = propFactory.make(propertyName, properties);
+			Property property = propFactory.make(propertyName, d);
 			toBuild.add(property);
 		}
-		return actorFactory.make(data.getActor().toString(), toBuild.toArray());
+		
+		return actorFactory.make(toBuild.toArray());
 	}
 }

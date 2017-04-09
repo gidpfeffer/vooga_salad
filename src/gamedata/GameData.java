@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
 /**
@@ -105,6 +106,10 @@ public class GameData {
 	
 	
 	
+	
+	
+	
+	
 	/**
 	 * This is implementation for use in the Authoring Environment
 	 * 
@@ -128,10 +133,10 @@ public class GameData {
 	 * 
 	 * Integer maps to the number of enemies on the level.
 	 * 
-	 * @param troops Enemies for the level
+	 * @param duration representing level length
 	 */
-	public void addLevel(Map<ActorData, Integer> troops){
-		levels.add(new LevelData(troops));
+	public void addLevel(double duration){
+		levels.add(new LevelData(duration));
 	}
 	
 	/**
@@ -144,6 +149,18 @@ public class GameData {
 	public void addLevel(LevelData data){
 		levels.add(data);
 	}
+	
+	
+	/**
+	 * Returns Integers corresponding to a path number, matched to the 
+	 * Path that is defined by that number.
+	 * 
+	 * @return Map of Integers mapped to Paths
+	 */
+	public Map<Integer, List<Grid2D>> getPathOptions(){
+		return myPaths.getMyPaths();
+	}
+	
 	
 	
 	

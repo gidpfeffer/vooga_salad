@@ -68,4 +68,13 @@ public interface Actor {
 	 * @return proprietary enum type of the actor
 	 */
 	public BasicActorType getType();
+
+	/**
+	 * 
+	 * @return Integer denoting the "type" of actor that a given actor is with
+	 *         respect to the gamedata
+	 */
+	public Integer getMyOption();
+	
+	public Double getPercentHealth();
 }

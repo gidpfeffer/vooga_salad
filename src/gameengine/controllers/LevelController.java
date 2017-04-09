@@ -1,20 +1,25 @@
 package gameengine.controllers;
 
-import gameengine.grid.ActorGrid;
+import gamedata.ActorData;
+import gamedata.GameData;
+import gamedata.LevelData;
+import gamedata.PreferencesData;
+import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 
 /**
  * Controls information about/behavior of a single level
  * 
- * @author maddiebriere
+ * @author maddiebriere, sarahzhou
+ * 
  */
 
 public class LevelController {
 	public int myLevel;
-	public ActorGrid myMap;
+	public ControllableGrid myGrid;
 	
-	public LevelController(ActorGrid grid, int level) {
+	public LevelController(ControllableGrid grid, int level) {
 		myLevel = level;
-		myMap = grid;
+		myGrid = grid;
 	}
 	public int getMyLevel() {
 		return myLevel;
@@ -22,11 +27,47 @@ public class LevelController {
 	public void setMyLevel(int myLevel) {
 		this.myLevel = myLevel;
 	}
-	public ActorGrid getMyMap() {
-		return myMap;
+	public ControllableGrid getMyMap() {
+		return myGrid;
 	}
-	public void setMyMap(ActorGrid myMap) {
-		this.myMap = myMap;
+	public void setMyMap(ControllableGrid myMap) {
+		this.myGrid = myMap;
+	}
+	
+	public void changeLevel(GameData current, int level){
+		myLevel = level;
+		LevelData curr = current.getLevel(level);
+		PreferencesData preferences = curr.getMyPreferences();
+		if(!preferences.cleanLevel()){ //add old actors
+			
+		}
+		addPieces(curr);//add new level actors
+		
+		//TODO: Add-on other LevelData measures like difficulty
+	}
+	
+	public void levelUp(GameData current) {	
+		myLevel++;
+		changeLevel(current,myLevel);
+	}
+	
+	
+
+	
+	/**
+	 * Use Actor factory to add all of the actors
+	 * to the grid
+	 * 
+	 * @param curr LevelData from which to collect Actor information
+	 * @param grid Grid to modify (add actors)
+	 */
+	private void addPieces(LevelData curr){
+		for (ActorData troop: curr.getTroops().keySet()) {
+			//where to put the troops?
+			myGrid.controllerSpawnActor(troop, startX, startY);
+			//is there a wait time between spawning?
+		}
+		
 	}
 	
 	
