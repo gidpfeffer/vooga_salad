@@ -75,4 +75,6 @@ public interface Actor {
 	 *         respect to the gamedata
 	 */
 	public Integer getMyOption();
+	
+	public Double getPercentHealth();
 }
