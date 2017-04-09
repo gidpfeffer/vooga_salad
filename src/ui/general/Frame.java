@@ -1,21 +1,5 @@
-// This entire file is part of my masterpiece.
-// Talha Koc
-/*
- * The Frame class allows me the specify the layout properties
- * that I found most useful when adding GUI components to the
- * the screen. Frame contains the xy-position, width, and height
- * variables which define the respective layout properties of a
- * view. Furthermore, getMaxX and getMaxY provide an easy way to
- * position views next to each other.
- */
 package ui.general;
 
-/**
- * Purpose is specify the layout of views with ease.
- * Frame is used by UIView to set the layout, height, and width of itself.
- * @author TNK
- *
- */
 public class Frame {
 	private double x;
 	private double y;
