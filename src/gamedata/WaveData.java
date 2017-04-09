@@ -19,18 +19,18 @@ import java.util.List;
  *
  */
 public class WaveData {
-	List<EnemyWaveData> enemyWaves; 
+	List<EnemyInWaveData> waveEnemies; 
 	
 	public WaveData(){
-		enemyWaves = new ArrayList<EnemyWaveData>(); 
+		waveEnemies = new ArrayList<EnemyInWaveData>(); 
 	}
 	
-	public void addEnemyWave(EnemyWaveData enemy){
-		enemyWaves.add(enemy); 
+	public void addWaveEnemy(EnemyInWaveData enemy){
+		waveEnemies.add(enemy); 
 	}
 	
-	public List<EnemyWaveData> getEnemyWave(){
-		return enemyWaves;
+	public List<EnemyInWaveData> getWaveEnemies(){
+		return waveEnemies;
 	}
 	
 	

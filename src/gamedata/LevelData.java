@@ -37,9 +37,22 @@ public class LevelData {
 		this.duration = duration;
 	}
 	
-	public void addEnemyWave(ActorData actor, Integer number, List<Integer> myPaths){
-		myEnemyWave.addEnemyWave(new EnemyWaveData(actor, number, myPaths));
+	/**
+	 * Add an enemy type (ActorData) with a number representing its frequency (E.g., 50 Goblins) 
+	 * and a List of available Paths for that enemy, corresponding to numbers (these numbers
+	 * can be retrieved via the PathData in GameData or using the getPathOptions method in GameData).
+	 * 
+	 * Assumption: There is only a single wave for sprint #1
+	 * 
+	 * @param actor ActorData representing enemy
+	 * @param number Number of the enemy (E.g., 50 attackers)
+	 * @param myPaths The possible paths this enemy can take
+	 */
+	public void addWaveEnemy(ActorData actor, Integer number, List<Integer> myPaths){
+		myEnemyWave.addWaveEnemy(new EnemyInWaveData(actor, number, myPaths));
 	}
+	
+	//TODO: Add remove function
 
 	public PreferencesData getMyPreferences() {
 		return myPreferences;
@@ -49,12 +62,15 @@ public class LevelData {
 		this.myPreferences = myPreferences;
 	}
 
-	public Map<ActorData, Integer> getTroops() {
-		return myEnemyWave
-	}
-
-	public void setTroops(Map<ActorData, Integer> troops) {
-		this.troops = troops;
+	/**
+	 * Assumed single wave right now (for first sprint), retrieve all of the enemies attacking
+	 * in this wave, in the form of EnemyInWaveData objects.
+	 * 
+	 * @return A List of EnemyInWaveData objects, each which holds an ActorData, Integer 
+	 * (frequency) and List of paths.
+	 */
+	public List<EnemyInWaveData> getTroops() {
+		return myEnemyWave.getWaveEnemies();
 	}
 
 	public int getDifficulty() {
