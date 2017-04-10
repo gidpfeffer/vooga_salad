@@ -1,14 +1,9 @@
 package ui.handlers;
 
-import java.util.Map;
+import java.util.Map;	
 
 import gamedata.ActorData;
-<<<<<<< HEAD
-=======
-import gamedata.composition.Data;
-import gameengine.actors.management.Actor;
-import gameengine.controllers.GameController;
->>>>>>> 54a58910b6e4d72d900ec5baabf200054d8759ac
+import gamedata.LevelData;
 import util.VoogaException;
 
 public interface UIHandler {
@@ -25,5 +20,6 @@ public interface UIHandler {
 	void stop();
 	void exit();
 	void changeLevel(int level) throws VoogaException;
-	
+	void createLevel(LevelData levelData,int level);
+			
 }
