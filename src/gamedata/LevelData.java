@@ -25,7 +25,7 @@ public class LevelData {
 	
 	//TODO Upgrade to list later -- single wave for now
 	private WaveData myEnemyWave;
-	private int difficulty;
+	private double difficulty;
 	private double duration; //duration for enemy presence
 	
 	//Increase by level
@@ -73,12 +73,8 @@ public class LevelData {
 		return myEnemyWave.getWaveEnemies();
 	}
 
-	public int getDifficulty() {
+	public double getDifficulty() {
 		return difficulty;
-	}
-
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
 	}
 
 	public double getDuration() {
@@ -111,6 +107,10 @@ public class LevelData {
 
 	public void setSpeedMultiplier(double speedMultiplier) {
 		this.speedMultiplier = speedMultiplier;
+	}
+
+	public void setDifficulty(double d) {
+		difficulty = d;
 	}
 	
 	

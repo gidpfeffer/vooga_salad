@@ -24,6 +24,6 @@ public interface UIHandler {
 	void play();
 	void stop();
 	void exit();
-	void changeLevel(int level);
+	void changeLevel(int level) throws VoogaException;
 	
 }
