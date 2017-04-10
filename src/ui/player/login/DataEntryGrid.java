@@ -15,7 +15,7 @@ public abstract class DataEntryGrid {
 
 	
 	public abstract void addValues();
-	public abstract Map<Text, String> getEntryMap();
+	public abstract Map<Text, TextField> getEntryMap();
 	
 	
 	public GridPane getGrid() {
@@ -26,7 +26,7 @@ public abstract class DataEntryGrid {
 		setGridProperties();
 	}
 	
-	public DataEntryGrid(Map<Text, String> entries) {
+	public DataEntryGrid(Map<Text, TextField> entries) {
 		setGridProperties();
 	}
 	
@@ -36,16 +36,12 @@ public abstract class DataEntryGrid {
 		grid.setPadding(new Insets(25, 25, 25, 25));
 	}
 	
-	public void addToGrid(Map<Text, String> entries) {
+	public void addToGrid(Map<Text, TextField> entries) {
 		int i = 0; //col
 		int k = 0; //row
-		for (Map.Entry<Text, String> entry : entries.entrySet()){
-		    TitleToField titleToField = new TitleToField(entry.getKey(), entry.getValue());
-		    Text title = titleToField.getTitle();
-		    TextField field = titleToField.getField();
-		    
-		    grid.add(title, i, k);
-		    grid.add(field, i + 1, k);
+		for (Map.Entry<Text, TextField> entry : entries.entrySet()){
+		    grid.add(entry.getKey(), i, k);
+		    grid.add(entry.getValue(), i + 1, k);
 		    k++;
 		}
 	}

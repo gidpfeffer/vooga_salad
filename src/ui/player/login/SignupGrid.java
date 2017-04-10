@@ -5,17 +5,37 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 public class SignupGrid extends DataEntryGrid{
 
-	private Map<Text, String> entryMap;
+	private Map<Text, TextField> entryMap;
 	private ResourceBundle loginResource;
-	private final String textField = "TextField";
-	private final String passwordField = "PasswordField";
+	
+	public TextField getUsername() {
+		return entryMap.get("username");
+	}
+	
+	public TextField getPassword() {
+		return entryMap.get("password");
+	}
+	
+	public TextField getRePassword() {
+		return entryMap.get("repassword");
+	}
+	
+	public TextField getEmail() {
+		return entryMap.get("email");
+	}
+	
+	public TextField getReEmail() {
+		return entryMap.get("reemail");
+	}
 	
 	@Override
-	public Map<Text, String> getEntryMap() {
+	public Map<Text, TextField> getEntryMap() {
 		return entryMap;
 	}
 	
@@ -28,11 +48,11 @@ public class SignupGrid extends DataEntryGrid{
 	}
 	
 	public void addValues(){
-		entryMap.put(new Text(loginResource.getString("username")), textField);
-		entryMap.put(new Text(loginResource.getString("password")), passwordField);
-		entryMap.put(new Text(loginResource.getString("reenter")), passwordField);
-		entryMap.put(new Text(loginResource.getString("email")), textField);
-		entryMap.put(new Text(loginResource.getString("reemail")), textField);
+		entryMap.put(new Text(loginResource.getString("username")), new TextField());
+		entryMap.put(new Text(loginResource.getString("password")), new PasswordField());
+		entryMap.put(new Text(loginResource.getString("reenter")), new PasswordField());
+		entryMap.put(new Text(loginResource.getString("email")), new TextField());
+		entryMap.put(new Text(loginResource.getString("reemail")), new TextField());
 	}
 	
 }

@@ -3,6 +3,7 @@ package ui.player;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.thoughtworks.xstream.XStream;
@@ -25,7 +26,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ui.*;
 import ui.general.UIHelper;
+import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
+import ui.player.inGame.TempData;
 import ui.player.login.DataEntryGrid;
 import ui.player.login.LoginGrid;
 import ui.player.login.SignupGrid;
@@ -39,6 +42,8 @@ public class Login{
 	private BorderPane borderPane;
 	private Passwords passwords;
 	private UIHelper uihelper;
+	private LoginGrid login;
+	private SignupGrid signup;
 	private ResourceBundle loginResource;
 	private XStream mySerializer = new XStream(new DomDriver());
 	private String mySavedPasswords = "";
@@ -114,13 +119,13 @@ public class Login{
 	}
 
 	private void setupLoginGrid(){
-		DataEntryGrid login = new LoginGrid(loginResource);
+		login = new LoginGrid(loginResource);
 		login.getGrid().getStyleClass().add("grid");
 		gridPane.add(login.getGrid(), 0, 2);
 	}
 
 	private void setupSignupGrid(){
-		DataEntryGrid signup = new SignupGrid(loginResource);
+		signup = new SignupGrid(loginResource);
 		signup.getGrid().getStyleClass().add("grid");
 		gridPane.add(signup.getGrid(), 1, 2);
 	}
@@ -141,8 +146,8 @@ public class Login{
 		final Text actiontarget = new Text();
 		gridPane.add(actiontarget, 1, 4);
 
-		//loginEnter.setOnAction(e -> loginClicked(loginGrid, actiontarget));
-		//signupEnter.setOnAction(e -> signupClicked(signupGrid, actiontarget));
+		loginEnter.setOnAction(e -> loginClicked(actiontarget));
+		signupEnter.setOnAction(e -> signupClicked(actiontarget));
 	}
 
 	private void setupAltButtons(){
@@ -156,49 +161,46 @@ public class Login{
 		gridPane.add(selector, 1, 4);
 	}
 
-
-
-	private Node getNode (GridPane gridPane, String id) {
-		for (Node node : gridPane.getChildren()) {
-			if(node.getId() != null && node.getId().equals(id)) {
-				return node;
-			}
+	private void loginClicked(Text actiontarget){
+/*		for (Map.Entry<String, TextField> entry : login.entrySet()) {
+		    String key = entry.getKey();
+		    ArrayList<String> value = entry.getValue();
+		    // now work with key and value...
 		}
-		return null;
-	}
-
-
-	private void loginClicked(GridPane grid, Text actiontarget){
-		TextField userTextField = (TextField) getNode(grid, "user");
-		PasswordField passwordField = (PasswordField) getNode(grid, "password");
-		if (passwords.login(userTextField.getText(), passwordField.getText())) {
+		for (Map.Entry<Text, TextField> entry : login.entrySet())
+		{
+			System.out.println(entry.getKey() + "/" + entry.getValue());
+		}*/
+		System.out.println(login.getUsername());
+/*		if (passwords.login(login.getUsername().getText(), login.getPassword().getText())) {
 			actiontarget.setFill(Color.GREEN);
 			actiontarget.setText(loginResource.getString("successfulLogin"));
-			userTextField.clear();
-			passwordField.clear();
+			login.getUsername().clear();
+			login.getPassword().clear();
 		} else {
 			actiontarget.setFill(Color.FIREBRICK);
 			actiontarget.setText(loginResource.getString("incorrectLogin"));
-		}
+		}*/
 	}
 
-	private void signupClicked(GridPane grid, Text actiontarget){
-		TextField userTextField = (TextField) getNode(grid, "user");
-		PasswordField passwordField = (PasswordField) getNode(grid, "password");
-		PasswordField repasswordField = (PasswordField) getNode(grid, "repassword");
-		if (!passwords.existingUserCheck(userTextField.getText())) {
-			if (userTextField.getText().equals("") || passwordField.getText().equals("")) {
+	private void signupClicked(Text actiontarget){
+		if (!passwords.existingUserCheck(signup.getUsername().getText())) {
+			if (signup.getUsername().getText().equals("") || signup.getPassword().getText().equals("")) {
 				showAlert(AlertType.ERROR, loginResource.getString("errorTitle"),
 						loginResource.getString("error"), loginResource.getString("errorCorrection"));
 			}
-			else if (!passwordField.getText().equals(repasswordField.getText())){
+			else if (!signup.getPassword().getText().equals(signup.getRePassword().getText())){
 				showAlert(AlertType.ERROR, loginResource.getString("errorTitle"),
 						loginResource.getString("passwordError"), loginResource.getString("passwordErrorCorrection"));
+			} 
+			else if (!signup.getEmail().getText().equals(signup.getReEmail().getText())){
+				showAlert(AlertType.ERROR, loginResource.getString("errorTitle"),
+						loginResource.getString("emailError"), loginResource.getString("emailErrorCorrection"));
 			} 
 			else {
 				actiontarget.setFill(Color.GREEN);
 				actiontarget.setText(loginResource.getString("successfulSignUp"));
-				passwords.signup(userTextField.getText(), passwordField.getText());
+				passwords.signup(signup.getUsername().getText(), signup.getPassword().getText());
 				try {
 					mySavedPasswords = mySerializer.toXML(passwords);
 					System.out.println(mySavedPasswords);
@@ -207,9 +209,7 @@ public class Login{
 				catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				userTextField.clear();
-				passwordField.clear();
-				repasswordField.clear();
+				clearSignupFields();
 			}
 		} else {
 			actiontarget.setFill(Color.FIREBRICK);
@@ -217,6 +217,15 @@ public class Login{
 		};
 	}
 
+	private void clearSignupFields() {
+		signup.getEmail().clear();
+		signup.getPassword().clear();
+		signup.getPassword().clear();
+		signup.getReEmail().clear();
+		signup.getRePassword().clear();
+		signup.getUsername().clear();
+	}
+	
 	private void showAlert(AlertType type, String title, String heading, String content) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
@@ -226,7 +235,7 @@ public class Login{
 	}
 
 	private void gotoUIMain() {
-		UIMain view = new UIMain("English");
+		UIMain view = new UIMain("English", null);
 		stage.setScene(view.getScene());
 		stage.setTitle("VOOGASalad");
 		stage.setResizable(false);
@@ -234,14 +243,17 @@ public class Login{
 	}
 
 	private void gotoGameSelector() {
-		GameSelector select = new GameSelector("English", "mainScreen.css");
+		gotoGameScreen();
+		//uncomment later
+/*		GameSelector select = new GameSelector("English", "mainScreen.css");
 		stage.setScene(select.getScene());
 		stage.setTitle("GameSelector");
-		stage.show();
+		stage.show();*/
 	}
 
 	private void gotoGameScreen() {
-		GameScreen inGame = new GameScreen(stage, null, null, null, null, null);
+		//GameScreen inGame = new GameScreen(stage, null, null, null, null, null);
+		GameScreen inGame= new GameScreen(stage, null, new TempData());
 		stage.setScene(inGame.getScene());
 		stage.setTitle("GameSelector");
 		stage.show();
