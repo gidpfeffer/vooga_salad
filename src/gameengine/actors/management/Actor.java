@@ -76,5 +76,7 @@ public interface Actor {
 	 */
 	public Integer getMyOption();
 	
-	public Double getPercentHealth();
+	public double getPercentHealth();
+	
+	public double getRemainingHealth();
 }

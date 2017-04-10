@@ -38,8 +38,5 @@ public class EnemyInWaveData {
 	public void setMyPaths(List<Integer> myPaths) {
 		this.myPaths = myPaths;
 	}
-	
-	
-	
-	
+
 }

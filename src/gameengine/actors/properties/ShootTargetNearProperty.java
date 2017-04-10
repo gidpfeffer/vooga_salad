@@ -24,13 +24,4 @@ public class ShootTargetNearProperty<G extends ReadAndSpawnGrid> extends ShootTa
 		return retCollection;
 	}
 
-	@Override
-	protected void spawnProjectiles(G grid, Collection<Grid2D> targets, double startX, double startY) {
-		targets.stream().forEach(target -> {
-			IActProperty<G> projectile = new
-			grid.actorSpawnActor(getMyProjectile(), startX, startY).accept(t);;
-		});
-		//targets.stream().forEach(point -> grid.spawn(newActor, startX, startY););
-	}
-
 }

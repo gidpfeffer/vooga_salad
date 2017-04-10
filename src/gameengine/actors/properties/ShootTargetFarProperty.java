@@ -23,10 +23,4 @@ public class ShootTargetFarProperty<G extends ReadAndSpawnGrid> extends ShootTar
 		return retCollection;
 	}
 
-	@Override
-	protected void spawnProjectiles(G grid, Collection<Grid2D> targets) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

@@ -3,10 +3,13 @@ package gameengine.actors.propertygen;
 import java.util.Collection;
 
 import gamedata.compositiongen.ShootData;
+import gameengine.actors.properties.MoveAlongAngleProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 import util.Delay;
+import util.PathUtil;
 
 public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements IActProperty<G>{
 	
@@ -25,15 +28,16 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 	@Override
 	public void action(G grid, Integer actorID) {
 		Collection<Grid2D> dirCoordinates = getEnemyToShoot(grid.getActorLocationsInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRange, myTarget), grid.getLocationOf(actorID));
-		spawnProjectiles(grid, dirCoordinates,grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getX());
+		spawnProjectiles(grid, dirCoordinates,grid.getLocationOf(actorID));
 	}
 	
 	protected abstract Collection<Grid2D> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos);
 	
-	protected abstract void spawnProjectiles(G grid, Collection<Grid2D> targets, double myX, double myY);
-	
-	protected double getAngle(Grid2D origin, Grid2D target) {
-		return Math.toDegrees(Math.atan((target.getY()-origin.getY())/(target.getX()-origin.getX())));
+	protected void spawnProjectiles(G grid, Collection<Grid2D> targets, Grid2D myLoc) {
+		targets.stream().forEach(target -> {
+			IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(myRange, PathUtil.getAngle(myLoc, target));
+			grid.actorSpawnActor(myProjectile, myLoc.getX(), myLoc.getY()).accept(newProperty);
+		});
 	}
 	
 	protected Integer getMyProjectile() {
