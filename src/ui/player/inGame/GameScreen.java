@@ -139,13 +139,12 @@ public class GameScreen implements Observer{
 		AnchorPane.setLeftAnchor(helpButton, 10.);
 		AnchorPane.setTopAnchor(helpButton, 10.);
 		anchorPaneRoot.getChildren().addAll(helpButton, settings);
-		settings.setLayoutX(-settings.getWidth());
+		settings.setLayoutX(-settings.getPrefWidth());
 		
 		//borderPane.setLeft(settingsPane.getHelpPane());
 	}
 	
 	private void setupHUD() {
-		System.out.println(hud.getGrid());
 		AnchorPane.setBottomAnchor(hud.getGrid(), 10.);
 		AnchorPane.setLeftAnchor(hud.getGrid(), 10.);
 		anchorPaneRoot.getChildren().add(hud.getGrid());
