@@ -3,11 +3,13 @@ package ui.player.inGame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import gamedata.ActorData;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -15,17 +17,19 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import ui.handlers.UIHandler;
 
+/**
+ * Creates a pane of all the possible options
+ * @author Anngleyque
+ *
+ */
 public class SidePanel {
-//TODO: create first initial towers, shots, enemies, and bases buttons
-//add event handler on click to open pane
-	//create pane menu of acotrs of same type
-	//on press, create new stackpane -- update uihandler w position when it lands
-	//add the new actor to some sort of global list
 	
 	private UIHandler uihandler;
 	private Map<String, String> iconImages;
 	private AnchorPane sidePane;
 	private ArrayList<OptionsPane> listOfPanes;
+	private AnchorPane root;
+	private List<Actor> actorsList;
 	
 	private Map<Integer, ActorData> towersMap;
 	private Map<Integer, ActorData> shotsMap;
@@ -37,10 +41,12 @@ public class SidePanel {
 		return sidePane;
 	}
 	
-	public SidePanel(UIHandler uihandler, Map<Integer, ActorData> towersMap, 
+	public SidePanel(UIHandler uihandler, List<Actor> actorsList, AnchorPane root, Map<Integer, ActorData> towersMap, 
 			 Map<Integer, ActorData> shotsMap,  Map<Integer, ActorData> enemiesMap,
 			 Map<Integer, ActorData> basesMap) {
 		this.uihandler = uihandler;
+		this.root = root;
+		this.actorsList = actorsList;
 		sidePane = new AnchorPane();
 		iconImages = new HashMap<>();
 		iconImages.put("towers", "tower_icon");
@@ -74,13 +80,14 @@ public class SidePanel {
 			mainBox.getChildren().add(optionButton.getButton());
 		}
 		sidePane.getChildren().add(mainBox);
+		mainBox.setAlignment(Pos.CENTER_RIGHT);
 		AnchorPane.setRightAnchor(mainBox, 0.0);
 		AnchorPane.setBottomAnchor(mainBox, 20.0);
 		AnchorPane.setTopAnchor(mainBox, 20.0);
 	}
 	
 	private OptionsPane getPane (Map<Integer, ActorData> map) {
-		OptionsPane optionPane = new OptionsPane(uihandler);
+		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsList);
 		optionPane.setHeight(300);
 		optionPane.setWidth(200);
 		optionPane.setMap(map);
