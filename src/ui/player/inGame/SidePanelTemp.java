@@ -23,7 +23,7 @@ import ui.handlers.UIHandler;
  * @author Anngelyque
  *
  */
-public class SidePanel {
+public class SidePanelTemp {
 	
 	private UIHandler uihandler;
 	private Map<String, String> iconImages;
@@ -32,19 +32,19 @@ public class SidePanel {
 	private Pane root;
 	private List<Actor> actorsList;
 	
-	private Map<Integer, ActorData> towersMap;
-	private Map<Integer, ActorData> shotsMap;
-	private Map<Integer, ActorData> troopsMap;
-	private Map<Integer, ActorData> basesMap;
+	//temp
+	private Map<Integer, List<String>> towersMapT;
+	private Map<Integer, List<String>> shotsMapT;
+	private Map<Integer, List<String>> troopsMapT;
+	private Map<Integer, List<String>> basesMapT;
 	
 	
 	public Pane getSidePane(){
 		return sidePane;
 	}
 	
-	public SidePanel(UIHandler uihandler, List<Actor> actorsList, AnchorPane root, Map<Integer, ActorData> towersMap, 
-			 Map<Integer, ActorData> shotsMap,  Map<Integer, ActorData> enemiesMap,
-			 Map<Integer, ActorData> basesMap) {
+	//temp
+	public SidePanelTemp(UIHandler uihandler, List<Actor> actorsList, AnchorPane root, TempData tempData) {
 		this.uihandler = uihandler;
 		this.root = root;
 		this.actorsList = actorsList;
@@ -55,10 +55,10 @@ public class SidePanel {
 		iconImages.put("Base", "base_icon.png");
 		iconImages.put("Troop", "enemy_icon.png");
 		iconImages.put("Shot", "projectile_icon.png");
-		this.towersMap = towersMap;
-		this.shotsMap = shotsMap;
-		this.troopsMap = enemiesMap;
-		this.basesMap = basesMap;
+		this.towersMapT = tempData.getTempTowers();
+		this.shotsMapT = tempData.getTempShots();
+		this.troopsMapT = tempData.getTempTroops();
+		this.basesMapT = tempData.getTempBases();
 		setup();
 	}
 	
@@ -68,10 +68,10 @@ public class SidePanel {
 	}
 	
 	private void createInternalPanes() {
-		OptionsPane towers = getPane(towersMap);
-		OptionsPane shots = getPane(shotsMap);
-		OptionsPane	troops = getPane(troopsMap);
-		OptionsPane bases = getPane(basesMap);
+		OptionsPane towers = getPane(towersMapT);
+		OptionsPane shots = getPane(shotsMapT);
+		OptionsPane	troops = getPane(troopsMapT);
+		OptionsPane bases = getPane(basesMapT);
 		OptionsPane[] otherList = new OptionsPane[] {towers, troops, shots, bases};
 		listOfPanes.addAll(Arrays.asList(otherList));
 		//listOfPanes.add((OptionsPane) Arrays.asList(towers, shots, troops, bases));
@@ -90,11 +90,11 @@ public class SidePanel {
 		AnchorPane.setTopAnchor(mainBox, 20.0);
 	}
 	
-	private OptionsPane getPane (Map<Integer, ActorData> map) {
+	private OptionsPane getPane (Map<Integer, List<String>> map) {
 		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsList, map);
 		optionPane.setHeight(300);
 		optionPane.setWidth(200);
-		//optionPane.setMap(map);
+		//optionPane.setTempMap(map);
 		return optionPane;
 	}
 	
@@ -105,7 +105,7 @@ public class SidePanel {
 
 	        if ( obj instanceof Button ) {
 	        	for (OptionsPane optionsPane : listOfPanes) {
-	        		if (((Button) obj).getText().equals(optionsPane.getPaneName())) {
+	        		if (((Button) obj).getText().equals(optionsPane.getTempPaneName())) {
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 	    	    		t.setNode(optionsPane.getPane());
 	    	    		t.setToX(optionsPane.getWidth());

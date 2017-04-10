@@ -1,6 +1,7 @@
 package ui.player.inGame;
 
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 public class SimpleHUD {
 
@@ -15,6 +16,9 @@ public class SimpleHUD {
 	public SimpleHUD(){
 		hud = new GridPane();
 		hud.setStyle("-fx-background-color: slateblue; -fx-opacity: .5");
+		hud.add(new Text("GAME STATUS"), 0, 0);
+		hud.add(new Text("LEVEL: "), 0, 1);
+		hud.add(new Text("1"), 1, 1);
 		x = 0;
 		y = 0;
 		setup();

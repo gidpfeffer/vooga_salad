@@ -11,10 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import ui.handlers.UIHandler;
-import ui.player.InGameModel;
 
 public class SettingsPane {
 
@@ -44,19 +44,20 @@ public class SettingsPane {
 		}
 	
 	private void setupPane() {
+		settings = new AnchorPane();
 		settings.setPrefWidth(paneWidth);
 		addBackButton();
 	}
 	
 	private void addBackButton(){
-		OptionButton back = new OptionButton(0, "back", "back_icon", closePane);
+		OptionButton back = new OptionButton(0, "back", "back_icon.png", closePane);
 		settings.getChildren().add(back.getButton());
 		AnchorPane.setTopAnchor(back.getButton(), 10.0);
 		AnchorPane.setRightAnchor(back.getButton(), 10.0);
 	}
 	
 	private void createHelpButton() {
-		OptionButton back = new OptionButton(0, "back", "back_icon", openPane);
+		OptionButton back = new OptionButton(0, "back", "splash_icon.png", openPane);
 		button = back.getButton();
 	}
 	

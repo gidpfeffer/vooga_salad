@@ -33,8 +33,7 @@ public class Actor {
 
 
 	public Actor(Pane root, UIHandler uihandler, Integer id, String name, Node image) {
-		//how to I do optional?
-		actor = UIHelper.buttonStack(clicked, null, (ImageView) image, Pos.CENTER, true);
+		actor = UIHelper.buttonStack(clicked, Optional.ofNullable(null), Optional.of((ImageView) image), Pos.CENTER, true);
 		actor = new StackPane();
 		this.root = root;
 		this.uihandler = uihandler;

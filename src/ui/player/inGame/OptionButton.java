@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
-import ui.handlers.UIHandler;
 
 /**
  * Creates a new button for the pane of actors.
@@ -54,7 +53,7 @@ public class OptionButton {
 		button = new Button(name);
 		button.setId(id.toString());
 		button.setBackground(Background.EMPTY);
-		ImageView view = new ImageView(new Image(getClass().getResourceAsStream(image)));
+		ImageView view = new ImageView(new Image(image));
 		view.setPreserveRatio(true);
 		button.setGraphic(view);
 		button.addEventHandler(MouseEvent.MOUSE_PRESSED, pressed);
