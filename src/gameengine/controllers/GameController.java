@@ -40,10 +40,14 @@ public class GameController {
 	public GameController() {
 		myGameData = new GameData();
 		myGameStatus = new GameStatus();
-		myGrid = new ActorGrid(MAX_X,MAX_Y,
-				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
-		myLevelController = new LevelController(myGrid,1);
+		myGrid = getNewActorGrid();
+		myLevelController = new LevelController(1, ()-> this.getNewActorGrid());
 		initializeUIHandler();
+	}
+	
+	public ActorGrid getNewActorGrid() {
+		return new ActorGrid(MAX_X,MAX_Y,
+				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 	}
 	
 	public void start() {
@@ -158,7 +162,7 @@ public class GameController {
 			}
 
 			@Override
-			public void changeLevel(int level) {
+			public void changeLevel(int level) throws VoogaException {
 				myLevelController.changeLevel(myGameData, level);
 			}
 		};

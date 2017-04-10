@@ -18,7 +18,6 @@ public class MainActor implements Actor {
 	private BasicActorType myType;
 	private List<IActProperty<MasterGrid>> myProperties;
 
-	@SuppressWarnings("unchecked")
 	public MainActor(BasicActorType type, Integer option, 
 			Integer id, HealthProperty health) {
 		myType = type;
@@ -30,10 +29,7 @@ public class MainActor implements Actor {
 	@SuppressWarnings("unchecked")
 	public MainActor(BasicActorType type, Integer option, 
 			Integer id, HealthProperty health, IActProperty<MasterGrid>... properties) {
-		myType = type;
-		myID = id;
-		myHealth = health;
-		myProperties = new ArrayList<>();
+		this(type, option, id, health);
 		for (IActProperty<MasterGrid> p : properties) {
 			myProperties.add(p);
 		}
@@ -76,6 +72,11 @@ public class MainActor implements Actor {
 	@Override
 	public Integer getMyOption() {
 		return myOption;
+	}
+
+	@Override
+	public Double getPercentHealth() {
+		return myHealth.getPercent();
 	}
 	
 	

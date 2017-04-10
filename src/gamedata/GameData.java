@@ -46,7 +46,7 @@ import types.BasicActorType;
 
 public class GameData {
 	//Level information (preferences, no & type of enemies)
-	List<LevelData> levels;
+	Map<Integer,LevelData> levels;
 	
 	//Path information
 	PathData myPaths;
@@ -135,8 +135,8 @@ public class GameData {
 	 * 
 	 * @param duration representing level length
 	 */
-	public void addLevel(double duration){
-		levels.add(new LevelData(duration));
+	public void addLevel(double duration,int level){
+		levels.put(level,new LevelData(duration));
 	}
 	
 	/**
@@ -146,8 +146,8 @@ public class GameData {
 	 * 
 	 * @param data LevelData holding level information
 	 */
-	public void addLevel(LevelData data){
-		levels.add(data);
+	public void addLevel(LevelData data, int level){
+		levels.put(level,data);
 	}
 	
 	
@@ -181,13 +181,13 @@ public class GameData {
 	
 	
 	//Getters and setters
-	public List<LevelData> getLevels() {
+	public Map<Integer,LevelData> getLevels() {
 		return levels;
 	}
 	public LevelData getLevel(int level){
 		return levels.get(level);
 	}
-	public void setLevel(List<LevelData> level) {
+	public void setLevel(Map<Integer,LevelData> level) {
 		this.levels = level;
 	}
 
