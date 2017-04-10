@@ -5,7 +5,6 @@ import java.util.Map;
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.LevelData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -13,7 +12,6 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.player.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.UIMain;
 import ui.handlers.UIHandler;
@@ -167,11 +165,6 @@ public class GameController {
 			@Override
 			public void changeLevel(int level) throws VoogaException {
 				myLevelController.changeLevel(myGameData, level);
-			}
-
-			@Override
-			public void createLevel(LevelData levelData, int level) {
-				myGameData.addLevel(levelData, level);
 			}
 		};
 	}
