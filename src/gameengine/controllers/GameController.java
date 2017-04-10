@@ -43,6 +43,7 @@ public class GameController {
 		myGrid = getNewActorGrid();
 		myLevelController = new LevelController(1, ()-> this.getNewActorGrid());
 		initializeUIHandler();
+		intitializeTimeline();
 	}
 	
 	public ActorGrid getNewActorGrid() {
