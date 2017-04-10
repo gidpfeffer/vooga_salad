@@ -2,6 +2,7 @@ package gamedata;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Holds all the data that is encoded for a level
@@ -26,12 +27,14 @@ public class LevelData {
 	//TODO Upgrade to list later -- single wave for now
 	private WaveData myEnemyWave;
 	private double difficulty;
-	private double duration; //duration for enemy presence
+	private double duration; 
+	
+	private final double DEFAULT = 1;
 	
 	//Increase by level
-	private double healthMultiplier;
-	private double attackMultiplier;
-	private double speedMultiplier;
+	private Optional<Double> healthMultiplier;
+	private Optional<Double> attackMultiplier;
+	private Optional<Double> speedMultiplier;
 
 	public LevelData(double duration){
 		this.duration = duration;
@@ -86,26 +89,26 @@ public class LevelData {
 	}
 
 	public double getHealthMultiplier() {
-		return healthMultiplier;
+		return healthMultiplier.orElse(DEFAULT);
 	}
 
-	public void setHealthMultiplier(double healthMultiplier) {
+	public void setHealthMultiplier(Optional<Double> healthMultiplier) {
 		this.healthMultiplier = healthMultiplier;
 	}
 
 	public double getAttackMultiplier() {
-		return attackMultiplier;
+		return attackMultiplier.orElse(DEFAULT);
 	}
 
-	public void setAttackMultiplier(double attackMultiplier) {
+	public void setAttackMultiplier(Optional<Double> attackMultiplier) {
 		this.attackMultiplier = attackMultiplier;
 	}
 
 	public double getSpeedMultiplier() {
-		return speedMultiplier;
+		return speedMultiplier.orElse(DEFAULT);
 	}
 
-	public void setSpeedMultiplier(double speedMultiplier) {
+	public void setSpeedMultiplier(Optional<Double> speedMultiplier) {
 		this.speedMultiplier = speedMultiplier;
 	}
 
