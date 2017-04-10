@@ -33,16 +33,14 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 			Grid2D newLoc = myPathCoordinates.poll();
 			grid.move(actorID, newLoc.getX(), newLoc.getY()); 
 		}
-		else{
-		/**
-		 * signal for enemy's success in getting to the base point, Grid can filter for enemy that walks off the map
-		 * to apply damage to the player
-		 * 
-		 */
-			grid.move(actorID, -100, -100); 	
-		}
 	}
 
+<<<<<<< HEAD
+	/* (non-Javadoc)
+	 * @see gameengine.actors.properties.IActProperty#isOn()
+	 */
+=======
+>>>>>>> 10bbb45c92320b676b2542a4ab3be1a410a5f119
 	@Override
 	public boolean isOn() {
 		// TODO Auto-generated method stub
