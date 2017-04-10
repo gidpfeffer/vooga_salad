@@ -9,6 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import gamedata.ActorData;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -86,7 +87,8 @@ public class GameScreen implements Observer{
 	private void setupRight() {
 		// TODO Auto-generated method stub
 		SidePanelTemp sidePanelTemp = new SidePanelTemp(uihandler, listOfActors, anchorPaneRoot, tempData);
-		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 0.0);
+		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 10.0);
+		anchorPaneRoot.getChildren().add(sidePanelTemp.getSidePane());
 	}
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,

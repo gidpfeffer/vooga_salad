@@ -54,7 +54,6 @@ public class OptionButton {
 		button.setId(id.toString());
 		button.setBackground(Background.EMPTY);
 		ImageView view = new ImageView(new Image(image, 30,30, true, true));
-		//view.resize(10, 10);
 		view.setPreserveRatio(true);
 		button.setGraphic(view);
 		button.addEventHandler(MouseEvent.MOUSE_PRESSED, pressed);

@@ -41,13 +41,14 @@ public class OptionsPane{
 	private UIHandler uihandler;
 	
 	private String paneName;
+	private String tempPaneName;
 	
 	public String getPaneName() {
 		return paneName;
 	}
 	//temp
 	public String getTempPaneName() {
-		return tempMap.get(0).get(2);
+		return tempPaneName;
 	}
 	
 	public void setHeight(double height) {
@@ -70,8 +71,8 @@ public class OptionsPane{
 		return buttonPane;
 	}
 	
-	public void setMap(Map<Integer, ActorData> map) {
-		this.mapOfOptions = map;
+	public Map<Integer, List<String>> getMap() {
+		return tempMap;
 	}
 	
 	//temp
@@ -102,7 +103,7 @@ public class OptionsPane{
 		mapOfOptions = new HashMap<>();
 		listOfButtons = new ArrayList<>();
 		this.uihandler = uihandler;
-		tempMap = temp;
+		this.tempMap = temp;
 		addActorPane();
 	}
 	
@@ -115,7 +116,7 @@ public class OptionsPane{
 		}*/
 		//temp
 		for (Map.Entry<Integer, List<String>> entry : tempMap.entrySet()) {
-			paneName = entry.getValue().get(2);
+			tempPaneName = entry.getValue().get(2);
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().get(0), entry.getValue().get(1), pressed);
 		}
 		buttonBox.getChildren().addAll(listOfButtons);
@@ -127,6 +128,11 @@ public class OptionsPane{
 
 	private Button createImageButtonAndAddToList(Integer id, String name, String imagePath, EventHandler<MouseEvent> pressed) {
 		OptionButton optionButton = new OptionButton(id, name, imagePath, pressed);
+		//root.getChildren().add(optionButton.getButton());
+		optionButton.getButton().setLayoutX(100);
+		optionButton.getButton().setLayoutY(100);
+		Button but = optionButton.getButton();
+		root.getChildren().add(but);
 		listOfButtons.add(optionButton.getButton());
 		return optionButton.getButton();
 	}

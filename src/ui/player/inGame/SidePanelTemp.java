@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ui.handlers.UIHandler;
 
@@ -80,10 +81,13 @@ public class SidePanelTemp {
 	private void linkMainPaneToInternalPanes() {
 		VBox mainBox = new VBox(20);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
+			//System.out.println(entry.getKey()+ entry.getValue());
 			OptionButton optionButton = new OptionButton(0, entry.getKey(), entry.getValue(), openPane);
 			mainBox.getChildren().add(optionButton.getButton());
 		}
+		root.getChildren().add(mainBox);
 		sidePane.getChildren().add(mainBox);
+		//root.getChildren().add(sidePane);
 		mainBox.setAlignment(Pos.CENTER_RIGHT);
 		AnchorPane.setRightAnchor(mainBox, 0.0);
 		AnchorPane.setBottomAnchor(mainBox, 20.0);
@@ -107,6 +111,7 @@ public class SidePanelTemp {
 	        	for (OptionsPane optionsPane : listOfPanes) {
 	        		if (((Button) obj).getText().equals(optionsPane.getTempPaneName())) {
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
+	    	    		System.out.println(optionsPane.getTempPaneName());
 	    	    		t.setNode(optionsPane.getPane());
 	    	    		t.setToX(optionsPane.getWidth());
 	    	    		t.play();
