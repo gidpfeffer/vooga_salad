@@ -1,12 +1,15 @@
 package gameengine.actors.properties;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 
 import gamedata.composition.MoveWithSetPathData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
+import util.PathUtil;
 /**
  * this property needs the path as list of coordinates. The pathCoordinates list comes 
  * from PathFinder.getPathCoordinates(Integer enemy Path Index,  double increment)  
@@ -22,7 +25,21 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 	
 	public MoveWithSetPathProperty(MoveWithSetPathData data){
 		//Apply random path to current actor
-		myPathCoordinates = new LinkedList<>(data.getPath());
+		myPathCoordinates = new LinkedList<>(getRandomSteps(data.getMyPaths(), data.getMySpeed()));
+	}
+	
+	/**
+	 * Get a random path of the available options, taking
+	 * into account how speed will affect step size.
+	 * 
+	 * @param paths list of assigned paths 
+	 * @return Random path, accommodating speed
+	 */
+	
+	public List<Grid2D> getRandomSteps(List<List<Grid2D>> paths, double speed){
+
+		int rand = (new Random()).nextInt(paths.size());
+		return PathUtil.getPathCoordinates(paths.get(rand), speed);
 	}
 	
 	@Override
@@ -35,12 +52,7 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 		}
 	}
 
-<<<<<<< HEAD
-	/* (non-Javadoc)
-	 * @see gameengine.actors.properties.IActProperty#isOn()
-	 */
-=======
->>>>>>> 10bbb45c92320b676b2542a4ab3be1a410a5f119
+
 	@Override
 	public boolean isOn() {
 		// TODO Auto-generated method stub
