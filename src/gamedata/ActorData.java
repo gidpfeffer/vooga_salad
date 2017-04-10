@@ -69,7 +69,7 @@ public class ActorData {
 	
 	public ActorData(BasicActorType actor, BasicData data, HealthData health, Data... properties){
 		myData = new ArrayList<Data>();
-		myData.add(data);
+		//myData.add(data);
 		myData.add(health);
 		myData.addAll(Arrays.asList(properties));
 		this.actor=actor;

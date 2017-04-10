@@ -1,24 +1,25 @@
 package gameengine.controllers;
 
+import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LevelData;
 import gamedata.PreferencesData;
-import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 
 /**
  * Controls information about/behavior of a single level
  * 
- * @author maddiebriere
+ * @author maddiebriere, sarahzhou
+ * 
  */
 
 public class LevelController {
 	public int myLevel;
-	public ControllableGrid myMap;
+	public ControllableGrid myGrid;
 	
 	public LevelController(ControllableGrid grid, int level) {
 		myLevel = level;
-		myMap = grid;
+		myGrid = grid;
 	}
 	public int getMyLevel() {
 		return myLevel;
@@ -27,25 +28,30 @@ public class LevelController {
 		this.myLevel = myLevel;
 	}
 	public ControllableGrid getMyMap() {
-		return myMap;
+		return myGrid;
 	}
 	public void setMyMap(ControllableGrid myMap) {
-		this.myMap = myMap;
+		this.myGrid = myMap;
 	}
 	
 	public void changeLevel(GameData current, int level){
+		myLevel = level;
 		LevelData curr = current.getLevel(level);
 		PreferencesData preferences = curr.getMyPreferences();
 		if(!preferences.cleanLevel()){ //add old actors
-			grid = prev.getMyMap();
-			//TODO: filter out enemies?
+			
 		}
-		addPieces(curr, grid);//add new level actors
+		addPieces(curr);//add new level actors
 		
 		//TODO: Add-on other LevelData measures like difficulty
-		
-		LevelController toRet = new LevelController(grid, level);
 	}
+	
+	public void levelUp(GameData current) {	
+		myLevel++;
+		changeLevel(current,myLevel);
+	}
+	
+	
 
 	
 	/**
@@ -55,9 +61,13 @@ public class LevelController {
 	 * @param curr LevelData from which to collect Actor information
 	 * @param grid Grid to modify (add actors)
 	 */
-	private void addPieces(LevelData curr, ControllableGrid grid){
-		//TODO: Implement
-		//Need ID Generator here
+	private void addPieces(LevelData curr){
+		for (ActorData troop: curr.getTroops().keySet()) {
+			//where to put the troops?
+			myGrid.controllerSpawnActor(troop, startX, startY);
+			//is there a wait time between spawning?
+		}
+		
 	}
 	
 	

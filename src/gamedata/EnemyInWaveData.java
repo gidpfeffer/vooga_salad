@@ -2,13 +2,13 @@ package gamedata;
 
 import java.util.List;
 
-public class EnemyWaveData {
+public class EnemyInWaveData {
 
 	private ActorData myData;
 	private int myNumber;
 	private List<Integer> myPaths;
 	
-	public EnemyWaveData(ActorData myData, int myNumber, List<Integer> myPaths) {
+	public EnemyInWaveData(ActorData myData, int myNumber, List<Integer> myPaths) {
 		this.myData = myData;
 		this.myNumber = myNumber;
 		this.myPaths = myPaths;

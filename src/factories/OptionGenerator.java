@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import gamedata.FieldData;
@@ -187,11 +186,8 @@ public class OptionGenerator {
 	}
 	
 	public static Map<String, List<FieldData>> getPropertyTypeWithArgsOfType(String superclass){
-		return null;
-	}
-	
-	public static Map<String, List<String>> getPropertyTypesWithArgs(Data d){
 		//TODO: Implement
 		return null;
 	}
+	
 }
