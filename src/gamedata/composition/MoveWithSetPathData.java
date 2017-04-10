@@ -14,9 +14,12 @@ import util.PathUtil;
  */
 public class MoveWithSetPathData extends MoveData {
 
-	List<Grid2D>myPath;
+	//TODO: List of paths
+	List<List<Grid2D>>myPath;
+	//ASSUME For the moment that integers passed are valid paths
 	
-	
+	//TODO: Move path from this class?
+	//May be superfluous with pathdata
 	
 	/**
 	 * this data object gets a list of assigned paths, pick a random one and call PathFinder to calculate the full 
