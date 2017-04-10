@@ -10,10 +10,10 @@ public class TestMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		MultiInputHandler handler = new MultiInputHandler("devices");
 		StackPane myPane = new StackPane();
-		myPane.getChildren().add(handler.getMenu());
 		Scene myScene = new Scene(myPane, 500, 500);
+		MultiInputHandler handler = new MultiInputHandler(myScene,"devices");
+		myPane.getChildren().add(handler.getMenu());
 		primaryStage.setScene(myScene);
 		primaryStage.show();
 	}
