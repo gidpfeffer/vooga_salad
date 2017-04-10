@@ -7,7 +7,7 @@ public class MoveAlongAngleProperty<G extends ReadAndMoveGrid> implements IActPr
 
 	public double myPathAngle;
 	
-	public MoveAlongAngleProperty() {
+	public MoveAlongAngleProperty(double range, double angle) {
 		
 	}
 	
