@@ -16,7 +16,6 @@ public class GameStatus {
 	//NOTE: Don't need to have experience or money
 	public Optional<Double> myExperience;
 	public Optional<Double> myMoney;
-	public int myLevel;
 	
 	//TODO: Replace with Predicate
 	public void addExperience(double exp){
@@ -33,10 +32,6 @@ public class GameStatus {
 	
 	public void spendMoney(double mon){
 		addMoney(-mon);
-	}
-	
-	public void levelUp(){
-		myLevel++;
 	}
 	
 	public double getMyExperience() {
@@ -56,14 +51,6 @@ public class GameStatus {
 	public void setMyMoney(double myMoney) {
 		if(this.myMoney.isPresent()) //if we are considering experience
 			this.myMoney = Optional.of(myMoney);
-	}
-	
-	public int getMyLevel() {
-		return myLevel;
-	}
-	
-	public void setMyLevel(int myLevel) {
-		this.myLevel = myLevel;
 	}
 	
 	

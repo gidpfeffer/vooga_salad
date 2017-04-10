@@ -1,7 +1,5 @@
 package gameengine.controllers;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import factories.ActorGenerator;
@@ -9,7 +7,6 @@ import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LevelData;
-import gamedata.PathData;
 import gamedata.PreferencesData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
@@ -27,20 +24,24 @@ import util.VoogaException;
  */
 
 public class LevelController {
-	private int myLevel;
 	private ControllableGrid myGrid;
 	private Supplier<ActorGrid> getActorGrid;
+	
+	private int level;
 
+	public ControllableGrid getMyGrid() {
+		return myGrid;
+	}
+	public Supplier<ActorGrid> getGetActorGrid() {
+		return getActorGrid;
+	}
+	public int getLevel() {
+		return level;
+	}
 	public LevelController(int level, Supplier<ActorGrid> getActorGrid) {
-		myLevel = level;
 		this.getActorGrid = getActorGrid;
 		myGrid = getActorGrid.get();
-	}
-	public int getMyLevel() {
-		return myLevel;
-	}
-	public void setMyLevel(int myLevel) {
-		this.myLevel = myLevel;
+		this.level = level;
 	}
 	public ControllableGrid getMyMap() {
 		return myGrid;
@@ -50,7 +51,7 @@ public class LevelController {
 	}
 
 	public void changeLevel(GameData gameData, int level) throws VoogaException{
-		myLevel= level;
+		this.level = level;
 		LevelData levelData = gameData.getLevel(level);
 		if (levelData!=null) {
 			PreferencesData preferences = levelData.getMyPreferences();
