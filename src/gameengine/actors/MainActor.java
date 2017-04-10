@@ -75,8 +75,13 @@ public class MainActor implements Actor {
 	}
 
 	@Override
-	public Double getPercentHealth() {
+	public double getPercentHealth() {
 		return myHealth.getPercent();
+	}
+	
+	@Override
+	public double getRemainingHealth() { 
+		return 0;
 	}
 	
 	
