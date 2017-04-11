@@ -5,6 +5,7 @@ import java.util.Map;
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
+import gamedata.LevelData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -15,7 +16,6 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import ui.UIMain;
 import ui.handlers.UIHandler;
-import util.IDGenerator;
 import util.Location;
 import util.RatioToLocationTransformer;
 import util.VoogaException;
@@ -41,19 +41,30 @@ public class GameController {
 		myGameData = new GameData();
 		myGameStatus = new GameStatus();
 		myGrid = getNewActorGrid();
-		myLevelController = new LevelController(1, ()-> this.getNewActorGrid());
 		initializeUIHandler();
-		intitializeTimeline();
+		myUIMain = new UIMain("English",myUIHandler);
+	}
+	
+	private void promptToMakeLevel(int level) {
+		//call authoring environemnt to make level
+		myGameData.addLevel(levelData, level);
+		myLevelController = new LevelController(level, ()-> this.getNewActorGrid());
+	}
+	
+	private void changeLevel(int level) throws VoogaException {
+		myLevelController.changeLevel(myGameData, level);
 	}
 	
 	public ActorGrid getNewActorGrid() {
-		return new ActorGrid(MAX_X,MAX_Y,
+		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
+		actorGrid.addObserver(myUIMain);
+		return actorGrid;
 	}
 	
 	public void start() {
-		myUIMain = new UIMain("English",myUIHandler);
 		intitializeTimeline();
+		promptToMakeLevel(1);
 	}
 	
 	public void intitializeTimeline() {
@@ -164,7 +175,12 @@ public class GameController {
 
 			@Override
 			public void changeLevel(int level) throws VoogaException {
-				myLevelController.changeLevel(myGameData, level);
+				changeLevel(level);
+			}
+
+			@Override
+			public void addLevel(LevelData levelData, int level) {
+				myGameData.addLevel(levelData, level);
 			}
 		};
 	}
