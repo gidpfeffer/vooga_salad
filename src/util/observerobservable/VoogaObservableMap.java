@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class VoogaObservableMap<K,V> extends VoogaObservable<Map<K,V>> {
 
-	private Map<K,V> myMap;
+	protected Map<K,V> myMap;
 	
 	public VoogaObservableMap() {
 		super();

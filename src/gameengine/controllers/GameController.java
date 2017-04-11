@@ -1,8 +1,6 @@
 package gameengine.controllers;
 
-import java.util.Map;
-import java.util.Observer;
-
+import java.util.Map;	
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
@@ -11,17 +9,15 @@ import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
-import gameengine.player.GameStatus;
+import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import ui.UIMain;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
-import util.Location;
-import util.RatioToLocationTransformer;
 import util.VoogaException;
+import util.observerobservable.VoogaObserver;
 
 /**
  * GameController is the controller layer between the front end display and the back end game engine
@@ -49,7 +45,7 @@ public class GameController {
 		initializeUIHandler();
 	}
 
-	public ActorGrid getNewActorGrid(Observer UIObserver) {
+	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
 		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
@@ -118,12 +114,13 @@ public class GameController {
 			}
 
 			@Override
-			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
+			public int addGameObject(Integer option, double xCoor, double yCoor) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
 				Actor actor = ActorGenerator.makeActor(option,actorData);
-				Location location = RatioToLocationTransformer.getLocation(xRatio, yRatio, getMapSizeX(), getMapSizeY());
-				if (myGrid.isValidLoc(location.getX(), location.getY())) {
-					myGrid.controllerSpawnActor(actor, location.getX(), location.getY());
+				double xRatio = util.Transformer.coordinateToRatio(xCoor, getMapSizeX());
+				double yRatio = util.Transformer.coordinateToRatio(yCoor, getMapSizeY());
+				if (myGrid.isValidLoc(xRatio, yRatio)) {
+					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
 				} else {
 					throw new VoogaException(VoogaException.INVALID_LOCATION);
 				}

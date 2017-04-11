@@ -22,18 +22,18 @@ import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import types.BasicActorType;
+import util.observerobservable.VoogaObservable;
+import util.observerobservable.VoogaObservableMap;
 
-public class ActorGrid extends Observable implements MasterGrid, ControllableGrid{
+public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> implements MasterGrid, ControllableGrid{
 	
 	private Coordinates limits;
 	private Collection<SettableActorLocator> actors;
 	private Function<Integer, Actor> actorMaker;
-	private Map<Integer, FrontEndInformation> frontEndInfo;
 	
 	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
-		frontEndInfo = new HashMap<>();
 		this.actorMaker = actorMaker;
 	}
 
@@ -41,11 +41,10 @@ public class ActorGrid extends Observable implements MasterGrid, ControllableGri
 	public void step() {
 		actors.forEach(a -> a.getActor().act(this));
 		actors = filter(actors, a -> a.getActor().isActive());
-		frontEndInfo = Collections.unmodifiableMap(actors.stream()
+		myMap = Collections.unmodifiableMap(actors.stream()
 				.collect(Collectors.toMap(a -> a.getActor().getID(), 
 						a -> new DisplayInfo(a.getLocation(), a.getActor().getPercentHealth()))));
-		setChanged();
-		notifyObservers(frontEndInfo);
+		notifyObservers();
 	}
 	
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
