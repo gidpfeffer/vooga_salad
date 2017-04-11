@@ -9,6 +9,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import gamedata.ActorData;
+import gamedata.GameData;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -60,18 +62,20 @@ public class GameScreen implements Observer{
 		setup();
 	}
 	
-	public GameScreen(Stage stage, UIHandler uihandler, Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
-			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases){
+	public GameScreen(Stage stage, UIHandler uihandler){
+		
 		this.anchorPaneRoot = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
 		this.listOfActors = new ArrayList<Actor>();
 		//this.borderPane = new BorderPane();
 		this.uihandler = uihandler;
 		myStage = stage;
+/*		Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
+		Map<Integer, ActorData> troops, Map<Integer, ActorData> bases*/
 		
 		hud = new SimpleHUD();
 		
-		setup(shots, towers, troops, bases);
+		//setup(shots, towers, troops, bases);
 	}
 	
 	//temp setup
@@ -86,7 +90,9 @@ public class GameScreen implements Observer{
 	private void setupRight() {
 		// TODO Auto-generated method stub
 		SidePanelTemp sidePanelTemp = new SidePanelTemp(uihandler, listOfActors, anchorPaneRoot, tempData);
-		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 0.0);
+		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 10.0);
+		anchorPaneRoot.getChildren().add(sidePanelTemp.getSidePane());
+		sidePanelTemp.addInternalPanesToRoot();
 	}
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
@@ -99,18 +105,19 @@ public class GameScreen implements Observer{
 	}
 	
 	private void setupBackground() {
+		anchorPaneRoot.setStyle("-fx-background-color: green");
 		ImageView imv = new ImageView(new Image(backgroundImagePath));  
 		//anchorPaneRoot.getChildren().add(imv);
 		//imv.fitWidthProperty().bind();
 		//imv.fitHeightProperty().bind(center.heightProperty());
 		imv.setPreserveRatio(true);
-		imv.fitWidthProperty().bind(myStage.widthProperty()); 
+		imv.fitWidthProperty().bind(anchorPaneRoot.widthProperty()); 
 		imv.fitWidthProperty().bind(myStage.heightProperty()); 
 		
 		StackPane background = new StackPane();
 		background.setPrefWidth(myStage.getWidth());
 		background.setPrefHeight(myStage.getHeight());
-		BackgroundImage myBI= new BackgroundImage(new Image(backgroundImagePath,background.getWidth(),background.getHeight(),true,true),
+		BackgroundImage myBI= new BackgroundImage(new Image(backgroundImagePath,background.getWidth(), background.getHeight(),true,true),
 		        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 		          BackgroundSize.DEFAULT);
 		
@@ -139,13 +146,12 @@ public class GameScreen implements Observer{
 		AnchorPane.setLeftAnchor(helpButton, 10.);
 		AnchorPane.setTopAnchor(helpButton, 10.);
 		anchorPaneRoot.getChildren().addAll(helpButton, settings);
-		settings.setLayoutX(-settings.getWidth());
+		settings.setLayoutX(-settings.getPrefWidth());
 		
 		//borderPane.setLeft(settingsPane.getHelpPane());
 	}
 	
 	private void setupHUD() {
-		System.out.println(hud.getGrid());
 		AnchorPane.setBottomAnchor(hud.getGrid(), 10.);
 		AnchorPane.setLeftAnchor(hud.getGrid(), 10.);
 		anchorPaneRoot.getChildren().add(hud.getGrid());

@@ -12,16 +12,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import ui.general.UIHelper;
 import ui.handlers.UIHandler;
-import util.VoogaException;
 
 /**
  * Creates a pane of all actors of the same type.
@@ -33,6 +33,7 @@ public class OptionsPane{
 
 	private Pane root;
 	private AnchorPane buttonPane;
+	private StackPane holder;
 	private List<Actor> actorsList;
 	private Map<Integer, ActorData> mapOfOptions;
 	//temp
@@ -41,13 +42,14 @@ public class OptionsPane{
 	private UIHandler uihandler;
 	
 	private String paneName;
+	private String tempPaneName;
 	
 	public String getPaneName() {
 		return paneName;
 	}
 	//temp
 	public String getTempPaneName() {
-		return tempMap.get(0).get(2);
+		return tempPaneName;
 	}
 	
 	public void setHeight(double height) {
@@ -70,8 +72,12 @@ public class OptionsPane{
 		return buttonPane;
 	}
 	
-	public void setMap(Map<Integer, ActorData> map) {
-		this.mapOfOptions = map;
+	public StackPane getStackPane() {
+		return holder;
+	}
+	
+	public Map<Integer, List<String>> getMap() {
+		return tempMap;
 	}
 	
 	//temp
@@ -97,29 +103,38 @@ public class OptionsPane{
 	
 	public OptionsPane(UIHandler uihandler, Pane root, List<Actor> actorsList, Map<Integer, List<String>> temp) {
 		this.root = root;
+		this.holder = new StackPane();
 		this.actorsList = actorsList;
 		buttonPane = new AnchorPane();
+		buttonPane.setStyle("-fx-background-color: MediumAquamarine;"
+				+ " -fx-border-radius: 10 0 0 10;"
+				+ "-fx-background-radius: 10 0 0 10;");
 		mapOfOptions = new HashMap<>();
 		listOfButtons = new ArrayList<>();
 		this.uihandler = uihandler;
-		tempMap = temp;
+		this.tempMap = temp;
 		addActorPane();
+		holder.getChildren().add(buttonPane);
 	}
 	
 	private void addActorPane() {
 		VBox buttonBox = new VBox(50);
-		//uncommet section to use actor data
+		//uncomment section to use actor data
 /*		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
 			paneName = entry.getValue().getActor().toString();
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().getName(), entry.getValue().getImagePath(), pressed);
 		}*/
 		//temp
 		for (Map.Entry<Integer, List<String>> entry : tempMap.entrySet()) {
-			paneName = entry.getValue().get(2);
+			tempPaneName = entry.getValue().get(2);
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().get(0), entry.getValue().get(1), pressed);
 		}
+		Rectangle buffer = new Rectangle();
+		buffer.setFill(Color.TRANSPARENT);
+		buttonBox.getChildren().add(buffer);
 		buttonBox.getChildren().addAll(listOfButtons);
 		buttonPane.getChildren().add(buttonBox);
+		buttonPane.setLayoutY(50);
 		addBackButton(closePane);
 		buttonBox.setAlignment(Pos.CENTER_RIGHT);
 		//AnchorPane.setRightAnchor(buttonBox, 10.0);
@@ -132,7 +147,7 @@ public class OptionsPane{
 	}
 	
 	private void addBackButton(EventHandler<MouseEvent> clicked) {
-		Button back = createImageButtonAndAddToList(0, "back", "back_icon.png", clicked);
+		Button back = createImageButtonAndAddToList(0, "back", "back_icon_flipped.png", clicked);
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
@@ -144,8 +159,15 @@ public class OptionsPane{
 	        Object obj = ME.getSource();
 
 	        if ( obj instanceof Button ) {
-	        	Actor actor = new Actor(root, uihandler, Integer.parseInt(((Button) obj).getId()), ((Button) obj).getText(), ((Button) obj).getGraphic());
+	        	Integer id = Integer.parseInt(((Button) obj).getId());
+	        	String name = ((Button) obj).getText();
+	        	//temp
+	        	String image = tempMap.get(id).get(1);
+	        	//correct --> String image = listOfOptions.get(id).getImagePath();
+	        	System.out.println(id +" " + name + " " + image);
+	        	Actor actor = new Actor(root, uihandler, id, name, image);
 	            actorsList.add(actor);
+	            System.out.println(actor.getActor() + " " + actorsList.size());
 	        	root.getChildren().add(actor.getActor());
 	        }
 	    }
@@ -156,10 +178,11 @@ public class OptionsPane{
 		public void handle( final MouseEvent ME ) {
 			Object obj = ME.getSource();  //ME.getTarget()
 
+			System.out.println(buttonPane.getPrefWidth());
 			if ( obj instanceof Button ) {
 				TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
 				t.setNode(buttonPane);
-				t.setToX(-(buttonPane.getWidth()));
+				t.setToX((buttonPane.getPrefWidth()));
 				t.play();
 			}
 		}

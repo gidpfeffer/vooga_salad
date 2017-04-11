@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.ResourceBundle;
+import gameengine.controllers.GameController;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -25,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ui.*;
+import ui.authoring.AuthoringView;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
@@ -37,6 +39,8 @@ import ui.player.login.SignupGrid;
 public class Login{
 	private Stage stage;
 	private Scene scene;
+	private GameController gameController;
+	
 	private AnchorPane root;
 	private GridPane gridPane;
 	private BorderPane borderPane;
@@ -153,7 +157,7 @@ public class Login{
 	private void setupAltButtons(){
 		Button auth = new Button(loginResource.getString("gotoAuth"));
 		Button selector = new Button(loginResource.getString("gotoSelector"));
-		auth.setOnAction(e -> gotoUIMain());
+		auth.setOnAction(e -> gotoAuth());
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
 		selector.setOnAction(e -> gotoGameSelector());
@@ -234,27 +238,33 @@ public class Login{
 		alert.showAndWait();
 	}
 
-	private void gotoUIMain() {
-		UIMain view = new UIMain("English", null);
+	private void gotoAuth() {
+ 		AuthoringView view = new AuthoringView();
+		Stage s = (Stage) scene.getWindow();
+		s.setScene(new Scene(view, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
+/*		UIMain view = new UIMain("English", null);
 		stage.setScene(view.getScene());
 		stage.setTitle("VOOGASalad");
 		stage.setResizable(false);
-		stage.show();
+		stage.show();*/
 	}
 
 	private void gotoGameSelector() {
 		gotoGameScreen();
 		//uncomment later
 /*		GameSelector select = new GameSelector("English", "mainScreen.css");
-		stage.setScene(select.getScene());
+		stage.setScene(select.getScene());A
 		stage.setTitle("GameSelector");
 		stage.show();*/
 	}
 
 	private void gotoGameScreen() {
+		gameController = new GameController();
+		gameController.start(stage);
+		
 		//GameScreen inGame = new GameScreen(stage, null, null, null, null, null);
-		GameScreen inGame= new GameScreen(stage, null, new TempData());
-		stage.setScene(inGame.getScene());
+		//GameScreen inGame= new GameScreen(stage, null, new TempData());
+		stage.setScene(gameController.getGameScreen().getScene());
 		stage.setTitle("GameSelector");
 		stage.show();
 	}
