@@ -46,7 +46,9 @@ public class SettingsPane {
 	private void setupPane() {
 		settings = new AnchorPane();
 		settings.setPrefWidth(paneWidth);
-		settings.setStyle("-fx-background-color: grey;");
+		settings.setStyle("-fx-background-color: MediumAquamarine;"
+				+ " -fx-border-radius: 0 10 10 0;"
+				+ "-fx-background-radius: 0 10 10 0;");
 		addBackButton();
 	}
 	

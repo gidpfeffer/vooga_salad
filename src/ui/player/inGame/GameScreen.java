@@ -9,6 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import gamedata.ActorData;
+import gamedata.GameData;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -61,18 +62,20 @@ public class GameScreen implements Observer{
 		setup();
 	}
 	
-	public GameScreen(Stage stage, UIHandler uihandler, Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
-			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases){
+	public GameScreen(Stage stage, UIHandler uihandler){
+		
 		this.anchorPaneRoot = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
 		this.listOfActors = new ArrayList<Actor>();
 		//this.borderPane = new BorderPane();
 		this.uihandler = uihandler;
 		myStage = stage;
+/*		Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
+		Map<Integer, ActorData> troops, Map<Integer, ActorData> bases*/
 		
 		hud = new SimpleHUD();
 		
-		setup(shots, towers, troops, bases);
+		//setup(shots, towers, troops, bases);
 	}
 	
 	//temp setup

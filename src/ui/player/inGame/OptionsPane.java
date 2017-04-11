@@ -106,7 +106,9 @@ public class OptionsPane{
 		this.holder = new StackPane();
 		this.actorsList = actorsList;
 		buttonPane = new AnchorPane();
-		buttonPane.setStyle("-fx-background-color: aqua");
+		buttonPane.setStyle("-fx-background-color: MediumAquamarine;"
+				+ " -fx-border-radius: 10 0 0 10;"
+				+ "-fx-background-radius: 10 0 0 10;");
 		mapOfOptions = new HashMap<>();
 		listOfButtons = new ArrayList<>();
 		this.uihandler = uihandler;
