@@ -61,10 +61,10 @@ public class GameController {
 	}
 	
 	public void start(Stage stage) {
-		intitializeTimeline();
 		myGameScreen = new GameScreen(stage,myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(1,() -> getNewActorGrid(myGameScreen));
+		intitializeTimeline();
 	}
 	
 	public void intitializeTimeline() {
@@ -179,6 +179,11 @@ public class GameController {
 			@Override
 			public void addLevel(LevelData levelData, int level) {
 				myGameData.addLevel(levelData, level);
+			}
+
+			@Override
+			public Map<Integer, ActorData> getTowerOptions() {
+				return myGameData.getTowerOptions();
 			}
 		
 		};
