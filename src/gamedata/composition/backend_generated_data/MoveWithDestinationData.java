@@ -1,4 +1,4 @@
-package gamedata.composition;
+package gamedata.composition.backend_generated_data;
 
 import java.util.List;
 
@@ -22,6 +22,10 @@ public class MoveWithDestinationData extends MoveData{
 	private double myFinalX;
 	private double myFinalY;
 	
+	
+	/**
+	 * speed comes from ProjectileType.getSpeed()
+	 */
 	public MoveWithDestinationData(double mySpeed, double startX,
 			double startY, double finalX, 
 			double finalY){
