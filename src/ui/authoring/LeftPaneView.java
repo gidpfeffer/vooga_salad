@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import types.ActorType;
+import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
 import ui.authoring.delegates.PopViewDelegate;
@@ -90,13 +91,18 @@ public class LeftPaneView extends StackPane{
 				Optional.of(labelForStackButton("Projectile Editor")), 
 				Optional.of(imageForStackButton("projectile_icon.png")), 
 				Pos.CENTER_RIGHT, true);
+		StackPane game = UIHelper.buttonStack(e -> System.out.println("game"), 
+				Optional.of(labelForStackButton("Layout Editor")), 
+				Optional.of(imageForStackButton("layout_icon.png")), 
+				Pos.CENTER_RIGHT, true);
 		
 		enemy.setPrefHeight(56);
 		tower.setPrefHeight(56);
 		splash.setPrefHeight(56);
 		projectile.setPrefHeight(56);
+		game.setPrefHeight(56);
 		
-		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile, splash);
+		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile, splash, game);
 	}
 	private Label labelForStackButton(String title){
 		Label lbl = new Label(title);
@@ -112,14 +118,14 @@ public class LeftPaneView extends StackPane{
 	}
 
 	private void setupTowerView() {
-		myTowerView = new ActorEditorView(myDelegate, ActorType.TOWER);
+		myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
 		myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
 		UIHelper.setBackgroundColor(myTowerView, CustomColors.GREEN_100);
 	}
 
 	
 	private void setupEnemyView() {
-		myEnemyView = new ActorEditorView(myDelegate, ActorType.ENEMY);
+		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
 		UIHelper.setBackgroundColor(myEnemyView, CustomColors.GREEN_100);
 	}

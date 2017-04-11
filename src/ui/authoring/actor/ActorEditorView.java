@@ -50,16 +50,18 @@ public class ActorEditorView extends AnchorPane {
 	private static final double BUTTON_HEIGHT = 72;
 	
 	
-	private HashMap<StackPane, List<ActorData>> myActors;
+	private HashMap<StackPane, ActorData> myActors;
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
 	private ActorInfoView myActorInfoView;
+	private BasicActorType myType;
 
 	// TODO get projectile data first
-	public ActorEditorView(PopViewDelegate delegate, ActorType type) {
+	public ActorEditorView(PopViewDelegate delegate, BasicActorType type) {
 		super();
 		myDelegate = delegate;
-		myActors = new HashMap<StackPane, List<ActorData>>();
+		myType = type;
+		myActors = new HashMap<StackPane, ActorData>();
 		setupViews();
 
 	}
@@ -92,8 +94,7 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	private void setupAddTowerButton() {
-		//this.addTower(new Image("add_icon.png"), "Add New Tower");
-		Label label = new Label("Add New Tower");
+		Label label = new Label("Add New");
 		label.setFont(Preferences.FONT_MEDIUM);
 		label.setTextFill(CustomColors.GREEN_100);
 		ImageView imageView = new ImageView(new Image("add_icon_w.png"));
@@ -179,7 +180,7 @@ public class ActorEditorView extends AnchorPane {
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
 		VBox.setMargin(view, new Insets(8,24,8,8));
-		myActors.put(view, Arrays.asList(new ActorData[] { new ActorData(BasicActorType.Tower, new BasicData(name, imgPath))}));
+		myActors.put(view, new ActorData(myType, new BasicData(name, imgPath)));
 		this.myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
 	}
 
@@ -200,16 +201,11 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	private void selectTower(StackPane stackButton){
-		List<ActorData> data = this.myActors.get(stackButton);
-		myActorInfoView.setActorData(data);
+		myActorInfoView.setActorData(this.myActors.get(stackButton));
 	}
 	
 	private void updateTowerName(StackPane pane, String text){
-		for(ActorData data : this.myActors.get(pane)){
-			data.getBasic().setName(text);
-		}
-		System.out.println(this.myActors.get(pane).get(0).getName());
-		
+		this.myActors.get(pane).getBasic().setName(text);	
 	}
 	
 	public void getTowerData() {
