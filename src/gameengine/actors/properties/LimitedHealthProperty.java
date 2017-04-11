@@ -6,9 +6,10 @@ import gameengine.actors.propertygen.HealthProperty;
 public class LimitedHealthProperty implements HealthProperty {
 
 	private double myHealth;
+	private double startHealth;
 
 	public LimitedHealthProperty(LimitedHealthData data) {
-		myHealth = data.getStartHealth();
+		myHealth = startHealth = data.getStartHealth();
 	}
 
 	@Override
@@ -19,6 +20,17 @@ public class LimitedHealthProperty implements HealthProperty {
 	@Override
 	public boolean isAlive() {
 		return myHealth > 0;
+	}
+
+	@Override
+	public double getPercent() {
+		return myHealth/startHealth;
+	}
+
+	@Override
+	public double getRemaining() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

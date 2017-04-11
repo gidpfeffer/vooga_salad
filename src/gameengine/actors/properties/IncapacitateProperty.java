@@ -7,8 +7,7 @@ public class IncapacitateProperty<G extends ReadableGrid> implements IActPropert
 
 	@Override
 	public void action(ReadableGrid grid, Integer actorID) {
-		
-		
+
 	}
 
 
