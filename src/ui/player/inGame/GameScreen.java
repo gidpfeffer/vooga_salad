@@ -89,6 +89,7 @@ public class GameScreen implements Observer{
 		SidePanelTemp sidePanelTemp = new SidePanelTemp(uihandler, listOfActors, anchorPaneRoot, tempData);
 		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 10.0);
 		anchorPaneRoot.getChildren().add(sidePanelTemp.getSidePane());
+		sidePanelTemp.addInternalPanesToRoot();
 	}
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,

@@ -10,18 +10,16 @@ import gamedata.ActorData;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import ui.general.UIHelper;
 import ui.handlers.UIHandler;
-import util.VoogaException;
 
 /**
  * Creates a pane of all actors of the same type.
@@ -33,6 +31,7 @@ public class OptionsPane{
 
 	private Pane root;
 	private AnchorPane buttonPane;
+	private StackPane holder;
 	private List<Actor> actorsList;
 	private Map<Integer, ActorData> mapOfOptions;
 	//temp
@@ -71,6 +70,10 @@ public class OptionsPane{
 		return buttonPane;
 	}
 	
+	public StackPane getStackPane() {
+		return holder;
+	}
+	
 	public Map<Integer, List<String>> getMap() {
 		return tempMap;
 	}
@@ -98,6 +101,7 @@ public class OptionsPane{
 	
 	public OptionsPane(UIHandler uihandler, Pane root, List<Actor> actorsList, Map<Integer, List<String>> temp) {
 		this.root = root;
+		this.holder = new StackPane();
 		this.actorsList = actorsList;
 		buttonPane = new AnchorPane();
 		buttonPane.setStyle("-fx-background-color: aqua");
@@ -106,11 +110,12 @@ public class OptionsPane{
 		this.uihandler = uihandler;
 		this.tempMap = temp;
 		addActorPane();
+		holder.getChildren().add(buttonPane);
 	}
 	
 	private void addActorPane() {
 		VBox buttonBox = new VBox(50);
-		//uncommet section to use actor data
+		//uncomment section to use actor data
 /*		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
 			paneName = entry.getValue().getActor().toString();
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().getName(), entry.getValue().getImagePath(), pressed);
@@ -120,8 +125,12 @@ public class OptionsPane{
 			tempPaneName = entry.getValue().get(2);
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().get(0), entry.getValue().get(1), pressed);
 		}
+		Rectangle buffer = new Rectangle();
+		buffer.setFill(Color.TRANSPARENT);
+		buttonBox.getChildren().add(buffer);
 		buttonBox.getChildren().addAll(listOfButtons);
 		buttonPane.getChildren().add(buttonBox);
+		buttonPane.setLayoutY(50);
 		addBackButton(closePane);
 		buttonBox.setAlignment(Pos.CENTER_RIGHT);
 		//AnchorPane.setRightAnchor(buttonBox, 10.0);
