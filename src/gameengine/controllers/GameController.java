@@ -46,7 +46,6 @@ public class GameController {
 
 	public GameController() {
 		myGameData = new GameData();
-		myGameStatus = new GameStatus();
 		initializeUIHandler();
 	}
 
@@ -55,6 +54,10 @@ public class GameController {
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
+	}
+	
+	public GameScreen getGameScreen() {
+		return myGameScreen;
 	}
 	
 	public void start(Stage stage) {
@@ -177,6 +180,7 @@ public class GameController {
 			public void addLevel(LevelData levelData, int level) {
 				myGameData.addLevel(levelData, level);
 			}
+		
 		};
 	}
 	
