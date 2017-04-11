@@ -11,6 +11,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/Users/moses/Documents/COMPSCI 308/workspace/voogasalad_ilovesingletons/lib/JInput/dist/jinput.jar"/>
+	<classpathentry kind="lib" path="lib/JInput/dist/jinput.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

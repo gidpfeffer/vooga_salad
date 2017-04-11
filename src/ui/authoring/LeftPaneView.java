@@ -1,5 +1,6 @@
 package ui.authoring;
 
+import java.util.List;
 import java.util.Optional;
 
 import javafx.animation.ScaleTransition;
@@ -33,7 +34,9 @@ public class LeftPaneView extends StackPane{
 		myDelegate = delegate;
 		setupViews();
 	}
-
+	public List<Node> getEnemyList(){
+		return this.myEnemyView.getEnemyList();
+	}
 	private void setupViews() {
 		myLeftPaneFront = new VBox(16);
 		myLeftPaneBack = new StackPane();

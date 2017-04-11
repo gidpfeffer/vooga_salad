@@ -85,6 +85,7 @@ public abstract class AbstractFactory<A> {
 	 */
 	private String generateClassPath(String name) {
 		return path + generateObjectType(name);
+		
 	}
 
 	/**

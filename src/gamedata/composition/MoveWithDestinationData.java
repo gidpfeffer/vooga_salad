@@ -22,9 +22,9 @@ public class MoveWithDestinationData extends MoveData{
 	private double myFinalX;
 	private double myFinalY;
 	
-	public MoveWithDestinationData(double mySpeed, double startX,
-			double startY, double finalX, 
-			double finalY){
+	public MoveWithDestinationData(Double mySpeed, Double startX,
+			Double startY, Double finalX, 
+			Double finalY){
 		super(mySpeed);
 		myStartX = startX;
 		myStartY = startY;

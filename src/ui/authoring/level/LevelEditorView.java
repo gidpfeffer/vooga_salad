@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ui.Preferences;
+import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
@@ -22,10 +23,14 @@ public class LevelEditorView extends VBox{
 	//# of Enemies
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
-	public LevelEditorView(){
+	private PopViewDelegate myDelegate;
+	private List<Node> myEnemyList;
+	public LevelEditorView(PopViewDelegate d,List<Node> enemies){
 		super();
+		myDelegate=d;
 		this.setSpacing(10);
 		level=1;
+		myEnemyList=enemies;
 		//TODO:move text to resource file
 		StackPane levelOne=nextLevel();
 		this.getChildren().add(levelOne);
@@ -44,10 +49,8 @@ public class LevelEditorView extends VBox{
 		return nextLevel;
 	}
 	private void launchWaveEditor(){
-		LevelEditorMenu lem=new LevelEditorMenu();
-		lem.showAndWait()
-	      .filter(response -> response == ButtonType.APPLY)
-	      .ifPresent(response ->editWaveData());
+		LevelEditorMenu lem=new LevelEditorMenu(myDelegate,myEnemyList);
+		myDelegate.openView(lem);
 	}
 	private void editWaveData(){
 		

@@ -18,6 +18,7 @@ import gamedata.composition.BasicData;
 import gamedata.util.OptionGenerator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -173,7 +174,9 @@ private void setupSides(ScrollPane leftSide,ScrollPane rightSide){
 		this.getChildren().addAll(leftSide, rightSide);
 
 }
-
+public List<Node> getEnemyList(){
+	return this.myEnemyView.getChildren();
+}
 private void setupVBox(ScrollPane pane){
 	myEnemyView=new VBox();
 	myEnemyView.setAlignment(Pos.CENTER);

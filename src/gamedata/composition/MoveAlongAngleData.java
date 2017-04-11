@@ -6,7 +6,7 @@ public class MoveAlongAngleData extends MoveData {
 	private double range;
 	private double angle;
 	
-	public MoveAlongAngleData(double speed, double range, double angle) {
+	public MoveAlongAngleData(Double speed, Double range, Double angle) {
 		super(speed);
 		this.range = range;
 		this.angle = angle;

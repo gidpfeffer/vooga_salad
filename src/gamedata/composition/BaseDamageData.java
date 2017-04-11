@@ -8,7 +8,7 @@ public class BaseDamageData implements Data {
 	private double myRadius;
 	private BasicActorType myTarget;
 
-	public BaseDamageData(double radius, BasicActorType type) {
+	public BaseDamageData(Double radius, BasicActorType type) {
 		myRadius = radius;
 		myTarget = type;
 	}
