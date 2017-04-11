@@ -7,7 +7,8 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 // like Path Data, index ProjectileType
 /**
- * 
+ * contain a map of option index to projectile type . projectileType holds front end info on the type of 
+ * projectile such as image path, speed, radius, radius, damage....
  * @author Anh
  *
  */
