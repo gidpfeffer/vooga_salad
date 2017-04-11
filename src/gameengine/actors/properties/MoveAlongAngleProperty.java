@@ -1,31 +1,34 @@
 package gameengine.actors.properties;
 
-import gamedata.composition.backend_generated_data.MoveAlongAngleData;
 import gameengine.actors.propertygen.IActProperty;
-import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
+import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import util.PathUtil;
 
-public class MoveAlongAngleProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
+public class MoveAlongAngleProperty<G extends MasterGrid> implements IActProperty<G>{
 
-	public double myPathAngle;
-	public double myRange;
-	public double mySpeed;
+	private double myPathAngle;
+	private double myRange;
+	private double mySpeed;
+	private double distanceTraveled;
 	
-	public MoveAlongAngleProperty(MoveAlongAngleData data) {
-		myPathAngle = data.getAngle();
-		myRange = data.getRange();
-		mySpeed = data.getMySpeed();
+	public MoveAlongAngleProperty(double angle, double range, double speed) {
+		myPathAngle = angle;
+		myRange = range;
+		mySpeed = speed;
+		distanceTraveled = 0;
 	}
 	
 	@Override
 	public void action(G grid, Integer actorID) {
-		// TODO Auto-generated method stub
-		
+		grid.move(actorID, grid.getLocationOf(actorID).getX()+(PathUtil.getXByAngle(myPathAngle)*mySpeed), grid.getLocationOf(actorID).getY()+(PathUtil.getYByAngle(myPathAngle)*mySpeed));
+		if((distanceTraveled+=mySpeed)>myRange){
+			grid.getMyDamageable(actorID).accept(Double.POSITIVE_INFINITY);
+		};
 	}
 
 	@Override
 	public boolean isOn() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
