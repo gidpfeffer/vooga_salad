@@ -17,15 +17,15 @@ public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProp
 
 	@Override
 	public void action(G grid, Integer actorID) {
-		grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRadius, myTarget).stream().forEach(damageable -> {
-			double remaining = 0;
+		grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRadius, myTarget).forEach((remaining,damage) -> {
+			damage.accept(remaining);
+			grid.getMyDamageable(actorID).accept(remaining);
 				});
 	}
 
 	@Override
 	public boolean isOn() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
