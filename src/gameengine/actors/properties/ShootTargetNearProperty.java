@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 
+import gamedata.composition.ShootTargetNearData;
 import gamedata.compositiongen.ShootData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.ShootTargetProperty;
@@ -13,7 +14,7 @@ import util.PathUtil;
 
 public class ShootTargetNearProperty<G extends ReadAndSpawnGrid> extends ShootTargetProperty<G> {
 
-	public ShootTargetNearProperty(ShootData myData) {
+	public ShootTargetNearProperty(ShootTargetNearData myData) {
 		super(myData);
 	}
 
