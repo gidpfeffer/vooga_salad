@@ -21,4 +21,9 @@ public class GameControls {
 	public Consumer<Robot> virtualRight() {
 		return (thisRobot) -> thisRobot.keyPress(KeyEvent.VK_RIGHT);
 	}
+	
+	public interface TriConsumer<var1,var2,var3> {
+		public void accept(var1 a, var2 b, var3 c);
+	}
+	
 }
