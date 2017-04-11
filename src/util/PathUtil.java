@@ -18,8 +18,10 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 public class PathUtil {
 
 	public static double getDistance(Grid2D point1,Grid2D point2){
-		return Math.sqrt(Math.pow(point2.getX() - point1.getX(),2) 
-				+ Math.pow(point2.getY() - point1.getY(),2));
+		System.out.println(point1.getX() + " " + point1.getY());
+		System.out.println(point2.getX() + " " + point2.getY());
+		return Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) 
+				+ Math.pow(point2.getY() - point1.getY(), 2));
 	}
 	
 	public static double getAngle(Grid2D point1,Grid2D point2){
@@ -46,6 +48,30 @@ public class PathUtil {
 		}
 		result.add(new Coordinates(end));
 		return result; 
+	}
+	
+	public static List<Grid2D> getPathCoordinates(List<Grid2D> pathChosen , double increment){
+		
+		List<Grid2D> coordinatesToReturn = new ArrayList<Grid2D>(); 
+		for (int i = 0; i< pathChosen.size()-1; i++ ){
+			coordinatesToReturn.addAll(getIncrementPoints(pathChosen.get(i),pathChosen.get(i+1),increment));
+			coordinatesToReturn.remove(coordinatesToReturn.size()-1);
+		}
+		coordinatesToReturn.add(new Coordinates(pathChosen.get(pathChosen.size()-1))); // for the ending point
+		return coordinatesToReturn;
+	}
+	
+	/**
+	 * assuming vector magnitude is 1 from the origin 
+	 * @param angle in radian
+	 * @return
+	 */
+	public static double getXByAngle(double angle){
+		return Math.cos(angle);
+	}
+	
+	public static double getYByAngle(double angle){
+		return Math.sin(angle);
 	}
 	
 }

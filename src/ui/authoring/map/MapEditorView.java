@@ -170,7 +170,7 @@ public class MapEditorView extends StackPane {
 				break;
 			System.out.print(path.getKey() + " [ ");
 			for (Grid2D p : path.getValue()) {
-				System.out.print(p.asString() + ", ");
+				System.out.print(p.toString() + ", ");
 			}
 			System.out.println(" ]");
 		}

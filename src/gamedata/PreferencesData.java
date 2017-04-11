@@ -89,6 +89,26 @@ public class PreferencesData{
 	public void setCleanLevel(Optional<Boolean> cleanLevel) {
 		this.cleanLevel = cleanLevel;
 	}
+
+	public Optional<Boolean> getEnemyLoop() {
+		return enemyLoop;
+	}
+
+	public Optional<Boolean> getTowersAttackable() {
+		return towersAttackable;
+	}
+
+	public Optional<Boolean> getWantMoney() {
+		return wantMoney;
+	}
+
+	public Optional<Boolean> getExpByLevel() {
+		return expByLevel;
+	}
+
+	public Optional<Boolean> getPauseBetweenWaves() {
+		return pauseBetweenWaves;
+	}
 	
 	
 

@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 
 import gamedata.ActorData;
-import gamedata.composition.BasicData;
+import gamedata.BasicData;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

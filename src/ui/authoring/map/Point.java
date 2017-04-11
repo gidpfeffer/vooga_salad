@@ -75,7 +75,7 @@ public class Point extends Circle implements Grid2D{
 	}
 
 	@Override
-	public String asString() {
+	public String toString() {
 		return getX() + " : " + getY();
 	}
 	

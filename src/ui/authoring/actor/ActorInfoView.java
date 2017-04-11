@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import factories.OptionGenerator;
 import gamedata.ActorData;
 import gamedata.FieldData;
-import gamedata.composition.Data;
-import gamedata.util.OptionGenerator;
+import gamedata.compositiongen.Data;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;

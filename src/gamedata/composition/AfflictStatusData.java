@@ -1,5 +1,7 @@
 package gamedata.composition;
 
-public class AfflictStatusData implements Data{
+import gamedata.compositiongen.StatusData;
 
+public class AfflictStatusData extends StatusData{
+	//TODO: STATUS stuff
 }

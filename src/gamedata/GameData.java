@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
 /**
@@ -45,7 +46,7 @@ import types.BasicActorType;
 
 public class GameData {
 	//Level information (preferences, no & type of enemies)
-	List<LevelData> levels;
+	Map<Integer,LevelData> levels;
 	
 	//Path information
 	PathData myPaths;
@@ -105,6 +106,10 @@ public class GameData {
 	
 	
 	
+	
+	
+	
+	
 	/**
 	 * This is implementation for use in the Authoring Environment
 	 * 
@@ -128,10 +133,10 @@ public class GameData {
 	 * 
 	 * Integer maps to the number of enemies on the level.
 	 * 
-	 * @param troops Enemies for the level
+	 * @param duration representing level length
 	 */
-	public void addLevel(Map<ActorData, Integer> troops){
-		levels.add(new LevelData(troops));
+	public void addLevel(double duration,int level){
+		levels.put(level,new LevelData(duration));
 	}
 	
 	/**
@@ -141,9 +146,21 @@ public class GameData {
 	 * 
 	 * @param data LevelData holding level information
 	 */
-	public void addLevel(LevelData data){
-		levels.add(data);
+	public void addLevel(LevelData data, int level){
+		levels.put(level,data);
 	}
+	
+	
+	/**
+	 * Returns Integers corresponding to a path number, matched to the 
+	 * Path that is defined by that number.
+	 * 
+	 * @return Map of Integers mapped to Paths
+	 */
+	public Map<Integer, List<Grid2D>> getPathOptions(){
+		return myPaths.getMyPaths();
+	}
+	
 	
 	
 	
@@ -164,13 +181,13 @@ public class GameData {
 	
 	
 	//Getters and setters
-	public List<LevelData> getLevels() {
+	public Map<Integer,LevelData> getLevels() {
 		return levels;
 	}
 	public LevelData getLevel(int level){
 		return levels.get(level);
 	}
-	public void setLevel(List<LevelData> level) {
+	public void setLevel(Map<Integer,LevelData> level) {
 		this.levels = level;
 	}
 
