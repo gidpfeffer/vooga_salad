@@ -1,6 +1,6 @@
 package gameengine.grid.interfaces.ActorGrid;
 
-import java.util.Collection;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import types.BasicActorType;
@@ -24,7 +24,7 @@ public interface ReadAndDamageGrid extends ReadableGrid{
 	 * @param type the Type of Actor to filter the search on
 	 * @return A Collection of consumers to apply damage to the filtered actors (consumer.accept(double damageToDeal))
 	 */
-	Collection<Consumer<Double>>getActorDamagablesInRadius(double x, double y, 
+	Map<Double, Consumer<Double>>getActorDamagablesInRadius(double x, double y, 
 			double radius, BasicActorType type);
 	
 	/**

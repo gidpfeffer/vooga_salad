@@ -54,7 +54,12 @@ public class TestActor implements Actor{
 	}
 
 	@Override
-	public Double getPercentHealth() {
+	public double getRemainingHealth() {
+		return 2.5;
+	}
+
+	@Override
+	public double getPercentHealth() {
 		return 0.1;
 	}
 

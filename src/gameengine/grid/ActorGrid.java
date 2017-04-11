@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -14,19 +15,20 @@ import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.classes.ActorLocator;
 import gameengine.grid.classes.Coordinates;
+import gameengine.grid.classes.DisplayInfo;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import types.BasicActorType;
-import java.util.Observable;
 
 public class ActorGrid extends Observable implements MasterGrid, ControllableGrid{
 	
 	private Coordinates limits;
 	private Collection<SettableActorLocator> actors;
 	private Function<Integer, Actor> actorMaker;
-	private Map<Integer, Double> frontEndInfo;
+	private Map<Integer, FrontEndInformation> frontEndInfo;
 	
 	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
 		limits = new Coordinates(maxX, maxY);
@@ -39,13 +41,13 @@ public class ActorGrid extends Observable implements MasterGrid, ControllableGri
 	public void step() {
 		actors.forEach(a -> a.getActor().act(this));
 		actors = filter(actors, a -> a.getActor().isActive());
-		frontEndInfo = actors.stream()
-				.map(a -> a.getActor())
-				.collect(Collectors.toMap(Actor::getID, a -> a.getPercentHealth()));
+		frontEndInfo = Collections.unmodifiableMap(actors.stream()
+				.collect(Collectors.toMap(a -> a.getActor().getID(), 
+						a -> new DisplayInfo(a.getLocation(), a.getActor().getPercentHealth()))));
 		setChanged();
 		notifyObservers(frontEndInfo);
 	}
-
+	
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
 		return items.stream()
 				.filter(t -> predicate.test(t))
@@ -93,10 +95,11 @@ public class ActorGrid extends Observable implements MasterGrid, ControllableGri
 	}
 	
 	@Override
-	public Collection<Consumer<Double>> getActorDamagablesInRadius(double x,
+	public Map<Double, Consumer<Double>> getActorDamagablesInRadius(double x,
 			double y, double radius, BasicActorType type) {
-		Collection<SettableActorLocator> actorsinRadius = getActorsInRadius(x, y, radius, type);
-		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getActor().applyDamage()));
+		return Collections.unmodifiableMap(getActorsInRadius(x, y, radius, type).stream()
+					.collect(Collectors.toMap(
+							e -> e.getActor().getRemainingHealth(), e -> e.getActor().applyDamage())));
 	}
 
 	@Override
