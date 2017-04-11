@@ -40,7 +40,6 @@ public class GameScreen implements Observer{
 	private SimpleHUD hud;
 	private String backgroundImagePath = "default_map_background_0.jpg";
 	private Map<Integer, Actor> actorsMap;
-	private TempData tempData;
 	
 
 	public Scene getScene() {
