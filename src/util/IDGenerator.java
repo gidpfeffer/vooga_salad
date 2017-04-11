@@ -1,16 +1,17 @@
 package util;
 
+import java.util.function.Supplier;
+
 public class IDGenerator {
 	
-	private int currentID;
+	private static int currentID = 0;
 	
-	public IDGenerator() {
-		currentID = 0;
+	public static Supplier<Integer> getNextID() {
+		return () -> getNewID();
 	}
 	
-	public int getNewID() {
-		currentID++;
-		return currentID;
+	public static int getNewID() {
+		return currentID++;
 	}
 
 }
