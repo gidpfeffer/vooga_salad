@@ -1,6 +1,6 @@
 package gameengine.actors.properties;
 
-import gamedata.composition.MoveAlongAngleData;
+import gamedata.composition.backend_generated_data.MoveAlongAngleData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
