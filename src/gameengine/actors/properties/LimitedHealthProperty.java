@@ -27,4 +27,10 @@ public class LimitedHealthProperty implements HealthProperty {
 		return myHealth/startHealth;
 	}
 
+	@Override
+	public double getRemaining() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
