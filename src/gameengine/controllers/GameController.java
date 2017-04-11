@@ -1,6 +1,7 @@
 package gameengine.controllers;
 
 import java.util.Map;
+import java.util.Observer;
 
 import factories.ActorGenerator;
 import gamedata.ActorData;
@@ -13,24 +14,30 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.player.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.UIMain;
 import ui.handlers.UIHandler;
+import ui.player.inGame.GameScreen;
 import util.Location;
 import util.RatioToLocationTransformer;
 import util.VoogaException;
 
+/**
+ * GameController is the controller layer between the front end display and the back end game engine
+ * @author sarahzhou
+ *
+ */
 public class GameController {
 	private Timeline animation;
 	
-	private GameStatus myGameStatus;
 	private GameData myGameData;
 	
 	private UIHandler myUIHandler;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
 	
-	private UIMain myUIMain;
+	private GameScreen myGameScreen;
 	
 	private final int MAX_X = 1;
 	private final int MAX_Y =1;
@@ -40,31 +47,21 @@ public class GameController {
 	public GameController() {
 		myGameData = new GameData();
 		myGameStatus = new GameStatus();
-		myGrid = getNewActorGrid();
 		initializeUIHandler();
-		myUIMain = new UIMain("English",myUIHandler);
 	}
-	
-	private void promptToMakeLevel(int level) {
-		//call authoring environemnt to make level
-		myGameData.addLevel(levelData, level);
-		myLevelController = new LevelController(level, ()-> this.getNewActorGrid());
-	}
-	
-	private void changeLevel(int level) throws VoogaException {
-		myLevelController.changeLevel(myGameData, level);
-	}
-	
-	public ActorGrid getNewActorGrid() {
+
+	public ActorGrid getNewActorGrid(Observer UIObserver) {
 		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
-		actorGrid.addObserver(myUIMain);
+		actorGrid.addObserver(UIObserver);
 		return actorGrid;
 	}
 	
-	public void start() {
+	public void start(Stage stage) {
 		intitializeTimeline();
-		promptToMakeLevel(1);
+		myGameScreen = new GameScreen(stage,myUIHandler);
+		myGrid = getNewActorGrid(myGameScreen);
+		myLevelController = new LevelController(1,() -> getNewActorGrid(myGameScreen));
 	}
 	
 	public void intitializeTimeline() {
@@ -80,13 +77,11 @@ public class GameController {
 	}
 	
 	private double getMapSizeX() {
-		//need getMap method in front end
-		return myUIMain.getScene().getWidth();
+		return myGameScreen.getWindow().get(0);
 	}
 	
 	private double getMapSizeY() {
-		//need getMap method in front end
-		return myUIMain.getScene().getHeight();
+		return myGameScreen.getWindow().get(1);
 	}
 
 	private void initializeUIHandler() {
@@ -175,7 +170,7 @@ public class GameController {
 
 			@Override
 			public void changeLevel(int level) throws VoogaException {
-				changeLevel(level);
+				myLevelController.changeLevel(myGameData, level);
 			}
 
 			@Override
