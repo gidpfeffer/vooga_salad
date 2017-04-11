@@ -67,6 +67,7 @@ public class Actor {
 	public void released(MouseEvent e) {
 		try {
 			System.out.println("releasing");
+			//need to have list here
 			if (obj exists already) {
 				// and if the area is okay to put the stackpane down
 				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
@@ -76,6 +77,7 @@ public class Actor {
 				//delete obj from make then re-add or else i'll need to know where it is on map??
 			}
 			else {
+				//need to know size of screen here
 				uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
 			}
 		} catch (VoogaException e1) {

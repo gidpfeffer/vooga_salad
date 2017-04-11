@@ -261,11 +261,9 @@ public class Login{
 	private void gotoGameScreen() {
 		gameController = new GameController();
 		gameController.start(stage);
-		
-		//GameScreen inGame = new GameScreen(stage, null, null, null, null, null);
 		//GameScreen inGame= new GameScreen(stage, null, new TempData());
 		stage.setScene(gameController.getGameScreen().getScene());
 		stage.setTitle("GameSelector");
-		stage.show();
+		//stage.show();
 	}
 }
