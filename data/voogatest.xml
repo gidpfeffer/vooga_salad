@@ -38,4 +38,24 @@
 
 </Actor>
 </ActorData>
+<LevelData>
+
+<Duration>10</Duration>
+<HealthMultiplier>1.0</HealthMultiplier>
+<SpeedMultiplier>1.0</SpeedMultiplier>
+<AttackMultiplier>1.0</AttackMultiplier>
+<Difficulty>1.0</Difficulty>
+<Wave>
+<Enemy>
+<ActorID>1</ActorID>
+<Number>50</Number>
+<Paths>0 1</Paths>
+</Enemy>
+<Enemy>
+<ActorID>1</ActorID>
+<Number>29</Number>
+<Paths>2</Paths>
+</Enemy>
+</Wave>
+</LevelData>
 </type>

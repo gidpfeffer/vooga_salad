@@ -18,4 +18,8 @@ public class Location {
 	public void setValue(Double col, Double row) {
 		this.loc = new Tuple<Double,Double>(col, row);
 	}
+	
+	public String toString(){
+		return getX() + " " + getY();
+	}
 }

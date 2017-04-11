@@ -44,7 +44,7 @@ import util.Location;
 
 public class LevelEditorMenu extends AnchorPane{
 	PopViewDelegate myDelegate;
-	public LevelEditorMenu(PopViewDelegate d,List<Node>EnemyList){
+	public LevelEditorMenu(PopViewDelegate d){
 super();
 myDelegate=d;
 setupViews();;

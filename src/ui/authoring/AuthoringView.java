@@ -1,5 +1,10 @@
 package ui.authoring;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import factories.OptionGenerator;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -32,6 +37,7 @@ public class AuthoringView extends AnchorPane {
 	private final double SIDE_PANE_WIDTH_MIN = 160;
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
 	
+	
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
@@ -45,6 +51,7 @@ public class AuthoringView extends AnchorPane {
 		UIHelper.setBackgroundColor(this, Color.WHITE);
 	
 		setupViews();
+		System.out.println(OptionGenerator.getPropertyTypesWithArgs());
 	}
 
 	private void setupViews() {
@@ -59,7 +66,8 @@ public class AuthoringView extends AnchorPane {
 		setupMenuView();
 		setupDimmerView();
 	}
-	
+
+
 	private void setupDimmerView() {
 		myDimmerView = new Pane();
 		UIHelper.setBackgroundColor(myDimmerView, Color.rgb(0, 0, 0, 0.5));
@@ -152,7 +160,7 @@ public class AuthoringView extends AnchorPane {
 	}
 
 	private void setupLevelView() {
-		myLevelView = new LevelEditorView(new PopDelegate(),myLeftPane.getEnemyList());
+		myLevelView = new LevelEditorView(new PopDelegate());
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);

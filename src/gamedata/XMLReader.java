@@ -31,7 +31,9 @@ import types.BasicActorType;
 
 public class XMLReader {
 	private GameData myGameData;
+	private Map<Integer,List<Grid2D>> pathData;
 	private File dataFile;
+	private List<ActorData> myActors;
 	private static final DocumentBuilder DOCUMENT_BUILDER = getDocumentBuilder();
 
 	public XMLReader(File data) {
@@ -64,9 +66,8 @@ public class XMLReader {
 			getActorData();
 		} catch (Exception e) {
 			throw new XMLException(e);
-		
-		
 		}
+		getLevelData();
 		
 	}
 
@@ -74,7 +75,7 @@ public class XMLReader {
 		Element root = getRootElement(dataFile);
 		Element allPaths = (Element) root.getElementsByTagName("PathData").item(0);
 		NodeList paths = allPaths.getElementsByTagName("Path");
-		Map<Integer, List<Grid2D>> pathData = new HashMap<Integer, List<Grid2D>>();
+		 pathData = new HashMap<Integer, List<Grid2D>>();
 		for (int i = 0; i < paths.getLength(); i++) {
 			String[] xCoors = getTextValue((Element) paths.item(i), "X").split(" ");
 			String[] yCoors = getTextValue((Element) paths.item(i), "Y").split(" ");
@@ -94,9 +95,11 @@ public class XMLReader {
 	}
 	private void getActorData() throws ClassNotFoundException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		Class<Data>[] dataTypes=Reflections.getClasses("gamedata.composition");
+		myActors=new ArrayList<ActorData>();
 		Element root=getRootElement(dataFile);
 		Element allActors=(Element)root.getElementsByTagName("ActorData").item(0);
 		NodeList actors=allActors.getElementsByTagName("Actor");
+		
 		for(int i=0;i<actors.getLength();i++){
 			Element actor=(Element) actors.item(i);
 			String type=getTextValue(actor,"type");
@@ -107,7 +110,7 @@ public class XMLReader {
 			HealthData healthData=null;
 			List<Data>data=new ArrayList<Data>();
 			for(Class c:dataTypes){
-				
+				System.out.println("dsad");
 				String field=c.getName().split("\\.")[c.getName().split("\\.").length-1];
 				Optional<String> fieldData=Optional.ofNullable(getTextValue(actor,field));
 				if(fieldData.isPresent()&&fieldData.get().length()>0){
@@ -137,10 +140,50 @@ public class XMLReader {
 				dataArray[k]=data.get(k);
 			}
 		ActorData newActor=new ActorData(basicType,basicData,healthData,dataArray );
+		myActors.add(newActor);
 		myGameData.add(newActor);
 		}
-		System.out.println(myGameData.getOptions());
 	}
+	
+	private void getLevelData(){
+		Element root = getRootElement(dataFile);
+		
+		Element allWaves = (Element) root.getElementsByTagName("LevelData").item(0);
+		double duration=Double.parseDouble(getTextValue(allWaves,"Duration"));
+		double difficulty=Double.parseDouble(getTextValue(allWaves,"Difficulty"));
+		Optional<Double> healthMultiplier=Optional.ofNullable(Double.parseDouble(getTextValue(allWaves,"HealthMultiplier")));
+		Optional<Double> speedMultiplier=Optional.ofNullable(Double.parseDouble(getTextValue(allWaves,"SpeedMultiplier")));
+		Optional<Double> attackMultiplier=Optional.ofNullable(Double.parseDouble(getTextValue(allWaves,"AttackMultiplier")));
+		LevelData levelData=new LevelData(duration);
+		levelData.setDifficulty(difficulty);
+		levelData.setHealthMultiplier(healthMultiplier);
+		levelData.setSpeedMultiplier(speedMultiplier);
+		levelData.setAttackMultiplier(attackMultiplier);
+		NodeList waves = allWaves.getElementsByTagName("Wave");
+		for(int i=0;i<waves.getLength();i++){
+			Element wave=(Element)waves.item(i);
+			NodeList enemies=wave.getElementsByTagName("Enemy");
+			WaveData waveData=new WaveData();
+			for(int j=0;j<enemies.getLength();j++){
+				Element enemy=(Element)enemies.item(j);
+				Integer actorID=Integer.parseInt(getTextValue(enemy,"ActorID"));
+				Integer number=Integer.parseInt(getTextValue(enemy,"Number"));
+				String[]pathsUnprocessed=getTextValue(enemy,"Paths").split(" ");
+				List<Integer>pathIDs=new ArrayList<Integer>();
+				for(String s:pathsUnprocessed){
+					pathIDs.add(Integer.parseInt(s));
+				}
+				EnemyInWaveData waveEnemy=new EnemyInWaveData(myActors.get(actorID),number,pathIDs);
+			//waveData.addWaveEnemy(waveEnemy);	
+			levelData.addWaveEnemy(myActors.get(actorID),number,pathIDs);
+			}
+		//levelData.addWave(waveData)
+			//when multiple waves get implemented
+		}
+	myGameData.addLevel(levelData, 1);
+	}
+	
+	
 	private Element getRootElement(File file) {
 		try {
 			DOCUMENT_BUILDER.reset();

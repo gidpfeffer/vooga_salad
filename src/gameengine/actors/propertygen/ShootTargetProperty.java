@@ -17,12 +17,14 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 	private Delay myDelay;
 	private BasicActorType myTarget;
 	private Integer myProjectile;
+	private double mySpeed;
 	
 	public ShootTargetProperty(ShootData myData) {
 		myRange = myData.getRange();
 		myDelay = new Delay(myData.getFireRate());
 		myTarget = myData.getTarget();
 		myProjectile = myData.getProjectile();
+		mySpeed = myData.getSpeed();
 	}
 	
 	@Override
@@ -35,7 +37,7 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 	
 	protected void spawnProjectiles(G grid, Collection<Grid2D> targets, Grid2D myLoc) {
 		targets.stream().forEach(target -> {
-			IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(myRange, PathUtil.getAngle(myLoc, target));
+			IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(myRange, PathUtil.getAngle(myLoc, target), mySpeed);
 			grid.actorSpawnActor(myProjectile, myLoc.getX(), myLoc.getY()).accept(newProperty);
 		});
 	}

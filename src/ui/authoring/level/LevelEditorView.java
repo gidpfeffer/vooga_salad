@@ -24,13 +24,12 @@ public class LevelEditorView extends VBox{
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
 	private PopViewDelegate myDelegate;
-	private List<Node> myEnemyList;
-	public LevelEditorView(PopViewDelegate d,List<Node> enemies){
+	public LevelEditorView(PopViewDelegate d){
 		super();
 		myDelegate=d;
 		this.setSpacing(10);
 		level=1;
-		myEnemyList=enemies;
+		
 		//TODO:move text to resource file
 		StackPane levelOne=nextLevel();
 		this.getChildren().add(levelOne);
@@ -49,7 +48,7 @@ public class LevelEditorView extends VBox{
 		return nextLevel;
 	}
 	private void launchWaveEditor(){
-		LevelEditorMenu lem=new LevelEditorMenu(myDelegate,myEnemyList);
+		LevelEditorMenu lem=new LevelEditorMenu(myDelegate);
 		myDelegate.openView(lem);
 	}
 	private void editWaveData(){

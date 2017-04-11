@@ -51,6 +51,9 @@ public class GameData {
 	//Path information
 	PathData myPaths;
 	
+	//Possible projectiles
+	ProjectileData myProjectiles;
+	
 	//Information about how the game is visually displayed
 	DisplayData display;
 	
@@ -62,6 +65,7 @@ public class GameData {
 	public GameData(){
 		pieces = new HashMap<Integer, ActorData>();
 		numOptions = 0;
+		levels=new HashMap<Integer,LevelData>();
 	}
 	
 	/**
@@ -159,6 +163,16 @@ public class GameData {
 	 */
 	public Map<Integer, List<Grid2D>> getPathOptions(){
 		return myPaths.getMyPaths();
+	}
+	
+	/**
+	 * Returns Integers corresponding to a path number, matched to the 
+	 * Path that is defined by that number.
+	 * 
+	 * @return Map of Integers mapped to Paths
+	 */
+	public Map<Integer, ProjectileType> getProjectileOptions(){
+		return myProjectiles.getMyProjectileTypes();
 	}
 	
 	

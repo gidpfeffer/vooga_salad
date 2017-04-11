@@ -2,6 +2,7 @@ package gameengine.actors.properties;
 
 import java.util.Collection;
 
+import gamedata.composition.ShootTargetWithMouseData;
 import gamedata.compositiongen.ShootData;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
@@ -9,7 +10,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 public class ShootTargetWithMouseProperty<G extends ReadAndSpawnGrid> extends ShootTargetProperty<G>{
 
-	public ShootTargetWithMouseProperty(ShootData myData) {
+	public ShootTargetWithMouseProperty(ShootTargetWithMouseData myData) {
 		super(myData);
 		// TODO Auto-generated constructor stub
 	}

@@ -1,10 +1,12 @@
 package gameengine.controllers;
 
 import java.util.Map;
+import java.util.Observer;
 
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
+import gamedata.LevelData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -12,25 +14,30 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.player.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.UIMain;
 import ui.handlers.UIHandler;
-import util.IDGenerator;
+import ui.player.inGame.GameScreen;
 import util.Location;
 import util.RatioToLocationTransformer;
 import util.VoogaException;
 
+/**
+ * GameController is the controller layer between the front end display and the back end game engine
+ * @author sarahzhou
+ *
+ */
 public class GameController {
 	private Timeline animation;
 	
-	private GameStatus myGameStatus;
 	private GameData myGameData;
 	
 	private UIHandler myUIHandler;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
 	
-	private UIMain myUIMain;
+	private GameScreen myGameScreen;
 	
 	private final int MAX_X = 1;
 	private final int MAX_Y =1;
@@ -39,20 +46,24 @@ public class GameController {
 
 	public GameController() {
 		myGameData = new GameData();
-		myGameStatus = new GameStatus();
-		myGrid = getNewActorGrid();
-		myLevelController = new LevelController(1, ()-> this.getNewActorGrid());
 		initializeUIHandler();
-		intitializeTimeline();
 	}
-	
-	public ActorGrid getNewActorGrid() {
-		return new ActorGrid(MAX_X,MAX_Y,
+
+	public ActorGrid getNewActorGrid(Observer UIObserver) {
+		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
+		actorGrid.addObserver(UIObserver);
+		return actorGrid;
 	}
 	
-	public void start() {
-		myUIMain = new UIMain("English",myUIHandler);
+	public GameScreen getGameScreen() {
+		return myGameScreen;
+	}
+	
+	public void start(Stage stage) {
+		myGameScreen = new GameScreen(stage,myUIHandler);
+		myGrid = getNewActorGrid(myGameScreen);
+		myLevelController = new LevelController(1,() -> getNewActorGrid(myGameScreen));
 		intitializeTimeline();
 	}
 	
@@ -69,13 +80,11 @@ public class GameController {
 	}
 	
 	private double getMapSizeX() {
-		//need getMap method in front end
-		return myUIMain.getScene().getWidth();
+		return myGameScreen.getWindow().get(0);
 	}
 	
 	private double getMapSizeY() {
-		//need getMap method in front end
-		return myUIMain.getScene().getHeight();
+		return myGameScreen.getWindow().get(1);
 	}
 
 	private void initializeUIHandler() {
@@ -166,6 +175,17 @@ public class GameController {
 			public void changeLevel(int level) throws VoogaException {
 				myLevelController.changeLevel(myGameData, level);
 			}
+
+			@Override
+			public void addLevel(LevelData levelData, int level) {
+				myGameData.addLevel(levelData, level);
+			}
+
+			@Override
+			public Map<Integer, ActorData> getTowerOptions() {
+				return myGameData.getTowerOptions();
+			}
+		
 		};
 	}
 	
