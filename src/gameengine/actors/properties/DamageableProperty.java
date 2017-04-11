@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+import gamedata.composition.DamageableData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
@@ -27,16 +28,12 @@ public class DamageableProperty implements IActProperty<ReadAndDamageGrid> {
 	private double myHitRadius;
 	private List<BasicActorType> myEnemyTypes;
 	
-	public DamageableProperty(double power, double radius, BasicActorType... enemyTypes) {
-		myPower = power;
-		myHitRadius = radius;
-		myEnemyTypes = new ArrayList<>();
-		for (BasicActorType e : enemyTypes) {
-			myEnemyTypes.add(e);
-		}
+	public DamageableProperty(DamageableData data) {
+		myPower = data.getMyPower();
+		myHitRadius = data.getMyHitRadius();
+		myEnemyTypes = data.getMyEnemyTypes();
 		
 	}
-
 	/* (non-Javadoc)
 	 * @see gameengine.actors.properties.IActProperty#action(gameengine.grid.interfaces.ActorGrid.ReadableGrid, java.lang.Integer)
 	 */

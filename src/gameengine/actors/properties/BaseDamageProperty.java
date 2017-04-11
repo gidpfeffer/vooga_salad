@@ -1,5 +1,6 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.BaseDamageData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import types.BasicActorType;
@@ -9,9 +10,9 @@ public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProp
 	private double myRadius;
 	private BasicActorType myTarget;
 
-	public BaseDamageProperty(double radius, BasicActorType type) {
-		myRadius = radius;
-		myTarget = type;
+	public BaseDamageProperty(BaseDamageData data) {
+		myRadius = data.getMyRadius();
+		myTarget = data.getMyTarget();
 	}
 
 	@Override
