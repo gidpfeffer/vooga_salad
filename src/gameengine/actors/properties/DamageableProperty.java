@@ -4,16 +4,11 @@
 package gameengine.actors.properties;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 import gameengine.actors.propertygen.IActProperty;
-import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
-import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
-import util.PathUtil;
 
 /**
  * @author harirajan
