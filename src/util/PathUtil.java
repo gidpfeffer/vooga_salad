@@ -61,4 +61,17 @@ public class PathUtil {
 		return coordinatesToReturn;
 	}
 	
+	/**
+	 * assuming vector magnitude is 1 from the origin 
+	 * @param angle in radian
+	 * @return
+	 */
+	public static double getXByAngle(double angle){
+		return Math.cos(angle);
+	}
+	
+	public static double getYByAngle(double angle){
+		return Math.sin(angle);
+	}
+	
 }
