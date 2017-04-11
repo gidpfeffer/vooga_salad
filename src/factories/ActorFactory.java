@@ -69,7 +69,6 @@ public class ActorFactory extends AbstractFactory<MainActor>{
 		
 		Class<?> [] toRet = new Class[args.length];
 		classes.toArray(toRet);
-		classes.stream().forEach(p -> System.out.println(p.getSimpleName()));
 		return toRet;
 	}
 

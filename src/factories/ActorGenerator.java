@@ -6,6 +6,7 @@ import java.util.List;
 import gamedata.ActorData;
 import gamedata.compositiongen.Data;
 import gameengine.actors.MainActor;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.Property;
 import util.IDGenerator;
 
@@ -55,6 +56,7 @@ public class ActorGenerator{
 			toBuild.add(property);
 		}
 		
-		return actorFactory.make(toBuild.toArray());
+		MainActor toRet = actorFactory.make(toBuild.toArray());
+		return toRet;
 	}
 }
