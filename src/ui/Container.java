@@ -4,12 +4,11 @@ public class Container implements PartDelegate{
 
 	@Override
 	public void doSomething() {
-		// TODO Auto-generated method stub
-		
+		//does something
 	}
 	
 	private void setupPart(){
-		Part p = new Part(this);
+		Part p = new Part(this); 
 	}
 
 }

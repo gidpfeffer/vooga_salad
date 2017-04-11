@@ -1,30 +1,40 @@
-package ui.authoring.tower;
+package ui.authoring.actor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import gamedata.ActorData;
+import gamedata.FieldData;
 import gamedata.composition.Data;
+import gamedata.util.OptionGenerator;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
-public class TowerInfoView extends AnchorPane{
+public class ActorInfoView extends AnchorPane{
 	
 	
 	private VBox myEditorView;
 	private HBox myUpgradePickerView;
 	private List<ActorData> myData;
-	
-	public TowerInfoView(){
+	private static Map<String, List<FieldData>> OPTIONS = OptionGenerator.getPropertyTypesWithArgs();
+	public ActorInfoView(){
 		this(new ArrayList<ActorData>());
 	}
-	public TowerInfoView(List<ActorData> data){
+	public ActorInfoView(List<ActorData> data){
 		super();
 		myData = data;
 		setupViews();
+		for(Entry<String, List<FieldData>> e: OPTIONS.entrySet()){
+			System.out.println(e.getKey() + ": ");
+			for(FieldData d: e.getValue()){
+				System.out.println("\t-"+d);
+			}
+		}
 	}
 	
 	private void setupViews(){
@@ -44,19 +54,34 @@ public class TowerInfoView extends AnchorPane{
 		AnchorPane.setBottomAnchor(myEditorView, inset);
 		AnchorPane.setTopAnchor(myEditorView, myUpgradePickerView.getPrefHeight() + inset);
 		
-		UIHelper.setBackgroundColor(myEditorView, CustomColors.GREEN);
-		UIHelper.setBackgroundColor(myUpgradePickerView, CustomColors.GREEN);
+		UIHelper.setBackgroundColor(myEditorView, CustomColors.RED);
+		UIHelper.setBackgroundColor(myUpgradePickerView, CustomColors.RED);
 		UIHelper.setDropShadow(myEditorView);
 		UIHelper.setDropShadow(myUpgradePickerView);
 		this.getChildren().addAll(myEditorView, myUpgradePickerView);
 	}
 	public void setActorData(List<ActorData> data){
-		//TODO
 		myData = data;
 		ActorData actor = data.get(0);
 		System.out.println("Selecting tower named: " + actor.getName());
 		for(Data d: actor.getMyData()){
 			System.out.println(d);
 		}
+	}
+	
+	private void setupAddNewFieldButton(){
+		//TODO
+	}
+	
+	private void didClickNewFieldButton(){
+		//TODO
+	}
+	
+	private void addActorDataField(String name, Class type){
+		//TODO
+	}
+	
+	public void addActorUpgrade(){
+		//TODO
 	}
 }

@@ -1,4 +1,4 @@
-package ui.authoring.tower;
+package ui.authoring.actor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import types.ActorType;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.PopViewDelegate;
@@ -45,31 +46,20 @@ import util.Location;
  * @author TNK
  *
  */
-public class TowerEditorView extends AnchorPane {
+public class ActorEditorView extends AnchorPane {
 	private static final double BUTTON_HEIGHT = 72;
-	private static final Map<String, String> DEFAULT_TOWERS;
-	static {
-		String path = "Pokemon Icons/";
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("Pikachu", path + "pikachu.png");
-		map.put("Bullbasaur", path + "bullbasaur.png");
-		map.put("Charmander", path + "charmander.png");
-		map.put("Snorlax", path + "snorlax.png");
-		map.put("Jigglypuff", path + "jigglypuff.png");
-		DEFAULT_TOWERS = map;
-	}
 	
-	private HashMap<StackPane, List<ActorData>> myTowers;
+	
+	private HashMap<StackPane, List<ActorData>> myActors;
 	private PopViewDelegate myDelegate;
-	private VBox myTowersView;
-	private TowerInfoView myTowerInfoView;
+	private VBox myActorsView;
+	private ActorInfoView myActorInfoView;
 
 	// TODO get projectile data first
-	public TowerEditorView(PopViewDelegate delegate) {
+	public ActorEditorView(PopViewDelegate delegate, ActorType type) {
 		super();
-		//this.sceneProperty().addListener(scene -> { if(scene!=null){ this.getScene().getStylesheets().add("scroll.css"); } });
 		myDelegate = delegate;
-		myTowers = new HashMap<StackPane, List<ActorData>>();
+		myActors = new HashMap<StackPane, List<ActorData>>();
 		setupViews();
 
 	}
@@ -88,18 +78,17 @@ public class TowerEditorView extends AnchorPane {
 		setupSides(leftSide, rightSide);
 		setupVBox(leftSide);
 		setupAddTowerButton();
-		setupDefaultTowers();
 		setupInfoView(rightSide);
 		setupBackButton();
 		
 	}
 	
 	private void setupInfoView(ScrollPane scroll){
-		if(!this.myTowers.isEmpty())
-			myTowerInfoView = new TowerInfoView(myTowers.get(myTowers.keySet().iterator().next()));
+		if(!this.myActors.isEmpty())
+			myActorInfoView = new ActorInfoView(myActors.get(myActors.keySet().iterator().next()));
 		else
-			myTowerInfoView = new TowerInfoView();
-		scroll.setContent(myTowerInfoView);
+			myActorInfoView = new ActorInfoView();
+		scroll.setContent(myActorInfoView);
 	}
 	
 	private void setupAddTowerButton() {
@@ -116,7 +105,7 @@ public class TowerEditorView extends AnchorPane {
 		view.setPrefHeight(BUTTON_HEIGHT);
 		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
 		VBox.setMargin(view, new Insets(8,24,8,8));
-		this.myTowersView.getChildren().add( view);
+		this.myActorsView.getChildren().add( view);
 
 	}
 
@@ -148,14 +137,14 @@ public class TowerEditorView extends AnchorPane {
 	}
 
 	private void setupVBox(ScrollPane pane) {
-		myTowersView = new VBox();
-		myTowersView.setAlignment(Pos.CENTER);
-		myTowersView.prefWidthProperty().bind(pane.widthProperty());
-		pane.setContent(myTowersView);
+		myActorsView = new VBox();
+		myActorsView.setAlignment(Pos.CENTER);
+		myActorsView.prefWidthProperty().bind(pane.widthProperty());
+		pane.setContent(myActorsView);
 	}
 
-	private void setupDefaultTowers() {
-		for (Entry<String, String> entry : DEFAULT_TOWERS.entrySet()) 
+	public void setupDefaultTowers(Map<String,String> mapOfNameToImagePath) {
+		for (Entry<String, String> entry : mapOfNameToImagePath.entrySet()) 
 			addTower(entry.getValue(), entry.getKey());
 	}
 
@@ -190,8 +179,8 @@ public class TowerEditorView extends AnchorPane {
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
 		VBox.setMargin(view, new Insets(8,24,8,8));
-		myTowers.put(view, Arrays.asList(new ActorData[] { new ActorData(BasicActorType.Tower, new BasicData(name, imgPath))}));
-		this.myTowersView.getChildren().add(myTowersView.getChildren().size() - 1, view);		
+		myActors.put(view, Arrays.asList(new ActorData[] { new ActorData(BasicActorType.Tower, new BasicData(name, imgPath))}));
+		this.myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
 	}
 
 	/**
@@ -211,15 +200,15 @@ public class TowerEditorView extends AnchorPane {
 	}
 	
 	private void selectTower(StackPane stackButton){
-		List<ActorData> data = this.myTowers.get(stackButton);
-		myTowerInfoView.setActorData(data);
+		List<ActorData> data = this.myActors.get(stackButton);
+		myActorInfoView.setActorData(data);
 	}
 	
 	private void updateTowerName(StackPane pane, String text){
-		for(ActorData data : this.myTowers.get(pane)){
+		for(ActorData data : this.myActors.get(pane)){
 			data.getBasic().setName(text);
 		}
-		System.out.println(this.myTowers.get(pane).get(0).getName());
+		System.out.println(this.myActors.get(pane).get(0).getName());
 		
 	}
 	

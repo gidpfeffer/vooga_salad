@@ -1,6 +1,8 @@
 package ui.authoring;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import gamedata.util.OptionGenerator;
 import javafx.animation.FadeTransition;
@@ -34,6 +36,7 @@ public class AuthoringView extends AnchorPane {
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 160;
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
+	
 	
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
