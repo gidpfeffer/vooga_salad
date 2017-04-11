@@ -1,14 +1,19 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.MoveAlongAngleData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
 public class MoveAlongAngleProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
 
 	public double myPathAngle;
+	public double myRange;
+	public double mySpeed;
 	
-	public MoveAlongAngleProperty(double range, double angle) {
-		
+	public MoveAlongAngleProperty(MoveAlongAngleData data) {
+		myPathAngle = data.getAngle();
+		myRange = data.getRange();
+		mySpeed = data.getMySpeed();
 	}
 	
 	@Override
