@@ -11,7 +11,7 @@ public class DamageableData implements Data {
 	private double myHitRadius;
 	private List<BasicActorType> myEnemyTypes;
 	
-	public DamageableData(double myPower, double myHitRadius, BasicActorType... myEnemyTypes) {
+	public DamageableData(Double myPower, Double myHitRadius, BasicActorType... myEnemyTypes) {
 		this.myPower = myPower;
 		this.myHitRadius = myHitRadius;
 		this.myEnemyTypes = new ArrayList<>();

@@ -10,8 +10,14 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
@@ -22,9 +28,9 @@ public class Actor {
 	Pane root;
 	UIHandler uihandler;
 	String name;
-	StackPane actor;
+	Pane actor;
 
-	public StackPane getActor() {
+	public Pane getActor() {
 		return actor;
 	}
 	public String getName(){
@@ -32,9 +38,13 @@ public class Actor {
 	}
 
 
-	public Actor(Pane root, UIHandler uihandler, Integer id, String name, Node image) {
-		actor = UIHelper.buttonStack(clicked, Optional.ofNullable(null), Optional.of((ImageView) image), Pos.CENTER, true);
-		actor = new StackPane();
+	public Actor(Pane root, UIHandler uihandler, Integer id, String name, String image) {
+		
+		actor = UIHelper.buttonStack(e->{}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER, true);
+		//actor = new StackPane();
+		actor.setBackground(Background.EMPTY);
+		//actor.setStyle("-fx-background-color: blue");
+		//actor.getChildren().add(new Text("help"));
 		this.root = root;
 		this.uihandler = uihandler;
 		this.name = name;
@@ -56,6 +66,8 @@ public class Actor {
 
 	public void released(MouseEvent e) {
 		try {
+			System.out.println("releasing");
+			//need to have list here
 			if (obj exists already) {
 				// and if the area is okay to put the stackpane down
 				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
@@ -65,6 +77,7 @@ public class Actor {
 				//delete obj from make then re-add or else i'll need to know where it is on map??
 			}
 			else {
+				//need to know size of screen here
 				uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
 			}
 		} catch (VoogaException e1) {
@@ -72,18 +85,5 @@ public class Actor {
 			e1.printStackTrace();
 		}
 	}
-
-	EventHandler<MouseEvent> clicked = new EventHandler<MouseEvent>()  {
-		@Override
-		public void handle( final MouseEvent ME ) {
-			Object obj = ME.getSource();  // you can also try ME.getTarget()
-
-			if ( obj instanceof Button ) {
-				System.out.println("clicked");
-			}
-		}
-	};
-
-
-
+	
 }

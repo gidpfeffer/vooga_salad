@@ -58,8 +58,9 @@ public class AuthoringView extends AnchorPane {
 	private void setupViews() {
 		setupTitle();
 		setupMapView();
-		setupLevelView();
 		setupLeftPane();
+		setupLevelView();
+		
 		setupBottomPane();
 		setupMargins();
 		setupBorderPane();
@@ -160,7 +161,7 @@ public class AuthoringView extends AnchorPane {
 	}
 
 	private void setupLevelView() {
-		myLevelView = new LevelEditorView();
+		myLevelView = new LevelEditorView(new PopDelegate());
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);

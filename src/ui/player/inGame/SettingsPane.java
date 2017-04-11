@@ -20,7 +20,7 @@ public class SettingsPane {
 
 	private Button button;
 	private AnchorPane settings;
-	private static final double paneWidth = 150.;
+	private double paneWidth = 150.;
 	private List<String> helpPaneOptions = new ArrayList<>(Arrays.asList("Help", "Settings", "Return to Main"));
 	private List<Hyperlink> helpLinks = new ArrayList<>();
 	
@@ -46,6 +46,9 @@ public class SettingsPane {
 	private void setupPane() {
 		settings = new AnchorPane();
 		settings.setPrefWidth(paneWidth);
+		settings.setStyle("-fx-background-color: MediumAquamarine;"
+				+ " -fx-border-radius: 0 10 10 0;"
+				+ "-fx-background-radius: 0 10 10 0;");
 		addBackButton();
 	}
 	
@@ -57,7 +60,7 @@ public class SettingsPane {
 	}
 	
 	private void createHelpButton() {
-		OptionButton back = new OptionButton(0, "back", "splash_icon.png", openPane);
+		OptionButton back = new OptionButton(0, "Help", "splash_icon.png", openPane);
 		button = back.getButton();
 	}
 	

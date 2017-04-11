@@ -15,6 +15,7 @@ public interface UIHandler {
 	Map<Integer,ActorData> getTroopOptions();
 	Map<Integer,ActorData> getShotOptions();
 	Map<Integer,ActorData> getBaseOptions();
+	Map<Integer,ActorData> getTowerOptions();
 	void pause();
 	void play();
 	void stop();
