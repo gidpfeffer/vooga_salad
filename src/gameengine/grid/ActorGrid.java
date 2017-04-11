@@ -45,7 +45,7 @@ public class ActorGrid extends Observable implements MasterGrid, ControllableGri
 		setChanged();
 		notifyObservers(frontEndInfo);
 	}
-
+	
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
 		return items.stream()
 				.filter(t -> predicate.test(t))
@@ -93,10 +93,11 @@ public class ActorGrid extends Observable implements MasterGrid, ControllableGri
 	}
 	
 	@Override
-	public Collection<Consumer<Double>> getActorDamagablesInRadius(double x,
+	public Map<Double, Consumer<Double>> getActorDamagablesInRadius(double x,
 			double y, double radius, BasicActorType type) {
-		Collection<SettableActorLocator> actorsinRadius = getActorsInRadius(x, y, radius, type);
-		return Collections.unmodifiableCollection(map(actorsinRadius, a -> a.getActor().applyDamage()));
+		return Collections.unmodifiableMap(getActorsInRadius(x, y, radius, type).stream()
+					.collect(Collectors.toMap(
+							e -> e.getActor().getRemainingHealth(), e -> e.getActor().applyDamage())));
 	}
 
 	@Override
