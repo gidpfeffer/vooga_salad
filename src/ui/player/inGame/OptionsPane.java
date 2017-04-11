@@ -10,7 +10,9 @@ import gamedata.ActorData;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -155,8 +157,15 @@ public class OptionsPane{
 	        Object obj = ME.getSource();
 
 	        if ( obj instanceof Button ) {
-	        	Actor actor = new Actor(root, uihandler, Integer.parseInt(((Button) obj).getId()), ((Button) obj).getText(), ((Button) obj).getGraphic());
+	        	Integer id = Integer.parseInt(((Button) obj).getId());
+	        	String name = ((Button) obj).getText();
+	        	//temp
+	        	String image = tempMap.get(id).get(1);
+	        	//correct --> String image = listOfOptions.get(id).getImagePath();
+	        	System.out.println(id +" " + name + " " + image);
+	        	Actor actor = new Actor(root, uihandler, id, name, image);
 	            actorsList.add(actor);
+	            System.out.println(actor.getActor() + " " + actorsList.size());
 	        	root.getChildren().add(actor.getActor());
 	        }
 	    }

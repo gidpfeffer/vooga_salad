@@ -58,7 +58,7 @@ public class SettingsPane {
 	}
 	
 	private void createHelpButton() {
-		OptionButton back = new OptionButton(0, "back", "splash_icon.png", openPane);
+		OptionButton back = new OptionButton(0, "Help", "splash_icon.png", openPane);
 		button = back.getButton();
 	}
 	
