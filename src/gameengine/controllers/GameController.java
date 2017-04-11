@@ -15,7 +15,6 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import ui.UIMain;
 import ui.handlers.UIHandler;
-import util.IDGenerator;
 import util.Location;
 import util.RatioToLocationTransformer;
 import util.VoogaException;
@@ -33,7 +32,7 @@ public class GameController {
 	private UIMain myUIMain;
 	
 	private final int MAX_X = 1;
-	private final int MAX_Y =1;
+	private final int MAX_Y = 1;
 	
 	private final double MILLISECOND_DELAY=17;
 

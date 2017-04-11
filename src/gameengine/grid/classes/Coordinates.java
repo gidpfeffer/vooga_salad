@@ -11,7 +11,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  * It holds an x and y location with no setters only getters.
  * If a new coordinate location needs to be made, a new instance also has to be made
  */
-public class Coordinates implements Grid2D{
+public class Coordinates implements Grid2D {
 
 	private double x;
 	private double y;
