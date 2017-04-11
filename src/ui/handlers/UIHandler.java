@@ -3,15 +3,10 @@ package ui.handlers;
 import java.util.Map;
 
 import gamedata.ActorData;
-<<<<<<< HEAD
-=======
-import gamedata.composition.Data;
-import gameengine.actors.management.Actor;
-import gameengine.controllers.GameController;
->>>>>>> 54a58910b6e4d72d900ec5baabf200054d8759ac
 import util.VoogaException;
 
 public interface UIHandler {
+	
 	void deleteGameObject(int id);
 	void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException;
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
