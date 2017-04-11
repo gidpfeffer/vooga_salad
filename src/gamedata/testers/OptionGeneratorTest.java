@@ -59,7 +59,7 @@ public class OptionGeneratorTest {
 	public void correctSubtypes(){
 		List<String> properties = OptionGenerator.getSubcategories("Shoot");
 		//assertEquals(properties.get(0), "");
-		assertEquals(properties.get(0), "ShootTargetFarData");
+		assertEquals(properties.get(0), "ShootTargetFar");
 		System.out.println("Shoot Properties");
 		Arrays.asList(properties).stream().forEach(System.out::println);
 	}
