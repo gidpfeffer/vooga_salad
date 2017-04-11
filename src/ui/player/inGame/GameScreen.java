@@ -8,8 +8,11 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.xml.transform.Transformer;
+
 import gamedata.ActorData;
 import gamedata.GameData;
+import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -33,11 +36,10 @@ public class GameScreen implements Observer{
 	private AnchorPane anchorPaneRoot;
 	private Stage myStage;
 	private Scene myScene;
-	//private BorderPane borderPane;
 	private UIHandler uihandler;
 	private SimpleHUD hud;
 	private String backgroundImagePath = "default_map_background_0.jpg";
-	private List<Actor> listOfActors;
+	private Map<Integer, Actor> actorsMap;
 	private TempData tempData;
 	
 
@@ -50,50 +52,38 @@ public class GameScreen implements Observer{
 		return screenSize;
 	}
 	
-	//temporary data
+/*	//temporary data
 	public GameScreen(Stage stage, UIHandler uihandler, TempData tempData) {
 		this.anchorPaneRoot = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
-		this.listOfActors = new ArrayList<Actor>();		
+		this.ActorsMap = new HashMap<Integer, Actor>();		
 		hud = new SimpleHUD();
 		this.tempData = tempData;
 		this.myStage = stage;
 		this.uihandler = uihandler;
 		setup();
-	}
+	}*/
 	
 	public GameScreen(Stage stage, UIHandler uihandler){
-		
 		this.anchorPaneRoot = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
-		this.listOfActors = new ArrayList<Actor>();
+		this.actorsMap = new HashMap<Integer, Actor>();
+		hud = new SimpleHUD();
 		//this.borderPane = new BorderPane();
 		this.uihandler = uihandler;
 		myStage = stage;
-/*		Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
-		Map<Integer, ActorData> troops, Map<Integer, ActorData> bases*/
 		
-		hud = new SimpleHUD();
-		
-		//setup(shots, towers, troops, bases);
+		setup(uihandler.getShotOptions(), uihandler.getTowerOptions(), 
+				uihandler.getTroopOptions(), uihandler.getBaseOptions());
 	}
 	
-	//temp setup
+/*	//temp setup
 	private void setup() {
 		setupBackground();
 		setupRight();
 		setupLeft();
 		setupHUD();
-	}
-	
-	//temp right
-	private void setupRight() {
-		// TODO Auto-generated method stub
-		SidePanelTemp sidePanelTemp = new SidePanelTemp(uihandler, listOfActors, anchorPaneRoot, tempData);
-		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 10.0);
-		anchorPaneRoot.getChildren().add(sidePanelTemp.getSidePane());
-		sidePanelTemp.addInternalPanesToRoot();
-	}
+	}*/
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
@@ -105,7 +95,7 @@ public class GameScreen implements Observer{
 	}
 	
 	private void setupBackground() {
-		anchorPaneRoot.setStyle("-fx-background-color: green");
+		anchorPaneRoot.setStyle("-fx-background-color: mediumseagreen");
 		ImageView imv = new ImageView(new Image(backgroundImagePath));  
 		//anchorPaneRoot.getChildren().add(imv);
 		//imv.fitWidthProperty().bind();
@@ -115,6 +105,8 @@ public class GameScreen implements Observer{
 		imv.fitWidthProperty().bind(myStage.heightProperty()); 
 		
 		StackPane background = new StackPane();
+		//background.setPrefSize(myStage.getWidth(), myStage.getHeight());
+		System.out.println(myStage.getWidth());
 		background.setPrefWidth(myStage.getWidth());
 		background.setPrefHeight(myStage.getHeight());
 		BackgroundImage myBI= new BackgroundImage(new Image(backgroundImagePath,background.getWidth(), background.getHeight(),true,true),
@@ -131,15 +123,24 @@ public class GameScreen implements Observer{
 		
 	}
 	
+/*	//temp right
+	private void setupRight() {
+		SidePanelTemp sidePanelTemp = new SidePanelTemp(uihandler, listOfActors, anchorPaneRoot, tempData);
+		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 10.0);
+		anchorPaneRoot.getChildren().add(sidePanelTemp.getSidePane());
+		sidePanelTemp.addInternalPanesToRoot();
+	}*/
+	
+	
 	private void setupRight(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
-		SidePanel sidePanel = new SidePanel(uihandler, listOfActors, anchorPaneRoot, towers, shots, troops, bases);
-		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 0.0);
-		//borderPane.setRight(mainPane.getMainPane());
+		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, anchorPaneRoot, towers, shots, troops, bases);
+		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 10.0);
+		anchorPaneRoot.getChildren().add(sidePanel.getSidePane());
+		sidePanel.addInternalPanesToRoot();
 	}
 	
 	private void setupLeft() {
-		// TODO Auto-generated method stub
 		SettingsPane settingsPane = new SettingsPane();
 		Button helpButton = settingsPane.getHelpButton();
 		AnchorPane settings = settingsPane.getHelpPane();
@@ -147,8 +148,6 @@ public class GameScreen implements Observer{
 		AnchorPane.setTopAnchor(helpButton, 10.);
 		anchorPaneRoot.getChildren().addAll(helpButton, settings);
 		settings.setLayoutX(-settings.getPrefWidth());
-		
-		//borderPane.setLeft(settingsPane.getHelpPane());
 	}
 	
 	private void setupHUD() {
@@ -159,8 +158,17 @@ public class GameScreen implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO oberserve map
-		//the listOfActors holds all actors added to the map through dragging onto the screen
+		Map<Integer, FrontEndInformation> map = (Map<Integer, FrontEndInformation>) o;
+		for (Integer i : map.keySet()) {
+			for (Map.Entry<Integer, Actor> actor : actorsMap.entrySet()) {
+				if (((actor.getKey().equals(i.toString())))) {
+					actor.getValue().getActor().setLayoutX(util.Transformer.ratioToCoordinate(map.get(i).getActorLocation().getX(), myScene.getWidth()));
+					actor.getValue().getActor().setLayoutY(util.Transformer.ratioToCoordinate(map.get(i).getActorLocation().getY(), myScene.getHeight()));
+				}
+			}
+		}
+		// TODO add when the actor is not in map
+		//change to hashmap
 		
 	}
 	

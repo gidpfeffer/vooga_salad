@@ -34,7 +34,7 @@ public class OptionsPane{
 	private Pane root;
 	private AnchorPane buttonPane;
 	private StackPane holder;
-	private List<Actor> actorsList;
+	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> mapOfOptions;
 	//temp
 	private Map<Integer, List<String>> tempMap;
@@ -90,18 +90,24 @@ public class OptionsPane{
 	}
 	
 	//uncomment for real side panel
-/*	public OptionsPane(UIHandler uihandler, AnchorPane root, List<Actor> actorsList, Map<Integer, ActorData> map) {
+	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map) {
 		this.root = root;
-		this.actorsList = actorsList;
+		this.holder = new StackPane();
+		this.actorsMap = actorsMap;
 		buttonPane = new AnchorPane();
+		buttonPane.setStyle("-fx-background-color: MediumAquamarine;"
+				+ " -fx-border-radius: 10 0 0 10;"
+				+ "-fx-background-radius: 10 0 0 10;");
 		mapOfOptions = new HashMap<>();
 		listOfButtons = new ArrayList<>();
 		this.uihandler = uihandler;
 		mapOfOptions = map;
 		addActorPane();
-	}*/
+		holder.getChildren().add(buttonPane);
+	}
 	
-	public OptionsPane(UIHandler uihandler, Pane root, List<Actor> actorsList, Map<Integer, List<String>> temp) {
+	//use for temp data
+/*	public OptionsPane(UIHandler uihandler, Pane root, List<Actor> actorsList, Map<Integer, List<String>> temp) {
 		this.root = root;
 		this.holder = new StackPane();
 		this.actorsList = actorsList;
@@ -115,20 +121,22 @@ public class OptionsPane{
 		this.tempMap = temp;
 		addActorPane();
 		holder.getChildren().add(buttonPane);
-	}
+	}*/
 	
 	private void addActorPane() {
+		System.out.println(mapOfOptions);
 		VBox buttonBox = new VBox(50);
 		//uncomment section to use actor data
-/*		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
+		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
 			paneName = entry.getValue().getActor().toString();
+			System.out.println(paneName);
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().getName(), entry.getValue().getImagePath(), pressed);
-		}*/
+		}
 		//temp
-		for (Map.Entry<Integer, List<String>> entry : tempMap.entrySet()) {
+/*		for (Map.Entry<Integer, List<String>> entry : tempMap.entrySet()) {
 			tempPaneName = entry.getValue().get(2);
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().get(0), entry.getValue().get(1), pressed);
-		}
+		}*/
 		Rectangle buffer = new Rectangle();
 		buffer.setFill(Color.TRANSPARENT);
 		buttonBox.getChildren().add(buffer);
@@ -162,12 +170,12 @@ public class OptionsPane{
 	        	Integer id = Integer.parseInt(((Button) obj).getId());
 	        	String name = ((Button) obj).getText();
 	        	//temp
-	        	String image = tempMap.get(id).get(1);
-	        	//correct --> String image = listOfOptions.get(id).getImagePath();
+	        	//String image = tempMap.get(id).get(1);
+	        	//correct -->
+	        	String image = mapOfOptions.get(id).getImagePath();
 	        	System.out.println(id +" " + name + " " + image);
 	        	Actor actor = new Actor(root, uihandler, id, name, image);
-	            actorsList.add(actor);
-	            System.out.println(actor.getActor() + " " + actorsList.size());
+	            actorsMap.put(id, actor);
 	        	root.getChildren().add(actor.getActor());
 	        }
 	    }
@@ -177,8 +185,6 @@ public class OptionsPane{
 		@Override
 		public void handle( final MouseEvent ME ) {
 			Object obj = ME.getSource();  //ME.getTarget()
-
-			System.out.println(buttonPane.getPrefWidth());
 			if ( obj instanceof Button ) {
 				TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
 				t.setNode(buttonPane);
