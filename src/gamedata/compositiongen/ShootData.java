@@ -8,12 +8,14 @@ public class ShootData implements Data {
 	private int fireRate;
 	private BasicActorType myTarget;
 	private Integer myProjectile;
+	private double mySpeed;
 
-	public ShootData(double range, int rate, BasicActorType type, Integer projectile) {
+	public ShootData(double range, int rate, BasicActorType type, Integer projectile, double speed) {
 		myRange = range;
 		fireRate = rate;
 		myTarget = type;
 		myProjectile = projectile;
+		mySpeed = speed;
 	}
 
 	public double getRange() {
@@ -38,6 +40,10 @@ public class ShootData implements Data {
 	
 	public Integer getProjectile() {
 		return myProjectile;
+	}
+	
+	public double getSpeed() {
+		return mySpeed;
 	}
 
 }
