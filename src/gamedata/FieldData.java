@@ -32,6 +32,8 @@ public class FieldData {
 	public void setMyType(Class myType) {
 		this.myType = myType;
 	}
-	
+	public String toString(){
+		return String.format("%s   %s", myName, myType);
+	}
 	
 }
