@@ -32,6 +32,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private Function<Integer, Actor> actorMaker;
 	
 	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
+		super();
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
 		this.actorMaker = actorMaker;
