@@ -29,7 +29,7 @@ public class MoveWithSetPathData extends MoveData {
 	 * account the speed
 	 * @param speed
 	 */
-	public MoveWithSetPathData(List<List<Grid2D>> myAssignedPaths, double speed){
+	public MoveWithSetPathData(List<List<Grid2D>> myAssignedPaths, Double speed){
 		super(speed);
 		myPaths = myAssignedPaths;
 	}
