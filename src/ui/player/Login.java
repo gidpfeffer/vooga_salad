@@ -3,14 +3,13 @@ package ui.player;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Scanner;
+import gameengine.controllers.GameController;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -20,241 +19,253 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ui.*;
 import ui.authoring.AuthoringView;
+import ui.general.UIHelper;
+import ui.handlers.UIHandler;
+import ui.player.inGame.GameScreen;
+import ui.player.inGame.TempData;
+import ui.player.login.DataEntryGrid;
+import ui.player.login.LoginGrid;
+import ui.player.login.SignupGrid;
 
 //tweaked from http://docs.oracle.com/javafx/2/get_started/form.htm
 public class Login{
 	private Stage stage;
 	private Scene scene;
+	private GameController gameController;
+	
+	private AnchorPane root;
+	private GridPane gridPane;
+	private BorderPane borderPane;
 	private Passwords passwords;
+	private UIHelper uihelper;
+	private LoginGrid login;
+	private SignupGrid signup;
 	private ResourceBundle loginResource;
 	private XStream mySerializer = new XStream(new DomDriver());
 	private String mySavedPasswords = "";
-	private final String filename = "passwordXML.xml";
-	
-	
+	private static final String filename = "passwordXML.xml";
+	private XStreamFileChooser fileChooser = new XStreamFileChooser(filename);
+
+
 	public Scene getScene() {
 		return scene;
 	}
+
 	public Login(Stage stage, String css, String resource) {
 		this.stage = stage;
 		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
 		stage.setMinWidth(Preferences.SCREEN_WIDTH);
 		loginResource = ResourceBundle.getBundle(resource);
-		passwords = readInPasswords();
-		scene = setup(css);
+		try {
+			mySavedPasswords = fileChooser.readInClass();
+			passwords = (Passwords) mySerializer.fromXML(mySavedPasswords);
+		}
+		catch (Exception ex) {
+			passwords = new Passwords();
+			//ex.printStackTrace();
+		}
+		//passwords = fileChooser.readInPasswords(mySerializer);
+		gridPane = new GridPane();
+		gridPane.setHgap(50);
+		gridPane.setVgap(20);
+		borderPane = new BorderPane();
+		root = new AnchorPane();
+		setup(css);
 	}
-	
-/*	@Override
-    public void start(Stage primaryStage) {
-		loginResource = ResourceBundle.getBundle("login");
-        primaryStage.setTitle(loginResource.getString("login"));
-        Scene loginPage = setup();
-        primaryStage.setScene(loginPage);
-        primaryStage.setMinHeight(350);
-        primaryStage.setMinWidth(650);
-        primaryStage.show();
-    }*/
-	
-	public Scene setup(String css) {
-		GridPane root = new GridPane();
-		root.setId("root");
-        
-		GridPane loginGrid = createGrid(Pos.TOP_LEFT);
-		GridPane signupGrid = createGrid(Pos.TOP_LEFT);
-		root.add(loginGrid, 0, 0);
-		root.add(signupGrid, 1, 0);
-		root.setAlignment(Pos.CENTER);
-		Scene scene = new Scene(root);
+
+	public void setup(String css) {
+		setupLayout(css);
+		setupTitle();
+		setupLoginNewAccountTitle();
+		setupLoginGrid();
+		setupSignupGrid();
+		setupButtons();
+		setupAltButtons();
+	}
+
+	private void setupLayout(String css) {
+		borderPane.setCenter(gridPane);
+		root.getChildren().add(borderPane);
+		gridPane.setAlignment(Pos.CENTER);
+		scene = new Scene(root);
 		scene.getStylesheets().add(css);
-		//scene.getStylesheets().addAll(this.getClass().getResource(css).toExternalForm());
-		//System.out.println(javafx.scene.text.Font.getFamilies());
-		
-		Text welcomeBackTitle = createTitle(loginResource.getString("welcomeBack"));
-		Text newAccountTitle = createTitle(loginResource.getString("newAccount"));
-
-		enterUser(loginGrid, welcomeBackTitle);
-		newUser(signupGrid, newAccountTitle);
-
-		Button loginEnter = new Button(loginResource.getString("login"));
-		Button signupEnter = new Button(loginResource.getString("signup"));
-		HBox loginHbox = new HBox(10);
-		HBox signupHbox = new HBox(10);
-		loginHbox.getChildren().add(loginEnter);
-		signupHbox.getChildren().add(signupEnter);
-		loginHbox.setAlignment(Pos.BOTTOM_RIGHT);
-		signupHbox.setAlignment(Pos.BOTTOM_RIGHT);
-		
-		loginGrid.add(loginHbox, 1, 4);
-		signupGrid.add(signupEnter, 1, 4);
-		
-		final Text actiontarget = new Text();
-        root.add(actiontarget, 1, 2);
-        
-        loginEnter.setOnAction(e -> loginClicked(loginGrid, actiontarget));
-        signupEnter.setOnAction(e -> signupClicked(signupGrid, actiontarget));
-        
-        Button auth = new Button(loginResource.getString("gotoAuth"));
-        auth.setOnAction(e -> gotoUIMain());
-        root.add(auth, 0, 3);
-		return scene;
+		setupBorderPane();
 	}
-	
-	private Text createTitle(String s) {
-		Text title =  new Text(s);
-		title.setFont(Font.font(20));
+	private void setupBorderPane(){
+		AnchorPane.setBottomAnchor(borderPane, 0.0);
+		AnchorPane.setLeftAnchor(borderPane, 0.0);
+		AnchorPane.setTopAnchor(borderPane, 0.0);
+		AnchorPane.setRightAnchor(borderPane, 0.0);
+		//gridPane.setId("root");
+	}
+
+	private void setupTitle(){
+		Label towerDefenseTitle = createTitle(loginResource.getString("towerDefense"), 50);
+		towerDefenseTitle.setPrefWidth(Preferences.SCREEN_WIDTH);
+		towerDefenseTitle.setAlignment(Pos.CENTER);
+		borderPane.setTop(towerDefenseTitle);
+	}
+
+	private void setupLoginNewAccountTitle() {
+		Label welcomeBackTitle = createTitle(loginResource.getString("welcomeBack"), 30);
+		Label newAccountTitle = createTitle(loginResource.getString("newAccount"), 30);
+		welcomeBackTitle.getStyleClass().add("text");
+		gridPane.add(welcomeBackTitle, 0, 0);
+		gridPane.add(newAccountTitle, 1, 0);
+	}
+
+	private void setupLoginGrid(){
+		login = new LoginGrid(loginResource);
+		login.getGrid().getStyleClass().add("grid");
+		gridPane.add(login.getGrid(), 0, 2);
+	}
+
+	private void setupSignupGrid(){
+		signup = new SignupGrid(loginResource);
+		signup.getGrid().getStyleClass().add("grid");
+		gridPane.add(signup.getGrid(), 1, 2);
+	}
+
+	private Label createTitle(String s, int size) {
+		Label title =  new Label(s);
+		title.setPrefHeight(size);;
 		return title;
 	}
-	
-	private GridPane createGrid(Pos position){
-		GridPane grid = new GridPane();
-		grid.getStyleClass().add("grid");
-		grid.setAlignment(position);
-		grid.setHgap(10);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(25, 25, 25, 25));
-		return grid;
-		
-	}
-	
-	private void enterUser(GridPane login, Text title){
-		login.add(title, 0, 0, 2, 1);
-		
-		Label userName = new Label(loginResource.getString("username"));
-		login.add(userName, 0, 1);
 
-		TextField userTextField = new TextField();
-		userTextField.setId("user");
-		login.add(userTextField, 1, 1);
+	private void setupButtons(){
+		Button loginEnter = new Button(loginResource.getString("login"));
+		Button signupEnter = new Button(loginResource.getString("signup"));
+		UIHelper.setDropShadow(loginEnter);
+		UIHelper.setDropShadow(signupEnter);
+		gridPane.add(loginEnter, 0, 3);
+		gridPane.add(signupEnter, 1, 3);
+		final Text actiontarget = new Text();
+		gridPane.add(actiontarget, 1, 4);
 
-		Label password = new Label(loginResource.getString("password"));
-		login.add(password, 0, 2);
+		loginEnter.setOnAction(e -> loginClicked(actiontarget));
+		signupEnter.setOnAction(e -> signupClicked(actiontarget));
+	}
 
-		PasswordField passwordField = new PasswordField();
-		passwordField.setId("password");
-		login.add(passwordField, 1, 2);
+	private void setupAltButtons(){
+		Button auth = new Button(loginResource.getString("gotoAuth"));
+		Button selector = new Button(loginResource.getString("gotoSelector"));
+		auth.setOnAction(e -> gotoAuth());
+		UIHelper.setDropShadow(auth);
+		UIHelper.setDropShadow(selector);
+		selector.setOnAction(e -> gotoGameSelector());
+		gridPane.add(auth, 0, 4);
+		gridPane.add(selector, 1, 4);
 	}
-	
-	private void newUser(GridPane sign, Text title){
-		enterUser(sign, title);
-		
-		Label repassword = new Label(loginResource.getString("reenter"));
-		sign.add(repassword, 0, 3);
 
-		PasswordField repasswordField = new PasswordField();
-		repasswordField.setId("repassword");
-		sign.add(repasswordField, 1, 3);
-	}
-	
-	private Node getNode (GridPane gridPane, String id) {
-	    for (Node node : gridPane.getChildren()) {
-	        if(node.getId() != null && node.getId().equals(id)) {
-	            return node;
-	        }
-	    }
-	    return null;
-	}
-	
-	
-	private void loginClicked(GridPane grid, Text actiontarget){
-		TextField userTextField = (TextField) getNode(grid, "user");
-		PasswordField passwordField = (PasswordField) getNode(grid, "password");
-		if (passwords.login(userTextField.getText(), passwordField.getText())) {
+	private void loginClicked(Text actiontarget){
+/*		for (Map.Entry<String, TextField> entry : login.entrySet()) {
+		    String key = entry.getKey();
+		    ArrayList<String> value = entry.getValue();
+		    // now work with key and value...
+		}
+		for (Map.Entry<Text, TextField> entry : login.entrySet())
+		{
+			System.out.println(entry.getKey() + "/" + entry.getValue());
+		}*/
+		System.out.println(login.getUsername());
+/*		if (passwords.login(login.getUsername().getText(), login.getPassword().getText())) {
 			actiontarget.setFill(Color.GREEN);
 			actiontarget.setText(loginResource.getString("successfulLogin"));
-			userTextField.clear();
-			passwordField.clear();
+			login.getUsername().clear();
+			login.getPassword().clear();
 		} else {
 			actiontarget.setFill(Color.FIREBRICK);
 			actiontarget.setText(loginResource.getString("incorrectLogin"));
-		}
+		}*/
 	}
-	
-	private void signupClicked(GridPane grid, Text actiontarget){
-		TextField userTextField = (TextField) getNode(grid, "user");
-		PasswordField passwordField = (PasswordField) getNode(grid, "password");
-		PasswordField repasswordField = (PasswordField) getNode(grid, "repassword");
-		if (!passwords.existingUserCheck(userTextField.getText())) {
-			if (userTextField.getText().equals("") || passwordField.getText().equals("")) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle(loginResource.getString("errorTitle"));
-				alert.setHeaderText(loginResource.getString("error"));
-				alert.setContentText(loginResource.getString("errorCorrection"));
-				alert.showAndWait();
+
+	private void signupClicked(Text actiontarget){
+		if (!passwords.existingUserCheck(signup.getUsername().getText())) {
+			if (signup.getUsername().getText().equals("") || signup.getPassword().getText().equals("")) {
+				showAlert(AlertType.ERROR, loginResource.getString("errorTitle"),
+						loginResource.getString("error"), loginResource.getString("errorCorrection"));
 			}
-			else if (!passwordField.getText().equals(repasswordField.getText())){
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle(loginResource.getString("errorTitle"));
-				alert.setHeaderText(loginResource.getString("passwordError"));
-				alert.setContentText(loginResource.getString("passwordErrorCorrection"));
-				alert.showAndWait();
+			else if (!signup.getPassword().getText().equals(signup.getRePassword().getText())){
+				showAlert(AlertType.ERROR, loginResource.getString("errorTitle"),
+						loginResource.getString("passwordError"), loginResource.getString("passwordErrorCorrection"));
+			} 
+			else if (!signup.getEmail().getText().equals(signup.getReEmail().getText())){
+				showAlert(AlertType.ERROR, loginResource.getString("errorTitle"),
+						loginResource.getString("emailError"), loginResource.getString("emailErrorCorrection"));
 			} 
 			else {
 				actiontarget.setFill(Color.GREEN);
 				actiontarget.setText(loginResource.getString("successfulSignUp"));
-				passwords.signup(userTextField.getText(), passwordField.getText());
-	            try {
-	                System.out.println("Saving Password...");
-	                mySavedPasswords = mySerializer.toXML(passwords);
-	                System.out.println(mySavedPasswords);
-	                writePasswords(mySavedPasswords);
-	            }
-	            catch (Exception ex) {
-	                ex.printStackTrace();
-	            }
-				userTextField.clear();
-				passwordField.clear();
-				repasswordField.clear();
+				passwords.signup(signup.getUsername().getText(), signup.getPassword().getText());
+				try {
+					mySavedPasswords = mySerializer.toXML(passwords);
+					System.out.println(mySavedPasswords);
+					fileChooser.writePasswords(mySavedPasswords);
+				}
+				catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				clearSignupFields();
 			}
 		} else {
 			actiontarget.setFill(Color.FIREBRICK);
 			actiontarget.setText(loginResource.getString("incorrectSignUp"));
 		};
 	}
-	
-	private void writePasswords(String xml){
-		try {
-			File file = new File(filename);
-			FileWriter fileWriter = new FileWriter(file);
-			fileWriter.write(xml);
-			fileWriter.flush();
-			fileWriter.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.print("XML Error");
-		}
+
+	private void clearSignupFields() {
+		signup.getEmail().clear();
+		signup.getPassword().clear();
+		signup.getPassword().clear();
+		signup.getReEmail().clear();
+		signup.getRePassword().clear();
+		signup.getUsername().clear();
 	}
 	
-	private Passwords readInPasswords() {
-        try {
-            System.out.println("Loading Passwords...");
-            String content = new Scanner(new File(filename)).useDelimiter("\\Z").next();
-            System.out.println(content);
-            passwords = (Passwords) mySerializer.fromXML(content);
-        }
-        catch (Exception ex) {
-        	passwords = new Passwords();
-            //ex.printStackTrace();
-        }
-		return passwords;
+	private void showAlert(AlertType type, String title, String heading, String content) {
+		Alert alert = new Alert(type);
+		alert.setTitle(title);
+		alert.setHeaderText(heading);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
-	
-	private void gotoUIMain() {
-		UIMain view = new UIMain("English");
+
+	private void gotoAuth() {
+ 		AuthoringView view = new AuthoringView();
+		Stage s = (Stage) scene.getWindow();
+		s.setScene(new Scene(view, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
+/*		UIMain view = new UIMain("English", null);
 		stage.setScene(view.getScene());
 		stage.setTitle("VOOGASalad");
 		stage.setResizable(false);
+		stage.show();*/
+	}
+
+	private void gotoGameSelector() {
+		gotoGameScreen();
+		//uncomment later
+/*		GameSelector select = new GameSelector("English", "mainScreen.css");
+		stage.setScene(select.getScene());A
+		stage.setTitle("GameSelector");
+		stage.show();*/
+	}
+
+	private void gotoGameScreen() {
+		gameController = new GameController();
+		gameController.start(stage);
+		
+		//GameScreen inGame = new GameScreen(stage, null, null, null, null, null);
+		//GameScreen inGame= new GameScreen(stage, null, new TempData());
+		stage.setScene(gameController.getGameScreen().getScene());
+		stage.setTitle("GameSelector");
 		stage.show();
 	}
-/*	
-	public static void main(String[] args) {
-		launch(args);
-	}*/
 }

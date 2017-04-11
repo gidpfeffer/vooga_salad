@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 
-import gamedata.composition.ShootData;
+import gamedata.composition.ShootTargetNearData;
+import gamedata.compositiongen.ShootData;
+import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -12,7 +14,7 @@ import util.PathUtil;
 
 public class ShootTargetNearProperty<G extends ReadAndSpawnGrid> extends ShootTargetProperty<G> {
 
-	public ShootTargetNearProperty(ShootData myData) {
+	public ShootTargetNearProperty(ShootTargetNearData myData) {
 		super(myData);
 	}
 
@@ -21,11 +23,6 @@ public class ShootTargetNearProperty<G extends ReadAndSpawnGrid> extends ShootTa
 		ArrayList<Grid2D> retCollection = new ArrayList<>();
 		retCollection.add(points.stream().min(Comparator.comparingDouble(point -> PathUtil.getDistance(myPos, point))).get());
 		return retCollection;
-	}
-
-	@Override
-	protected void spawnProjectiles(G grid, Collection<Grid2D> targets) {
-		//targets.stream().forEach(point -> grid.spawn(newActor, startX, startY););
 	}
 
 }

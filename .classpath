@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="voogasalad_ilovesingletons/lib/JInput/dist"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="images"/>
 	<classpathentry kind="src" path="data/resource"/>
 	<classpathentry kind="src" path="data/css"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/restfb-2.0.0-rc.2/restfb-2.0.0-rc.2.jar"/>
+	<classpathentry kind="lib" path="lib/JInput/dist/jinput.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

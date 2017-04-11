@@ -22,12 +22,3 @@
     -fx-stroke: #42dfb8;
     -fx-stroke-width: 2;
 }
-
-.scroll-pane > .viewport  {
-	-fx-background-color: red;
-	}
-
-.scroll-pane {
-	-fx-background-color: transparent;
-	-fx-opacity: 0.0;
-}

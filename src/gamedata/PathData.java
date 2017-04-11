@@ -1,21 +1,22 @@
 package gamedata;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-
 /**
  * Class to represent all Paths created in the authoring 
  * environment, mapped to integers for use in actor creation.
  * 
  * @author maddiebriere
+<<<<<<< HEAD
+ * @author Ahn
+ * @author Talha Koc
+=======
  * @author Anh
+>>>>>>> 778057175590dcc976298be2742f011504662355
  *
  */
-
 public class PathData {
 	private Map <Integer, List<Grid2D>> myPaths; // the map of all user-defined paths in the game, indexed. 
 	private int numOptions;
@@ -44,13 +45,19 @@ public class PathData {
 	public void addPath(List<Grid2D> newPath){
 		myPaths.put(numOptions++, newPath);
 	}
-
 	public Map<Integer, List<Grid2D>> getMyPaths() {
 		return myPaths;
 	}
-
 	public void setMyPaths(Map<Integer, List<Grid2D>> myPaths) {
 		this.myPaths = myPaths;
 	}
+	
+	public List<Grid2D> poll(){
+		if(myPaths.isEmpty()){
+			addPath(new ArrayList<Grid2D>());
+		}
+		return myPaths.get(myPaths.size() - 1);
+	}
 
 }
+
