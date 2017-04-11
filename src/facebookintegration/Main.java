@@ -7,7 +7,7 @@ import com.restfb.types.User;
 public class Main {
 
 	public static void main(String[] args){
-		String key = "EAACEdEose0cBANJoTluzIoMlF2YdVCyyeCY8J8VbH7xMDgQkoZCn6cWkfDh0ZAY0ZCba2HsWBsGImvsRIC83ZBlitqn9aXOdtNOZBaogDlZAlyf7zG9IN2RZBCETHVJ1CpGYsMd4LZBUf0Ex3yPk5zgqdDkTB2EOsji9FwKlSY5ZBvnFGCRKoIVTkMnxAPuPgV84ZD";
+		String key = "EAACEdEose0cBALQdZArJkPsgGs2jr8eNFCfIcSmm4aK0aDsiPZAz1Mz8xMRMbjhPh0Io4uxRmZCr388606FEoRaolZB6TMGH155VXy7aZCCIZB46WEMCAjMd2adi4LQwItgmsZAjxfOIjbDGoJFh6AV6zVWPEpEZBcHPUaACqMH89COgG7Bh8P3XSEigY4lUQOQZD";
 		FacebookClient client = new DefaultFacebookClient(key);
 		
 		User me = client.fetchObject("me", User.class);
