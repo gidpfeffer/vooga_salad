@@ -101,18 +101,19 @@ public class GameScreen implements Observer{
 	}
 	
 	private void setupBackground() {
+		anchorPaneRoot.setStyle("-fx-background-color: green");
 		ImageView imv = new ImageView(new Image(backgroundImagePath));  
 		//anchorPaneRoot.getChildren().add(imv);
 		//imv.fitWidthProperty().bind();
 		//imv.fitHeightProperty().bind(center.heightProperty());
 		imv.setPreserveRatio(true);
-		imv.fitWidthProperty().bind(myStage.widthProperty()); 
+		imv.fitWidthProperty().bind(anchorPaneRoot.widthProperty()); 
 		imv.fitWidthProperty().bind(myStage.heightProperty()); 
 		
 		StackPane background = new StackPane();
 		background.setPrefWidth(myStage.getWidth());
 		background.setPrefHeight(myStage.getHeight());
-		BackgroundImage myBI= new BackgroundImage(new Image(backgroundImagePath,background.getWidth(),background.getHeight(),true,true),
+		BackgroundImage myBI= new BackgroundImage(new Image(backgroundImagePath,background.getWidth(), background.getHeight(),true,true),
 		        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 		          BackgroundSize.DEFAULT);
 		

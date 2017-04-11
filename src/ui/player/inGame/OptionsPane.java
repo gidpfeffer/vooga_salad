@@ -100,6 +100,7 @@ public class OptionsPane{
 		this.root = root;
 		this.actorsList = actorsList;
 		buttonPane = new AnchorPane();
+		buttonPane.setStyle("-fx-background-color: aqua");
 		mapOfOptions = new HashMap<>();
 		listOfButtons = new ArrayList<>();
 		this.uihandler = uihandler;
@@ -128,17 +129,12 @@ public class OptionsPane{
 
 	private Button createImageButtonAndAddToList(Integer id, String name, String imagePath, EventHandler<MouseEvent> pressed) {
 		OptionButton optionButton = new OptionButton(id, name, imagePath, pressed);
-		//root.getChildren().add(optionButton.getButton());
-		optionButton.getButton().setLayoutX(100);
-		optionButton.getButton().setLayoutY(100);
-		Button but = optionButton.getButton();
-		root.getChildren().add(but);
 		listOfButtons.add(optionButton.getButton());
 		return optionButton.getButton();
 	}
 	
 	private void addBackButton(EventHandler<MouseEvent> clicked) {
-		Button back = createImageButtonAndAddToList(0, "back", "back_icon.png", clicked);
+		Button back = createImageButtonAndAddToList(0, "back", "back_icon_flipped.png", clicked);
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
@@ -162,10 +158,11 @@ public class OptionsPane{
 		public void handle( final MouseEvent ME ) {
 			Object obj = ME.getSource();  //ME.getTarget()
 
+			System.out.println(buttonPane.getPrefWidth());
 			if ( obj instanceof Button ) {
 				TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
 				t.setNode(buttonPane);
-				t.setToX(-(buttonPane.getWidth()));
+				t.setToX((buttonPane.getPrefWidth()));
 				t.play();
 			}
 		}

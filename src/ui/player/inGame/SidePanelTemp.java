@@ -97,8 +97,12 @@ public class SidePanelTemp {
 	private OptionsPane getPane (Map<Integer, List<String>> map) {
 		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsList, map);
 		optionPane.setHeight(300);
-		optionPane.setWidth(200);
+		optionPane.setWidth(100);
 		//optionPane.setTempMap(map);
+		root.getChildren().add(optionPane.getPane());
+		AnchorPane.setRightAnchor(optionPane.getPane(), -optionPane.getWidth());
+		//figure out side panel length
+		//optionPane.getPane().setLayoutX(500 optionPane.getWidth());
 		return optionPane;
 	}
 	
@@ -111,9 +115,8 @@ public class SidePanelTemp {
 	        	for (OptionsPane optionsPane : listOfPanes) {
 	        		if (((Button) obj).getText().equals(optionsPane.getTempPaneName())) {
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
-	    	    		System.out.println(optionsPane.getTempPaneName());
 	    	    		t.setNode(optionsPane.getPane());
-	    	    		t.setToX(optionsPane.getWidth());
+	    	    		t.setToX(-optionsPane.getPane().getPrefWidth());
 	    	    		t.play();
 	        		}
 	        	}
