@@ -62,39 +62,43 @@ public class Actor {
 			actor.setLayoutX(e.getSceneX());
 			actor.setLayoutY(e.getSceneY());
 		});
-
-		actor.setOnMouseClicked(e -> released(e));
+		actor.addEventHandler(MouseEvent.MOUSE_RELEASED, released);
+		//actor.setOnMouseReleased(e -> System.out.println("sdfjsdkljflksdf"));//released(e));
 	}
 
-	public void released(MouseEvent e) {
-		try {
-			System.out.println("releasing");
-			//need to have list here
-			if (mapOfActors.get(actor) != null) {
-				// and if the area is okay to put the stackpane down
-				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
-				//remove from root if can't place;
-				
-				//idea -- remove event handler here so can't re-drag object?
-				//delete obj from make then re-add or else i'll need to know where it is on map??
+	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>()  {
+		@Override
+		public void handle( final MouseEvent ME ) {
+			//System.out.println("apple juice");
+			try {
+				System.out.println("releasing");
+				//need to have list here
+				if (mapOfActors.get(actor) != null) {
+					// and if the area is okay to put the stackpane down
+					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
+					//remove from root if can't place;
+					
+					//idea -- remove event handler here so can't re-drag object?
+					//delete obj from make then re-add or else i'll need to know where it is on map??
+				}
+				else {
+					//need to know size of screen here
+	/*				if(e.getX() < root.getImageInsets().x || 
+							e.getX() > root.getWidth() - root.getImageInsets().x || 
+							e.getY() < root.getImageInsets().y || 
+							e.getY() > root.getHeight() - root.getImageInsets().y) {
+						throw new VoogaException("Invalid location for actor");
+					} 
+					else {*/
+						uihandler.addGameObject(Integer.parseInt(actor.getId()), 
+								actor.getLayoutX(), actor.getLayoutY());
+					//}
+				}
+			} catch (VoogaException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			else {
-				//need to know size of screen here
-/*				if(e.getX() < root.getImageInsets().x || 
-						e.getX() > root.getWidth() - root.getImageInsets().x || 
-						e.getY() < root.getImageInsets().y || 
-						e.getY() > root.getHeight() - root.getImageInsets().y) {
-					throw new VoogaException("Invalid location for actor");
-				} 
-				else {*/
-					uihandler.addGameObject(Integer.parseInt(actor.getId()), 
-							actor.getLayoutX(), actor.getLayoutY());
-				//}
-			}
-		} catch (VoogaException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
-	}
+	};
 	
 }
