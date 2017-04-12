@@ -174,7 +174,7 @@ public class OptionsPane{
 	        	//correct -->
 	        	String image = mapOfOptions.get(id).getImagePath();
 	        	System.out.println(id +" " + name + " " + image);
-	        	Actor actor = new Actor(root, uihandler, id, name, image);
+	        	Actor actor = new Actor(root, uihandler, actorsMap, id, name, image);
 	            actorsMap.put(id, actor);
 	        	root.getChildren().add(actor.getActor());
 	        }
