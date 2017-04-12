@@ -20,9 +20,9 @@ public class GameDataGenerator {
 
 	public static GameData getSampleGame(){
 		GameData game = new GameData();
-		BasicData b1 = new BasicData("Tower1", "images/tower_icon.png");
-		BasicData b2 = new BasicData("Projectile1", "images/projectile_icon.png");
-		BasicData b3 = new BasicData("Troop1", "images/enemy_icon.png");
+		BasicData b1 = new BasicData("Tower1", "tower_icon.png");
+		BasicData b2 = new BasicData("Projectile1", "projectile_icon.png");
+		BasicData b3 = new BasicData("Troop1", "enemy_icon.png");
 		
 		ActorData a1 = new ActorData(BasicActorType.Tower, b1);
 		ActorData a2 = new ActorData(BasicActorType.Shot, b2);

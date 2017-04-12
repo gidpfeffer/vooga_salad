@@ -1,5 +1,6 @@
 package ui.player.inGame;
 
+import ui.general.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +29,7 @@ import util.GUIBindingUtil;
  */
 public class SidePanel {
 	
+	private ImageViewPane ivp;
 	private UIHandler uihandler;
 	private Map<String, String> iconImages;
 	private Pane sidePane;
@@ -49,8 +51,8 @@ public class SidePanel {
 	
 	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> towersMap, 
 			 Map<Integer, ActorData> shotsMap,  Map<Integer, ActorData> enemiesMap,
-			 Map<Integer, ActorData> basesMap) {
-		
+			 Map<Integer, ActorData> basesMap, ImageViewPane ivp) {
+		this.ivp = ivp;
 		this.uihandler = uihandler;
 		this.root = root;
 		this.actorsMap = actorsMap;
@@ -125,9 +127,9 @@ public class SidePanel {
 	}
 	
 	private OptionsPane getPane (Map<Integer, ActorData> map, String name) {
-		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name);
+		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name, ivp);
 		optionPane.setHeight(300);
-		optionPane.setWidth(200);
+		optionPane.setWidth(100);
 		return optionPane;
 	}
 	
@@ -145,7 +147,7 @@ public class SidePanel {
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 	    	    		System.out.println(optionsPane.getPaneName());
 	    	    		t.setNode(optionsPane.getPane());
-	    	    		t.setToX(optionsPane.getWidth());
+	    	    		t.setToX(-optionsPane.getWidth());
 	    	    		t.play();
 	        		}
 	        	}
