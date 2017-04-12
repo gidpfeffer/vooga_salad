@@ -1,7 +1,5 @@
 package ui.player.login;
 
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -13,15 +11,16 @@ import javafx.scene.text.Text;
 public class LoginGrid extends DataEntryGrid{
 
 	private Map<Text, TextField> entryMap;
+	private Map<String, TextField> dataMap;
 	private ResourceBundle loginResource;
 	
 	public TextField getUsername() {
 		//System.out.println(entryMap.get(loginResource.getString("username")).getText());
-		return entryMap.get(loginResource.getString("username"));
+		return dataMap.get("username");
 	}
 	
 	public TextField getPassword() {
-		return entryMap.get(loginResource.getString("password"));
+		return dataMap.get("password");
 	}
 	
 	
@@ -34,12 +33,18 @@ public class LoginGrid extends DataEntryGrid{
 		super(resource);
 		loginResource = resource;
 		entryMap = new LinkedHashMap<>();
+		dataMap = new LinkedHashMap<>();
 		addValues();
 		addToGrid(entryMap);
 	}
 	
 	public void addValues(){
-		entryMap.put(new Text(loginResource.getString("username")), new TextField("hello"));
-		entryMap.put(new Text(loginResource.getString("password")), new PasswordField());
+		TextField username = new TextField();
+		entryMap.put(new Text(loginResource.getString("username")), username);
+		dataMap.put("username", username);
+		
+		PasswordField password = new PasswordField();
+		entryMap.put(new Text(loginResource.getString("password")), password);
+		dataMap.put("password", password);
 	}
 }
