@@ -54,8 +54,11 @@ public class ActorInfoView extends AnchorPane{
 				myDataViews.add(view);
 				int columnIndex = count%GRID_X_DIM;
 				int rowIndex = count - columnIndex;
+				double inset = 12;
+				view.prefWidthProperty().bind(this.widthProperty().divide(3).add(-inset*(GRID_X_DIM + 1)/GRID_X_DIM));
+				view.prefHeightProperty().bind(view.prefWidthProperty());
 				myGridPane.add(view, columnIndex, rowIndex);
-
+				System.out.println("added new DataView");
 			} catch (Exception error) {
 			}
 		}

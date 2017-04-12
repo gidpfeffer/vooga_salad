@@ -135,6 +135,10 @@ public class LeftPaneView extends StackPane{
 
 	}
 	
+	private void launchProjectileView(){
+		//TODO
+	}
+	
 	
 	
 }
