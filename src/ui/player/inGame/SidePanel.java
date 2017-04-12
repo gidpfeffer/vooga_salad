@@ -50,9 +50,7 @@ public class SidePanel {
 	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> towersMap, 
 			 Map<Integer, ActorData> shotsMap,  Map<Integer, ActorData> enemiesMap,
 			 Map<Integer, ActorData> basesMap) {
-		if (shotsMap.keySet().size() == 0) {
-			System.out.println("empty");
-		}
+		
 		this.uihandler = uihandler;
 		this.root = root;
 		this.actorsMap = actorsMap;
@@ -141,9 +139,9 @@ public class SidePanel {
 	        if ( obj instanceof Button ) {
 	        	for (OptionsPane optionsPane : listOfPanes) {
 	        		if (((Button) obj).getText().equals(optionsPane.getPaneName())) {
-	        			GUIBindingUtil.bindVisisble((Button) obj, optionsPane.getMap().keySet());
+	        			//GUIBindingUtil.bindVisisble((Button) obj, optionsPane.getMap().keySet());
 	        			System.out.println("testcollection");
-	    	    		System.out.println(optionsPane.getMap().keySet());
+	    	    		System.out.println(optionsPane.getMap().entrySet());
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 	    	    		System.out.println(optionsPane.getPaneName());
 	    	    		t.setNode(optionsPane.getPane());
