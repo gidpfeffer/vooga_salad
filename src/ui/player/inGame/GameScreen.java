@@ -25,13 +25,15 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import ui.handlers.UIHandler;
+import util.observerobservable.VoogaObserver;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.binding.Bindings;
 
-public class GameScreen implements Observer{
+public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation>>{
 
 	private AnchorPane anchorPaneRoot;
 	private Stage myStage;
@@ -40,7 +42,6 @@ public class GameScreen implements Observer{
 	private SimpleHUD hud;
 	private String backgroundImagePath = "default_map_background_0.jpg";
 	private Map<Integer, Actor> actorsMap;
-	private TempData tempData;
 	
 
 	public Scene getScene() {
@@ -157,18 +158,21 @@ public class GameScreen implements Observer{
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
-		Map<Integer, FrontEndInformation> map = (Map<Integer, FrontEndInformation>) o;
-		for (Integer i : map.keySet()) {
-			for (Map.Entry<Integer, Actor> actor : actorsMap.entrySet()) {
-				if (((actor.getKey().equals(i.toString())))) {
-					actor.getValue().getActor().setLayoutX(util.Transformer.ratioToCoordinate(map.get(i).getActorLocation().getX(), myScene.getWidth()));
-					actor.getValue().getActor().setLayoutY(util.Transformer.ratioToCoordinate(map.get(i).getActorLocation().getY(), myScene.getHeight()));
-				}
+	public void update(Map<Integer, FrontEndInformation> arg) {
+		for (Integer i : arg.keySet()) {
+			Actor actor;
+			if (actorsMap.containsKey(i.toString())) {
+				actor = actorsMap.get(i.toString());
+			} else {
+				actor = new Actor(anchorPaneRoot, uihandler, i, backgroundImagePath, backgroundImagePath);
+				actorsMap.put(i, actor);
 			}
+			Pane paneActor = actor.getActor();
+			double xCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getX(),myScene.getWidth());
+			double yCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getY(), myScene.getHeight());
+			paneActor.setLayoutX(xCoor);
+			paneActor.setLayoutY(yCoor);
 		}
-		// TODO add when the actor is not in map
-		//change to hashmap
 		
 	}
 	
