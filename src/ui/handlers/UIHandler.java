@@ -2,11 +2,12 @@ package ui.handlers;
 
 import java.util.Map;
 
-import gamedata.ActorData;
+import gamedata.ActorData; 
 import gamedata.LevelData;
 import util.VoogaException;
 
 public interface UIHandler {
+	
 	void deleteGameObject(int id);
 	void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException;
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;

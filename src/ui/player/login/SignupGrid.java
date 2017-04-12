@@ -1,6 +1,5 @@
 package ui.player.login;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -12,26 +11,27 @@ import javafx.scene.text.Text;
 public class SignupGrid extends DataEntryGrid{
 
 	private Map<Text, TextField> entryMap;
+	private Map<String, TextField> dataMap;
 	private ResourceBundle loginResource;
 	
 	public TextField getUsername() {
-		return entryMap.get("username");
+		return dataMap.get("username");
 	}
 	
 	public TextField getPassword() {
-		return entryMap.get("password");
+		return dataMap.get("password");
 	}
 	
 	public TextField getRePassword() {
-		return entryMap.get("repassword");
+		return dataMap.get("repassword");
 	}
 	
 	public TextField getEmail() {
-		return entryMap.get("email");
+		return dataMap.get("email");
 	}
 	
 	public TextField getReEmail() {
-		return entryMap.get("reemail");
+		return dataMap.get("reemail");
 	}
 	
 	@Override
@@ -43,16 +43,30 @@ public class SignupGrid extends DataEntryGrid{
 		super(resource);
 		loginResource = resource;
 		entryMap = new LinkedHashMap<>();
+		dataMap = new LinkedHashMap<>();
 		addValues();
 		addToGrid(entryMap);
 	}
 	
 	public void addValues(){
-		entryMap.put(new Text(loginResource.getString("username")), new TextField());
-		entryMap.put(new Text(loginResource.getString("password")), new PasswordField());
-		entryMap.put(new Text(loginResource.getString("reenter")), new PasswordField());
-		entryMap.put(new Text(loginResource.getString("email")), new TextField());
-		entryMap.put(new Text(loginResource.getString("reemail")), new TextField());
+		TextField username = new TextField();
+		entryMap.put(new Text(loginResource.getString("username")), username);
+		dataMap.put("username", username);
+		
+		PasswordField password = new PasswordField();
+		entryMap.put(new Text(loginResource.getString("password")), password);
+		dataMap.put("password", password);
+		
+		PasswordField reenter = new PasswordField();
+		entryMap.put(new Text(loginResource.getString("reenter")), reenter);
+		dataMap.put("repassword", reenter);
+		
+		TextField email = new TextField();
+		entryMap.put(new Text(loginResource.getString("email")), email);
+		dataMap.put("email", email);
+		
+		TextField reemail = new TextField();
+		entryMap.put(new Text(loginResource.getString("reemail")), reemail);
+		dataMap.put("reemail", reemail);
 	}
-	
 }
