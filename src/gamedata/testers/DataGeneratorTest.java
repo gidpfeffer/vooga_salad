@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import factories.DataGenerator;
+import builders.DataGenerator;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 

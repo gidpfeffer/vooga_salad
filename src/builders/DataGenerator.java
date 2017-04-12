@@ -1,7 +1,8 @@
-package factories;
+package builders;
 
 import java.util.Arrays;
 
+import factories.DataFactory;
 import gamedata.compositiongen.Data;
 
 /**

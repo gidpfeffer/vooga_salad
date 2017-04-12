@@ -3,6 +3,8 @@ package factories;
 import java.util.ArrayList;
 import java.util.List;
 
+import factories.ActorFactory;
+import factories.PropertyFactory;
 import gamedata.ActorData;
 import gamedata.compositiongen.Data;
 import gameengine.actors.MainActor;

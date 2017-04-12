@@ -3,18 +3,11 @@
  */
 package gameengine.actors.properties;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-
 import gamedata.composition.DamageableData;
 import gameengine.actors.propertygen.IActProperty;
-import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
-import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
-import util.PathUtil;
 
 /**
  * @author harirajan
@@ -26,23 +19,23 @@ public class DamageableProperty implements IActProperty<ReadAndDamageGrid> {
 	
 	private double myPower;
 	private double myHitRadius;
-	private List<BasicActorType> myEnemyTypes;
+	private List<BasicActorType> myTargetTypes;
 	
 	public DamageableProperty(DamageableData data) {
 		myPower = data.getMyPower();
 		myHitRadius = data.getMyHitRadius();
-		myEnemyTypes = data.getMyEnemyTypes();
+		myTargetTypes = data.getMyEnemyTypes();
 		
 	}
+	
 	/* (non-Javadoc)
 	 * @see gameengine.actors.properties.IActProperty#action(gameengine.grid.interfaces.ActorGrid.ReadableGrid, java.lang.Integer)
 	 */
 	@Override
 	public void action(ReadAndDamageGrid grid, Integer actorID) {
-		// TODO Auto-generated method stub
-		for (BasicActorType e : myEnemyTypes) {
+		for (BasicActorType t : myTargetTypes) {
 			grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(),
-					grid.getLocationOf(actorID).getY(), myHitRadius, e).forEach(a -> a.accept(myPower));
+					grid.getLocationOf(actorID).getY(), myHitRadius, t).forEach(a -> a.accept(myPower));
 		}
 		grid.getMyDamageable(actorID).accept(SELF_DAMAGE_ON_HIT);
 	}
@@ -52,7 +45,6 @@ public class DamageableProperty implements IActProperty<ReadAndDamageGrid> {
 	 */
 	@Override
 	public boolean isOn() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

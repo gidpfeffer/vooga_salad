@@ -10,7 +10,7 @@ public class ShootData implements Data {
 	private Integer myProjectile;
 	private double mySpeed;
 
-	public ShootData(double range, int rate, BasicActorType type, Integer projectile, double speed) {
+	public ShootData(Double range, Integer rate, BasicActorType type, Integer projectile, Double speed) {
 		myRange = range;
 		fireRate = rate;
 		myTarget = type;
