@@ -2,7 +2,7 @@ package gameengine.controllers;
 
 import java.util.Map;
 
-import factories.ActorGenerator;
+import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LevelData;
@@ -22,6 +22,7 @@ import util.observerobservable.VoogaObserver;
 
 /**
  * GameController is the controller layer between the front end display and the back end game engine
+ * Implements UIHandler and initializes all necessary back end and front end components of game engine
  * @author sarahzhou
  *
  */
@@ -46,6 +47,10 @@ public class GameController {
 		initializeUIHandler();
 	}
 
+	/**
+	 * @param UIObserver
+	 * @return a new clean instance of ActorGrid
+	 */
 	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
 		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
@@ -64,7 +69,7 @@ public class GameController {
 		intitializeTimeline();
 	}
 	
-	public void intitializeTimeline() {
+	private void intitializeTimeline() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 				d -> step());
 		animation = new Timeline();
@@ -72,7 +77,7 @@ public class GameController {
 		animation.getKeyFrames().add(frame);
 	}
 	
-	public void step() {
+	private void step() {
 		myGrid.step();
 	}
 	

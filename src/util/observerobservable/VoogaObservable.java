@@ -3,6 +3,11 @@ package util.observerobservable;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author sarahzhou
+ *
+ * @param <T>
+ */
 public abstract class VoogaObservable<T> {
 	private Set<VoogaObserver<T>> myObservers;
 	

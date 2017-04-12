@@ -2,6 +2,7 @@ package factories;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 /**
@@ -138,7 +139,6 @@ public abstract class AbstractFactory<A> {
 	 */
 	@SuppressWarnings("unchecked")
 	private A tryToBuild(Class<?> clazz, Object... args) {
-		System.out.println("New " + clazz.getSimpleName());
 		A toRet = null;
 		Class<?>[] classes = getClasses(args);
 		try {
