@@ -1,6 +1,7 @@
 package gamedata;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -20,6 +21,11 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 public class PathData {
 	private Map <Integer, List<Grid2D>> myPaths; // the map of all user-defined paths in the game, indexed. 
 	private int numOptions;
+	
+	public PathData(){
+		myPaths = new HashMap<Integer, List<Grid2D>>();
+		numOptions = 0;
+	}
 	
 	public PathData(Map <Integer, List<Grid2D>> paths){
 		myPaths = paths;

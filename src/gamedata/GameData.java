@@ -63,9 +63,12 @@ public class GameData {
 	private int numOptions;
 	
 	public GameData(){
+		levels=new HashMap<Integer,LevelData>();
+		myPaths = new PathData();
+		myProjectiles = new ProjectileData();
+		display = new DisplayData();
 		pieces = new HashMap<Integer, ActorData>();
 		numOptions = 0;
-		levels=new HashMap<Integer,LevelData>();
 	}
 	
 	/**
@@ -172,7 +175,7 @@ public class GameData {
 	 * @return Map of Integers mapped to Paths
 	 */
 	public Map<Integer, ProjectileType> getProjectileOptions(){
-		return myProjectiles.getMyProjectileTypes();
+		return myProjectiles.getMyProjectiles();
 	}
 	
 	
@@ -220,9 +223,14 @@ public class GameData {
 	public void setMyPaths(PathData myPaths) {
 		this.myPaths = myPaths;
 	}
-	
-	
-	
+
+	public ProjectileData getMyProjectiles() {
+		return myProjectiles;
+	}
+
+	public void setMyProjectiles(ProjectileData myProjectiles) {
+		this.myProjectiles = myProjectiles;
+	}
 	
 	
 }
