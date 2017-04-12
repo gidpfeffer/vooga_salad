@@ -22,6 +22,7 @@ public class ProjectileType {
 		imagePath = image ; 
 		explosive = expl; 
 		restrictive = rest; 
+		this.damage=damage;
 	}
 	public String getImagePath() {
 		return imagePath;

@@ -25,7 +25,7 @@ public class ShootData implements Data {
 	public void setRange(double myRange) {
 		this.myRange = myRange;
 	}
-
+	
 	public int getFireRate() {
 		return fireRate;
 	}
