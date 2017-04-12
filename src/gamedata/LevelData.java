@@ -38,6 +38,7 @@ public class LevelData {
 
 	public LevelData(double duration){
 		this.duration = duration;
+		myEnemyWave=new WaveData();
 	}
 	
 	/**

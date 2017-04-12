@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -28,9 +29,10 @@ public class SidePanel {
 	private UIHandler uihandler;
 	private Map<String, String> iconImages;
 	private Pane sidePane;
-	private List<OptionsPane> listOfPanes;
 	private Pane root;
-	private List<Actor> actorsList;
+	private VBox mainBox;
+	private List<OptionsPane> listOfPanes;
+	private Map<Integer, Actor> actorsMap;
 	
 	private Map<Integer, ActorData> towersMap;
 	private Map<Integer, ActorData> shotsMap;
@@ -42,29 +44,35 @@ public class SidePanel {
 		return sidePane;
 	}
 	
-	public SidePanel(UIHandler uihandler, List<Actor> actorsList, AnchorPane root, Map<Integer, ActorData> towersMap, 
+	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> towersMap, 
 			 Map<Integer, ActorData> shotsMap,  Map<Integer, ActorData> enemiesMap,
 			 Map<Integer, ActorData> basesMap) {
 		this.uihandler = uihandler;
 		this.root = root;
-		this.actorsList = actorsList;
-		this.listOfPanes = new ArrayList<>();
-		sidePane = new AnchorPane();
-		iconImages = new HashMap<>();
-		iconImages.put("Tower", "tower_icon.png");
-		iconImages.put("Base", "base_icon.png");
-		iconImages.put("Troop", "enemy_icon.png");
-		iconImages.put("Shot", "projectile_icon.png");
+		this.actorsMap = actorsMap;
 		this.towersMap = towersMap;
 		this.shotsMap = shotsMap;
 		this.troopsMap = enemiesMap;
 		this.basesMap = basesMap;
+		this.listOfPanes = new ArrayList<>();
+		this.sidePane = new AnchorPane();
+		this.iconImages = new HashMap<>();
+		this.mainBox = new VBox(20);
+		addMainIcons();
 		setup();
+	}
+	
+	private void addMainIcons() {
+		iconImages.put("Tower", "tower_icon.png");
+		iconImages.put("Base", "base_icon.png");
+		iconImages.put("Troop", "enemy_icon.png");
+		iconImages.put("Shot", "projectile_icon.png");
 	}
 	
 	public void setup() {
 		createInternalPanes();
 		linkMainPaneToInternalPanes();
+		addAnimationButtons();
 	}
 	
 	private void createInternalPanes() {
@@ -74,15 +82,15 @@ public class SidePanel {
 		OptionsPane bases = getPane(basesMap);
 		OptionsPane[] otherList = new OptionsPane[] {towers, troops, shots, bases};
 		listOfPanes.addAll(Arrays.asList(otherList));
-		//listOfPanes.add((OptionsPane) Arrays.asList(towers, shots, troops, bases));
 	}
 	
 	private void linkMainPaneToInternalPanes() {
-		VBox mainBox = new VBox(20);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
 			OptionButton optionButton = new OptionButton(0, entry.getKey(), entry.getValue(), openPane);
 			mainBox.getChildren().add(optionButton.getButton());
 		}
+		//DIFFERENT
+		//root.getChildren().add(mainBox);
 		sidePane.getChildren().add(mainBox);
 		mainBox.setAlignment(Pos.CENTER_RIGHT);
 		AnchorPane.setRightAnchor(mainBox, 0.0);
@@ -90,11 +98,28 @@ public class SidePanel {
 		AnchorPane.setTopAnchor(mainBox, 20.0);
 	}
 	
+	private void addAnimationButtons() {
+		HBox animationButtons = new HBox(20);
+		OptionButton play = new OptionButton(0, "Play", "play_icon.png", e -> uihandler.play());
+		OptionButton pause = new OptionButton(0, "Pause", "pause_icon.png", e -> uihandler.pause());
+		OptionButton stop = new OptionButton(0, "Stop", "stop_icon.png", e -> uihandler.stop());
+		animationButtons.getChildren().addAll(play.getButton(), pause.getButton(), stop.getButton());
+		root.getChildren().add(animationButtons);
+		AnchorPane.setBottomAnchor(animationButtons, 10.0);
+		AnchorPane.setRightAnchor(animationButtons, 10.0);
+	}
+	
+	public void addInternalPanesToRoot() {
+		for (OptionsPane op : listOfPanes) {
+			root.getChildren().add(op.getStackPane());
+			AnchorPane.setRightAnchor(op.getStackPane(), -op.getWidth());
+		}
+	}
+	
 	private OptionsPane getPane (Map<Integer, ActorData> map) {
-		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsList, map);
+		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map);
 		optionPane.setHeight(300);
 		optionPane.setWidth(200);
-		//optionPane.setMap(map);
 		return optionPane;
 	}
 	
@@ -107,6 +132,7 @@ public class SidePanel {
 	        	for (OptionsPane optionsPane : listOfPanes) {
 	        		if (((Button) obj).getText().equals(optionsPane.getPaneName())) {
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
+	    	    		System.out.println(optionsPane.getPaneName());
 	    	    		t.setNode(optionsPane.getPane());
 	    	    		t.setToX(optionsPane.getWidth());
 	    	    		t.play();

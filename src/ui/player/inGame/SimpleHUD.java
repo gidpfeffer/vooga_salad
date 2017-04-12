@@ -1,11 +1,13 @@
 package ui.player.inGame;
 
+import gameengine.player.GameStatus;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 public class SimpleHUD {
 
 	private GridPane hud;
+	private GameStatus gameStatus;
 	private int x;
 	private int y;
 	

@@ -2,16 +2,12 @@ package ui.handlers;
 
 import java.util.Map;
 
-import gamedata.ActorData;
-<<<<<<< HEAD
-=======
-import gamedata.composition.Data;
-import gameengine.actors.management.Actor;
-import gameengine.controllers.GameController;
->>>>>>> 54a58910b6e4d72d900ec5baabf200054d8759ac
+import gamedata.ActorData; 
+import gamedata.LevelData;
 import util.VoogaException;
 
 public interface UIHandler {
+	
 	void deleteGameObject(int id);
 	void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException;
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
@@ -20,10 +16,11 @@ public interface UIHandler {
 	Map<Integer,ActorData> getTroopOptions();
 	Map<Integer,ActorData> getShotOptions();
 	Map<Integer,ActorData> getBaseOptions();
+	Map<Integer,ActorData> getTowerOptions();
 	void pause();
 	void play();
 	void stop();
 	void exit();
 	void changeLevel(int level) throws VoogaException;
-	
+	void addLevel(LevelData levelData, int level);
 }

@@ -10,6 +10,9 @@ import util.Location;
  */
 
 public class ActorFrontendData {
+	
+	private final static double HEALTH = 1.0;
+	
 	private String imagePath;
 	private String name; 
 	private Location location;
@@ -19,7 +22,7 @@ public class ActorFrontendData {
 	
 	public ActorFrontendData(String imagePath, String name, Location location,
 			double heading, int ID) {
-		this(imagePath, name, location, heading, 1.0, ID);
+		this(imagePath, name, location, heading, HEALTH, ID);
 	}
 	
 	public ActorFrontendData(String imagePath, String name, Location location,

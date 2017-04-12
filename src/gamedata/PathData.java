@@ -9,6 +9,8 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  * environment, mapped to integers for use in actor creation.
  * 
  * @author maddiebriere
+ * @author Ahn
+ * @author Talha Koc
  * @author Anh
  *
  */
@@ -46,4 +48,13 @@ public class PathData {
 	public void setMyPaths(Map<Integer, List<Grid2D>> myPaths) {
 		this.myPaths = myPaths;
 	}
+	
+	public List<Grid2D> poll(){
+		if(myPaths.isEmpty()){
+			addPath(new ArrayList<Grid2D>());
+		}
+		return myPaths.get(myPaths.size() - 1);
+	}
+
 }
+
