@@ -73,7 +73,7 @@ public class MenuView extends AnchorPane {
 		myVBox.setBackground(UIHelper.backgroundForColor(CustomColors.INDIGO));
 		mySwitchTitles.stream().forEach(t -> makeSwitchEntry(t));
 		double inset = 10.0;
-		setTopAnchor(myVBox, inset * 8);
+		setTopAnchor(myVBox, inset * 6);
 		setBottomAnchor(myVBox, inset * 4);
 		setLeftAnchor(myVBox, inset * 1.5);
 		setRightAnchor(myVBox, inset);
