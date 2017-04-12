@@ -175,7 +175,7 @@ public class Login{
 		{
 			System.out.println(entry.getKey() + "/" + entry.getValue());
 		}*/
-		System.out.println(login.getUsername());
+		System.out.println(login.getUsername().getText());
 /*		if (passwords.login(login.getUsername().getText(), login.getPassword().getText())) {
 			actiontarget.setFill(Color.GREEN);
 			actiontarget.setText(loginResource.getString("successfulLogin"));
