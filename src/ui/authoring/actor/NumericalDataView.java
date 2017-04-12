@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-import factories.DataGenerator;
+import builders.DataGenerator;
 import gamedata.FieldData;
 import gamedata.StringToFieldFactory;
 import gamedata.compositiongen.Data;
