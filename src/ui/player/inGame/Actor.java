@@ -74,7 +74,6 @@ public class Actor {
 					//need to have list here
 					double width = root.getWidth() - 2*root.getImageInsets().x;
 					double height = root.getHeight() - 2*root.getImageInsets().y;
-					
 					if (mapOfActors.get(actor) != null) {
 						// and if the area is okay to put the stackpane down
 						
