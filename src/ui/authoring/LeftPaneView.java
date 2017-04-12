@@ -1,29 +1,21 @@
 package ui.authoring;
 
 
-import java.util.List;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.Optional;
 
-import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
-import types.ActorType;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
+import ui.authoring.actor.NewActorEditorView;
 import ui.authoring.actor.projectile.ProjectileEditorMain;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
@@ -56,8 +48,8 @@ public class LeftPaneView extends StackPane{
 	private PopViewDelegate myDelegate;
 	private VBox myLeftPaneFront; //contains the buttons
 	private StackPane myLeftPaneBack; //contains the views for buttons 
-	private ActorEditorView myTowerView;
-	private ActorEditorView myEnemyView;
+	private NewActorEditorView myTowerView;
+	private NewActorEditorView myEnemyView;
 	private ProjectileEditorMain myProjectileView;
 	
 	
@@ -123,7 +115,7 @@ public class LeftPaneView extends StackPane{
 
 	private void launchTowerView() {
 		if(myTowerView == null){
-			myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
+			myTowerView = new NewActorEditorView(myDelegate, BasicActorType.Tower);
 			myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
 			UIHelper.setBackgroundColor(myTowerView, CustomColors.ORANGE_700);
 		}
@@ -133,7 +125,7 @@ public class LeftPaneView extends StackPane{
 	
 	private void launchEnemyView() {
 		if(myEnemyView == null){
-			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
+			myEnemyView = new NewActorEditorView(myDelegate, BasicActorType.Troop);
 			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
 			UIHelper.setBackgroundColor(myEnemyView, CustomColors.ORANGE_700);
 		}

@@ -1,5 +1,6 @@
 package ui.authoring.map;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,24 +9,24 @@ import java.util.Optional;
 
 import gamedata.PathData;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import ui.Preferences;
-import ui.general.*;
-import util.*;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import ui.general.CustomColors;
+import ui.general.ImageViewPane;
+import ui.general.UIHelper;
+import util.Location;
+import util.Tuple;
 
 /**
  * 
@@ -121,28 +122,50 @@ public class MapEditorView extends StackPane {
 	}
 
 	private void setupButtons() {
-		ImageView backImage = new ImageView(new Image("undo_icon.png"));
-		backImage.setFitWidth(32);
-		backImage.setPreserveRatio(true);
+		List<StackPane> panes = new ArrayList<>();
+		
+		ImageView backImage = makeImageFromString("undo_icon.png");
 		StackPane b = UIHelper.buttonStack(e -> undoAction(e), Optional.ofNullable(null), Optional.of(backImage),
 				Pos.CENTER, true);
-		StackPane.setAlignment(b, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(b, new Insets(12));
-		b.setMaxSize(40, 40);
-		UIHelper.setBackgroundColor(b, CustomColors.GREEN_100);
+		panes.add(b);
 
-		ImageView clearImage = new ImageView(new Image("clear_icon.png"));
-		clearImage.setFitWidth(32);
-		clearImage.setPreserveRatio(true);
-
+		ImageView clearImage = makeImageFromString("clear_icon.png");
 		StackPane c = UIHelper.buttonStack(e -> clearPointsAndLines(e), Optional.ofNullable(null),
 				Optional.of(clearImage), Pos.CENTER_RIGHT, true);
-		c.setMaxSize(40, 40);
-		StackPane.setAlignment(c, Pos.BOTTOM_RIGHT);
 		StackPane.setMargin(c, new Insets(0, 72, 12, 0));
-		UIHelper.setBackgroundColor(c, CustomColors.GREEN_100);
-
-		this.getChildren().addAll(b, c);
+		panes.add(c);
+		
+		ImageView BGImage = makeImageFromString("background_icon.png");
+		StackPane d = UIHelper.buttonStack(e -> toggleBackground(e), Optional.ofNullable(null),
+				Optional.of(BGImage), Pos.CENTER_RIGHT, true);
+		StackPane.setMargin(d, new Insets(0, 132, 12, 0));
+		panes.add(d);
+		
+		for(StackPane s: panes){
+			s.setMaxSize(40, 40);
+			StackPane.setAlignment(s, Pos.BOTTOM_RIGHT);
+			UIHelper.setBackgroundColor(s, CustomColors.GREEN_100);
+			this.getChildren().add(s);
+		}
+	}
+	
+	private ImageView makeImageFromString(String toMake){
+		ImageView IV = new ImageView(new Image(toMake));
+		IV.setFitWidth(32);
+		IV.setPreserveRatio(true);
+		return IV;
+	}
+	
+	private void toggleBackground(MouseEvent e){
+		e.consume();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Selectc Image File");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
+		if(selectedFile!= null){
+			myBackgroundView.getImageView().setImage(new Image(selectedFile.getName()));
+		}
 	}
 
 	private void undoAction(MouseEvent e) {
