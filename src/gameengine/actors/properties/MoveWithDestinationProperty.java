@@ -2,7 +2,7 @@ package gameengine.actors.properties;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import gamedata.composition.backend_generated_data.MoveWithDestinationData;
+import gamedata.backend_generated_data.MoveWithDestinationData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;

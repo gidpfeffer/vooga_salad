@@ -1,4 +1,4 @@
-package gamedata.composition.backend_generated_data;
+package gamedata.backend_generated_data;
 
 import gamedata.compositiongen.MoveData;
 
@@ -6,10 +6,14 @@ public class MoveAlongAngleData extends MoveData {
 	private double range;
 	private double angle;
 	
+
+	
+
 	/**
 	 *  speed comes from ProjectileType.getSpeed(), range from ProjectileType.getRadius()
 	 */
-	public MoveAlongAngleData(double speed, double range, double angle) {
+	public MoveAlongAngleData(Double speed, Double range, Double angle) {
+
 		super(speed);
 		this.range = range;
 		this.angle = angle;
