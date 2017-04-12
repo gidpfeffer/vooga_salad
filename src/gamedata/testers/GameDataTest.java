@@ -15,5 +15,10 @@ public class GameDataTest {
 		boolean check = game.getTowerOptions().size() == 0;
 		assertNotEquals(check, true);
 	}
+	
+	@Test
+	public void testComplexSample(){
+		GameData game = GameDataGenerator.getComplexSampleGame();
+	}
 
 }
