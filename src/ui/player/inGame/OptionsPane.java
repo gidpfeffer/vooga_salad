@@ -155,7 +155,7 @@ public class OptionsPane{
 	}
 	
 	private void addBackButton(EventHandler<MouseEvent> clicked) {
-		Button back = createImageButtonAndAddToList(0, "back", "back_icon_flipped.png", clicked);
+		Button back = createImageButtonAndAddToList(0, "", "back_icon_flipped.png", clicked);
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
