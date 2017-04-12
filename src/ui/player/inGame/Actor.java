@@ -99,7 +99,7 @@ public class Actor {
 							+ actor.getLayoutY()/height);
 					
 					uihandler.addGameObject(Integer.parseInt(actor.getId()), 
-							actor.getLayoutX(), actor.getLayoutY());
+							actor.getLayoutX()/width, actor.getLayoutY()/height);
 				}
 			}
 		} catch (VoogaException e1) {
