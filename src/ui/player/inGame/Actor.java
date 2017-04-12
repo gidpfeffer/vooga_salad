@@ -63,7 +63,7 @@ public class Actor {
 			actor.setLayoutY(e.getSceneY());
 		});
 
-		actor.setOnMouseDragReleased(e -> released(e));
+		actor.setOnMouseClicked(e -> released(e));
 	}
 
 	public void released(MouseEvent e) {
