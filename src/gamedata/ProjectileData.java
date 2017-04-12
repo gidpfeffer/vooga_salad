@@ -13,6 +13,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  *
  */
 public class ProjectileData {
+	
 	private int numOptions;
 	private Map<Integer,ProjectileType> allProjectileTypes;
 	
