@@ -17,7 +17,7 @@ public class MainActor implements Actor {
 	protected HealthProperty myHealth;
 	private BasicActorType myType;
 	private List<IActProperty<MasterGrid>> myProperties;
-
+	
 	public MainActor(BasicActorType type, Integer option, 
 			Integer id, HealthProperty health) {
 		myType = type;
@@ -83,6 +83,12 @@ public class MainActor implements Actor {
 	public double getRemainingHealth() { 
 		return 0;
 	}
+
+	public List<IActProperty<MasterGrid>> getMyProperties() {
+		return myProperties;
+	}
+	
+	
 	
 	
 

@@ -155,7 +155,7 @@ public class OptionsPane{
 	}
 	
 	private void addBackButton(EventHandler<MouseEvent> clicked) {
-		Button back = createImageButtonAndAddToList(0, "back", "back_icon_flipped.png", clicked);
+		Button back = createImageButtonAndAddToList(0, "", "back_icon_flipped.png", clicked);
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
@@ -174,7 +174,7 @@ public class OptionsPane{
 	        	//correct -->
 	        	String image = mapOfOptions.get(id).getImagePath();
 	        	System.out.println(id +" " + name + " " + image);
-	        	Actor actor = new Actor(root, uihandler, id, name, image);
+	        	Actor actor = new Actor(root, uihandler, actorsMap, id, name, image);
 	            actorsMap.put(id, actor);
 	        	root.getChildren().add(actor.getActor());
 	        }

@@ -1,5 +1,6 @@
 package gamedata;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,23 +18,28 @@ public class ProjectileData {
 	private int numOptions;
 	private Map<Integer,ProjectileType> allProjectileTypes;
 	
+	public ProjectileData(){
+		allProjectileTypes = new HashMap<Integer, ProjectileType>();
+		numOptions = 0;
+	}
+	
 	public ProjectileData(Map <Integer, ProjectileType> projectiles){
 		allProjectileTypes = projectiles;
 		numOptions = allProjectileTypes.size();
 		
 	}
 	
-	public ProjectileType getProjectileTypeByIndex(Integer index){
+	public ProjectileType getProjectileByIndex(Integer index){
 		return allProjectileTypes.get(index);
 	}
 	
-	public void addProjectileType(ProjectileType projectile){
+	public void addProjectile(ProjectileType projectile){
 		allProjectileTypes.put(numOptions++, projectile);
 	}
-	public Map<Integer, ProjectileType> getMyProjectileTypes() {
+	public Map<Integer, ProjectileType> getMyProjectiles() {
 		return allProjectileTypes;
 	}
-	public void setMyProjectileTypes(Map<Integer, ProjectileType> projectiletypes) {
+	public void setMyProjectiles(Map<Integer, ProjectileType> projectiletypes) {
 		allProjectileTypes = projectiletypes;
 	}
 }

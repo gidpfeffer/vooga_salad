@@ -51,7 +51,10 @@ public class PathUtil {
 	}
 	
 	public static List<Grid2D> getPathCoordinates(List<Grid2D> pathChosen , double increment){
-		
+		if (pathChosen.size() == 0) {
+			pathChosen = new ArrayList<Grid2D>();
+			pathChosen.add(new Coordinates(0,0)); pathChosen.add(new Coordinates(0.5,0.5)); pathChosen.add(new Coordinates(1,1));
+		}
 		List<Grid2D> coordinatesToReturn = new ArrayList<Grid2D>(); 
 		for (int i = 0; i< pathChosen.size()-1; i++ ){
 			coordinatesToReturn.addAll(getIncrementPoints(pathChosen.get(i),pathChosen.get(i+1),increment));

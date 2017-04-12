@@ -1,5 +1,6 @@
 package ui.player.inGame;
 
+import java.util.Map;
 import java.util.Optional;
 
 import javafx.animation.TranslateTransition;
@@ -19,16 +20,18 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import ui.general.ImageViewPane;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
 import util.VoogaException;
 
 public class Actor {
 
-	Pane root;
+	ImageViewPane root;
 	UIHandler uihandler;
 	String name;
 	Pane actor;
+	Map<Integer, Actor> mapOfActors;
 
 	public Pane getActor() {
 		return actor;
@@ -38,16 +41,15 @@ public class Actor {
 	}
 
 
-	public Actor(Pane root, UIHandler uihandler, Integer id, String name, String image) {
+	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name, String image) {
 		
 		actor = UIHelper.buttonStack(e->{}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER, true);
-		//actor = new StackPane();
 		actor.setBackground(Background.EMPTY);
-		//actor.setStyle("-fx-background-color: blue");
-		//actor.getChildren().add(new Text("help"));
+		actor.setId(id.toString());
 		this.root = root;
 		this.uihandler = uihandler;
 		this.name = name;
+		this.mapOfActors = mapOfActors;
 		setup();
 	}
 
@@ -68,7 +70,7 @@ public class Actor {
 		try {
 			System.out.println("releasing");
 			//need to have list here
-			if (obj exists already) {
+			if (mapOfActors.get(actor) != null) {
 				// and if the area is okay to put the stackpane down
 				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
 				//remove from root if can't place;
@@ -78,7 +80,16 @@ public class Actor {
 			}
 			else {
 				//need to know size of screen here
-				uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
+				if(e.getX() < root.getImageInsets().x || 
+						e.getX() > root.getWidth() - root.getImageInsets().x || 
+						e.getY() < root.getImageInsets().y || 
+						e.getY() > root.getHeight() - root.getImageInsets().y) {
+					throw new VoogaException("Invalid location for actor");
+				} 
+				else {
+					uihandler.addGameObject(Integer.parseInt(actor.getId()), 
+							actor.getLayoutX(), actor.getLayoutY());
+				}
 			}
 		} catch (VoogaException e1) {
 			// TODO Auto-generated catch block

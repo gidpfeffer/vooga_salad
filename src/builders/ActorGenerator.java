@@ -1,8 +1,10 @@
-package factories;
+package builders;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import factories.ActorFactory;
+import factories.PropertyFactory;
 import gamedata.ActorData;
 import gamedata.compositiongen.Data;
 import gameengine.actors.MainActor;
@@ -34,28 +36,28 @@ public class ActorGenerator{
 	 */
 
 	public static MainActor makeActor(Integer option, ActorData data){
-		//Change to property factory
-		
-		//TODO: Add ID Generator
-		
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
+		List<Data> properties = data.getMyData();
+		PropertyFactory propFactory = new PropertyFactory();
 		
 		toBuild.add(data.getActor()); //add type
 		toBuild.add(option);
 		int index = IDGenerator.getNewID();
 		toBuild.add(index); //add ID
-	
-		
-		List<Data> properties = data.getMyData();
-		PropertyFactory propFactory = new PropertyFactory();
-		for(Data d: properties){
-			String dataName = d.getClass().getSimpleName();
+		Property health = propFactory.make(data.getHealth().
+				getClass().getSimpleName().replace("Data", "Property"), data.getHealth());
+		toBuild.add(health);
+		IActProperty[] extras = new IActProperty[data.getMyData().size()];
+
+		for(int i=0; i<properties.size(); i++){
+			String dataName = properties.get(i).getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
-			Property property = propFactory.make(propertyName, d);
-			toBuild.add(property);
+			Property property = propFactory.make(propertyName, properties.get(i));
+			//TODO: FIX THIS UNCHECKED CAST
+			extras[i]=(IActProperty)property;
 		}
-		
+		toBuild.add(extras);
 		MainActor toRet = actorFactory.make(toBuild.toArray());
 		return toRet;
 	}

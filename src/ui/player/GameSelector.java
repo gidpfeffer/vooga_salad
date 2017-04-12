@@ -40,10 +40,6 @@ public class GameSelector {
 		return myScene;
 	}
 	
-	public GameSelector(){
-		
-	}
-	
 	public GameSelector(String lang, String css){
 		root = new AnchorPane();
 		myBorderPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE
