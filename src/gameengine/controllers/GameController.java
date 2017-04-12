@@ -81,14 +81,6 @@ public class GameController {
 	private void step() {
 		myGrid.step();
 	}
-	
-	private double getMapSizeX() {
-		return myGameScreen.getWindow().get(0);
-	}
-	
-	private double getMapSizeY() {
-		return myGameScreen.getWindow().get(1);
-	}
 
 	private void initializeUIHandler() {
 		myUIHandler = new UIHandler() {
@@ -121,11 +113,9 @@ public class GameController {
 			}
 
 			@Override
-			public int addGameObject(Integer option, double xCoor, double yCoor) throws VoogaException{
+			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
 				Actor actor = ActorGenerator.makeActor(option,actorData);
-				double xRatio = util.Transformer.coordinateToRatio(xCoor, getMapSizeX());
-				double yRatio = util.Transformer.coordinateToRatio(yCoor, getMapSizeY());
 				if (myGrid.isValidLoc(xRatio, yRatio)) {
 					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
 				} else {
