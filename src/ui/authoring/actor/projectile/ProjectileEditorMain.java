@@ -7,6 +7,7 @@ public class ProjectileEditorMain extends AnchorPane{
 	private PopViewDelegate delegate;
 	
 	public ProjectileEditorMain(PopViewDelegate delegate){
+		super();
 		this.delegate = delegate;
 		this.widthProperty().divide(5);
 	}

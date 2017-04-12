@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import factories.OptionGenerator;
+import builders.OptionGenerator;
 import gamedata.ActorData;
 import gamedata.FieldData;
 import gamedata.compositiongen.Data;
