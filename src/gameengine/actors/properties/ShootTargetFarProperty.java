@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Comparator;
 
 import gamedata.composition.ShootTargetFarData;
-import gamedata.compositiongen.ShootData;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
