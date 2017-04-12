@@ -39,6 +39,7 @@ public class SidePanel {
 	private Map<Integer, ActorData> troopsMap;
 	private Map<Integer, ActorData> basesMap;
 	
+	private static final String panel = "panel.css";
 	
 	public Pane getSidePane(){
 		return sidePane;
@@ -85,6 +86,7 @@ public class SidePanel {
 	}
 	
 	private void linkMainPaneToInternalPanes() {
+		mainBox.getStylesheets().add(panel);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
 			OptionButton optionButton = new OptionButton(0, entry.getKey(), entry.getValue(), openPane);
 			mainBox.getChildren().add(optionButton.getButton());
@@ -93,6 +95,7 @@ public class SidePanel {
 		//root.getChildren().add(mainBox);
 		sidePane.getChildren().add(mainBox);
 		mainBox.setAlignment(Pos.CENTER_RIGHT);
+		
 		AnchorPane.setRightAnchor(mainBox, 0.0);
 		AnchorPane.setBottomAnchor(mainBox, 20.0);
 		AnchorPane.setTopAnchor(mainBox, 20.0);
@@ -100,6 +103,7 @@ public class SidePanel {
 	
 	private void addAnimationButtons() {
 		HBox animationButtons = new HBox(20);
+		animationButtons.getStylesheets().add(panel);
 		OptionButton play = new OptionButton(0, "Play", "play_icon.png", e -> uihandler.play());
 		OptionButton pause = new OptionButton(0, "Pause", "pause_icon.png", e -> uihandler.pause());
 		OptionButton stop = new OptionButton(0, "Stop", "stop_icon.png", e -> uihandler.stop());

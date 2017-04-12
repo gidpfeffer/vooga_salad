@@ -55,9 +55,7 @@ public class MenuView extends AnchorPane{
 
 	private void setupVBox() {
 		myVBox = new VBoxCustom(8);
-		myVBox.setCells(Arrays.asList(new StackButton[] {
-				makeButton("Number of Lives"),
-		}));
+
 		double inset = 8.0;
 		AnchorPane.setTopAnchor(myVBox, 64.);
 		AnchorPane.setBottomAnchor(myVBox, inset);
@@ -66,23 +64,7 @@ public class MenuView extends AnchorPane{
 		this.getChildren().add(myVBox);
 	}
 	
-	private StackButton makeButton(String title){
-		StackButton button = new StackButton();
-		button.setShadow();
-		Label label = new Label(title);
-		label.setTextFill(Color.WHITE);
-		label.setPrefWidth(100);
-		label.setAlignment(Pos.CENTER);
-		TextField field = new TextField();
-		
-		button.setIconNode(label);
-		button.setIconInsets(new Insets(8,8,8,8));
-		button.setCenterNode(field);
-		button.setCenterInsets(new Insets(8,8,8,100));
-		button.setHeight(64);
-		UIHelper.setBackgroundColor(button, CustomColors.GREEN_200);
-		return button;
-	} 
+
 
 	private void setupBackButton() {
 		ImageView iv = new ImageView(new Image("back_icon.png"));

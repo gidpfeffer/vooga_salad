@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import factories.OptionGenerator;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -14,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -48,10 +48,8 @@ public class AuthoringView extends AnchorPane {
 
 
 	public AuthoringView() {
-		UIHelper.setBackgroundColor(this, Color.WHITE);
-	
+		UIHelper.setBackgroundColor(this, Color.WHITE);	
 		setupViews();
-		System.out.println(OptionGenerator.getPropertyTypesWithArgs());
 	}
 
 	private void setupViews() {
@@ -70,7 +68,7 @@ public class AuthoringView extends AnchorPane {
 
 	private void setupDimmerView() {
 		myDimmerView = new Pane();
-		UIHelper.setBackgroundColor(myDimmerView, Color.rgb(0, 0, 0, 0.5));
+		UIHelper.setBackgroundColor(myDimmerView, Color.rgb(0, 0, 0, 0.75));
 		AnchorPane.setBottomAnchor(myDimmerView, 0.0);
 		AnchorPane.setTopAnchor(myDimmerView, 0.0);
 		AnchorPane.setRightAnchor(myDimmerView, 0.0);
@@ -259,6 +257,29 @@ public class AuthoringView extends AnchorPane {
 
 		
 		
+	}
+
+	/**
+	 * This method is meant to used by the components of the authoring environment.
+	 * This is basically a helper method 
+	 * 
+	 * @param inputType the class type that is required for the user to input
+	 * @return a node that will allow the user to input whatever kind of data
+	 * is needed.
+	 */
+	public static Pane getInputNodeForInputType(Class inputType) {
+		if(
+				inputType.isInstance(double.class) ||
+				inputType.isInstance(int.class)||
+				inputType.isInstance(Integer.class)||
+				inputType.isInstance(Double.class)
+				){
+			Pane p = new Pane();
+			p.getChildren().add(new TextField());
+			return p;
+		}
+		System.out.println("ERROR: class type not accounted for");
+		return null;
 	}
 
 }

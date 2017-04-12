@@ -24,6 +24,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -50,16 +55,18 @@ public class ActorEditorView extends AnchorPane {
 	private static final double BUTTON_HEIGHT = 72;
 	
 	
-	private HashMap<StackPane, List<ActorData>> myActors;
+	private HashMap<StackPane, ActorData> myActors;
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
 	private ActorInfoView myActorInfoView;
+	private BasicActorType myType;
 
 	// TODO get projectile data first
-	public ActorEditorView(PopViewDelegate delegate, ActorType type) {
+	public ActorEditorView(PopViewDelegate delegate, BasicActorType type) {
 		super();
 		myDelegate = delegate;
-		myActors = new HashMap<StackPane, List<ActorData>>();
+		myType = type;
+		myActors = new HashMap<StackPane, ActorData>();
 		setupViews();
 
 	}
@@ -88,14 +95,15 @@ public class ActorEditorView extends AnchorPane {
 			myActorInfoView = new ActorInfoView(myActors.get(myActors.keySet().iterator().next()));
 		else
 			myActorInfoView = new ActorInfoView();
+		myActorInfoView.prefWidthProperty().bind(scroll.widthProperty());
+		myActorInfoView.prefHeightProperty().bind(scroll.heightProperty());
 		scroll.setContent(myActorInfoView);
 	}
 	
 	private void setupAddTowerButton() {
-		//this.addTower(new Image("add_icon.png"), "Add New Tower");
-		Label label = new Label("Add New Tower");
+		Label label = new Label("Add New");
 		label.setFont(Preferences.FONT_MEDIUM);
-		label.setTextFill(CustomColors.GREEN_100);
+		label.setTextFill(CustomColors.INDIGO_100);
 		ImageView imageView = new ImageView(new Image("add_icon_w.png"));
 		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
@@ -103,8 +111,8 @@ public class ActorEditorView extends AnchorPane {
 				Optional.of(label), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
-		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
-		VBox.setMargin(view, new Insets(8,24,8,8));
+		UIHelper.setBackgroundColor(view, CustomColors.AMBER_700);
+		VBox.setMargin(view, new Insets(8));
 		this.myActorsView.getChildren().add( view);
 
 	}
@@ -122,10 +130,15 @@ public class ActorEditorView extends AnchorPane {
 		rightSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
 		leftSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
 		leftSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
-		//leftSide.setStyle(value);
+	
+		leftSide.setBorder(new Border(new BorderStroke[] {new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, new CornerRadii(4), BorderWidths.DEFAULT) }));
+		rightSide.setBorder(Border.EMPTY);
 		
+
 		leftSide.setHbarPolicy(ScrollBarPolicy.NEVER);
 		rightSide.setHbarPolicy(ScrollBarPolicy.NEVER);
+		leftSide.setVbarPolicy(ScrollBarPolicy.NEVER);
+		rightSide.setVbarPolicy(ScrollBarPolicy.NEVER);
 
 		UIHelper.setDropShadow(rightSide);
 		UIHelper.setDropShadow(leftSide);
@@ -139,7 +152,7 @@ public class ActorEditorView extends AnchorPane {
 	private void setupVBox(ScrollPane pane) {
 		myActorsView = new VBox();
 		myActorsView.setAlignment(Pos.CENTER);
-		myActorsView.prefWidthProperty().bind(pane.widthProperty());
+		myActorsView.prefWidthProperty().bind(pane.widthProperty().add(-2));
 		pane.setContent(myActorsView);
 	}
 
@@ -165,9 +178,9 @@ public class ActorEditorView extends AnchorPane {
 		TextField field = new TextField(name);
 		field.setFont(Preferences.FONT_MEDIUM);
 		field.setAlignment(Pos.CENTER);
-		field.setBackground(UIHelper.backgroundForColor(CustomColors.GREEN));
+		field.setBackground(UIHelper.backgroundForColor(CustomColors.AMBER_700));
 		field.setStyle("-fx-text-fill-color: #FFFFFF");
-		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.AMBER_200) + ";");
 		StackPane.setMargin(field, new Insets(8,8,8,64));
 		lblWrapper.getChildren().add(field);
 		
@@ -177,9 +190,9 @@ public class ActorEditorView extends AnchorPane {
 		view.setPrefHeight(BUTTON_HEIGHT);
 		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectTower(view));
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
-		UIHelper.setBackgroundColor(view, CustomColors.GREEN);
-		VBox.setMargin(view, new Insets(8,24,8,8));
-		myActors.put(view, Arrays.asList(new ActorData[] { new ActorData(BasicActorType.Tower, new BasicData(name, imgPath))}));
+		UIHelper.setBackgroundColor(view, CustomColors.AMBER_700);
+		VBox.setMargin(view, new Insets(8));
+		myActors.put(view, new ActorData(myType, new BasicData(name, imgPath)));
 		this.myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
 	}
 
@@ -200,16 +213,11 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	private void selectTower(StackPane stackButton){
-		List<ActorData> data = this.myActors.get(stackButton);
-		myActorInfoView.setActorData(data);
+		myActorInfoView.setActorData(this.myActors.get(stackButton));
 	}
 	
 	private void updateTowerName(StackPane pane, String text){
-		for(ActorData data : this.myActors.get(pane)){
-			data.getBasic().setName(text);
-		}
-		System.out.println(this.myActors.get(pane).get(0).getName());
-		
+		this.myActors.get(pane).getBasic().setName(text);	
 	}
 	
 	public void getTowerData() {
