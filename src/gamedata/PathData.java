@@ -64,6 +64,13 @@ public class PathData {
 		}
 		return myPaths.get(myPaths.size() - 1);
 	}
+	
+	public List<Grid2D> pop(){
+		if(myPaths.isEmpty()){
+			addPath(new ArrayList<Grid2D>());
+		}
+		return myPaths.remove(myPaths.size() - 1);
+	}
 
 }
 

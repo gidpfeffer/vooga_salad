@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import factories.ActorGenerator;
+import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.composition.BaseDamageData;
@@ -46,7 +46,7 @@ public class ActorGeneratorTest {
 		
 		System.out.println("\nGenerate 3");
 		ActorData toTest3 = new ActorData(BasicActorType.Troop, new BasicData("Billy", "imagePath"));
-		toTest3.addData(new BaseDamageData(90, BasicActorType.Troop));
+		toTest3.addData(new BaseDamageData(90.0, BasicActorType.Troop));
 		MainActor actor2 = ActorGenerator.makeActor(2, toTest3);
 		System.out.println(actor2.getMyProperties().size());
 	}

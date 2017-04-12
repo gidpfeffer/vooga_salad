@@ -142,10 +142,13 @@ public abstract class AbstractFactory<A> {
 		A toRet = null;
 		Class<?>[] classes = getClasses(args);
 		try {
-			Constructor<?> ctor = clazz.getDeclaredConstructor(classes);
-			System.out.println("Constructor found");
+			Constructor<?> ctor;
+			if(args.length!=0){
+				ctor= clazz.getDeclaredConstructor(classes);
+			}else{
+				ctor= clazz.getDeclaredConstructor();
+			}
 			toRet = (A) ctor.newInstance(args);
-			System.out.println("Instance made");
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException
 				| IllegalArgumentException | InvocationTargetException e) {
 			throwError();

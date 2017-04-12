@@ -190,4 +190,46 @@ public class OptionGenerator {
 		return null;
 	}
 	
+	/**
+	 * Get the name (representing the type) of the current data object
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static String getName(Data data){
+		String s = data.getClass().getSimpleName();
+		return s.replace("Data", "");
+	}
+	
+	/**
+	 * Return the field names in the data objects mapped to their
+	 * current values
+	 * 
+	 * @param data Data object to check
+	 * @return Mapping of field names to values
+	 */
+	public static Map<String, Object>  getFields(Data data){
+		Class clzz = data.getClass();
+		Map<String, Object> fieldMap = new HashMap<String,Object>();
+		Field[] fields = clzz.getDeclaredFields();
+		if(fields.length == 0){
+			try{
+				fields = clzz.getSuperclass().getDeclaredFields();
+			}catch(Exception e){
+				//TODO: Complete
+			}
+		}
+		for(Field f: fields){
+			try {
+				fieldMap.put(f.getName(), f.get(data));
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return fieldMap;
+	}
 }
