@@ -31,5 +31,10 @@ public class ProjectileGenerator {
 		data.addProjectile(toAdd);
 	}
 	
+	
+	public static void getProjectileFields(){
+		
+	}
+	
 	//TODO: Other needed methods?
 }
