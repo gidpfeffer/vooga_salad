@@ -28,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
 import util.observerobservable.VoogaObserver;
 import javafx.beans.binding.NumberBinding;
@@ -97,31 +98,14 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	
 	private void setupBackground() {
 		anchorPaneRoot.setStyle("-fx-background-color: mediumseagreen");
-		ImageView imv = new ImageView(new Image(backgroundImagePath));  
-		//anchorPaneRoot.getChildren().add(imv);
-		//imv.fitWidthProperty().bind();
-		//imv.fitHeightProperty().bind(center.heightProperty());
-		imv.setPreserveRatio(true);
-		imv.fitWidthProperty().bind(anchorPaneRoot.widthProperty()); 
-		imv.fitWidthProperty().bind(myStage.heightProperty()); 
-		
-		StackPane background = new StackPane();
-		//background.setPrefSize(myStage.getWidth(), myStage.getHeight());
-		System.out.println(myStage.getWidth());
-		background.setPrefWidth(myStage.getWidth());
-		background.setPrefHeight(myStage.getHeight());
-		BackgroundImage myBI= new BackgroundImage(new Image(backgroundImagePath,background.getWidth(), background.getHeight(),true,true),
-		        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-		          BackgroundSize.DEFAULT);
+		ImageViewPane ivp = new ImageViewPane(new ImageView(new Image(backgroundImagePath)));
 		
 		//then you set to your node
-		background.setBackground(new Background(myBI));
-		anchorPaneRoot.getChildren().add(background);
-		AnchorPane.setBottomAnchor(background, 0.0);
-		AnchorPane.setTopAnchor(background, 0.0);
-		AnchorPane.setLeftAnchor(background, 0.0);
-		AnchorPane.setRightAnchor(background, 0.0);
-		
+		anchorPaneRoot.getChildren().add(ivp);
+		AnchorPane.setBottomAnchor(ivp, 0.0);
+		AnchorPane.setTopAnchor(ivp, 0.0);
+		AnchorPane.setLeftAnchor(ivp, 0.0);
+		AnchorPane.setRightAnchor(ivp, 0.0);
 	}
 	
 /*	//temp right
@@ -164,7 +148,9 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 			if (actorsMap.containsKey(i.toString())) {
 				actor = actorsMap.get(i.toString());
 			} else {
-				actor = new Actor(anchorPaneRoot, uihandler, actorsMap, i, backgroundImagePath, backgroundImagePath);
+				actor = new Actor(anchorPaneRoot, uihandler, actorsMap, i, 
+						uihandler.getOptions().get(i.toString()).getName(), 
+						uihandler.getOptions().get(i.toString()).getImagePath());
 				actorsMap.put(i, actor);
 			}
 			Pane paneActor = actor.getActor();
