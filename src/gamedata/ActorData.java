@@ -32,7 +32,7 @@ import types.BasicActorType;
  */
 
 public class ActorData {
-	private final static double HEALTH = 100;
+	private final static double HEALTH = 1;
 	
 	private List<Data> myData;
 	private BasicActorType actor;

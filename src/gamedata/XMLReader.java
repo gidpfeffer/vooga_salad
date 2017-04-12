@@ -20,8 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import factories.DataGenerator;
-import factories.OptionGenerator;
+import builders.DataGenerator;
 import gamedata.compositiongen.Data;
 import gamedata.compositiongen.HealthData;
 import gamedata.reflections.Reflections;
@@ -39,13 +38,13 @@ public class XMLReader {
 	public XMLReader(File data) {
 		dataFile = data;
 		myGameData = new GameData();
-		getData();
+		generateData();
 	}
 
 	public XMLReader(String fileName) {
 		dataFile = new File(fileName);
 		myGameData = new GameData();
-		getData();
+		generateData();
 
 	}
 
@@ -60,7 +59,7 @@ public class XMLReader {
 		}
 	}
 
-	private void getData() {
+	private void generateData() {
 		getPathData();
 		try {
 			getActorData();
@@ -71,7 +70,9 @@ public class XMLReader {
 		getProjectileData();
 
 	}
-
+	public GameData getData(){
+		return this.myGameData;
+	}
 	private void getPathData() {
 		Element root = getRootElement(dataFile);
 		Element allPaths = (Element) root.getElementsByTagName("PathData").item(0);
@@ -125,7 +126,7 @@ public class XMLReader {
 					Object[] convertedFields = new Object[neededFields.length];
 					for (int j = 0; j < neededFields.length; j++) {
 						convertedFields[j] = StringToFieldFactory.getObject(fields[j], neededFields[j]);
-
+						
 					}
 
 					Object o = DataGenerator.makeData(field.substring(0, field.length() - 4), convertedFields);
@@ -149,7 +150,6 @@ public class XMLReader {
 
 	private void getLevelData() {
 		Element root = getRootElement(dataFile);
-
 		Element allWaves = (Element) root.getElementsByTagName("LevelData").item(0);
 		double duration = Double.parseDouble(getTextValue(allWaves, "Duration"));
 		double difficulty = Double.parseDouble(getTextValue(allWaves, "Difficulty"));
@@ -182,7 +182,7 @@ public class XMLReader {
 			// levelData.addWave(waveData)
 			// when multiple waves get implemented
 		}
-		myGameData.addLevel(levelData, 1);
+		myGameData.addLevel(levelData, 0);
 	}
 
 	private void getProjectileData() {
@@ -195,10 +195,10 @@ public class XMLReader {
 			String image=getTextValue(projectile,"Image");
 			Double speed=Double.parseDouble(getTextValue(projectile,"Speed"));
 			Double radius=Double.parseDouble(getTextValue(projectile,"Radius"));
-			Boolean explosive=Boolean.valueOf(getTextValue(projectile,"Image"));
-			Boolean restrictive=Boolean.valueOf(getTextValue(projectile,"Image"));
+			Boolean explosive=Boolean.valueOf(getTextValue(projectile,"Explosive"));
+			Boolean restrictive=Boolean.valueOf(getTextValue(projectile,"Restrictive"));
 			ProjectileType newProjectile=new ProjectileType(image,speed,radius,explosive,restrictive);
-		projectileData.addProjectileType(newProjectile);
+		projectileData.addProjectile(newProjectile);
 		}
 		myGameData.setProjectileOptions(projectileData);
 	}

@@ -8,14 +8,9 @@ public class ImmuneHealthProperty extends LimitedHealthProperty{
 		super(data);
 	}
 
+	@Override
 	public void apply(double damage) {
 		
 	}
-
-	@Override
-	public boolean isAlive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 }

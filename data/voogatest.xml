@@ -26,7 +26,7 @@
 <type>Troop</type>
 <name>Orc</name>
 <imagePath>orc.png</imagePath>
-<ShootTargetFarData>1.0 1 Troop 1</ShootTargetFarData>
+<ShootTargetFarData>1.0 1 Troop 1 1.0</ShootTargetFarData>
 <BaseDamageData>1.0 Troop</BaseDamageData>
 <LimitedHealthData>1.0</LimitedHealthData>
 </Actor>
@@ -43,6 +43,7 @@
 <Duration>10</Duration>
 <HealthMultiplier>1.0</HealthMultiplier>
 <SpeedMultiplier>1.0</SpeedMultiplier>
+<AttackMultiplier>1.0</AttackMultiplier>
 <Difficulty>1.0</Difficulty>
 <Wave>
 <Enemy>
@@ -62,8 +63,8 @@
 <Image>bullet.png</Image>
 <Speed>1.0</Speed>
 <Radius>1.0</Radius>
-<Explosive>True</Explosive>
-<Restrictive>True</Restrictive>
+<Explosive>true</Explosive>
+<Restrictive>true</Restrictive>
 </Projectile>
 </ProjectileData>
 </type>

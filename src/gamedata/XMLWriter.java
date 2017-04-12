@@ -1,18 +1,32 @@
 package gamedata;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import builders.OptionGenerator;
+
 import gamedata.compositiongen.Data;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Pair;
 import util.Tuple;
 
@@ -32,6 +46,10 @@ private void writeXML(){
 	doc.appendChild(root);
 	setAttributes(root,doc);
 	setPathData(root,doc);
+	setActorData(root,doc);
+	setLevelData(root,doc);
+	setProjectileData(root,doc);
+	printFile(doc);
 }
 private void setPathData(Element root, Document doc){
 	Element pathData=doc.createElement("PathData");
@@ -62,13 +80,115 @@ private void setActorData(Element root, Document doc){
 		name.appendChild(doc.createTextNode(currentBasic.getName()));
 		Element imagePath=doc.createElement("imagePath");
 		imagePath.appendChild(doc.createTextNode(currentBasic.getImagePath()));
+		actor.appendChild(type);
 		actor.appendChild(name);
 		actor.appendChild(imagePath);
 		for(Data d:current.getMyData()){
-			Element e=doc.createElement(d.getClass().toString().split("\\.")[d.getClass().toString().split("\\.").length-1]);
+			Element dataElement=doc.createElement(d.getClass().toString().split("\\.")[d.getClass().toString().split("\\.").length-1]);
+			Map<String,Object> fields=OptionGenerator.getFields(d);
+			ArrayList<Object> fieldStrings=new ArrayList<Object>();
+			for(String s:fields.keySet()){
+				fieldStrings.add(fields.get(s));
+			}
+			String fieldString=listToString(fieldStrings);
+			dataElement.appendChild(doc.createTextNode(fieldString));
+			actor.appendChild(dataElement);
+		}
+	actorData.appendChild(actor);
+		
+	}
+	root.appendChild(actorData);
+}
+
+private void setLevelData(Element root,Document doc){
+	Element levelData=doc.createElement("LevelData");
+	LevelData myLevelData=myGameData.getLevel(0);
+	Element healthMultiplier= doc.createElement("HealthMultiplier");
+		healthMultiplier.appendChild(doc.createTextNode(Double.toString(myLevelData.getHealthMultiplier())));
+	Element speedMultiplier=doc.createElement("SpeedMultiplier");
+			speedMultiplier.appendChild(doc.createTextNode(Double.toString(myLevelData.getSpeedMultiplier())));	
+	Element attackMultiplier=doc.createElement("AttackMultiplier");
+			attackMultiplier.appendChild(doc.createTextNode(Double.toString(myLevelData.getAttackMultiplier())));
+	Element difficulty=doc.createElement("Difficulty");
+	difficulty.appendChild(doc.createTextNode(Double.toString(myLevelData.getDifficulty())));
+	Element duration=doc.createElement("Duration");
+	duration.appendChild(doc.createTextNode(Double.toString(myLevelData.getDuration())));
+	levelData.appendChild(healthMultiplier);
+	levelData.appendChild(speedMultiplier);
+	levelData.appendChild(attackMultiplier);
+	levelData.appendChild(duration);
+	levelData.appendChild(difficulty);
+	Element wave=doc.createElement("Wave");
+	List<EnemyInWaveData> enemies=myLevelData.getTroops();
+	for(EnemyInWaveData enemy:enemies){
+		Element enemyElement=doc.createElement("Enemy");
+		for(Integer i:myGameData.getOptions().keySet()){
+			if (enemy.getMyData().equals(myGameData.getOption(i))){
+				Element actorID=doc.createElement("ActorID");
+				actorID.appendChild(doc.createTextNode(i.toString()));
+				enemyElement.appendChild(actorID);
+			}
 			
 		}
+		Element number=doc.createElement("Number");
+		number.appendChild(doc.createTextNode(Integer.toString(enemy.getMyNumber())));
+		enemyElement.appendChild(number);
+		Element paths=doc.createElement("Paths");
+		List<Integer> pathChoice=enemy.getMyPaths();
+		paths.appendChild(doc.createTextNode(listToString(pathChoice)));
+		enemyElement.appendChild(paths);
+	wave.appendChild(enemyElement);
+	}
+	levelData.appendChild(wave);
+	root.appendChild(levelData);
+	
+}
+private void setProjectileData(Element root,Document doc){
+	Element projectileData=doc.createElement("ProjectileData");
+	for(Integer i:myGameData.getMyProjectiles().getMyProjectiles().keySet()){
+		Element projectile=doc.createElement("Projectile");
+		ProjectileType proj=myGameData.getMyProjectiles().getMyProjectiles().get(i);
+		Element speed=doc.createElement("Speed");
+		speed.appendChild(doc.createTextNode(Double.toString(proj.getSpeed())));
+		Element radius=doc.createElement("Radius");
+		radius.appendChild(doc.createTextNode(Double.toString(proj.getRadius())));
+		Element image=doc.createElement("Image");
+		image.appendChild(doc.createTextNode(proj.getImagePath()));
+		Element explosive=doc.createElement("Explosive");
+		explosive.appendChild(doc.createTextNode(Boolean.toString(proj.isExplosive())));
+		System.out.println(proj.isExplosive());
+		Element restrictive=doc.createElement("Restrictive");
+		restrictive.appendChild(doc.createTextNode(Boolean.toString(proj.isRestrictive())));
+		projectile.appendChild(radius);
+		projectile.appendChild(speed);
+		projectile.appendChild(image);
+		projectile.appendChild(explosive);
+		projectile.appendChild(restrictive);
+		projectileData.appendChild(projectile);
+	}
+	root.appendChild(projectileData);
+}
+private void printFile(Document doc){
+	TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	Transformer transformer = null;
+	try {
+		transformer = transformerFactory.newTransformer();
+	} catch (TransformerConfigurationException e) {
 		
+		throw new XMLException(e);
+	}
+	DOMSource source = new DOMSource(doc);
+	//FileChooser fileChooser=new FileChooser();
+	//fileChooser.setTitle("Select location to save XML file");
+	//fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
+	//fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+	Result result=null;
+	 //result = new StreamResult(fileChooser.showSaveDialog(new Stage()));		
+	result=new StreamResult(new File("s.xml"));
+	try {		
+		transformer.transform(source, result);
+	} catch (TransformerException e) {
+		throw new XMLException(e);
 	}
 }
 private Tuple<List<Double>,List<Double>> extractCoordinates(List<Grid2D>list){
@@ -86,6 +206,7 @@ private String listToString(List<?> list){
 	for(int i=0;i<list.size();i++){
 		stringList.add(list.get(i).toString());
 	}
+	
 	return String.join(" ",stringList);
 }
 private void setAttributes(Element root, Document doc){
@@ -102,5 +223,10 @@ private static DocumentBuilder getDocumentBuilder () {
     catch (ParserConfigurationException e) {
         throw new XMLException(e);
     }
+}
+public static void main (String[]args){
+	XMLReader you=new XMLReader("data/voogatest.xml");
+	GameData d=you.getData();
+	XMLWriter me=new XMLWriter(d);
 }
 }

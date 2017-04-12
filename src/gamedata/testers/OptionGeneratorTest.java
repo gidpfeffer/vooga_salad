@@ -8,8 +8,10 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import factories.OptionGenerator;
+import builders.DataGenerator;
+import builders.OptionGenerator;
 import gamedata.FieldData;
+import gamedata.compositiongen.Data;
 
 import java.lang.reflect.Field;
 
@@ -62,6 +64,24 @@ public class OptionGeneratorTest {
 		assertEquals(properties.get(0), "ShootTargetFar");
 		System.out.println("Shoot Properties");
 		Arrays.asList(properties).stream().forEach(System.out::println);
+	}
+	
+	@Test
+	public void getName(){
+		Data d = DataGenerator.makeData("LimitedHealth", 10.0);
+		assertEquals("LimitedHealth", OptionGenerator.getName(d));
+	}
+	
+	@Test 
+	public void getFields(){
+		System.out.println("\n");
+		Data d = DataGenerator.makeData("LimitedHealth", 10.0);
+		Map<String, Object> values = OptionGenerator.getFields(d);
+		for(String s: values.keySet()){
+			System.out.println(s + " " + values.get(s));
+		}
+		System.out.println("\n");
+		//assertEquals(10.0, o);
 	}
 
 }
