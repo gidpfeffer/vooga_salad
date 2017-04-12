@@ -14,6 +14,7 @@ import gamedata.FieldData;
 import gamedata.compositiongen.Data;
 import gamedata.reflections.Reflections;
 import types.BasicActorType;
+import util.general.FieldGenerator;
 
 /**
  * 
@@ -157,21 +158,7 @@ public class OptionGenerator {
 		for(int i=0; i<datas.size(); i++)
 		{
 			String property = datas.get(i)+"Data";
-			Class<?> propertyClass = null;
-			try {
-				propertyClass = Class.forName(DATA_PATH + "." + property);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Field[] fields = propertyClass.getDeclaredFields();
-			if(fields.length == 0){
-				try{
-					fields = propertyClass.getSuperclass().getDeclaredFields();
-				}catch(Exception e){
-					//TODO: Complete
-				}
-			}
+			Field [] fields = FieldGenerator.getFields(DATA_PATH + "." + property);
 			List<FieldData> fieldDatas = new ArrayList<FieldData>();
 			for(Field f : fields){
 				String name = f.getName();
@@ -211,21 +198,11 @@ public class OptionGenerator {
 	public static Map<String, Object>  getFields(Data data){
 		Class clzz = data.getClass();
 		Map<String, Object> fieldMap = new HashMap<String,Object>();
-		Field[] fields = clzz.getDeclaredFields();
-		if(fields.length == 0){
-			try{
-				fields = clzz.getSuperclass().getDeclaredFields();
-			}catch(Exception e){
-				//TODO: Complete
-			}
-		}
+		Field[] fields = FieldGenerator.getFields(clzz);
 		for(Field f: fields){
 			try {
 				fieldMap.put(f.getName(), f.get(data));
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
+			} catch (IllegalArgumentException | IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
