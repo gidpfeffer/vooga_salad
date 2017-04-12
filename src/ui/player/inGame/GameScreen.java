@@ -164,7 +164,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 			if (actorsMap.containsKey(i.toString())) {
 				actor = actorsMap.get(i.toString());
 			} else {
-				actor = new Actor(anchorPaneRoot, uihandler, i, backgroundImagePath, backgroundImagePath);
+				actor = new Actor(anchorPaneRoot, uihandler, actorsMap, i, backgroundImagePath, backgroundImagePath);
 				actorsMap.put(i, actor);
 			}
 			Pane paneActor = actor.getActor();

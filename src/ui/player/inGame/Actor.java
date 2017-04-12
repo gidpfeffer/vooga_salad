@@ -1,5 +1,6 @@
 package ui.player.inGame;
 
+import java.util.Map;
 import java.util.Optional;
 
 import javafx.animation.TranslateTransition;
@@ -29,6 +30,7 @@ public class Actor {
 	UIHandler uihandler;
 	String name;
 	Pane actor;
+	Map<Integer, Actor> mapOfActors;
 
 	public Pane getActor() {
 		return actor;
@@ -38,16 +40,15 @@ public class Actor {
 	}
 
 
-	public Actor(Pane root, UIHandler uihandler, Integer id, String name, String image) {
+	public Actor(Pane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name, String image) {
 		
 		actor = UIHelper.buttonStack(e->{}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER, true);
-		//actor = new StackPane();
 		actor.setBackground(Background.EMPTY);
-		//actor.setStyle("-fx-background-color: blue");
-		//actor.getChildren().add(new Text("help"));
+		actor.setId(id.toString());
 		this.root = root;
 		this.uihandler = uihandler;
 		this.name = name;
+		this.mapOfActors = mapOfActors;
 		setup();
 	}
 
@@ -68,7 +69,7 @@ public class Actor {
 		try {
 			System.out.println("releasing");
 			//need to have list here
-			if (obj exists already) {
+			if (mapOfActors.get(actor) != null) {
 				// and if the area is okay to put the stackpane down
 				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
 				//remove from root if can't place;
