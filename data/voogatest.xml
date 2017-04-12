@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <type type="GameData">
 <PathData>
-<Path id="1">
+<Path>
 <X>
 1.0 2.8 9.9
 </X>
@@ -9,7 +9,7 @@
 1.0 2.0 3.0
 </Y>
 </Path>
-<Path id="2">
+<Path>
 <X>
 1.0 2.0
 </X>
@@ -22,7 +22,7 @@
 
 
 <ActorData>
-<Actor id="1">
+<Actor>
 <type>Troop</type>
 <name>Orc</name>
 <imagePath>orc.png</imagePath>
@@ -30,7 +30,7 @@
 <BaseDamageData>1.0 Troop</BaseDamageData>
 <LimitedHealthData>1.0</LimitedHealthData>
 </Actor>
-<Actor id="2">
+<Actor>
 <type>Troop</type>
 <name>Troll</name>
 <imagePath>troll.jpg</imagePath>
@@ -43,19 +43,27 @@
 <Duration>10</Duration>
 <HealthMultiplier>1.0</HealthMultiplier>
 <SpeedMultiplier>1.0</SpeedMultiplier>
-<AttackMultiplier>1.0</AttackMultiplier>
 <Difficulty>1.0</Difficulty>
 <Wave>
 <Enemy>
-<ActorID>1</ActorID>
+<ActorID>0</ActorID>
 <Number>50</Number>
 <Paths>0 1</Paths>
 </Enemy>
 <Enemy>
 <ActorID>1</ActorID>
 <Number>29</Number>
-<Paths>2</Paths>
+<Paths>1</Paths>
 </Enemy>
 </Wave>
 </LevelData>
+<ProjectileData>
+<Projectile>
+<Image>bullet.png</Image>
+<Speed>1.0</Speed>
+<Radius>1.0</Radius>
+<Explosive>True</Explosive>
+<Restrictive>True</Restrictive>
+</Projectile>
+</ProjectileData>
 </type>

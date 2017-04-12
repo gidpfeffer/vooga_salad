@@ -174,7 +174,9 @@ public class GameData {
 	public Map<Integer, ProjectileType> getProjectileOptions(){
 		return myProjectiles.getMyProjectileTypes();
 	}
-	
+	public void setProjectileOptions(ProjectileData projectiles){
+		myProjectiles=projectiles;
+	}
 	
 	
 	
@@ -220,7 +222,10 @@ public class GameData {
 	public void setMyPaths(PathData myPaths) {
 		this.myPaths = myPaths;
 	}
-	
+public String toString(){
+	return String.format("%s \n %s \n %s",levels.toString(),pieces,myPaths);
+
+}
 	
 	
 	

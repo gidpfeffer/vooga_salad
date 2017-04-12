@@ -131,7 +131,6 @@ public class ActorData {
 	public void setBasic(BasicData basic) {
 		this.basic = basic;
 	}
-	
 
 	
 	
