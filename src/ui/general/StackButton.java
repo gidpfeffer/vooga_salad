@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class StackButton extends StackPane{
+public class StackButton extends StackPane {
 	
 	private Optional<Node> centerNode = Optional.ofNullable(null);
 	private Optional<Node> iconNode = Optional.ofNullable(null);
