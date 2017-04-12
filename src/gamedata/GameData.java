@@ -192,7 +192,7 @@ public class GameData {
 	private Map<Integer,ActorData> getOptionType(BasicActorType type){
 		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
 		pieces.forEach((key, value) 
-				-> {if (value.getBasic().equals(type)) {
+				-> {if (value.getActor().equals(type)) { 
 					toRet.put(key,value);
 					}});
 		return toRet;

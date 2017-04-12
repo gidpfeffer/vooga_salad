@@ -20,13 +20,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import ui.general.ImageViewPane;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
 import util.VoogaException;
 
 public class Actor {
 
-	Pane root;
+	ImageViewPane root;
 	UIHandler uihandler;
 	String name;
 	Pane actor;
@@ -40,7 +41,7 @@ public class Actor {
 	}
 
 
-	public Actor(Pane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name, String image) {
+	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name, String image) {
 		
 		actor = UIHelper.buttonStack(e->{}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER, true);
 		actor.setBackground(Background.EMPTY);
@@ -62,16 +63,24 @@ public class Actor {
 			actor.setLayoutY(e.getSceneY());
 		});
 
-		actor.setOnMouseDragReleased(e -> released(e));
+		actor.setOnMouseClicked(e -> released(e));
 	}
 
 	public void released(MouseEvent e) {
 		try {
 			System.out.println("releasing");
 			//need to have list here
+			double width = root.getWidth() - 2*root.getImageInsets().x;
+			double height = root.getHeight() - 2*root.getImageInsets().y;
+			
 			if (mapOfActors.get(actor) != null) {
 				// and if the area is okay to put the stackpane down
-				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
+				
+				System.out.println("Scaled coordinates to " + actor.getLayoutX()/width + ", " 
+						+ actor.getLayoutY()/height);
+				
+				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), 
+						actor.getLayoutX()/width, actor.getLayoutY()/height);
 				//remove from root if can't place;
 				
 				//idea -- remove event handler here so can't re-drag object?
@@ -79,7 +88,19 @@ public class Actor {
 			}
 			else {
 				//need to know size of screen here
-				uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
+				if(e.getX() < root.getImageInsets().x || 
+						e.getX() > root.getWidth() - root.getImageInsets().x || 
+						e.getY() < root.getImageInsets().y || 
+						e.getY() > root.getHeight() - root.getImageInsets().y) {
+					throw new VoogaException("Invalid location for actor");
+				} 
+				else {
+					System.out.println("Scaled coordinates to " + actor.getLayoutX()/width + ", " 
+							+ actor.getLayoutY()/height);
+					
+					uihandler.addGameObject(Integer.parseInt(actor.getId()), 
+							actor.getLayoutX()/width, actor.getLayoutY()/height);
+				}
 			}
 		} catch (VoogaException e1) {
 			// TODO Auto-generated catch block

@@ -193,12 +193,13 @@ public class XMLReader {
 		for(int i=0;i<projectiles.getLength();i++){
 			Element projectile=(Element)projectiles.item(i);
 			String image=getTextValue(projectile,"Image");
-			Double speed=Double.parseDouble(getTextValue(projectile,"Speed"));
-			Double radius=Double.parseDouble(getTextValue(projectile,"Radius"));
+			Double damage=Double.parseDouble(getTextValue(projectile,"Damage"));
+		
 			Boolean explosive=Boolean.valueOf(getTextValue(projectile,"Explosive"));
 			Boolean restrictive=Boolean.valueOf(getTextValue(projectile,"Restrictive"));
-			ProjectileType newProjectile=new ProjectileType(image,speed,radius,explosive,restrictive);
+			ProjectileType newProjectile=new ProjectileType(image,damage,explosive,restrictive);
 		projectileData.addProjectile(newProjectile);
+		System.out.println(newProjectile.getDamage());
 		}
 		myGameData.setProjectileOptions(projectileData);
 	}

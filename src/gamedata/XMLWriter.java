@@ -83,6 +83,8 @@ private void setActorData(Element root, Document doc){
 		actor.appendChild(type);
 		actor.appendChild(name);
 		actor.appendChild(imagePath);
+		List<Data>dataList=current.getMyData();
+		dataList.add(current.getHealth());
 		for(Data d:current.getMyData()){
 			Element dataElement=doc.createElement(d.getClass().toString().split("\\.")[d.getClass().toString().split("\\.").length-1]);
 			Map<String,Object> fields=OptionGenerator.getFields(d);
@@ -148,10 +150,9 @@ private void setProjectileData(Element root,Document doc){
 	for(Integer i:myGameData.getMyProjectiles().getMyProjectiles().keySet()){
 		Element projectile=doc.createElement("Projectile");
 		ProjectileType proj=myGameData.getMyProjectiles().getMyProjectiles().get(i);
-		Element speed=doc.createElement("Speed");
-		speed.appendChild(doc.createTextNode(Double.toString(proj.getSpeed())));
-		Element radius=doc.createElement("Radius");
-		radius.appendChild(doc.createTextNode(Double.toString(proj.getRadius())));
+		Element damage=doc.createElement("Damage");
+		damage.appendChild(doc.createTextNode(Double.toString(proj.getDamage())));
+		System.out.println(proj.getImagePath());
 		Element image=doc.createElement("Image");
 		image.appendChild(doc.createTextNode(proj.getImagePath()));
 		Element explosive=doc.createElement("Explosive");
@@ -159,8 +160,7 @@ private void setProjectileData(Element root,Document doc){
 		System.out.println(proj.isExplosive());
 		Element restrictive=doc.createElement("Restrictive");
 		restrictive.appendChild(doc.createTextNode(Boolean.toString(proj.isRestrictive())));
-		projectile.appendChild(radius);
-		projectile.appendChild(speed);
+		projectile.appendChild(damage);
 		projectile.appendChild(image);
 		projectile.appendChild(explosive);
 		projectile.appendChild(restrictive);
@@ -184,7 +184,7 @@ private void printFile(Document doc){
 	//fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 	Result result=null;
 	 //result = new StreamResult(fileChooser.showSaveDialog(new Stage()));		
-	result=new StreamResult(new File("s.xml"));
+	result=new StreamResult(new File("ss.xml"));
 	try {		
 		transformer.transform(source, result);
 	} catch (TransformerException e) {

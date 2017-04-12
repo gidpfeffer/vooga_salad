@@ -61,8 +61,7 @@
 <ProjectileData>
 <Projectile>
 <Image>bullet.png</Image>
-<Speed>1.0</Speed>
-<Radius>1.0</Radius>
+<Damage>1.0</Damage>
 <Explosive>true</Explosive>
 <Restrictive>true</Restrictive>
 </Projectile>

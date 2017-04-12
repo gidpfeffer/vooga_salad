@@ -58,5 +58,6 @@ public class OptionButton {
 		button.setGraphic(view);
 		button.addEventHandler(MouseEvent.MOUSE_PRESSED, pressed);
 	}
+	
 
 }

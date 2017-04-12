@@ -2,7 +2,8 @@ package gameengine.controllers;
 
 import java.util.Map;
 
-import factories.ActorGenerator;
+import builders.ActorGenerator;
+import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LevelData;
@@ -22,6 +23,7 @@ import util.observerobservable.VoogaObserver;
 
 /**
  * GameController is the controller layer between the front end display and the back end game engine
+ * Implements UIHandler and initializes all necessary back end and front end components of game engine
  * @author sarahzhou
  *
  */
@@ -42,10 +44,14 @@ public class GameController {
 	private final double MILLISECOND_DELAY=17;
 
 	public GameController() {
-		myGameData = new GameData();
+		myGameData = GameDataGenerator.getSampleGame();//new GameData();
 		initializeUIHandler();
 	}
 
+	/**
+	 * @param UIObserver
+	 * @return a new clean instance of ActorGrid
+	 */
 	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
 		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
@@ -64,7 +70,7 @@ public class GameController {
 		intitializeTimeline();
 	}
 	
-	public void intitializeTimeline() {
+	private void intitializeTimeline() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 				d -> step());
 		animation = new Timeline();
@@ -72,16 +78,8 @@ public class GameController {
 		animation.getKeyFrames().add(frame);
 	}
 	
-	public void step() {
+	private void step() {
 		myGrid.step();
-	}
-	
-	private double getMapSizeX() {
-		return myGameScreen.getWindow().get(0);
-	}
-	
-	private double getMapSizeY() {
-		return myGameScreen.getWindow().get(1);
 	}
 
 	private void initializeUIHandler() {
@@ -115,11 +113,9 @@ public class GameController {
 			}
 
 			@Override
-			public int addGameObject(Integer option, double xCoor, double yCoor) throws VoogaException{
+			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
 				Actor actor = ActorGenerator.makeActor(option,actorData);
-				double xRatio = util.Transformer.coordinateToRatio(xCoor, getMapSizeX());
-				double yRatio = util.Transformer.coordinateToRatio(yCoor, getMapSizeY());
 				if (myGrid.isValidLoc(xRatio, yRatio)) {
 					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
 				} else {

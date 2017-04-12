@@ -149,30 +149,11 @@ public abstract class AbstractFactory<A> {
 			}else{
 				ctor= clazz.getDeclaredConstructor();
 			}
-			System.out.print("Hit 1 ");
-			System.out.print("\nArguments:");
 
-			for(Object o: args){
-				System.out.print(o.getClass().getSimpleName() + " ");
-			}
-			System.out.print("\nClasses:");
-			for(Class c: classes){
-				System.out.print(c.getSimpleName() + " ");
-			}
-			System.out.println("\nConstructor takes:");
-			for(Constructor c: clazz.getDeclaredConstructors()){
-				for(Type c2: c.getGenericParameterTypes())
-				System.out.print(c2.getTypeName() + " ");
-			}
+			toRet = (A) ctor.newInstance(args);
 
-			Object c = ctor.newInstance(args);
-			System.out.print("Hit 2 ");
-			toRet = (A) c;
-			System.out.println("Hit 3 ");
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException
 				| IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-			System.out.println("woot error");
 			throwError();
 		}
 		return toRet;

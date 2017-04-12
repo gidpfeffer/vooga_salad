@@ -13,4 +13,8 @@ public class StatusDuration {
 	public boolean stillOn() {
 		return (lifeLength++)<myDuration;
 	}
+	
+	public Integer getLifeLength() {
+		return lifeLength;
+	}
 }
