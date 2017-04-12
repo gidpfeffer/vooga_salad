@@ -11,10 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import ui.handlers.UIHandler;
 
 public class SettingsPane {
 
@@ -69,6 +67,7 @@ public class SettingsPane {
 	private void addHyperlinks() {
 		helpPaneOptions.forEach(name -> helpLinks.add(new Hyperlink(name)));
 		VBox helpBox = new VBox(20);
+		//helpLinks.forEach(link -> link.setOnAction(value)); TODO: Enable return to main
 		helpLinks.forEach(link -> helpBox.getChildren().add(link));
 		settings.getChildren().add(helpBox);
 		helpBox.setAlignment(Pos.CENTER_LEFT);
