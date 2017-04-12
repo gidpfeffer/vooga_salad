@@ -76,8 +76,8 @@ public class OptionsPane{
 		return holder;
 	}
 	
-	public Map<Integer, List<String>> getMap() {
-		return tempMap;
+	public Map<Integer, ActorData> getMap() {
+		return mapOfOptions;
 	}
 	
 	//temp
@@ -90,7 +90,8 @@ public class OptionsPane{
 	}
 	
 	//uncomment for real side panel
-	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map) {
+	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map, String name) {
+		this.paneName = name;
 		this.root = root;
 		this.holder = new StackPane();
 		this.actorsMap = actorsMap;
@@ -128,7 +129,7 @@ public class OptionsPane{
 		VBox buttonBox = new VBox(50);
 		//uncomment section to use actor data
 		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
-			paneName = entry.getValue().getActor().toString();
+			//paneName = entry.getValue().getActor().toString();
 			System.out.println(paneName);
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().getName(), entry.getValue().getImagePath(), pressed);
 		}
