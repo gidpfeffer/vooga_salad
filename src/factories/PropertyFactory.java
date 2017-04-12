@@ -1,6 +1,10 @@
 package factories;
 
-import gameengine.actors.propertygen.IActProperty;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
 import gameengine.actors.propertygen.Property;
 
 public class PropertyFactory extends AbstractFactory <Property> {
@@ -21,5 +25,6 @@ public class PropertyFactory extends AbstractFactory <Property> {
 	protected Property failResponse() {
 		return null;
 	}
+
 
 }

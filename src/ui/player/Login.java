@@ -1,24 +1,20 @@
 package ui.player;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import gameengine.controllers.GameController;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
@@ -28,10 +24,6 @@ import javafx.stage.Stage;
 import ui.*;
 import ui.authoring.AuthoringView;
 import ui.general.UIHelper;
-import ui.handlers.UIHandler;
-import ui.player.inGame.GameScreen;
-import ui.player.inGame.TempData;
-import ui.player.login.DataEntryGrid;
 import ui.player.login.LoginGrid;
 import ui.player.login.SignupGrid;
 
@@ -45,7 +37,6 @@ public class Login{
 	private GridPane gridPane;
 	private BorderPane borderPane;
 	private Passwords passwords;
-	private UIHelper uihelper;
 	private LoginGrid login;
 	private SignupGrid signup;
 	private ResourceBundle loginResource;
@@ -95,6 +86,8 @@ public class Login{
 		borderPane.setCenter(gridPane);
 		root.getChildren().add(borderPane);
 		gridPane.setAlignment(Pos.CENTER);
+		gridPane.getStyleClass().add("grid");
+		root.getStyleClass().add("anchor-pane");
 		scene = new Scene(root);
 		scene.getStylesheets().add(css);
 		setupBorderPane();
@@ -109,17 +102,20 @@ public class Login{
 
 	private void setupTitle(){
 		Label towerDefenseTitle = createTitle(loginResource.getString("towerDefense"), 50);
-		towerDefenseTitle.setPrefWidth(Preferences.SCREEN_WIDTH);
-		towerDefenseTitle.setAlignment(Pos.CENTER);
+		//towerDefenseTitle.setPrefWidth(Preferences.SCREEN_WIDTH);
+		towerDefenseTitle.setId("title");
 		borderPane.setTop(towerDefenseTitle);
+		BorderPane.setAlignment(towerDefenseTitle, Pos.CENTER);
+		
 	}
 
 	private void setupLoginNewAccountTitle() {
 		Label welcomeBackTitle = createTitle(loginResource.getString("welcomeBack"), 30);
 		Label newAccountTitle = createTitle(loginResource.getString("newAccount"), 30);
-		welcomeBackTitle.getStyleClass().add("text");
 		gridPane.add(welcomeBackTitle, 0, 0);
 		gridPane.add(newAccountTitle, 1, 0);
+		GridPane.setHalignment(welcomeBackTitle, HPos.CENTER);
+		GridPane.setHalignment(newAccountTitle, HPos.CENTER);
 	}
 
 	private void setupLoginGrid(){
@@ -147,6 +143,8 @@ public class Login{
 		UIHelper.setDropShadow(signupEnter);
 		gridPane.add(loginEnter, 0, 3);
 		gridPane.add(signupEnter, 1, 3);
+		GridPane.setHalignment(loginEnter, HPos.CENTER);
+		GridPane.setHalignment(signupEnter, HPos.CENTER);
 		final Text actiontarget = new Text();
 		gridPane.add(actiontarget, 1, 4);
 
@@ -163,6 +161,8 @@ public class Login{
 		selector.setOnAction(e -> gotoGameSelector());
 		gridPane.add(auth, 0, 4);
 		gridPane.add(selector, 1, 4);
+		GridPane.setHalignment(auth, HPos.CENTER);
+		GridPane.setHalignment(selector, HPos.CENTER);
 	}
 
 	private void loginClicked(Text actiontarget){
@@ -175,7 +175,9 @@ public class Login{
 		{
 			System.out.println(entry.getKey() + "/" + entry.getValue());
 		}*/
-		System.out.println(login.getUsername());
+		System.out.println(login.getUsername().getText());
+		showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + login.getUsername().getText(),
+				"Login currently does nothing");
 /*		if (passwords.login(login.getUsername().getText(), login.getPassword().getText())) {
 			actiontarget.setFill(Color.GREEN);
 			actiontarget.setText(loginResource.getString("successfulLogin"));
@@ -250,12 +252,27 @@ public class Login{
 	}
 
 	private void gotoGameSelector() {
-		gotoGameScreen();
-		//uncomment later
-/*		GameSelector select = new GameSelector("English", "mainScreen.css");
-		stage.setScene(select.getScene());A
+		//TODO: Replace with actual games list
+		ArrayList<Button> gamesList = new ArrayList<Button>();
+		gamesList.add(new Button("Sample Game"));
+		gamesList.add(new Button("Also Sample Game"));
+		
+		GameSelector select = new GameSelector("English", "mainScreen.css", setUpGames(gamesList));
+		stage.setScene(select.getScene());
 		stage.setTitle("GameSelector");
-		stage.show();*/
+		stage.show();
+	}
+	
+	private GridPane setUpGames(List<Button> games) {
+		GridPane gameMenu = new GridPane();
+		gameMenu.setVgap(20);
+		int index = 0;
+		for(Button game : games) {
+			game.setOnAction(e -> gotoGameScreen());
+			gameMenu.add(game, 0, index);
+			index++;
+		}
+		return gameMenu;
 	}
 
 	private void gotoGameScreen() {

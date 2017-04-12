@@ -2,6 +2,7 @@ package factories;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 /**
@@ -141,20 +142,18 @@ public abstract class AbstractFactory<A> {
 		A toRet = null;
 		Class<?>[] classes = getClasses(args);
 		try {
-			System.out.println("Classes");
-			for(Class c: classes){
-				System.out.println(c.getSimpleName());
+
+			Constructor<?> ctor;
+			if(args.length!=0){
+				ctor= clazz.getDeclaredConstructor(classes);
+			}else{
+				ctor= clazz.getDeclaredConstructor();
 			}
-			System.out.println("Objects");
-			for(Object o: args){
-				System.out.println(o.getClass().getSimpleName());
-			}
-			System.out.println("\n");
-			Constructor<?> ctor = clazz.getDeclaredConstructor(classes);
+
 			toRet = (A) ctor.newInstance(args);
+
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException
 				| IllegalArgumentException | InvocationTargetException e) {
-			System.out.println("HERE");
 			throwError();
 		}
 		return toRet;

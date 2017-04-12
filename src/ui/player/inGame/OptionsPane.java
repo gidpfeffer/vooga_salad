@@ -1,5 +1,6 @@
 package ui.player.inGame;
 
+import ui.general.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import ui.handlers.UIHandler;
  */
 public class OptionsPane{
 
+	private ImageViewPane ivp;
 	private Pane root;
 	private AnchorPane buttonPane;
 	private StackPane holder;
@@ -76,8 +78,8 @@ public class OptionsPane{
 		return holder;
 	}
 	
-	public Map<Integer, List<String>> getMap() {
-		return tempMap;
+	public Map<Integer, ActorData> getMap() {
+		return mapOfOptions;
 	}
 	
 	//temp
@@ -90,7 +92,10 @@ public class OptionsPane{
 	}
 	
 	//uncomment for real side panel
-	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map) {
+	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map, String name, 
+			ImageViewPane ivp) {
+		this.ivp = ivp;
+		this.paneName = name;
 		this.root = root;
 		this.holder = new StackPane();
 		this.actorsMap = actorsMap;
@@ -128,7 +133,7 @@ public class OptionsPane{
 		VBox buttonBox = new VBox(50);
 		//uncomment section to use actor data
 		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
-			paneName = entry.getValue().getActor().toString();
+			//paneName = entry.getValue().getActor().toString();
 			System.out.println(paneName);
 			createImageButtonAndAddToList(entry.getKey(), entry.getValue().getName(), entry.getValue().getImagePath(), pressed);
 		}
@@ -155,7 +160,7 @@ public class OptionsPane{
 	}
 	
 	private void addBackButton(EventHandler<MouseEvent> clicked) {
-		Button back = createImageButtonAndAddToList(0, "back", "back_icon_flipped.png", clicked);
+		Button back = createImageButtonAndAddToList(0, "", "back_icon_flipped.png", clicked);
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
@@ -174,9 +179,11 @@ public class OptionsPane{
 	        	//correct -->
 	        	String image = mapOfOptions.get(id).getImagePath();
 	        	System.out.println(id +" " + name + " " + image);
-	        	Actor actor = new Actor(root, uihandler, id, name, image);
+	        	Actor actor = new Actor(ivp, uihandler, actorsMap, id, name, image);
 	            actorsMap.put(id, actor);
 	        	root.getChildren().add(actor.getActor());
+	        	actor.getActor().setLayoutX(-((Button) obj).getLayoutX());
+	        	actor.getActor().setLayoutY(((Button) obj).getLayoutY());
 	        }
 	    }
 	};

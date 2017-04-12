@@ -3,18 +3,14 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import ui.Preferences;
-import ui.general.CustomColors;
 import ui.general.UIHelper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -22,14 +18,10 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class GameSelector {
 
-	private AnchorPane root;
 	private Scene myScene;
 	private BorderPane myBorderPane = new BorderPane();
 	private double height = Preferences.SCREEN_HEIGHT;
@@ -40,35 +32,21 @@ public class GameSelector {
 		return myScene;
 	}
 	
-	public GameSelector(){
-		
-	}
-	
-	public GameSelector(String lang, String css){
-		root = new AnchorPane();
+	public GameSelector(String lang, String css, GridPane games){
 		myBorderPane.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE
 				, CornerRadii.EMPTY, Insets.EMPTY)));
 		myScene = new Scene(myBorderPane, width, height);
 		myScene.getStylesheets().add(css);
 		resource = ResourceBundle.getBundle(lang);
-		setup();
+		setup(games);
 	}
 	
-	private void setup() {
+	private void setup(GridPane games) {
 		//setupBorderPane();
 		setupTitle();
-		setupScrollPane();
+		setupScrollPane(games);
 		setupPreview();
 		setupBottom();
-	}
-	
-	private void setupBorderPane() {
-		AnchorPane.setBottomAnchor(myBorderPane, 0.0);
-		AnchorPane.setTopAnchor(myBorderPane, 0.0);
-		AnchorPane.setLeftAnchor(myBorderPane, 0.0);
-		AnchorPane.setRightAnchor(myBorderPane, 0.0);
-		root.getChildren().add(myBorderPane);
-		
 	}
 
 	private void setupTitle() {
@@ -79,8 +57,8 @@ public class GameSelector {
 		myBorderPane.setTop(title);
 	}
 
-	private void setupScrollPane(){
-		ScrollPane gameMenu = new ScrollPane(new Button("Game"));
+	private void setupScrollPane(GridPane games){
+		ScrollPane gameMenu = new ScrollPane(games);
 		gameMenu.setPadding(new Insets(15, 12, 15, 12));
 		myBorderPane.setLeft(gameMenu);
 	}

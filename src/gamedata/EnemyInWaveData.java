@@ -38,5 +38,7 @@ public class EnemyInWaveData {
 	public void setMyPaths(List<Integer> myPaths) {
 		this.myPaths = myPaths;
 	}
-
+public String toString(){
+	return  "ActorData:" +myData.toString()+" Number: "+myNumber+"  Paths:  "+myPaths.toString();
+}
 }

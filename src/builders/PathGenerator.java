@@ -1,8 +1,7 @@
-package factories;
+package builders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import gamedata.GameData;
 import gamedata.PathData;
@@ -22,17 +21,7 @@ public class PathGenerator {
 		return new ArrayList<Integer>(data.getMyPaths().getMyPaths().keySet());
 	}
 	
-	/**
-	 * Get all of the current paths available in the game data,
-	 * matched between integers (indices) and the list of points
-	 * representing the path.
-	 * 
-	 * @param data The current GameData
-	 * @return a Map of Integers representing possible paths to Paths
-	 */
-	public static Map<Integer,List<Grid2D>> getCurrentPathDetails(PathData data){
-		return data.getMyPaths();
-	}
+
 	
 	/**
 	 * Add a path to the list of available paths in your GameData
