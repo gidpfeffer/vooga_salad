@@ -5,7 +5,7 @@ import types.BasicActorType;
 
 public class ShootTargetNearData extends ShootData{
 	
-	public ShootTargetNearData(Double myRange, Integer fireRate, BasicActorType type, Integer projectile){
-		super(myRange, fireRate, type, projectile);
+	public ShootTargetNearData(Double myRange, Integer fireRate, BasicActorType type, Integer projectile, Double speed){
+		super(myRange, fireRate, type, projectile, speed);
 	}
 }

@@ -138,23 +138,19 @@ public abstract class AbstractFactory<A> {
 	 */
 	@SuppressWarnings("unchecked")
 	private A tryToBuild(Class<?> clazz, Object... args) {
+		System.out.println("New " + clazz.getSimpleName());
 		A toRet = null;
 		Class<?>[] classes = getClasses(args);
 		try {
-			System.out.println("Classes");
-			for(Class c: classes){
-				System.out.println(c.getSimpleName());
+			Constructor<?> ctor;
+			if(args.length!=0){
+				ctor= clazz.getDeclaredConstructor(classes);
+			}else{
+				ctor= clazz.getDeclaredConstructor();
 			}
-			System.out.println("Objects");
-			for(Object o: args){
-				System.out.println(o.getClass().getSimpleName());
-			}
-			System.out.println("\n");
-			Constructor<?> ctor = clazz.getDeclaredConstructor(classes);
 			toRet = (A) ctor.newInstance(args);
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException
 				| IllegalArgumentException | InvocationTargetException e) {
-			System.out.println("HERE");
 			throwError();
 		}
 		return toRet;

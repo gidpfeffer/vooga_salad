@@ -52,7 +52,9 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 		}
 	}
 
-
+	/* (non-Javadoc)
+	 * @see gameengine.actors.properties.IActProperty#isOn()
+	 */
 	@Override
 	public boolean isOn() {
 		// TODO Auto-generated method stub
