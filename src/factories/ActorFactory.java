@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import gameengine.actors.MainActor;
 import gameengine.actors.management.Actor;
+import gameengine.actors.propertygen.IActProperty;
+import gameengine.actors.propertygen.Property;
 import util.VoogaException;
 
 /**
@@ -56,17 +58,9 @@ public class ActorFactory extends AbstractFactory<MainActor>{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		Class<?> [] remaining =  new Class[args.length-4];
-		try {
-			Arrays.fill(remaining, Class.forName("gameengine.actors.propertygen.Property"));
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(args.length-4>0){
+			classes.add(IActProperty[].class); //add array of class
 		}
-		
-		classes.addAll(Arrays.asList(remaining));
-		
 		Class<?> [] toRet = new Class[args.length];
 		classes.toArray(toRet);
 		return toRet;

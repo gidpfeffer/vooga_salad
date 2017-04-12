@@ -5,8 +5,8 @@ import types.BasicActorType;
 
 public class ShootTargetWithMouseData extends ShootData{
 
-	public ShootTargetWithMouseData(Double range, Integer rate, BasicActorType type, Integer projectile) {
-		super(range, rate, type, projectile);
+	public ShootTargetWithMouseData(Double range, Integer rate, BasicActorType type, Integer projectile, Double speed) {
+		super(range, rate, type, projectile, speed);
 	}
 	
 }
