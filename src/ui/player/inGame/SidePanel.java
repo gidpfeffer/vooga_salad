@@ -48,6 +48,9 @@ public class SidePanel {
 	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> towersMap, 
 			 Map<Integer, ActorData> shotsMap,  Map<Integer, ActorData> enemiesMap,
 			 Map<Integer, ActorData> basesMap) {
+		if (shotsMap.keySet().size() == 0) {
+			System.out.println("empty");
+		}
 		this.uihandler = uihandler;
 		this.root = root;
 		this.actorsMap = actorsMap;

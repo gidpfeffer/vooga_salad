@@ -2,7 +2,7 @@ package gameengine.controllers;
 
 import java.util.Map;
 
-import factories.ActorGenerator;
+import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LevelData;
