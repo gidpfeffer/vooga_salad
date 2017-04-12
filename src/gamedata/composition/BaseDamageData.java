@@ -30,5 +30,4 @@ public class BaseDamageData implements Data {
 	}
 	
 	
-	
 }
