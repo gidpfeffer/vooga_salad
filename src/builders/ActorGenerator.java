@@ -43,17 +43,18 @@ public class ActorGenerator{
 		toBuild.add(option);
 		int index = IDGenerator.getNewID();
 		toBuild.add(index); //add ID
-		IActProperty[] extras = new IActProperty[];
+		IActProperty[] extras = new IActProperty[data.getMyData().size()];
 
 		List<Data> properties = data.getMyData();
 		PropertyFactory propFactory = new PropertyFactory();
-		for(Data d: properties){
-			String dataName = d.getClass().getSimpleName();
+		for(int i=0; i<properties.size(); i++){
+			String dataName = properties.get(i).getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
-			Property property = propFactory.make(propertyName, d);
-			toBuild.add(property);
+			Property property = propFactory.make(propertyName, properties.get(i));
+			//TODO: FIX THIS UNCHECKED CAST
+			extras[i]=(IActProperty)property;
 		}
-		
+		toBuild.add(extras);
 		MainActor toRet = actorFactory.make(toBuild.toArray());
 		return toRet;
 	}
