@@ -38,15 +38,18 @@ public class ActorGenerator{
 	public static MainActor makeActor(Integer option, ActorData data){
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
+		List<Data> properties = data.getMyData();
+		PropertyFactory propFactory = new PropertyFactory();
 		
 		toBuild.add(data.getActor()); //add type
 		toBuild.add(option);
 		int index = IDGenerator.getNewID();
 		toBuild.add(index); //add ID
+		Property health = propFactory.make(data.getHealth().
+				getClass().getSimpleName().replace("Data", "Property"), data.getHealth());
+		toBuild.add(health);
 		IActProperty[] extras = new IActProperty[data.getMyData().size()];
 
-		List<Data> properties = data.getMyData();
-		PropertyFactory propFactory = new PropertyFactory();
 		for(int i=0; i<properties.size(); i++){
 			String dataName = properties.get(i).getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
