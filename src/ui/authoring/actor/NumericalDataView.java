@@ -1,10 +1,12 @@
 package ui.authoring.actor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeMap;
 
 import factories.DataGenerator;
 import gamedata.FieldData;
+import gamedata.StringToFieldFactory;
 import gamedata.compositiongen.Data;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -17,6 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import ui.Preferences;
 import ui.authoring.AuthoringView;
+import ui.general.CustomColors;
+import ui.general.UIHelper;
 
 /**
  * This dataView allows the user to input the numerical values of specific properties
@@ -24,34 +28,39 @@ import ui.authoring.AuthoringView;
  *
  */
 public class NumericalDataView extends DataView{
-	private HashMap<FieldData, Number> fieldToValue;
 	
+	private HashMap<FieldData, Number> fieldToValue;	
 	private VBox vbox;
 	
-	public NumericalDataView(String dataClassName, FieldData[] fields) throws Exception{
+	public NumericalDataView(String dataClassName, List<FieldData> fields) throws Exception{
 		super();
-		checkFieldValidity(fields);
+		UIHelper.setBackgroundColor(this, CustomColors.AMBER_200);
+		
 		myDataClassName = dataClassName;
 		myFields = fields;
-		if(fields.length == 0)
+		if(fields.size() == 0)
 			myData = DataGenerator.makeData(dataClassName, new Object[] {});
+		else
+			checkFieldValidity(fields);
+
 
 		setupViews();
 	}
 	
-	private void checkFieldValidity(FieldData[] fields) throws Exception {
+	private void checkFieldValidity(List<FieldData> fields) throws Exception {
 		for(FieldData d : fields){
 			Class<?> inputType = d.getMyType();
 			if(!(
-					inputType.isInstance(double.class) ||
-					inputType.isInstance(int.class)||
-					inputType.isInstance(Integer.class)||
-					inputType.isInstance(Double.class)
+					inputType == double.class ||
+					inputType == int.class ||
+					inputType == Integer.class ||
+					inputType == Double.class
 					))
 			{
-				throw new Exception("Cannot Instantiate NumericalDataView "
-						+ "with FieldData[] that contains an element whos"
-						+ "getMyType method returns a non-numerical class.");
+				throw new Exception("Type="+inputType.getName()
+						+ "\nCannot Instantiate NumericalDataView "
+						+ "for "+ myDataClassName +". FieldData[] contains an element whos"
+						+ " getMyType method returns a non-numerical class.");
 			}
 		}
 		
@@ -101,6 +110,7 @@ public class NumericalDataView extends DataView{
 		AnchorPane.setBottomAnchor(input, 4.0);
 		content.getChildren().add(input);
 		vbox.getChildren().add(content);
+		System.out.println("DataView is set up");
 	}
 	
 	private void setupFieldValueMap(){
@@ -115,7 +125,7 @@ public class NumericalDataView extends DataView{
 		if (!newValue.matches("\\d*")) {
 			field.setText(newValue.replaceAll("[^\\d]", ""));
         }
-		//fieldToValue.put(fieldData, fieldData.getMyType().ins);
+		fieldToValue.put(fieldData, (Number) StringToFieldFactory.getObject(newValue, fieldData.getMyType()));
 	}
 
 }

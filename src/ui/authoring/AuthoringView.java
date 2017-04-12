@@ -49,10 +49,8 @@ public class AuthoringView extends AnchorPane {
 
 
 	public AuthoringView() {
-		UIHelper.setBackgroundColor(this, Color.WHITE);
-	
+		UIHelper.setBackgroundColor(this, Color.WHITE);	
 		setupViews();
-		System.out.println(OptionGenerator.getPropertyTypesWithArgs());
 	}
 
 	private void setupViews() {

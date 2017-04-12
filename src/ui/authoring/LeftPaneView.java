@@ -71,19 +71,17 @@ public class LeftPaneView extends StackPane{
 		myLeftPaneFront.setAlignment(Pos.CENTER);
 		StackPane.setMargin(myLeftPaneFront, new Insets(10));
 		setupLeftPaneButtons();
-		setupTowerView();
-		setupEnemyView();
 		myLeftPaneBack.setScaleX(0);
 		this.getChildren().add(myLeftPaneBack);
 		this.getChildren().add(myLeftPaneFront);
 	}
 	
 	private void setupLeftPaneButtons() {
-		StackPane enemy = UIHelper.buttonStack(e -> myDelegate.openView(myEnemyView), 
+		StackPane enemy = UIHelper.buttonStack(e -> launchEnemyView(), 
 				Optional.of(labelForStackButton("Enemy Editor")), 
 				Optional.of(imageForStackButton("enemy_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane tower = UIHelper.buttonStack(e -> myDelegate.openView(myTowerView), 
+		StackPane tower = UIHelper.buttonStack(e -> launchTowerView(), 
 				Optional.of(labelForStackButton("Tower Editor")), 
 				Optional.of(imageForStackButton("tower_icon.png")), 
 				Pos.CENTER_RIGHT, true);
@@ -121,17 +119,20 @@ public class LeftPaneView extends StackPane{
 		return iv;
 	}
 
-	private void setupTowerView() {
+	private void launchTowerView() {
 		myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
 		myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
-		UIHelper.setBackgroundColor(myTowerView, CustomColors.GREEN_100);
+		UIHelper.setBackgroundColor(myTowerView, CustomColors.ORANGE_700);
+		myDelegate.openView(myTowerView);
 	}
 
 	
-	private void setupEnemyView() {
+	private void launchEnemyView() {
 		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-		UIHelper.setBackgroundColor(myEnemyView, CustomColors.GREEN_100);
+		UIHelper.setBackgroundColor(myEnemyView, CustomColors.ORANGE_700);
+		myDelegate.openView(myEnemyView);
+
 	}
 	
 	

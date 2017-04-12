@@ -16,30 +16,24 @@ import javafx.scene.layout.VBox;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
+/**
+ * 
+ * @author TNK
+ *
+ */
 public class ActorInfoView extends AnchorPane{
 	
-	/*
-	 * Objects for user to input
-	 * PathData
-	 * BasicActorType
-	 * 
-	 */
-	
-	private GridPane myFieldsView;
+	private GridPane myGridPane;
+	private static final int GRID_X_DIM = 3;
 	private HBox myUpgradePickerView;
-	private ActorData myData;
+	private ActorData myActorData;
+	private List<DataView> myDataViews = new ArrayList<DataView>();
 	private static Map<String, List<FieldData>> OPTIONS = OptionGenerator.getPropertyTypesWithArgs();
 
 	public ActorInfoView(ActorData data){
 		super();
-		myData = data;
+		myActorData = data;
 		setupViews();
-		for(Entry<String, List<FieldData>> e: OPTIONS.entrySet()){
-			System.out.println(e.getKey() + ": ");
-			for(FieldData d: e.getValue()){
-				System.out.println("\t-"+d);
-			}
-		}
 	}
 	
 	public ActorInfoView(){
@@ -49,6 +43,23 @@ public class ActorInfoView extends AnchorPane{
 	
 	private void setupViews(){
 		setupLayout();
+		setupGridPane();
+	}
+
+	private void setupGridPane() {
+		int count = 0;
+		for(Entry<String, List<FieldData>> e: OPTIONS.entrySet()){
+			try {
+				NumericalDataView view = new NumericalDataView(e.getKey(), e.getValue());
+				myDataViews.add(view);
+				int columnIndex = count%GRID_X_DIM;
+				int rowIndex = count - columnIndex;
+				myGridPane.add(view, columnIndex, rowIndex);
+
+			} catch (Exception error) {
+			}
+		}
+		
 	}
 
 	private void setupOptions() {
@@ -56,35 +67,37 @@ public class ActorInfoView extends AnchorPane{
 		
 	}
 	private void setupLayout() {
-		myFieldsView = new GridPane();
+		myGridPane = new GridPane();
+		myGridPane.setVgap(12.0);
+		myGridPane.setHgap(12.0);
 		myUpgradePickerView = new HBox(8.0);
 		double inset = 10.0;
 		AnchorPane.setLeftAnchor(myUpgradePickerView, inset);
-		AnchorPane.setRightAnchor(myUpgradePickerView, inset);
+		AnchorPane.setRightAnchor(myUpgradePickerView, inset + 2);
 		AnchorPane.setTopAnchor(myUpgradePickerView, inset);
 		myUpgradePickerView.setPrefHeight(80);
-		AnchorPane.setLeftAnchor(myFieldsView, inset);
-		AnchorPane.setRightAnchor(myFieldsView, inset);
-		AnchorPane.setBottomAnchor(myFieldsView, inset);
-		AnchorPane.setTopAnchor(myFieldsView, myUpgradePickerView.getPrefHeight() + inset);
+		AnchorPane.setLeftAnchor(myGridPane, inset);
+		AnchorPane.setRightAnchor(myGridPane, inset + 2);
+		AnchorPane.setBottomAnchor(myGridPane, inset);
+		myGridPane.prefHeightProperty().bind(this.heightProperty().add(-1*(myUpgradePickerView.getPrefHeight() + 3*inset)));
 		
-		UIHelper.setBackgroundColor(myFieldsView, CustomColors.RED);
-		UIHelper.setBackgroundColor(myUpgradePickerView, CustomColors.RED);
-		UIHelper.setDropShadow(myFieldsView);
+		UIHelper.setBackgroundColor(myGridPane, CustomColors.AMBER);
+		UIHelper.setBackgroundColor(myUpgradePickerView, CustomColors.AMBER);
+		UIHelper.setDropShadow(myGridPane);
 		UIHelper.setDropShadow(myUpgradePickerView);
-		this.getChildren().addAll(myFieldsView, myUpgradePickerView);
+		this.getChildren().addAll(myGridPane, myUpgradePickerView);
 	} 
 	public void setActorData(ActorData actorData){
-		if(myData == null){
+		if(myActorData == null){
 			setupOptions();
 		}
 		else{
 			//update 
 		}
-		myData = actorData;
+		myActorData = actorData;
 		System.out.println("Selecting tower named: " + actorData.getName());
 		for(Data d: actorData.getMyData()){
-			System.out.println("\t-"+d.getClass().getName());
+			
 		}
 	}
 	
