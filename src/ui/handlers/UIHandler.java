@@ -6,6 +6,11 @@ import gamedata.ActorData;
 import gamedata.LevelData;
 import util.VoogaException;
 
+/**
+ * UIHandler that specifies methods front end can call to evoke changes in back end, and get information from back end
+ * @author sarahzhou
+ *
+ */
 public interface UIHandler {
 	void deleteGameObject(int id);
 	void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException;
