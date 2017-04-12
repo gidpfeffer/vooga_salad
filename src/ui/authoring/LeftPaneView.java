@@ -21,8 +21,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import types.ActorType;
+import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
+import ui.authoring.actor.projectile.ProjectileEditorMain;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -56,6 +58,7 @@ public class LeftPaneView extends StackPane{
 	private StackPane myLeftPaneBack; //contains the views for buttons 
 	private ActorEditorView myTowerView;
 	private ActorEditorView myEnemyView;
+	private ProjectileEditorMain myProjectileView;
 	
 	
 	public LeftPaneView(PopViewDelegate delegate){
@@ -70,19 +73,17 @@ public class LeftPaneView extends StackPane{
 		myLeftPaneFront.setAlignment(Pos.CENTER);
 		StackPane.setMargin(myLeftPaneFront, new Insets(10));
 		setupLeftPaneButtons();
-		setupTowerView();
-		setupEnemyView();
 		myLeftPaneBack.setScaleX(0);
 		this.getChildren().add(myLeftPaneBack);
 		this.getChildren().add(myLeftPaneFront);
 	}
 	
 	private void setupLeftPaneButtons() {
-		StackPane enemy = UIHelper.buttonStack(e -> myDelegate.openView(myEnemyView), 
+		StackPane enemy = UIHelper.buttonStack(e -> launchEnemyView(), 
 				Optional.of(labelForStackButton("Enemy Editor")), 
 				Optional.of(imageForStackButton("enemy_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane tower = UIHelper.buttonStack(e -> myDelegate.openView(myTowerView), 
+		StackPane tower = UIHelper.buttonStack(e -> launchTowerView(), 
 				Optional.of(labelForStackButton("Tower Editor")), 
 				Optional.of(imageForStackButton("tower_icon.png")), 
 				Pos.CENTER_RIGHT, true);
@@ -90,17 +91,22 @@ public class LeftPaneView extends StackPane{
 				Optional.of(labelForStackButton("Splash Editor")), 
 				Optional.of(imageForStackButton("splash_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane projectile = UIHelper.buttonStack(e -> System.out.println(e), 
+		StackPane projectile = UIHelper.buttonStack(e -> launchProjectileView(), 
 				Optional.of(labelForStackButton("Projectile Editor")), 
 				Optional.of(imageForStackButton("projectile_icon.png")), 
+				Pos.CENTER_RIGHT, true);
+		StackPane game = UIHelper.buttonStack(e -> System.out.println("game"), 
+				Optional.of(labelForStackButton("Layout Editor")), 
+				Optional.of(imageForStackButton("layout_icon.png")), 
 				Pos.CENTER_RIGHT, true);
 		
 		enemy.setPrefHeight(56);
 		tower.setPrefHeight(56);
 		splash.setPrefHeight(56);
 		projectile.setPrefHeight(56);
+		game.setPrefHeight(56);
 		
-		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile, splash);
+		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile, splash, game);
 	}
 	private Label labelForStackButton(String title){
 		Label lbl = new Label(title);
@@ -115,17 +121,32 @@ public class LeftPaneView extends StackPane{
 		return iv;
 	}
 
-	private void setupTowerView() {
-		myTowerView = new ActorEditorView(myDelegate, ActorType.TOWER);
-		myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
-		UIHelper.setBackgroundColor(myTowerView, CustomColors.GREEN_100);
+	private void launchTowerView() {
+		if(myTowerView == null){
+			myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
+			myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
+			UIHelper.setBackgroundColor(myTowerView, CustomColors.ORANGE_700);
+		}
+		myDelegate.openView(myTowerView);
 	}
 
 	
-	private void setupEnemyView() {
-		myEnemyView = new ActorEditorView(myDelegate, ActorType.ENEMY);
-		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-		UIHelper.setBackgroundColor(myEnemyView, CustomColors.GREEN_100);
+	private void launchEnemyView() {
+		if(myEnemyView == null){
+			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
+			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
+			UIHelper.setBackgroundColor(myEnemyView, CustomColors.ORANGE_700);
+		}
+		myDelegate.openView(myEnemyView);
+
+	}
+	
+	private void launchProjectileView(){
+		if(myProjectileView == null){
+			myProjectileView = new ProjectileEditorMain(myDelegate);
+			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
+		}
+		myDelegate.openView(myProjectileView);
 	}
 	
 	

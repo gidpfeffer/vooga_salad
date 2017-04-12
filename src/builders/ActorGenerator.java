@@ -36,10 +36,6 @@ public class ActorGenerator{
 	 */
 
 	public static MainActor makeActor(Integer option, ActorData data){
-		//Change to property factory
-		
-		//TODO: Add ID Generator
-		
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
 		
@@ -47,8 +43,8 @@ public class ActorGenerator{
 		toBuild.add(option);
 		int index = IDGenerator.getNewID();
 		toBuild.add(index); //add ID
-	
-		
+		IActProperty[] extras = new IActProperty[];
+
 		List<Data> properties = data.getMyData();
 		PropertyFactory propFactory = new PropertyFactory();
 		for(Data d: properties){
