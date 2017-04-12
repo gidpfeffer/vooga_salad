@@ -20,13 +20,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import ui.general.ImageViewPane;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
 import util.VoogaException;
 
 public class Actor {
 
-	Pane root;
+	ImageViewPane root;
 	UIHandler uihandler;
 	String name;
 	Pane actor;
@@ -40,7 +41,7 @@ public class Actor {
 	}
 
 
-	public Actor(Pane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name, String image) {
+	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name, String image) {
 		
 		actor = UIHelper.buttonStack(e->{}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER, true);
 		actor.setBackground(Background.EMPTY);
@@ -79,7 +80,16 @@ public class Actor {
 			}
 			else {
 				//need to know size of screen here
-				uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
+				if(e.getX() < root.getImageInsets().x || 
+						e.getX() > root.getWidth() - root.getImageInsets().x || 
+						e.getY() < root.getImageInsets().y || 
+						e.getY() > root.getHeight() - root.getImageInsets().y) {
+					throw new VoogaException("Invalid location for actor");
+				} 
+				else {
+					uihandler.addGameObject(Integer.parseInt(actor.getId()), 
+							actor.getLayoutX(), actor.getLayoutY());
+				}
 			}
 		} catch (VoogaException e1) {
 			// TODO Auto-generated catch block
