@@ -1,6 +1,7 @@
 package gameengine.controllers;
 
-import java.util.Map;	
+import java.util.Map;
+
 import factories.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
@@ -36,7 +37,7 @@ public class GameController {
 	private GameScreen myGameScreen;
 	
 	private final int MAX_X = 1;
-	private final int MAX_Y =1;
+	private final int MAX_Y = 1;
 	
 	private final double MILLISECOND_DELAY=17;
 

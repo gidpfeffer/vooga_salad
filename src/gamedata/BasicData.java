@@ -12,6 +12,9 @@ import types.ActorType;
  */
 
 public class BasicData implements Data {
+	
+	private static final double HEADING = 0.0;
+	
 	private String name;
 	private boolean isActive;
 	private String imagePath;
@@ -20,7 +23,7 @@ public class BasicData implements Data {
 	public BasicData(String name, String imagePath){
 		this.name=name;
 		this.imagePath = imagePath;
-		heading = 0;
+		heading = HEADING;
 		isActive = true;
 	}
 	

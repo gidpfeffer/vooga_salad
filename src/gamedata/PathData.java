@@ -10,12 +10,9 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  * environment, mapped to integers for use in actor creation.
  * 
  * @author maddiebriere
-<<<<<<< HEAD
  * @author Ahn
  * @author Talha Koc
-=======
  * @author Anh
->>>>>>> 778057175590dcc976298be2742f011504662355
  *
  */
 public class PathData {
