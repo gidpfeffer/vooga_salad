@@ -65,6 +65,7 @@ public class GameData {
 	public GameData(){
 		pieces = new HashMap<Integer, ActorData>();
 		numOptions = 0;
+		levels=new HashMap<Integer,LevelData>();
 	}
 	
 	/**

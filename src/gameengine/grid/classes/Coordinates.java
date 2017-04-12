@@ -35,5 +35,8 @@ public class Coordinates implements Grid2D{
 	public double getY() {
 		return y;
 	}
-
+	@Override
+	public String toString(){
+		return(String.format("(%f,%f)", x,y));
+	}
 }
