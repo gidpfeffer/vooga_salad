@@ -5,38 +5,24 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-
-import javax.xml.transform.Transformer;
 
 import gamedata.ActorData;
-import gamedata.GameData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
 import util.observerobservable.VoogaObserver;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.binding.Bindings;
 
 public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation>>{
 
 	private AnchorPane anchorPaneRoot;
+	private ImageViewPane ivp;
 	private Stage myStage;
 	private Scene myScene;
 	private UIHandler uihandler;
@@ -98,7 +84,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	
 	private void setupBackground() {
 		anchorPaneRoot.setStyle("-fx-background-color: mediumseagreen");
-		ImageViewPane ivp = new ImageViewPane(new ImageView(new Image(backgroundImagePath)));
+		ivp = new ImageViewPane(new ImageView(new Image(backgroundImagePath)));
 		
 		//then you set to your node
 		anchorPaneRoot.getChildren().add(ivp);
@@ -148,7 +134,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 			if (actorsMap.containsKey(i.toString())) {
 				actor = actorsMap.get(i.toString());
 			} else {
-				actor = new Actor(anchorPaneRoot, uihandler, actorsMap, i, 
+				actor = new Actor(ivp, uihandler, actorsMap, i, 
 						uihandler.getOptions().get(i.toString()).getName(), 
 						uihandler.getOptions().get(i.toString()).getImagePath());
 				actorsMap.put(i, actor);
