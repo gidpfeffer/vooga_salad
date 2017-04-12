@@ -63,7 +63,7 @@ public class Actor {
 			actor.setLayoutY(e.getSceneY());
 		});
 
-		actor.setOnMouseDragReleased(e -> released(e));
+		actor.setOnMouseClicked(e -> released(e));
 	}
 
 	public void released(MouseEvent e) {
@@ -80,16 +80,16 @@ public class Actor {
 			}
 			else {
 				//need to know size of screen here
-				if(e.getX() < root.getImageInsets().x || 
+/*				if(e.getX() < root.getImageInsets().x || 
 						e.getX() > root.getWidth() - root.getImageInsets().x || 
 						e.getY() < root.getImageInsets().y || 
 						e.getY() > root.getHeight() - root.getImageInsets().y) {
 					throw new VoogaException("Invalid location for actor");
 				} 
-				else {
+				else {*/
 					uihandler.addGameObject(Integer.parseInt(actor.getId()), 
 							actor.getLayoutX(), actor.getLayoutY());
-				}
+				//}
 			}
 		} catch (VoogaException e1) {
 			// TODO Auto-generated catch block

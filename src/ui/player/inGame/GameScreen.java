@@ -129,6 +129,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
+		System.out.println("asdhkjf: "+ actorsMap.size());
 		for (Integer i : arg.keySet()) {
 			Actor actor;
 			if (actorsMap.containsKey(i.toString())) {
