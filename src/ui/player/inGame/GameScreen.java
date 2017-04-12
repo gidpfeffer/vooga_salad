@@ -35,9 +35,9 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		return myScene;
 	}
 	
-	public List<Double> getWindow() {
-		List<Double> screenSize = new ArrayList<>(Arrays.asList(myStage.getWidth(), myStage.getHeight()));
-		return screenSize;
+	public ScreenSize getWindow() {
+		return new ScreenSize(ivp.getImageInsets().y, ivp.getHeight() - ivp.getImageInsets().y,
+				ivp.getImageInsets().x, ivp.getWidth() - ivp.getImageInsets().x);
 	}
 	
 /*	//temporary data
@@ -105,7 +105,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	
 	private void setupRight(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
-		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, anchorPaneRoot, towers, shots, troops, bases);
+		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, anchorPaneRoot, towers, shots, troops, bases, ivp);
 		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 10.0);
 		anchorPaneRoot.getChildren().add(sidePanel.getSidePane());
 		sidePanel.addInternalPanesToRoot();

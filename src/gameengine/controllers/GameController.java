@@ -3,6 +3,7 @@ package gameengine.controllers;
 import java.util.Map;
 
 import builders.ActorGenerator;
+import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LevelData;
@@ -43,7 +44,7 @@ public class GameController {
 	private final double MILLISECOND_DELAY=17;
 
 	public GameController() {
-		myGameData = new GameData();
+		myGameData = GameDataGenerator.getSampleGame();//new GameData();
 		initializeUIHandler();
 	}
 
