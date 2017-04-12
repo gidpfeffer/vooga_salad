@@ -70,9 +70,17 @@ public class Actor {
 		try {
 			System.out.println("releasing");
 			//need to have list here
+			double width = root.getWidth() - 2*root.getImageInsets().x;
+			double height = root.getHeight() - 2*root.getImageInsets().y;
+			
 			if (mapOfActors.get(actor) != null) {
 				// and if the area is okay to put the stackpane down
-				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX(), actor.getLayoutY());
+				
+				System.out.println("Scaled coordinates to " + actor.getLayoutX()/width + ", " 
+						+ actor.getLayoutY()/height);
+				
+				uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), 
+						actor.getLayoutX()/width, actor.getLayoutY()/height);
 				//remove from root if can't place;
 				
 				//idea -- remove event handler here so can't re-drag object?
@@ -80,16 +88,19 @@ public class Actor {
 			}
 			else {
 				//need to know size of screen here
-/*				if(e.getX() < root.getImageInsets().x || 
+				if(e.getX() < root.getImageInsets().x || 
 						e.getX() > root.getWidth() - root.getImageInsets().x || 
 						e.getY() < root.getImageInsets().y || 
 						e.getY() > root.getHeight() - root.getImageInsets().y) {
 					throw new VoogaException("Invalid location for actor");
 				} 
-				else {*/
+				else {
+					System.out.println("Scaled coordinates to " + actor.getLayoutX()/width + ", " 
+							+ actor.getLayoutY()/height);
+					
 					uihandler.addGameObject(Integer.parseInt(actor.getId()), 
 							actor.getLayoutX(), actor.getLayoutY());
-				//}
+				}
 			}
 		} catch (VoogaException e1) {
 			// TODO Auto-generated catch block
