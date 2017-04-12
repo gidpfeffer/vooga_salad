@@ -5,6 +5,12 @@ import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import types.BasicActorType;
 
+/**
+ * 
+ * @author Moses Wayne
+ *
+ * @param <G> grid implementation that extends the ReadAndDamageGrid
+ */
 public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProperty<G> {
 
 	private double myRadius;
