@@ -11,7 +11,6 @@ public class ProjectileEditorMain extends AnchorPane{
 	
 	public ProjectileEditorMain(PopViewDelegate delegate){
 		super();
-		
 		this.delegate = delegate;
 		this.widthProperty().divide(5);
 		setupBackButton();
