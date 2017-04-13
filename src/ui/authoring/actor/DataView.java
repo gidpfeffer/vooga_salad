@@ -64,7 +64,7 @@ public class DataView extends AnchorPane {
 		AnchorPane.setLeftAnchor(name, 4.0);
 		AnchorPane.setRightAnchor(name, 4.0);
 		
-		vbox = new VBox(4.0);
+		vbox = new VBox();
 		AnchorPane.setTopAnchor(vbox, 8.0 + name.getPrefHeight());
 		AnchorPane.setLeftAnchor(vbox, 4.0);
 		AnchorPane.setRightAnchor(vbox, 4.0);
@@ -78,7 +78,6 @@ public class DataView extends AnchorPane {
 				Optional.of(img), Pos.CENTER, true);
 		UIHelper.setBackgroundColor(remove, Color.TRANSPARENT);
 		AnchorPane.setTopAnchor(remove, -12.0);
-		//AnchorPane.setLeftAnchor(remove, -4.0);		
 		AnchorPane.setRightAnchor(remove, -12.0);
 		
 		this.getChildren().addAll(name,vbox,remove);		

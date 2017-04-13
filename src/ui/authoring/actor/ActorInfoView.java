@@ -38,7 +38,6 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private HBox myUpgradePickerView;
 	private ActorData myActorData;
 	private List<DataView> myDataViews = new ArrayList<DataView>();
-	private static Map<String, List<FieldData>> OPTIONS = OptionGenerator.getPropertyTypesWithArgs();
 	private ImageView myActorImageView;
 	private ActorOptionPicker myOptionPickerView;
 
@@ -99,6 +98,7 @@ private void setupImageView(Image img) {
 		this.getChildren().addAll(myGridPane, myUpgradePickerView);
 	} 
 	public void setActorData(ActorData actorData){
+		System.out.println(actorData.getName() + " : size=" + actorData.getMyData().size());
 		myActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
@@ -160,19 +160,24 @@ private void setupImageView(Image img) {
 	
 	@Override
 	public void setData(Data oldData, Data newData) {
+		System.out.println("setData called from DataView");
 		myActorData.getMyData().remove(oldData);
 		myActorData.getMyData().add(newData);
 	}
 
 	@Override
 	public void didClickDelete(DataView dataView) {
-		this.myActorData.getMyData().remove(dataView.getData());
+
 		ScaleTransition sc = new ScaleTransition(Duration.seconds(0.3));
 		sc.setNode(dataView);
 		sc.setToX(0);
 		sc.setToY(0);
 		sc.play();
-		sc.setOnFinished(e -> this.myGridPane.getChildren().remove(dataView));
+		sc.setOnFinished(e -> {
+			this.myGridPane.getChildren().remove(dataView);
+			this.myActorData.getMyData().remove(dataView.getData());
+			this.myDataViews.remove(dataView);
+			});
 	}
 
 	/**
@@ -181,8 +186,8 @@ private void setupImageView(Image img) {
 	
 	@Override
 	public void didPickOptionWithData(String dataName) {
-		Data d = DataGenerator.makeData(dataName);
-		System.out.println(dataName);
+		Data d = DataGenerator.makeData(dataName+"Data");
+		this.myActorData.getMyData().add(d);
 		addDataView(d);
 	}
 
