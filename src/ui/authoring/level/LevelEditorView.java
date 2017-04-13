@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ui.Preferences;
+import ui.authoring.actor.ActorEditorView;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -24,8 +25,10 @@ public class LevelEditorView extends VBox{
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
 	private PopViewDelegate myDelegate;
-	public LevelEditorView(PopViewDelegate d){
+	private ActorEditorView enemies;
+	public LevelEditorView(PopViewDelegate d,ActorEditorView enemies){
 		super();
+		this.enemies=enemies;
 		myDelegate=d;
 		this.setSpacing(10);
 		level=1;
@@ -48,7 +51,7 @@ public class LevelEditorView extends VBox{
 		return nextLevel;
 	}
 	private void launchWaveEditor(){
-		LevelEditorMenu lem=new LevelEditorMenu(myDelegate);
+		LevelEditorMenu lem=new LevelEditorMenu(myDelegate,enemies);
 		myDelegate.openView(lem);
 	}
 	private void editWaveData(){

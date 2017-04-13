@@ -1,6 +1,7 @@
 package ui.authoring.level;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Pair;
 import types.BasicActorType;
 import ui.Preferences;
+import ui.authoring.actor.ActorEditorView;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
@@ -44,7 +46,10 @@ import util.Location;
 
 public class LevelEditorMenu extends AnchorPane{
 	PopViewDelegate myDelegate;
-	public LevelEditorMenu(PopViewDelegate d){
+	private List<Integer>activeEnemies=new ArrayList<Integer>();
+	private List<Integer>activePaths=new ArrayList<Integer>();
+	private ActorEditorView enemies;
+	public LevelEditorMenu(PopViewDelegate d,ActorEditorView enemies){
 super();
 myDelegate=d;
 setupViews();;
@@ -56,10 +61,12 @@ setupViews();;
 		
 		setupBackButton();
 		Map<String,List<FieldData>> map=OptionGenerator.getPropertyTypesWithArgs();
-		System.out.println(map);
+	populateEnemies();
 	}
 	
-	
+	private  void populateEnemies(){
+		List<ActorData> enemyList=enemies.getTowerData();
+	}
 	private void setupBackButton() {
 		ImageButton b = new ImageButton("back_icon.png", new Location(30., 30.));
 		AnchorPane.setTopAnchor(b, 4.0);

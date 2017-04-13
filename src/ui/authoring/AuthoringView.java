@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import ui.Preferences;
+import ui.authoring.actor.ActorEditorView;
 import ui.authoring.delegates.*;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
@@ -158,8 +159,8 @@ public class AuthoringView extends AnchorPane {
 	}
 
 	private void setupLevelView() {
-		myLevelView = new LevelEditorView(new PopDelegate());
-		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
+		myLevelView = new LevelEditorView(new PopDelegate(),leftPaneView.getEnemyView());
+				UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLevelView.setPrefWidth(SIDE_PANE_WIDTH);
