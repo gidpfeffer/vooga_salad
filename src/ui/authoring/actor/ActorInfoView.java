@@ -182,7 +182,7 @@ private void setupImageView(Image img) {
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName);
-		System.out.println(dataName+d);
+		System.out.println(dataName);
 		addDataView(d);
 	}
 
