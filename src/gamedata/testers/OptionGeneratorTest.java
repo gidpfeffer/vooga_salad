@@ -86,7 +86,7 @@ public class OptionGeneratorTest {
 	
 	@Test
 	public void testPropertyDescriptions(){
-		System.out.println(OptionGenerator.getDescription("LimitedHealth"));
+		System.out.println(OptionGenerator.getDescription("BaseDamage"));
 	}
 
 }
