@@ -270,15 +270,15 @@ public class Login{
 
 	private void gotoGameSelector() {
 		//TODO: Replace with actual games list
-/*		ArrayList<Button> gamesList = new ArrayList<Button>();
+		ArrayList<Button> gamesList = new ArrayList<Button>();
 		gamesList.add(new Button("Sample Game"));
 		gamesList.add(new Button("Also Sample Game"));
 		
 		GameSelector select = new GameSelector("English", "mainScreen.css", setUpGames(gamesList));
 		stage.setScene(select.getScene());
 		stage.setTitle("GameSelector");
-		stage.show();*/
-		gotoGameScreen();
+		stage.show();
+		//gotoGameScreen();
 	}
 	
 	private GridPane setUpGames(List<Button> games) {
