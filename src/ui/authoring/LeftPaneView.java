@@ -131,8 +131,7 @@ public class LeftPaneView extends StackPane{
 	
 	private void launchProjectileView(){
 		if(myProjectileView == null){
-			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Troop);
-			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
+			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Shot);
 		}
 		myDelegate.openView(myProjectileView);
 	}
