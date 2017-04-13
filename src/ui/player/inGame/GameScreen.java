@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ui.Preferences;
 import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
 import util.observerobservable.VoogaObserver;
@@ -20,6 +21,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	private AnchorPane anchorPaneRoot;
 	private ImageViewPane ivp;
+	
 	@SuppressWarnings("unused")
 	private Stage myStage;
 	private Scene myScene;
@@ -39,6 +41,8 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	}
 	
 	public GameScreen(Stage stage, UIHandler uihandler){
+		stage.setHeight(Preferences.SCREEN_HEIGHT);
+		stage.setWidth(Preferences.SCREEN_WIDTH);
 		this.anchorPaneRoot = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
 		this.actorsMap = new HashMap<Integer, Actor>();
@@ -100,8 +104,10 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		for (Integer i : arg.keySet()) {
 			Actor actor;
 			if (actorsMap.containsKey(i)) {
+				System.out.println("actor already in map ~ GAMESCREEN 106");
 				actor = actorsMap.get(i);
 			} else {
+				System.out.println("actor added to map ~ GAMESCREEN 109");
 				actor = new Actor(ivp, uihandler, actorsMap, i, uihandler.getOptions().get(i).getName(),
 						uihandler.getOptions().get(i).getImagePath());
 				actorsMap.put(i, actor);
@@ -109,10 +115,9 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 			Pane paneActor = actor.getActor();
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getX(),myScene.getWidth());
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getY(), myScene.getHeight());
-			//actor.setX(xCoor);
-			//actor.setY(yCoor);
-			//paneActor.relocate(xCoor, yCoor);
-			System.out.println("Layout: " + paneActor.getLayoutX() + " " + xCoor);
+			paneActor.setLayoutX(xCoor);
+			paneActor.setLayoutY(yCoor);
+			System.out.println("Layout: " + paneActor.getLayoutX() + " " + xCoor + " " + paneActor.getLayoutY() + " " + yCoor);
 		}
 		
 	}
