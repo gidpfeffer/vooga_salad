@@ -1,10 +1,15 @@
 package ui.authoring;
 
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
+import gamedata.ActorData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -15,6 +20,7 @@ import javafx.scene.layout.VBox;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
+
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -59,8 +65,11 @@ public class LeftPaneView extends StackPane{
 	private StackPane myLeftPaneBack; //contains the views for buttons 
 	private ActorEditorView myTowerView;
 	private ActorEditorView myEnemyView;
+
+	//private ProjectileEditorMain myProjectileView;
+
 	private ActorEditorView myProjectileView;
-	
+
 	
 	public LeftPaneView(PopViewDelegate delegate){
 		super();
@@ -77,6 +86,8 @@ public class LeftPaneView extends StackPane{
 		myLeftPaneBack.setScaleX(0);
 		this.getChildren().add(myLeftPaneBack);
 		this.getChildren().add(myLeftPaneFront);
+		initializeEnemyView();
+		
 	}
 	
 	private void setupLeftPaneButtons() {
@@ -92,7 +103,7 @@ public class LeftPaneView extends StackPane{
 				Optional.of(labelForStackButton("Splash Editor")), 
 				Optional.of(imageForStackButton("splash_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane projectile = UIHelper.buttonStack(e -> launchProjectileView(), 
+		StackPane projectile = UIHelper.buttonStack(e -> System.out.println(),//launchProjectileView(), 
 				Optional.of(labelForStackButton("Projectile Editor")), 
 				Optional.of(imageForStackButton("projectile_icon.png")), 
 				Pos.CENTER_RIGHT, true);
@@ -140,7 +151,14 @@ public class LeftPaneView extends StackPane{
 		myDelegate.openView(myEnemyView);
 
 	}
-	
+	private void initializeEnemyView(){
+		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
+		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
+	}
+	public Collection<ActorData>getEnemyData(){
+		return myEnemyView.getActorData();
+	}
+
 	private void launchProjectileView(){
 		if(myProjectileView == null){
 			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Shot);
@@ -150,7 +168,7 @@ public class LeftPaneView extends StackPane{
 		}
 		myDelegate.openView(myProjectileView);
 	}
-	
+
 	
 	
 }

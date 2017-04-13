@@ -1,4 +1,4 @@
-package gamedata;
+package XML;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +21,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import builders.DataGenerator;
+import gamedata.ActorData;
+import gamedata.BasicData;
+import gamedata.EnemyInWaveData;
+import gamedata.GameData;
+import gamedata.LevelData;
+import gamedata.PathData;
+import gamedata.ProjectileData;
+import gamedata.ProjectileType;
+import gamedata.StringToFieldFactory;
+import gamedata.WaveData;
 import gamedata.compositiongen.Data;
 import gamedata.compositiongen.HealthData;
 import gamedata.reflections.Reflections;

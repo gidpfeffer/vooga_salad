@@ -3,6 +3,7 @@ package ui.authoring.actor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,8 +219,11 @@ public class ActorEditorView extends AnchorPane {
 		this.myActors.get(pane).getBasic().setName(text);	
 	}
 	
-	public void getTowerData() {
-		// TODO
+	public Collection<ActorData> getActorData() {
+		
+		return	myActors.values();
+		
+		
 	}
 	
 	
