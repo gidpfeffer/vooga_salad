@@ -42,7 +42,6 @@ public class DataFactory extends AbstractFactory <Data> {
 			if(toRet[i].equals(ArrayList.class)){
 				toRet[i]=List.class;//more general
 			}
-			System.out.println(toRet[i]);
 		}
 		return toRet;
 	}

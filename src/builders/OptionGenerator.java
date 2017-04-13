@@ -201,6 +201,7 @@ public class OptionGenerator {
 		Map<String, Object> fieldMap = new LinkedHashMap<String,Object>();
 
 		Field[] fields = FieldGenerator.getFields(clzz);
+		
 		for(Field f: fields){
 			try {
 				f.setAccessible(true);

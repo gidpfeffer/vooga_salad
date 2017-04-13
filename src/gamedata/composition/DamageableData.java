@@ -7,9 +7,16 @@ import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
 public class DamageableData implements Data {
+	private static final double POWER = 0.0;
+	private static final double RADIUS = 0.0;
+	
 	private double myPower;
 	private double myHitRadius;
 	private List<BasicActorType> myEnemyTypes;
+	
+	public DamageableData(){
+		this(POWER, RADIUS, new BasicActorType[0]);
+	}
 	
 	public DamageableData(Double myPower, Double myHitRadius, BasicActorType... myEnemyTypes) {
 		this.myPower = myPower;
