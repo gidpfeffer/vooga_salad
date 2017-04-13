@@ -9,9 +9,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 
 /**
- * Creates a new button for the pane of actors.
- * Open click, a new actor will be generated based open the old actor.
- * The new actor will then be added to the accessible database of actors.
+ * Creates a new button for the pane of actors
+ * Used later to create new actor instance
+ * 
  * @author Anngelyque
  *
  */
@@ -58,5 +58,6 @@ public class OptionButton {
 		button.setGraphic(view);
 		button.addEventHandler(MouseEvent.MOUSE_PRESSED, pressed);
 	}
+	
 
 }
