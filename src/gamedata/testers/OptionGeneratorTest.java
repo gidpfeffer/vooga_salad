@@ -68,14 +68,14 @@ public class OptionGeneratorTest {
 	
 	@Test
 	public void getName(){
-		Data d = DataGenerator.makeData("LimitedHealth", 10.0);
+		Data d = DataGenerator.makeData("LimitedHealthData", 10.0);
 		assertEquals("LimitedHealth", OptionGenerator.getName(d));
 	}
 	
 	@Test 
 	public void getFields(){
 		System.out.println("\n");
-		Data d = DataGenerator.makeData("LimitedHealth", 10.0);
+		Data d = DataGenerator.makeData("LimitedHealthData", 10.0);
 		Map<String, Object> values = OptionGenerator.getFields(d);
 		for(String s: values.keySet()){
 			System.out.println(s + " " + values.get(s));

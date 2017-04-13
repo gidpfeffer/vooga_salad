@@ -24,6 +24,7 @@ public class MainActor implements Actor {
 		myID = id;
 		myHealth = health;
 		myProperties = new ArrayList<>();
+		myOption = option;
 	}
 	
 	@SuppressWarnings("unchecked")
