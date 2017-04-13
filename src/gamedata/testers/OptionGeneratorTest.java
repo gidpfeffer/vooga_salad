@@ -83,5 +83,10 @@ public class OptionGeneratorTest {
 		System.out.println("\n");
 		//assertEquals(10.0, o);
 	}
+	
+	@Test
+	public void testPropertyDescriptions(){
+		System.out.println(OptionGenerator.getDescription("LimitedHealth"));
+	}
 
 }

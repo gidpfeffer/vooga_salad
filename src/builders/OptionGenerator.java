@@ -16,6 +16,7 @@ import gamedata.compositiongen.Data;
 import gamedata.reflections.Reflections;
 import types.BasicActorType;
 import util.general.FieldGenerator;
+import util.general.PropertyUtil;
 
 /**
  * 
@@ -216,7 +217,6 @@ public class OptionGenerator {
 	
 	//Use property file
 	public static String getDescription(String propertyName){
-		//TODO: Write
-		return null;
+		return PropertyUtil.getTerm("data/resource/property_descriptions", propertyName);
 	}
 }
