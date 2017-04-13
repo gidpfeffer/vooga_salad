@@ -39,11 +39,12 @@ public class GameDataGenerator {
 		GameData game = new GameData();
 		
 		List<Grid2D> samplePath = new ArrayList<Grid2D>();
-		samplePath.add(new Coordinates(0,0.5));
-		samplePath.add(new Coordinates(0.25, 0.5));
-		samplePath.add(new Coordinates(0.5, 0.5));
-		samplePath.add(new Coordinates(0.75, 0.5));
-		samplePath.add(new Coordinates(1.0, 0.5));
+		samplePath.add(new Coordinates(0,0.1));
+		samplePath.add(new Coordinates(0.1, 0.1));
+		samplePath.add(new Coordinates(0.15, 0.1));
+		samplePath.add(new Coordinates(0.15, 0.2));
+		samplePath.add(new Coordinates(0.10, 0.3));
+		samplePath.add(new Coordinates(0.10, 0.35));
 		PathGenerator.addPath(game.getMyPaths(), samplePath);
 		
 		List<Integer> possiblePaths = new ArrayList<Integer>();
