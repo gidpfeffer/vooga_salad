@@ -68,14 +68,14 @@ public class GameDataGenerator {
 				new ShootTargetFarData(10.0, 10, BasicActorType.Troop, 10, 10.0);
 		//Path now added at index 0
 		
-		BasicData b1 = new BasicData("Castle", "tower_icon.png");
-		BasicData b2 = new BasicData("Bullet", "projectile_icon.png");
+		BasicData b1 = new BasicData("Tower", "tower_icon.png");
+		BasicData b2 = new BasicData("Shoot", "projectile_icon.png");
 		
-		BasicData b3 = new BasicData("Alien", "enemy_icon.png");
-		BasicData b4 = new BasicData("Jiggles", "Pokemon Icons/jigglypuff.png");
-		BasicData b5 = new BasicData("Pikachu", "Pokemon Icons/pikachu.png");
+		BasicData b3 = new BasicData("Bob", "enemy_icon.png");
+		BasicData b4 = new BasicData("Jiggly", "Pokemon Icons/jigglypuff.png");
+		BasicData b5 = new BasicData("Pika", "Pokemon Icons/pikachu.png");
 		
-		BasicData b6 = new BasicData("Grass Base", "grass.png");
+		BasicData b6 = new BasicData("Grass", "grass.png");
 		
 		ActorData a1 = new ActorData(BasicActorType.Tower, b1);
 		//a1.addData(shoot);
