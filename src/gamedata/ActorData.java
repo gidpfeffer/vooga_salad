@@ -1,9 +1,11 @@
 package gamedata;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import builders.OptionGenerator;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 import gamedata.compositiongen.HealthData;
@@ -34,7 +36,7 @@ import types.BasicActorType;
 public class ActorData {
 	private final static double HEALTH = 1;
 	
-	private List<Data> myData;
+	private Map<String,Data> myData;
 	private BasicActorType actor;
 	private HealthData health;
 	private BasicData basic;
@@ -69,8 +71,10 @@ public class ActorData {
 	}
 	
 	public ActorData(BasicActorType actor, BasicData data, HealthData health, Data... properties){
-		myData = new ArrayList<Data>();
-		myData.addAll(Arrays.asList(properties));
+		myData = new HashMap<String,Data>();
+		for(Data d: properties){
+			addData(d);
+		}
 		this.health=health;
 		this.actor=actor;
 		this.basic=data;
@@ -88,9 +92,20 @@ public class ActorData {
 	 * @param property Data object to add to the ActorData's list
 	 */
 	public void addData(Data property){
-		myData.add(property);
+		String name = OptionGenerator.getName(property);
+		if(myData.containsKey(name)){
+			myData.remove(name);
+		}
+		myData.put(name, property);
 	}
 	
+	
+	public void removeData(Data property){
+		String name = OptionGenerator.getName(property);
+		if(myData.containsKey(name)){
+			myData.remove(name);
+		}
+	}
 	
 	/**
 	 * GamePlayer: Useful methods for accessing information about an ActorData
@@ -109,11 +124,17 @@ public class ActorData {
 	 */
 	
 	public List<Data> getMyData() {
-		return myData;
+		return new ArrayList<Data>(myData.values());
 	}
+	
+/*	public List<Data> getAllData(){
+		List<Data> copy = new ArrayList<Data>(myData);
+		copy.add(health);
+		return copy;
+	}*/
 
-	public void setMyData(List<Data> myData) {
-		this.myData = myData;
+	public void setMyData(Map<String, Data> data) {
+		this.myData = data;
 	}
 
 	public BasicActorType getActor() {

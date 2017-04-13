@@ -5,6 +5,7 @@ import java.util.Map;
 
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
+import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui.Preferences;
 import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
@@ -52,6 +54,10 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		
 		setup(uihandler.getShotOptions(), uihandler.getTowerOptions(), 
 				uihandler.getTroopOptions(), uihandler.getBaseOptions());
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), anchorPaneRoot);
+		ft.setFromValue(0.0);
+		ft.setToValue(1.0);
+		ft.play();
 	}
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
@@ -101,25 +107,31 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
-		for (Integer i : arg.keySet()) {
-			Actor actor;
-			if (actorsMap.containsKey(i)) {
-				System.out.println("actor already in map ~ GAMESCREEN 106");
-				actor = actorsMap.get(i);
-			} else {
-				System.out.println("actor added to map ~ GAMESCREEN 109");
-				actor = new Actor(ivp, uihandler, actorsMap, i, uihandler.getOptions().get(i).getName(),
-						uihandler.getOptions().get(i).getImagePath());
-				actorsMap.put(i, actor);
+		actorsMap.keySet().removeIf(id -> {
+			if(arg.containsKey(id)) {
+				return false;
 			}
-			Pane paneActor = actor.getActor();
-			double xCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getX(),myScene.getWidth());
-			double yCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getY(), myScene.getHeight());
-			paneActor.setLayoutX(xCoor);
-			paneActor.setLayoutY(yCoor);
-			System.out.println("Layout: " + paneActor.getLayoutX() + " " + xCoor + " " + paneActor.getLayoutY() + " " + yCoor);
-		}
-		
+			anchorPaneRoot.getChildren().remove(actorsMap.get(id).getActor());
+			//delete node from screen entirely
+			
+			
+			return true;
+		});
+		arg.keySet().stream().forEach(id -> {
+			Integer actorOption = arg.get(id).getActorOption();
+			if(!actorsMap.containsKey(id)) {
+				Actor newActor = new Actor(ivp, uihandler, actorsMap, actorOption, uihandler.getOptions().get(actorOption).getName(),
+						uihandler.getOptions().get(actorOption).getImagePath());
+				actorsMap.put(id, newActor);
+				anchorPaneRoot.getChildren().add(newActor.getActor());
+			}
+			Actor actor = actorsMap.get(id);
+			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(),myScene.getWidth());
+			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), myScene.getHeight());
+			actor.getActor().setLayoutX(xCoor);
+			actor.getActor().setLayoutY(yCoor);
+			System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);
+		});
 	}
 	
 }

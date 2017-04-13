@@ -1,10 +1,15 @@
 package ui.authoring;
 
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
+import gamedata.ActorData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -15,6 +20,7 @@ import javafx.scene.layout.VBox;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
+
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -42,14 +48,28 @@ public class LeftPaneView extends StackPane{
 
 		DEFAULT_ENEMIES = map;
 	}
+	private static final Map<String, String> DEFAULT_PROJECTILES;
+	static {
+		String path = "projectiles/";
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("Fire", path + "flame.png");
+		map.put("Water", path + "raindrop.png");
+		map.put("Ice", path + "snowflake.png");
+		map.put("Nature", path + "leaf.png");
+		
+		DEFAULT_PROJECTILES = map;
+	}
 	
 	private PopViewDelegate myDelegate;
 	private VBox myLeftPaneFront; //contains the buttons
 	private StackPane myLeftPaneBack; //contains the views for buttons 
 	private ActorEditorView myTowerView;
 	private ActorEditorView myEnemyView;
+
+	//private ProjectileEditorMain myProjectileView;
+
 	private ActorEditorView myProjectileView;
-	
+
 	
 	public LeftPaneView(PopViewDelegate delegate){
 		super();
@@ -66,6 +86,8 @@ public class LeftPaneView extends StackPane{
 		myLeftPaneBack.setScaleX(0);
 		this.getChildren().add(myLeftPaneBack);
 		this.getChildren().add(myLeftPaneFront);
+		initializeEnemyView();
+		
 	}
 	
 	private void setupLeftPaneButtons() {
@@ -81,7 +103,7 @@ public class LeftPaneView extends StackPane{
 				Optional.of(labelForStackButton("Splash Editor")), 
 				Optional.of(imageForStackButton("splash_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane projectile = UIHelper.buttonStack(e -> launchProjectileView(), 
+		StackPane projectile = UIHelper.buttonStack(e -> System.out.println(),//launchProjectileView(), 
 				Optional.of(labelForStackButton("Projectile Editor")), 
 				Optional.of(imageForStackButton("projectile_icon.png")), 
 				Pos.CENTER_RIGHT, true);
@@ -124,19 +146,29 @@ public class LeftPaneView extends StackPane{
 		if(myEnemyView == null){
 			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
+			UIHelper.setBackgroundColor(myEnemyView, CustomColors.INDIGO);
 		}
 		myDelegate.openView(myEnemyView);
 
 	}
-	
+	private void initializeEnemyView(){
+		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
+		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
+	}
+	public Collection<ActorData>getEnemyData(){
+		return myEnemyView.getActorData();
+	}
+
 	private void launchProjectileView(){
 		if(myProjectileView == null){
-			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Troop);
+			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Shot);
+			myProjectileView.setupDefaultTowers(DEFAULT_PROJECTILES);
 			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
+
 		}
 		myDelegate.openView(myProjectileView);
 	}
-	
+
 	
 	
 }

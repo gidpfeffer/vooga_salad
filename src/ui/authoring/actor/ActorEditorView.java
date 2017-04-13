@@ -3,6 +3,7 @@ package ui.authoring.actor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,7 @@ public class ActorEditorView extends AnchorPane {
 	private void setupInfoView(ScrollPane scroll){
 		myActorInfoView = new ActorInfoView();
 		myActorInfoView.prefWidthProperty().bind(scroll.widthProperty());
-		myActorInfoView.prefHeightProperty().bind(scroll.heightProperty());
+		myActorInfoView.minHeightProperty().bind(scroll.heightProperty());
 		scroll.setContent(myActorInfoView);
 	}
 	
@@ -191,7 +192,7 @@ public class ActorEditorView extends AnchorPane {
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
-		myActors.put(view, new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData(0.0)));
+		myActors.put(view, new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
 		myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
 	}
 
@@ -218,8 +219,11 @@ public class ActorEditorView extends AnchorPane {
 		this.myActors.get(pane).getBasic().setName(text);	
 	}
 	
-	public void getTowerData() {
-		// TODO
+	public Collection<ActorData> getActorData() {
+		
+		return	myActors.values();
+		
+		
 	}
 	
 	

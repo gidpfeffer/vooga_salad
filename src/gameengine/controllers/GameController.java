@@ -44,7 +44,7 @@ public class GameController {
 	private final double MILLISECOND_DELAY=17;
 
 	public GameController() {
-		myGameData = GameDataGenerator.getSampleGame();//new GameData();
+		myGameData = GameDataGenerator.getComplexSampleGame();//new GameData();
 		initializeUIHandler();
 	}
 
@@ -103,9 +103,9 @@ public class GameController {
 			}
 
 			@Override
-			public void updateGameObjectLocation(int id, double x, double y) throws VoogaException {
-				if (myGrid.isValidLoc(x, y)) {
-					myGrid.move(id,x, y);
+			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
+				if (myGrid.isValidLoc(xRatio, yRatio)) {
+					myGrid.move(id,xRatio, yRatio);
 				} else {
 					throw new VoogaException(VoogaException.INVALID_LOCATION);
 				}
@@ -168,11 +168,6 @@ public class GameController {
 			@Override
 			public void changeLevel(int level) throws VoogaException {
 				myLevelController.changeLevel(myGameData, level);
-			}
-
-			@Override
-			public void addLevel(LevelData levelData, int level) {
-				myGameData.addLevel(levelData, level);
 			}
 
 			@Override

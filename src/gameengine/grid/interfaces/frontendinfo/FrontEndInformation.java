@@ -6,5 +6,6 @@ public interface FrontEndInformation {
 	
 	Grid2D getActorLocation();
 	double getActorPercentHealth();
+	int getActorOption();
 
 }

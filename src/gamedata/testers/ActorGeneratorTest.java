@@ -2,12 +2,17 @@ package gamedata.testers;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import builders.ActorGenerator;
+import builders.PathGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.composition.BaseDamageData;
+import gamedata.composition.MoveWithSetPathData;
 import gamedata.composition.ShootTargetFarData;
 import gamedata.compositiongen.Data;
 import gamedata.compositiongen.HealthData;
@@ -15,7 +20,9 @@ import gameengine.actors.MainActor;
 import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.HealthProperty;
 import gameengine.actors.propertygen.IActProperty;
+import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
 public class ActorGeneratorTest {
@@ -29,11 +36,12 @@ public class ActorGeneratorTest {
 		MainActor actor = ActorGenerator.makeActor(1, toTest);
 		assertNotEquals(actor, null);
 		int ID = actor.getID();
-		//int option = actor.getMyOption();
+		int option = actor.getMyOption();
 		BasicActorType type = actor.getType();
 		assertEquals(type, BasicActorType.Tower);
 		//assertEquals(ID, 0);//first item generated, should yield a 0
-		//assertEquals(option, 1);
+		assertEquals(option, 1);
+		System.out.println(actor.getMyProperties().size());
 	}
 	
 	@Test
@@ -46,7 +54,20 @@ public class ActorGeneratorTest {
 		
 		System.out.println("\nGenerate 3");
 		ActorData toTest3 = new ActorData(BasicActorType.Troop, new BasicData("Billy", "imagePath"));
-		toTest3.addData(new BaseDamageData(90.0, BasicActorType.Troop));
+		
+		List<Grid2D> samplePath = new ArrayList<Grid2D>();
+		samplePath.add(new Coordinates(0,0.5));
+		samplePath.add(new Coordinates(0.25, 0.5));
+		samplePath.add(new Coordinates(0.5, 0.5));
+		samplePath.add(new Coordinates(0.75, 0.5));
+		samplePath.add(new Coordinates(1.0, 0.5));
+		
+		List<List<Grid2D>> paths = new ArrayList<List<Grid2D>>();
+		paths.add(samplePath);
+		
+		MoveWithSetPathData m = new MoveWithSetPathData(paths, 1.0);
+		toTest3.addData(m);
+		
 		MainActor actor2 = ActorGenerator.makeActor(2, toTest3);
 		System.out.println(actor2.getMyProperties().size());
 	}

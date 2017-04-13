@@ -44,7 +44,6 @@ public class MapEditorView extends StackPane {
 	private ImageViewPane myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
 	private Pane pointsLayerView;
 	private boolean isFirstPoint = true;
-	private Tuple<Double, Double> myMapInsets;
 
 	public MapEditorView() {
 		super();
@@ -80,12 +79,14 @@ public class MapEditorView extends StackPane {
 				line.setEndX(event.getX());
 				line.setEndY(event.getY());
 			});
+			List<Grid2D> listOfPoints = myPathData.poll();
+			listOfPoints.add(p);
 			// determines if the point is exit, entry, or regular path
-			if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {
+			if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {//exit path
 				isFirstPoint = true;
 				p.setPointType(PointType.EXIT);
 				this.setOnMouseMoved(fdsa -> {});
-
+				System.out.println(listOfPoints);
 			} else if(isFirstPoint){
 				myPathData.addPath(new ArrayList<Grid2D>());
 				p.setPointType(PointType.ENTRY);
@@ -94,8 +95,7 @@ public class MapEditorView extends StackPane {
 				p.setPointType(PointType.PATH);
 			} 
 
-			List<Grid2D> listOfPoints = myPathData.poll();
-			listOfPoints.add(p);
+
 			this.pointsLayerView.getChildren().add(line);
 			this.pointsLayerView.getChildren().add(p);
 			this.myLines.add(line);
@@ -207,5 +207,8 @@ public class MapEditorView extends StackPane {
 						new Tuple<Double, Double>(myBackgroundView.getWidth(), myBackgroundView.getHeight()),
 						myBackgroundView.getImageInsets());
 	}
-
+public PathData getPathData(){
+	return myPathData;
 }
+}
+

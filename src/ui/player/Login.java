@@ -8,8 +8,11 @@ import gameengine.controllers.GameController;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import javafx.animation.FadeTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.shape.Shape;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -21,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui.*;
 import ui.authoring.AuthoringView;
 import ui.general.UIHelper;
@@ -175,7 +179,7 @@ public class Login{
 		}*/
 		if (passwords.login(login.getUsername().getText(), login.getPassword().getText())) {
 			System.out.println(login.getUsername().getText());
-			showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + login.getUsername().getText(),
+			showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + login.getUsername().getText() + ".",
 					"Let's Play A Game!");
 			actiontarget.setFill(Color.GREEN);
 			actiontarget.setText(loginResource.getString("successfulLogin"));
@@ -183,8 +187,7 @@ public class Login{
 			login.getPassword().clear();
 			gotoGameSelector();
 		} else {
-			actiontarget.setFill(Color.FIREBRICK);
-			actiontarget.setText(loginResource.getString("incorrectLogin"));
+			setBadActionTarget(actiontarget, Color.FIREBRICK, loginResource.getString("incorrectLogin"));
 		}
 	}
 
@@ -217,11 +220,18 @@ public class Login{
 				clearSignupFields();
 			}
 		} else {
-			actiontarget.setFill(Color.FIREBRICK);
-			actiontarget.setText(loginResource.getString("incorrectSignUp"));
+			setBadActionTarget(actiontarget, Color.FIREBRICK, loginResource.getString("incorrectSignUp"));
 		};
 	}
 
+	private void setBadActionTarget(Text node, Color color, String error){
+		node.setFill(color);
+		node.setText(error);
+		login.getPassword().clear();
+		FadeTransition fade = createFader(node);
+		fade.play();
+	}
+	
 	private void clearSignupFields() {
 		signup.getEmail().clear();
 		signup.getPassword().clear();
@@ -238,6 +248,14 @@ public class Login{
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
+	
+    private FadeTransition createFader(Node node) {
+        FadeTransition fade = new FadeTransition(Duration.millis(2000), node);
+        fade.setFromValue(1);
+        fade.setToValue(0);
+
+        return fade;
+    }
 
 	private void gotoAuth() {
  		AuthoringView view = new AuthoringView();
@@ -260,6 +278,7 @@ public class Login{
 		stage.setScene(select.getScene());
 		stage.setTitle("GameSelector");
 		stage.show();
+		//gotoGameScreen();
 	}
 	
 	private GridPane setUpGames(List<Button> games) {

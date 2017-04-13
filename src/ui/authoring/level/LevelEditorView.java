@@ -1,9 +1,12 @@
 package ui.authoring.level;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import gamedata.ActorData;
+import gamedata.PathData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -15,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ui.Preferences;
+import ui.authoring.actor.ActorEditorView;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -24,11 +28,15 @@ public class LevelEditorView extends VBox{
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
 	private PopViewDelegate myDelegate;
-	public LevelEditorView(PopViewDelegate d){
+	private Collection<ActorData> enemies;
+	private PathData myPathData;
+	public LevelEditorView(PopViewDelegate d,Collection<ActorData>enemies,PathData pathData){
 		super();
+		System.out.println(enemies);
+		this.enemies=enemies;
 		myDelegate=d;
 		level=1;
-		
+		myPathData=pathData;
 		//TODO:move text to resource file
 		StackPane levelOne=nextLevel();
 		this.getChildren().add(levelOne);
@@ -50,7 +58,8 @@ public class LevelEditorView extends VBox{
 		return nextLevel;
 	}
 	private void launchWaveEditor(){
-		LevelEditorMenu lem=new LevelEditorMenu(myDelegate);
+		
+		LevelEditorMenu lem=new LevelEditorMenu(myDelegate,enemies,myPathData);
 		myDelegate.openView(lem);
 	}
 	private void editWaveData(){
