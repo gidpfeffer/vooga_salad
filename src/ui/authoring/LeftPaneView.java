@@ -15,8 +15,6 @@ import javafx.scene.layout.VBox;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
-import ui.authoring.actor.NewActorEditorView;
-import ui.authoring.actor.projectile.ProjectileEditorMain;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -48,9 +46,9 @@ public class LeftPaneView extends StackPane{
 	private PopViewDelegate myDelegate;
 	private VBox myLeftPaneFront; //contains the buttons
 	private StackPane myLeftPaneBack; //contains the views for buttons 
-	private NewActorEditorView myTowerView;
-	private NewActorEditorView myEnemyView;
-	private ProjectileEditorMain myProjectileView;
+	private ActorEditorView myTowerView;
+	private ActorEditorView myEnemyView;
+	private ActorEditorView myProjectileView;
 	
 	
 	public LeftPaneView(PopViewDelegate delegate){
@@ -115,7 +113,7 @@ public class LeftPaneView extends StackPane{
 
 	private void launchTowerView() {
 		if(myTowerView == null){
-			myTowerView = new NewActorEditorView(myDelegate, BasicActorType.Tower);
+			myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
 			myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
 			UIHelper.setBackgroundColor(myTowerView, CustomColors.ORANGE_700);
 		}
@@ -125,7 +123,7 @@ public class LeftPaneView extends StackPane{
 	
 	private void launchEnemyView() {
 		if(myEnemyView == null){
-			myEnemyView = new NewActorEditorView(myDelegate, BasicActorType.Troop);
+			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
 			UIHelper.setBackgroundColor(myEnemyView, CustomColors.ORANGE_700);
 		}
@@ -135,7 +133,7 @@ public class LeftPaneView extends StackPane{
 	
 	private void launchProjectileView(){
 		if(myProjectileView == null){
-			myProjectileView = new ProjectileEditorMain(myDelegate);
+			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
 		}
 		myDelegate.openView(myProjectileView);
