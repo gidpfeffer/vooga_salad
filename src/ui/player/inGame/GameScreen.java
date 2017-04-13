@@ -1,9 +1,6 @@
 package ui.player.inGame;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import gamedata.ActorData;
@@ -23,6 +20,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	private AnchorPane anchorPaneRoot;
 	private ImageViewPane ivp;
+	@SuppressWarnings("unused")
 	private Stage myStage;
 	private Scene myScene;
 	private UIHandler uihandler;
@@ -35,47 +33,25 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		return myScene;
 	}
 	
-	public List<Double> getWindow() {
-		List<Double> screenSize = new ArrayList<>(Arrays.asList(myStage.getWidth(), myStage.getHeight()));
-		return screenSize;
+	public ScreenSize getWindow() {
+		return new ScreenSize(ivp.getImageInsets().y, ivp.getHeight() - ivp.getImageInsets().y,
+				ivp.getImageInsets().x, ivp.getWidth() - ivp.getImageInsets().x);
 	}
-	
-/*	//temporary data
-	public GameScreen(Stage stage, UIHandler uihandler, TempData tempData) {
-		this.anchorPaneRoot = new AnchorPane();
-		this.myScene = new Scene(anchorPaneRoot);
-		this.ActorsMap = new HashMap<Integer, Actor>();		
-		hud = new SimpleHUD();
-		this.tempData = tempData;
-		this.myStage = stage;
-		this.uihandler = uihandler;
-		setup();
-	}*/
 	
 	public GameScreen(Stage stage, UIHandler uihandler){
 		this.anchorPaneRoot = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
 		this.actorsMap = new HashMap<Integer, Actor>();
 		hud = new SimpleHUD();
-		//this.borderPane = new BorderPane();
 		this.uihandler = uihandler;
 		myStage = stage;
 		
 		setup(uihandler.getShotOptions(), uihandler.getTowerOptions(), 
 				uihandler.getTroopOptions(), uihandler.getBaseOptions());
 	}
-	
-/*	//temp setup
-	private void setup() {
-		setupBackground();
-		setupRight();
-		setupLeft();
-		setupHUD();
-	}*/
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
-		//setupBorderPane();
 		setupBackground();
 		setupRight(shots, towers, troops, bases);
 		setupLeft();
@@ -94,25 +70,17 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		AnchorPane.setRightAnchor(ivp, 0.0);
 	}
 	
-/*	//temp right
-	private void setupRight() {
-		SidePanelTemp sidePanelTemp = new SidePanelTemp(uihandler, listOfActors, anchorPaneRoot, tempData);
-		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 10.0);
-		anchorPaneRoot.getChildren().add(sidePanelTemp.getSidePane());
-		sidePanelTemp.addInternalPanesToRoot();
-	}*/
-	
 	
 	private void setupRight(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
-		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, anchorPaneRoot, towers, shots, troops, bases);
+		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, anchorPaneRoot, towers, shots, troops, bases, ivp);
 		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 10.0);
 		anchorPaneRoot.getChildren().add(sidePanel.getSidePane());
 		sidePanel.addInternalPanesToRoot();
 	}
 	
 	private void setupLeft() {
-		SettingsPane settingsPane = new SettingsPane();
+		SettingsPane settingsPane = new SettingsPane(myStage);
 		Button helpButton = settingsPane.getHelpButton();
 		AnchorPane settings = settingsPane.getHelpPane();
 		AnchorPane.setLeftAnchor(helpButton, 10.);
@@ -131,19 +99,20 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	public void update(Map<Integer, FrontEndInformation> arg) {
 		for (Integer i : arg.keySet()) {
 			Actor actor;
-			if (actorsMap.containsKey(i.toString())) {
-				actor = actorsMap.get(i.toString());
+			if (actorsMap.containsKey(i)) {
+				actor = actorsMap.get(i);
 			} else {
-				actor = new Actor(ivp, uihandler, actorsMap, i, 
-						uihandler.getOptions().get(i.toString()).getName(), 
-						uihandler.getOptions().get(i.toString()).getImagePath());
+				actor = new Actor(ivp, uihandler, actorsMap, i, uihandler.getOptions().get(i).getName(),
+						uihandler.getOptions().get(i).getImagePath());
 				actorsMap.put(i, actor);
 			}
 			Pane paneActor = actor.getActor();
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getX(),myScene.getWidth());
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getY(), myScene.getHeight());
-			paneActor.setLayoutX(xCoor);
-			paneActor.setLayoutY(yCoor);
+			//actor.setX(xCoor);
+			//actor.setY(yCoor);
+			//paneActor.relocate(xCoor, yCoor);
+			System.out.println("Layout: " + paneActor.getLayoutX() + " " + xCoor);
 		}
 		
 	}
