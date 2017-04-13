@@ -8,8 +8,11 @@ import java.util.Optional;
 import builders.DataGenerator;
 import builders.OptionGenerator;
 import gamedata.FieldData;
+import gamedata.PathData;
 import gamedata.StringToFieldFactory;
 import gamedata.compositiongen.Data;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -22,6 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import types.BasicActorType;
 import ui.Preferences;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
@@ -84,6 +88,49 @@ public class DataView extends AnchorPane {
 	}
 	
 	private void addField(String nameKey, Object value){
+		Class clazz = value.getClass();
+		if(clazz == double.class ||clazz == Integer.class ||clazz == Double.class ||clazz == int.class ){
+			addNumberField(nameKey, value);
+		}else if(clazz == BasicActorType.class){
+			addActorTypeField(nameKey, (BasicActorType)value);
+		}else if(clazz == List.class){
+			System.out.println("wtf yo, y u pass me list");
+		}else{
+			System.out.println("DataView could not display input for class"+clazz.getName());
+		}
+		
+	}
+	
+	private void addActorTypeField(String nameKey, BasicActorType value) {
+		AnchorPane content = new AnchorPane();
+
+		Label fieldName = new Label(nameKey + ":");
+		fieldName.setTextFill(CustomColors.BLUE_800);
+		fieldName.setTextAlignment(TextAlignment.CENTER);
+		AnchorPane.setLeftAnchor(fieldName, 4.0);
+		AnchorPane.setTopAnchor(fieldName, 4.0);
+		AnchorPane.setBottomAnchor(fieldName, 4.0);
+		fieldName.setMaxWidth(80);
+		content.getChildren().add(fieldName);
+		
+		BasicActorPicker input = new BasicActorPicker(value);
+		input.getBasicActorTypeProperty().addListener(e -> {
+			System.out.println("toggled basic actor field input thing");
+			didEditBasicActorType(input.getBasicActorTypeProperty().get(),nameKey);
+			
+		});
+		AnchorPane.setRightAnchor(input, 4.0);
+		AnchorPane.setTopAnchor(input, 4.0);
+		AnchorPane.setBottomAnchor(input, 4.0);
+		AnchorPane.setLeftAnchor(input, fieldName.getMaxWidth());
+		
+		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
+		content.getChildren().add(input);
+		VBox.setMargin(content, new Insets(8.0));
+		vbox.getChildren().add(content);
+	}
+
+	private void addNumberField(String nameKey, Object value){
 		AnchorPane content = new AnchorPane();
 		
 		Label fieldName = new Label(nameKey + ":");
@@ -124,6 +171,13 @@ public class DataView extends AnchorPane {
      		setMyData(d); 
          }
 	}
+	private void didEditBasicActorType(BasicActorType newType, String varName){
+		this.myFields.put(varName, 
+				newType
+ 				);
+		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+ 		setMyData(d); 
+	}
 
 	public Data getMyData() {
 		return myData;
@@ -136,7 +190,35 @@ public class DataView extends AnchorPane {
 	public Data getData() {
 		return this.myData;
 	}
+	
+}
 
-
+final class BasicActorPicker extends StackPane{
+	
+	private int pos = 0;
+	private List<BasicActorType> types = OptionGenerator.getActorTypes();
+	private Label myLabel;
+	private ObjectProperty<BasicActorType> myType;
+	public BasicActorPicker(BasicActorType type){
+		super();
+		myType = new SimpleObjectProperty<BasicActorType>(type);
+		myLabel = new Label(type.name());
+		myLabel.setFont(Preferences.FONT_SMALL);
+		myLabel.setAlignment(Pos.CENTER);
+		myLabel.setTextAlignment(TextAlignment.CENTER);
+		pos = types.indexOf(type);
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> toggle());
+		this.getChildren().add(myLabel);
+	}
+	public void toggle(){
+		pos++;
+		if(pos==types.size())
+			pos = 0;
+		myType.set(types.get(pos));
+		myLabel.setText(myType.get().name());
+	}
+	public ObjectProperty<BasicActorType> getBasicActorTypeProperty(){
+		return myType;
+	}
 	
 }
