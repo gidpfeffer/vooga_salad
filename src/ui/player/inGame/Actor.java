@@ -25,7 +25,12 @@ public class Actor {
 	Actor clazz = this;
 	String name;
 	Pane actor;
+	Integer option;
 
+	public Integer getOption() {
+		return option;
+	}
+	
 	public Pane getActor() {
 		return actor;
 	}
@@ -38,14 +43,14 @@ public class Actor {
 		return Integer.parseInt(actor.getId());
 	}
 
-	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name,
+	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer option, String name,
 			String image) {
 
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER,
 				true);
 		actor.setBackground(Background.EMPTY);
-		actor.setId(id.toString());
+		this.option = option;
 		this.root = root;
 		this.uihandler = uihandler;
 		this.name = name;
@@ -76,7 +81,7 @@ public class Actor {
 	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			if (mapOfActors.get(Integer.parseInt(actor.getId())) != null) {
+			if (actor.getId() != null && (mapOfActors.get(Integer.parseInt(actor.getId())) != null)) {
 				System.out.println("NEWEST ID: " + Integer.parseInt(actor.getId()));
 
 				double width = root.getWidth() - 2 * root.getImageInsets().x;
@@ -89,8 +94,8 @@ public class Actor {
 					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
 							actor.getLayoutY() / height);
 				} catch (NumberFormatException | VoogaException e) {
-					System.out.println("**********Unable to update location********** Actor(~80)");
-					e.printStackTrace();
+					//System.out.println("**********Unable to update location********** Actor(~80)");
+					//e.printStackTrace();
 				}
 			}
 		}
@@ -120,7 +125,7 @@ public class Actor {
 						+ actor.getLayoutY() / height);
 
 				try {
-					Integer actorID = uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
+					Integer actorID = uihandler.addGameObject(option, actor.getLayoutX() / width,
 							actor.getLayoutY() / height);
 					Object obj = ME.getSource();
 					if (obj instanceof Pane) {
