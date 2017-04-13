@@ -3,9 +3,7 @@ package gameengine.grid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -22,7 +20,6 @@ import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import types.BasicActorType;
-import util.observerobservable.VoogaObservable;
 import util.observerobservable.VoogaObservableMap;
 
 public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> implements MasterGrid, ControllableGrid{
@@ -44,7 +41,8 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 		actors = filter(actors, a -> a.getActor().isActive());
 		myMap = Collections.unmodifiableMap(actors.stream()
 				.collect(Collectors.toMap(a -> a.getActor().getID(), 
-						a -> new DisplayInfo(a.getLocation(), a.getActor().getPercentHealth()))));
+						a -> new DisplayInfo(a.getLocation(), 
+								a.getActor().getPercentHealth(), a.getActor().getMyOption()))));
 		notifyObservers();
 	}
 	

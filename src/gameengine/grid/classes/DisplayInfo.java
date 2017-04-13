@@ -7,10 +7,12 @@ public class DisplayInfo implements FrontEndInformation{
 	
 	private Grid2D loc;
 	private double healthRemaining;
+	private int actorOption;
 	
-	public DisplayInfo(Grid2D loc, double healthRemaining){
+	public DisplayInfo(Grid2D loc, double healthRemaining, int actorOption){
 		this.loc = loc;
 		this.healthRemaining = healthRemaining;
+		this.actorOption = actorOption;
 	}
 
 	@Override
@@ -21,6 +23,11 @@ public class DisplayInfo implements FrontEndInformation{
 	@Override
 	public double getActorPercentHealth() {
 		return healthRemaining;
+	}
+
+	@Override
+	public int getActorOption() {
+		return actorOption;
 	}
 
 }
