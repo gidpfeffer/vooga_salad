@@ -28,6 +28,7 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 	
 	public MoveWithSetPathProperty(MoveWithSetPathData data){
 		//Apply random path to current actor
+		System.out.println("I AM MADE");
 		myPathCoordinates = new LinkedList<>(getRandomSteps(data.getMyPaths(), data.getMySpeed()));
 	}
 	
@@ -61,7 +62,9 @@ public class MoveWithSetPathProperty<G extends ReadAndMoveGrid> implements IActP
 		if (!myPathCoordinates.isEmpty()){
 			// poll a coordinate from myPathCoordinates to set the enemy location to
 			Grid2D newLoc = myPathCoordinates.poll();
-			grid.move(actorID, newLoc.getX(), newLoc.getY()); 
+			//grid.move(actorID, newLoc.getX(), newLoc.getY()); 
+			grid.move(actorID, grid.getLocationOf(actorID).getX() + 10, grid.getLocationOf(actorID).getY() + 10);
+			System.out.println("new location for troop" + grid.getLocationOf(actorID).getX() + " " + grid.getLocationOf(actorID).getY());
 		}
 	}
 
