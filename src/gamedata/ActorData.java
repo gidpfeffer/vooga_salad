@@ -100,6 +100,13 @@ public class ActorData {
 	}
 	
 	
+	public void removeData(Data property){
+		String name = OptionGenerator.getName(property);
+		if(myData.containsKey(name)){
+			myData.remove(name);
+		}
+	}
+	
 	/**
 	 * GamePlayer: Useful methods for accessing information about an ActorData
 	 *
