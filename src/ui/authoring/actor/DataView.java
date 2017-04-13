@@ -60,7 +60,7 @@ public class DataView extends AnchorPane {
 
 	private void setupViews() {
 		Label name = new Label(myDataClassName.replaceAll("Data", ""));
-		name.setTextFill(CustomColors.BLUE_50);
+		name.setTextFill(CustomColors.BLUE_800);
 		name.setFont(Preferences.FONT_MEDIUM_BOLD);
 		name.setAlignment(Pos.CENTER);
 		name.setPrefHeight(24);
