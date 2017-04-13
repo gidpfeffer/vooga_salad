@@ -163,6 +163,12 @@ private void setupImageView(Image img) {
 		System.out.println("setData called from DataView");
 		myActorData.getMyData().remove(oldData);
 		myActorData.getMyData().add(newData);
+		for(Data d: myActorData.getMyData()){
+			if(d==null){
+				System.out.println("found null value");
+				myActorData.getMyData().remove(d);
+			}
+		}
 	}
 
 	@Override
