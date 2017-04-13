@@ -111,6 +111,12 @@ public class ActorData {
 	public List<Data> getMyData() {
 		return myData;
 	}
+	
+	public List<Data> getAllData(){
+		List<Data> copy = new ArrayList<Data>(myData);
+		copy.add(health);
+		return copy;
+	}
 
 	public void setMyData(List<Data> myData) {
 		this.myData = myData;
