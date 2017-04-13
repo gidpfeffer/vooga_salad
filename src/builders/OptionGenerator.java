@@ -217,6 +217,6 @@ public class OptionGenerator {
 	
 	//Use property file
 	public static String getDescription(String propertyName){
-		return PropertyUtil.getTerm("data/resource/property_descriptions", propertyName);
+		return PropertyUtil.getTerm("resources/property_descriptions", propertyName);
 	}
 }

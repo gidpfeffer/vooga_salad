@@ -4,14 +4,12 @@ import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
 public class BaseDamageData implements Data {
-	private static final double RADIUS = 0.0;
-	private static final BasicActorType TYPE  = BasicActorType.Tower;
 
 	private double myRadius;
 	private BasicActorType myTarget;
 
 	public BaseDamageData(){
-		this(RADIUS, TYPE);
+		this(0.0, BasicActorType.Tower);
 	}
 	
 	public BaseDamageData(Double radius, BasicActorType type) {

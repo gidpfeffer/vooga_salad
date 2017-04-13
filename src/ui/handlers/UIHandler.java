@@ -27,5 +27,4 @@ public interface UIHandler {
 	void stop();
 	void exit();
 	void changeLevel(int level) throws VoogaException;
-	void addLevel(LevelData levelData, int level);
 }

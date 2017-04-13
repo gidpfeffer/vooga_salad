@@ -8,6 +8,10 @@ public abstract class StatusData implements Data{
 	BasicActorType myTarget;
 	StatusDuration myLife;
 
+	public StatusData(){
+		this(BasicActorType.Tower, new StatusDuration(0));
+	}
+	
 	public StatusData(BasicActorType type, StatusDuration statusDuration) {
 		myTarget = type;
 		myLife = statusDuration;
