@@ -8,10 +8,8 @@ import java.util.List;
 import org.junit.Test;
 
 import factories.PropertyFactory;
-import gamedata.composition.AfflictStatusData;
 import gamedata.composition.BaseDamageData;
 import gamedata.composition.DamageableData;
-import gamedata.composition.ImmuneHealthData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.composition.MoveWithSetPathData;
 import gamedata.composition.ShootTargetFarData;

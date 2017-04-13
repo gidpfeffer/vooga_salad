@@ -27,7 +27,6 @@ public class LevelEditorView extends VBox{
 	public LevelEditorView(PopViewDelegate d){
 		super();
 		myDelegate=d;
-		this.setSpacing(10);
 		level=1;
 		
 		//TODO:move text to resource file
@@ -35,6 +34,8 @@ public class LevelEditorView extends VBox{
 		this.getChildren().add(levelOne);
 		StackPane newLevel=UIHelper.buttonStack(e->addNewLevel(), Optional.of(labelForStackButton("Add Wave")), Optional.of(imageForStackButton("add_icon.png")), Pos.CENTER_RIGHT, true);
 		newLevel.setPrefHeight(56);
+		VBox.setMargin(newLevel, new Insets(8));
+
 		this.getChildren().add(newLevel);
 	}
 	private void addNewLevel(){
@@ -45,6 +46,7 @@ public class LevelEditorView extends VBox{
 		StackPane nextLevel= UIHelper.buttonStack(e->launchWaveEditor(),  Optional.of(labelForStackButton(String.format("Wave %d",level))), Optional.ofNullable(null),Pos.CENTER, true);
 		level++;
 		nextLevel.setPrefHeight(56);
+		VBox.setMargin(nextLevel, new Insets(8));
 		return nextLevel;
 	}
 	private void launchWaveEditor(){

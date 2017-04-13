@@ -29,7 +29,6 @@ public class ActorGeneratorTest {
 		MainActor actor = ActorGenerator.makeActor(1, toTest);
 		assertNotEquals(actor, null);
 		int ID = actor.getID();
-		//int option = actor.getMyOption();
 		BasicActorType type = actor.getType();
 		assertEquals(type, BasicActorType.Tower);
 		//assertEquals(ID, 0);//first item generated, should yield a 0

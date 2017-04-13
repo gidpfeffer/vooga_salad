@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import gameengine.actors.MainActor;
-import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
-import gameengine.actors.propertygen.Property;
 import util.VoogaException;
 
 /**

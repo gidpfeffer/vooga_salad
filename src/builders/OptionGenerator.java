@@ -16,6 +16,7 @@ import gamedata.compositiongen.Data;
 import gamedata.reflections.Reflections;
 import types.BasicActorType;
 import util.general.FieldGenerator;
+import util.general.PropertyUtil;
 
 /**
  * 
@@ -201,6 +202,7 @@ public class OptionGenerator {
 		Map<String, Object> fieldMap = new LinkedHashMap<String,Object>();
 
 		Field[] fields = FieldGenerator.getFields(clzz);
+		
 		for(Field f: fields){
 			try {
 				f.setAccessible(true);
@@ -215,7 +217,6 @@ public class OptionGenerator {
 	
 	//Use property file
 	public static String getDescription(String propertyName){
-		//TODO: Write
-		return null;
+		return PropertyUtil.getTerm("resources/property_descriptions", propertyName);
 	}
 }

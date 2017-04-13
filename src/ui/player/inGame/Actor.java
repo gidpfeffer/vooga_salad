@@ -33,6 +33,10 @@ public class Actor {
 	public String getName() {
 		return name;
 	}
+	
+	public Integer getID() {
+		return Integer.parseInt(actor.getId());
+	}
 
 	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name,
 			String image) {
@@ -116,17 +120,18 @@ public class Actor {
 						+ actor.getLayoutY() / height);
 
 				try {
-					uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
+					Integer actorID = uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
 							actor.getLayoutY() / height);
+					Object obj = ME.getSource();
+					if (obj instanceof Pane) {
+						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
+						mapOfActors.put(actorID, clazz);
+						actor.setId(actorID.toString());
+						System.out.println(actor.getId());
+					}
 				} catch (NumberFormatException | VoogaException e) {
 					System.out.println("Unable to add game object -- Actor ~ 111");
 					e.printStackTrace();
-				}
-				// }
-				Object obj = ME.getSource();
-				if (obj instanceof Pane) {
-					((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
-					mapOfActors.put(Integer.parseInt(((Pane) obj).getId()), clazz);
 				}
 			}
 		}
