@@ -44,7 +44,7 @@ public class GameController {
 	private final double MILLISECOND_DELAY=17;
 
 	public GameController() {
-		myGameData = GameDataGenerator.getComplexSampleGame();//new GameData();
+		myGameData = GameDataGenerator.getSampleGame();//new GameData();
 		initializeUIHandler();
 	}
 
@@ -115,12 +115,7 @@ public class GameController {
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
-				System.out.println("my data size " + actorData.getMyData().size());
 				Actor actor = ActorGenerator.makeActor(option,actorData);
-				System.out.println("my Type " + actor.getType());
-				System.out.println("my ID " + actor.getID());
-				System.out.println("my option " + actor.getMyOption());
-				
 				if (myGrid.isValidLoc(xRatio, yRatio)) {
 					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
 				} else {
