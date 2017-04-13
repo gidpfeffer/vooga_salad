@@ -3,23 +3,15 @@ package ui.player.inGame;
 import java.util.Map;
 import java.util.Optional;
 
-import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
 import ui.general.ImageViewPane;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
@@ -29,21 +21,25 @@ public class Actor {
 
 	ImageViewPane root;
 	UIHandler uihandler;
+	Map<Integer, Actor> mapOfActors;
+	Actor clazz = this;
 	String name;
 	Pane actor;
-	Map<Integer, Actor> mapOfActors;
 
 	public Pane getActor() {
 		return actor;
 	}
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
 
+	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name,
+			String image) {
 
-	public Actor(ImageViewPane root, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer id, String name, String image) {
-		
-		actor = UIHelper.buttonStack(e->{}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER, true);
+		actor = UIHelper.buttonStack(e -> {
+		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER,
+				true);
 		actor.setBackground(Background.EMPTY);
 		actor.setId(id.toString());
 		this.root = root;
@@ -53,66 +49,87 @@ public class Actor {
 		setup();
 	}
 
-	public void setup(){
+	public void setup() {
 		setupEvents();
 	}
 
-	public void setupEvents(){
+	/**
+	 * Creates events for when the node is dragged, released, or clicked secondarily
+	 */
+	public void setupEvents() {
 		actor.setOnMouseDragged(e -> {
 			actor.setLayoutX(e.getSceneX());
 			actor.setLayoutY(e.getSceneY());
 		});
+		actor.addEventHandler(MouseEvent.MOUSE_CLICKED, place);
 		actor.addEventHandler(MouseEvent.MOUSE_RELEASED, released);
-		//actor.setOnMouseReleased(e -> System.out.println("sdfjsdkljflksdf"));//released(e));
 	}
 
-	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>()  {
+	
+	/**
+	 * if location is appropriate, actor will update to a new location when released from drag
+	 */
+	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>() {
 		@Override
-		public void handle( final MouseEvent ME ) {
+		public void handle(final MouseEvent ME) {
+			if (mapOfActors.get(Integer.parseInt(actor.getId())) != null) {
+				System.out.println("NEWEST ID: " + Integer.parseInt(actor.getId()));
+
+				double width = root.getWidth() - 2 * root.getImageInsets().x;
+				double height = root.getHeight() - 2 * root.getImageInsets().y;
+
+				System.out.println("Scaled released coordinates to " + actor.getLayoutX() / width + ", "
+						+ actor.getLayoutY() / height);
+
 				try {
-					System.out.println("releasing");
-					//need to have list here
-					double width = root.getWidth() - 2*root.getImageInsets().x;
-					double height = root.getHeight() - 2*root.getImageInsets().y;
-					if (mapOfActors.get(actor) != null) {
-						// and if the area is okay to put the stackpane down
-						
-						System.out.println("Scaled coordinates to " + actor.getLayoutX()/width + ", " 
-								+ actor.getLayoutY()/height);
-						
-						uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), 
-								actor.getLayoutX()/width, actor.getLayoutY()/height);
-						//remove from root if can't place;
-						
-						//idea -- remove event handler here so can't re-drag object?
-						//delete obj from make then re-add or else i'll need to know where it is on map??
-					}
-					else {
-						//need to know size of screen here
-						if(ME.getX() < root.getImageInsets().x || 
-								ME.getX() > root.getWidth() - root.getImageInsets().x || 
-								ME.getY() < root.getImageInsets().y || 
-								ME.getY() > root.getHeight() - root.getImageInsets().y) {
-							throw new VoogaException("Invalid location for actor");
-						} 
-						else {
-							System.out.println("Scaled coordinates to " + actor.getLayoutX()/width + ", " 
-									+ actor.getLayoutY()/height);
-							
-							uihandler.addGameObject(Integer.parseInt(actor.getId()), 
-									actor.getLayoutX()/width, actor.getLayoutY()/height);
-						}
-					}
-				} catch (VoogaException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
+							actor.getLayoutY() / height);
+				} catch (NumberFormatException | VoogaException e) {
+					System.out.println("**********Unable to update location********** Actor(~80)");
+					e.printStackTrace();
+				}
 			}
 		}
 	};
+
 	
+	/**
+	 * Upon secondary mouse click, actor will be placed in the actor map
+	 * The new actor is mapped to it's original id (**OR?)
+	 * Event handler is then removed -> can only update the node
+	 */
+	EventHandler<MouseEvent> place = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(final MouseEvent ME) {
+			if (((MouseEvent) ME).getButton().equals(MouseButton.SECONDARY)) {
+				double width = root.getWidth() - 2 * root.getImageInsets().x;
+				double height = root.getHeight() - 2 * root.getImageInsets().y;
+
+				/*
+				 * if(ME.getX() < root.getImageInsets().x || ME.getX() >
+				 * root.getWidth() - root.getImageInsets().x || ME.getY() <
+				 * root.getImageInsets().y || ME.getY() > root.getHeight() -
+				 * root.getImageInsets().y) { //throw new
+				 * VoogaException("Invalid location for actor"); } else {
+				 */
+				System.out.println("Scaled original coordinates to " + actor.getLayoutX() / width + ", "
+						+ actor.getLayoutY() / height);
+
+				try {
+					uihandler.addGameObject(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
+							actor.getLayoutY() / height);
+				} catch (NumberFormatException | VoogaException e) {
+					System.out.println("Unable to add game object -- Actor ~ 111");
+					e.printStackTrace();
+				}
+				// }
+				Object obj = ME.getSource();
+				if (obj instanceof Pane) {
+					((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
+					mapOfActors.put(Integer.parseInt(((Pane) obj).getId()), clazz);
+				}
+			}
+		}
+	};
+
 }
-
-
-
-
-
