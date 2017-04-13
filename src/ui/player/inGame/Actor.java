@@ -70,13 +70,26 @@ public class Actor {
 			actor.setLayoutX(e.getSceneX());
 			actor.setLayoutY(e.getSceneY());
 		});
+		//actor.addEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
 		actor.addEventHandler(MouseEvent.MOUSE_CLICKED, place);
 		actor.addEventHandler(MouseEvent.MOUSE_RELEASED, released);
 	}
 
 	
+	EventHandler<MouseEvent> drag = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(final MouseEvent ME) {
+			actor.setLayoutX(ME.getSceneX());
+			actor.setLayoutY(ME.getSceneY());
+		}
+	};
+	
+	
 	/**
 	 * if location is appropriate, actor will update to a new location when released from drag
+	 * 
+	 * NOTE: Make settings to make this optional
+	 * 
 	 */
 	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>() {
 		@Override
@@ -130,6 +143,7 @@ public class Actor {
 					Object obj = ME.getSource();
 					if (obj instanceof Pane) {
 						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
+						//((Pane) obj).removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
 						mapOfActors.put(actorID, clazz);
 						actor.setId(actorID.toString());
 						System.out.println(actor.getId());

@@ -93,10 +93,8 @@ public class DataView extends AnchorPane {
 			addNumberField(nameKey, value);
 		}else if(clazz == BasicActorType.class){
 			addActorTypeField(nameKey, (BasicActorType)value);
-		}else if(clazz == List.class){
-			System.out.println("wtf yo, y u pass me list");
 		}else{
-			System.out.println("DataView could not display input for class"+clazz.getName());
+			
 		}
 		
 	}
@@ -163,11 +161,16 @@ public class DataView extends AnchorPane {
 		 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
 			 field.setText(oldValue);
          }else{
-        	 Object val = StringToFieldFactory.getObject(newValue, myFields.get(varName).getClass());
+        	Object val = StringToFieldFactory.getObject(newValue, myFields.get(varName).getClass());
      		this.myFields.put(varName, 
      				val
      				);
+     		
      		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+     		System.out.println("className: "+myDataClassName +"\tfieldsClass: "+myFields.values().toArray().getClass());
+     		for(Object o : myFields.values()){
+     			System.out.println("value:" + o + "\ttype:"+o.getClass());
+     		}
      		setMyData(d); 
          }
 	}
@@ -184,7 +187,7 @@ public class DataView extends AnchorPane {
 	}
 
 	public void setMyData(Data newData) {
-		myDelegate.setData(myData, newData);
+		myDelegate.setData(newData);
 	}
 
 	public Data getData() {

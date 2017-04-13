@@ -48,6 +48,17 @@ public class LeftPaneView extends StackPane{
 
 		DEFAULT_ENEMIES = map;
 	}
+	private static final Map<String, String> DEFAULT_PROJECTILES;
+	static {
+		String path = "projectiles/";
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("Fire", path + "flame.png");
+		map.put("Water", path + "raindrop.png");
+		map.put("Ice", path + "snowflake.png");
+		map.put("Nature", path + "leaf.png");
+		
+		DEFAULT_PROJECTILES = map;
+	}
 	
 	private PopViewDelegate myDelegate;
 	private VBox myLeftPaneFront; //contains the buttons
@@ -135,6 +146,7 @@ public class LeftPaneView extends StackPane{
 		if(myEnemyView == null){
 			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
+			UIHelper.setBackgroundColor(myEnemyView, CustomColors.INDIGO);
 		}
 		myDelegate.openView(myEnemyView);
 
@@ -150,6 +162,9 @@ public class LeftPaneView extends StackPane{
 	private void launchProjectileView(){
 		if(myProjectileView == null){
 			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Shot);
+			myProjectileView.setupDefaultTowers(DEFAULT_PROJECTILES);
+			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
+
 		}
 		myDelegate.openView(myProjectileView);
 	}

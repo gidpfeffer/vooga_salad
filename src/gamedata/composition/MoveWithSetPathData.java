@@ -3,11 +3,9 @@ package gamedata.composition;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import gamedata.compositiongen.MoveData;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import util.PathUtil;
 /**
  * @author maddie
  * @author Anh
