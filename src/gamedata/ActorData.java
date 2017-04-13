@@ -132,6 +132,7 @@ public class ActorData {
 		this.basic = basic;
 	}
 
+
 	public HealthData getHealth() {
 		return health;
 	}
@@ -140,6 +141,7 @@ public class ActorData {
 		this.health = health;
 	}
 	
+
 
 	
 	

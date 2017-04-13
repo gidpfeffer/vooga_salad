@@ -1,30 +1,20 @@
 package ui.authoring;
 
 
-import java.util.List;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.Optional;
 
-import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
-import types.ActorType;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
-import ui.authoring.actor.projectile.ProjectileEditorMain;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -58,7 +48,7 @@ public class LeftPaneView extends StackPane{
 	private StackPane myLeftPaneBack; //contains the views for buttons 
 	private ActorEditorView myTowerView;
 	private ActorEditorView myEnemyView;
-	private ProjectileEditorMain myProjectileView;
+	private ActorEditorView myProjectileView;
 	
 	
 	public LeftPaneView(PopViewDelegate delegate){
@@ -143,7 +133,7 @@ public class LeftPaneView extends StackPane{
 	
 	private void launchProjectileView(){
 		if(myProjectileView == null){
-			myProjectileView = new ProjectileEditorMain(myDelegate);
+			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
 		}
 		myDelegate.openView(myProjectileView);

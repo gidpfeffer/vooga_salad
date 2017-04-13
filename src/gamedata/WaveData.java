@@ -33,6 +33,8 @@ public class WaveData {
 		return waveEnemies;
 	}
 	
-	
+	public String toString(){
+		return waveEnemies.toString();
+	}
 	
 }

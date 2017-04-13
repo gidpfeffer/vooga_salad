@@ -1,6 +1,8 @@
 package gameengine.actors.status;
 
+import gamedata.compositiongen.PoisonedStatusData;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
+import util.Delay;
 
 /**
  * 
@@ -8,19 +10,26 @@ import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
  * @author sarahzhou
  */
 public class Poisoned<G extends ReadAndDamageGrid> extends IStatus<G>{
+	
+	double myDamage;
+	double myTimeBetweenDamage;
+	Delay myDelay;
 
-	
-	
+	public Poisoned(PoisonedStatusData data) {
+		super(data);
+		myDamage = data.getMyDamage();
+		myDelay = new Delay(data.getMyTimeBetweenDamage());
+	}
+
 	@Override
 	public void action(G grid, Integer actorID) {
-		grid.getActorDamagablesInRadius(x, y, radius, grid.);
-		
+		grid.getMyDamageable(actorID).accept(myDamage);
 	}
-
+	
 	@Override
 	public boolean isOn() {
-		// TODO Auto-generated method stub
-		return false;
+		return (super.isOn()&&myDelay.delayAction());
 	}
+
 	
 }
