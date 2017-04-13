@@ -10,6 +10,10 @@ public class ShootData implements Data {
 	private Integer myProjectile;
 	private double mySpeed;
 
+	public ShootData(){
+		this(0.0, 0, BasicActorType.Tower, 0, 0.0);
+	}
+	
 	public ShootData(Double range, Integer rate, BasicActorType type, Integer projectile, Double speed) {
 		myRange = range;
 		fireRate = rate;
@@ -25,7 +29,7 @@ public class ShootData implements Data {
 	public void setRange(double myRange) {
 		this.myRange = myRange;
 	}
-
+	
 	public int getFireRate() {
 		return fireRate;
 	}

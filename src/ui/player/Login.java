@@ -1,5 +1,7 @@
 package ui.player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import gameengine.controllers.GameController;
 
@@ -8,7 +10,6 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,7 +37,6 @@ public class Login{
 	private GridPane gridPane;
 	private BorderPane borderPane;
 	private Passwords passwords;
-	private UIHelper uihelper;
 	private LoginGrid login;
 	private SignupGrid signup;
 	private ResourceBundle loginResource;
@@ -252,12 +252,27 @@ public class Login{
 	}
 
 	private void gotoGameSelector() {
-		gotoGameScreen();
-		//uncomment later
-/*		GameSelector select = new GameSelector("English", "mainScreen.css");
-		stage.setScene(select.getScene());A
+		//TODO: Replace with actual games list
+		ArrayList<Button> gamesList = new ArrayList<Button>();
+		gamesList.add(new Button("Sample Game"));
+		gamesList.add(new Button("Also Sample Game"));
+		
+		GameSelector select = new GameSelector("English", "mainScreen.css", setUpGames(gamesList));
+		stage.setScene(select.getScene());
 		stage.setTitle("GameSelector");
-		stage.show();*/
+		stage.show();
+	}
+	
+	private GridPane setUpGames(List<Button> games) {
+		GridPane gameMenu = new GridPane();
+		gameMenu.setVgap(20);
+		int index = 0;
+		for(Button game : games) {
+			game.setOnAction(e -> gotoGameScreen());
+			gameMenu.add(game, 0, index);
+			index++;
+		}
+		return gameMenu;
 	}
 
 	private void gotoGameScreen() {

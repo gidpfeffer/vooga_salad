@@ -177,7 +177,9 @@ public class GameData {
 	public Map<Integer, ProjectileType> getProjectileOptions(){
 		return myProjectiles.getMyProjectiles();
 	}
-	
+	public void setProjectileOptions(ProjectileData projectiles){
+		myProjectiles=projectiles;
+	}
 	
 	
 	
@@ -190,7 +192,7 @@ public class GameData {
 	private Map<Integer,ActorData> getOptionType(BasicActorType type){
 		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
 		pieces.forEach((key, value) 
-				-> {if (value.getBasic().equals(type)) {
+				-> {if (value.getActor().equals(type)) { 
 					toRet.put(key,value);
 					}});
 		return toRet;
@@ -223,6 +225,7 @@ public class GameData {
 	public void setMyPaths(PathData myPaths) {
 		this.myPaths = myPaths;
 	}
+
 
 	public ProjectileData getMyProjectiles() {
 		return myProjectiles;

@@ -33,11 +33,11 @@ public class DamageableProperty implements IActProperty<ReadAndDamageGrid> {
 	 */
 	@Override
 	public void action(ReadAndDamageGrid grid, Integer actorID) {
-		for (BasicActorType t : myTargetTypes) {
-			grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(),
-					grid.getLocationOf(actorID).getY(), myHitRadius, t).forEach(a -> a.accept(myPower));
-		}
-		grid.getMyDamageable(actorID).accept(SELF_DAMAGE_ON_HIT);
+		myTargetTypes.forEach(t -> grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(),
+					grid.getLocationOf(actorID).getY(), myHitRadius, t).forEach((health,damage) -> {
+						damage.accept(myPower);
+						grid.getMyDamageable(actorID).accept(SELF_DAMAGE_ON_HIT);
+					}));
 	}
 
 	/* (non-Javadoc)

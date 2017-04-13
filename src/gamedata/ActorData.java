@@ -36,6 +36,7 @@ public class ActorData {
 	
 	private List<Data> myData;
 	private BasicActorType actor;
+	private HealthData health;
 	private BasicData basic;
 	
 	/**
@@ -69,11 +70,10 @@ public class ActorData {
 	
 	public ActorData(BasicActorType actor, BasicData data, HealthData health, Data... properties){
 		myData = new ArrayList<Data>();
-		//myData.add(data);
-		myData.add(health);
 		myData.addAll(Arrays.asList(properties));
+		this.health=health;
 		this.actor=actor;
-		this.basic = data;
+		this.basic=data;
 	}
 	
 	/**
@@ -131,7 +131,17 @@ public class ActorData {
 	public void setBasic(BasicData basic) {
 		this.basic = basic;
 	}
+
+
+	public HealthData getHealth() {
+		return health;
+	}
+
+	public void setHealth(HealthData health) {
+		this.health = health;
+	}
 	
+
 
 	
 	

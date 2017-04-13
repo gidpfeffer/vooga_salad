@@ -30,7 +30,7 @@ public class PropertyFactoryTest {
 		assertNotEquals(p.make("DamageableProperty", new DamageableData(10.0, 10.0, BasicActorType.Tower)),null);
 		//assertNotEquals(p.make("ImmuneHealthProperty", new ImmuneHealthData()), null);
 		assertNotEquals(p.make("LimitedHealthProperty", new LimitedHealthData(10.0)), null);
-		//assertNotEquals(p.make("MoveWithSetPathProperty", new MoveWithSetPathData(new ArrayList<List<Grid2D>>(), 10.0)), null);
+		assertNotEquals(p.make("MoveWithSetPathProperty", new MoveWithSetPathData(new ArrayList<List<Grid2D>>(), 10.0)), null);
 		assertNotEquals(p.make("ShootTargetFarProperty", new ShootTargetFarData(10.0, 10, BasicActorType.Tower, 10, 10.0)), null);
 		assertNotEquals(p.make("ShootTargetNearProperty", new ShootTargetNearData(10.0, 10, BasicActorType.Tower, 10, 10.0)), null);
 		assertNotEquals(p.make("ShootTargetWithMouseProperty", new ShootTargetWithMouseData(10.0, 10, BasicActorType.Tower, 10, 10.0)), null);

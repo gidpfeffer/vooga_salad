@@ -38,11 +38,11 @@ public class ActorGeneratorTest {
 	
 	@Test
 	public void noErrors(){
-		/*System.out.println("\nGenerate 2");
+		System.out.println("\nGenerate 2");
 		ActorData toTest2 = new ActorData(BasicActorType.Tower, new BasicData("Bob", "imagePath"));
-		toTest2.addData(new ShootTargetFarData(100, 50, BasicActorType.Base, 1));
+		toTest2.addData(new ShootTargetFarData(100.0, 50, BasicActorType.Base, 10, 10.0));
 		MainActor actor1 = ActorGenerator.makeActor(1, toTest2);
-		System.out.println(actor1.getMyProperties().size());*/
+		System.out.println(actor1.getMyProperties().size());
 		
 		System.out.println("\nGenerate 3");
 		ActorData toTest3 = new ActorData(BasicActorType.Troop, new BasicData("Billy", "imagePath"));

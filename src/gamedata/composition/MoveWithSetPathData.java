@@ -1,6 +1,7 @@
 package gamedata.composition;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,12 +15,11 @@ import util.PathUtil;
  */
 public class MoveWithSetPathData extends MoveData {
 
-	//TODO: List of paths
 	List<List<Grid2D>>myPaths;
-	//ASSUME For the moment that integers passed are valid paths
 	
-	//TODO: Move path from this class?
-	//May be superfluous with pathdata
+	public MoveWithSetPathData(){
+		this(new ArrayList<List<Grid2D>>(), 0.0);
+	}
 	
 	/**
 	 * this data object gets a list of assigned paths, pick a random one and call PathFinder to calculate the full 
@@ -29,6 +29,7 @@ public class MoveWithSetPathData extends MoveData {
 	 * account the speed
 	 * @param speed
 	 */
+	
 	public MoveWithSetPathData(List<List<Grid2D>> myAssignedPaths, Double speed){
 		super(speed);
 		myPaths = myAssignedPaths;
