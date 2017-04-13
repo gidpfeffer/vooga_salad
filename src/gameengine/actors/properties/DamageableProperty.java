@@ -3,7 +3,10 @@
  */
 package gameengine.actors.properties;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
+
 import gamedata.composition.DamageableData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
@@ -13,9 +16,7 @@ import types.BasicActorType;
  * @author harirajan
  *
  */
-public class DamageableProperty implements IActProperty<ReadAndDamageGrid> {
-	
-	private static final double SELF_DAMAGE_ON_HIT = 1.0;
+public abstract class DamageableProperty<G extends ReadAndDamageGrid> implements IActProperty<G> {
 	
 	private double myPower;
 	private double myHitRadius;
@@ -32,12 +33,11 @@ public class DamageableProperty implements IActProperty<ReadAndDamageGrid> {
 	 * @see gameengine.actors.properties.IActProperty#action(gameengine.grid.interfaces.ActorGrid.ReadableGrid, java.lang.Integer)
 	 */
 	@Override
-	public void action(ReadAndDamageGrid grid, Integer actorID) {
-		myTargetTypes.forEach(t -> grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(),
-					grid.getLocationOf(actorID).getY(), myHitRadius, t).forEach((health,damage) -> {
-						damage.accept(myPower);
-						grid.getMyDamageable(actorID).accept(SELF_DAMAGE_ON_HIT);
-					}));
+	public void action(G grid, Integer actorID) {
+		getEnemiesToHit(myTargetTypes,grid,actorID,myHitRadius).stream().forEach(damage -> {
+			damage.accept(myPower);
+			grid.getMyDamageable(actorID).accept(Double.POSITIVE_INFINITY);
+		});
 	}
 
 	/* (non-Javadoc)
@@ -47,6 +47,8 @@ public class DamageableProperty implements IActProperty<ReadAndDamageGrid> {
 	public boolean isOn() {
 		return true;
 	}
+	
+	protected abstract Collection<Consumer<Double>> getEnemiesToHit(Collection<BasicActorType> myTypes, G grid, Integer actorID, Double radius);
 
 
 }
