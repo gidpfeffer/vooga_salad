@@ -44,7 +44,7 @@ public class GameController {
 	private final double MILLISECOND_DELAY=17;
 
 	public GameController() {
-		myGameData = GameDataGenerator.getSampleGame();//new GameData();
+		myGameData = GameDataGenerator.getComplexSampleGame();//new GameData();
 		initializeUIHandler();
 	}
 
