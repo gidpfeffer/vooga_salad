@@ -66,9 +66,13 @@ public class Actor {
 	 * Creates events for when the node is dragged, released, or clicked secondarily
 	 */
 	public void setupEvents() {
-		actor.addEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
+		actor.setOnMouseDragged(e -> {
+			actor.setLayoutX(e.getSceneX());
+			actor.setLayoutY(e.getSceneY());
+		});
+		//actor.addEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
 		actor.addEventHandler(MouseEvent.MOUSE_CLICKED, place);
-		//actor.addEventHandler(MouseEvent.MOUSE_RELEASED, released);
+		actor.addEventHandler(MouseEvent.MOUSE_RELEASED, released);
 	}
 
 	
@@ -139,7 +143,7 @@ public class Actor {
 					Object obj = ME.getSource();
 					if (obj instanceof Pane) {
 						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
-						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
+						//((Pane) obj).removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
 						mapOfActors.put(actorID, clazz);
 						actor.setId(actorID.toString());
 						System.out.println(actor.getId());
