@@ -1,4 +1,4 @@
-package gamedata;
+package XML;
 
 public class XMLException extends RuntimeException{
 	    // for serialization

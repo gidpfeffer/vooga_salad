@@ -1,4 +1,4 @@
-package gamedata;
+package XML;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,7 +21,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import builders.OptionGenerator;
-
+import gamedata.ActorData;
+import gamedata.BasicData;
+import gamedata.EnemyInWaveData;
+import gamedata.GameData;
+import gamedata.LevelData;
+import gamedata.ProjectileType;
 import gamedata.compositiongen.Data;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.stage.FileChooser;
@@ -178,13 +183,13 @@ private void printFile(Document doc){
 		throw new XMLException(e);
 	}
 	DOMSource source = new DOMSource(doc);
-	//FileChooser fileChooser=new FileChooser();
-	//fileChooser.setTitle("Select location to save XML file");
-	//fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
-	//fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+	FileChooser fileChooser=new FileChooser();
+	fileChooser.setTitle("Select location to save XML file");
+	fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
+	fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 	Result result=null;
-	 //result = new StreamResult(fileChooser.showSaveDialog(new Stage()));		
-	result=new StreamResult(new File("ss.xml"));
+	 result = new StreamResult(fileChooser.showSaveDialog(new Stage()));		
+	//result=new StreamResult(new File("ss.xml"));
 	try {		
 		transformer.transform(source, result);
 	} catch (TransformerException e) {
