@@ -1,8 +1,6 @@
 package gameengine.controllers;
 
-import java.util.function.Supplier;
-
-import factories.ActorGenerator;
+import java.util.function.Supplier;	
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
@@ -77,7 +75,7 @@ public class LevelController {
 		for (EnemyInWaveData data: curr.getTroops()) {
 			for (int i = 0;i<data.getMyNumber();i++) {
 				ActorData actorData = data.getMyData();
-				Actor actor = ActorGenerator.makeActor(IDGenerator.getNewID(), actorData);
+				Actor actor = builders.ActorGenerator.makeActor(IDGenerator.getNewID(), actorData);
 				int numPaths = data.getMyPaths().size();
 				int rand = (int) Math.random()*numPaths;
 				Grid2D firstPathCoor = gameData.getPathOptions().get(rand).get(0);
