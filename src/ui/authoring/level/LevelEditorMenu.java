@@ -89,7 +89,8 @@ public class LevelEditorMenu extends AnchorPane {
 		ComboBox<Integer>pathChoice=new ComboBox<Integer>();
 		pathChoice.getItems().addAll(myPathData.getMyPaths().keySet());
 		pathChoice.valueProperty().addListener((x,y,newValue)->{choosePath(newValue);
-			});
+		System.out.println("sdsa"+myPathData.getMyPaths());	
+		});
 		root.getChildren().add(label);
 		root.getChildren().add(pathChoice);
 	topSide.getChildren().add(root);
@@ -103,7 +104,7 @@ public class LevelEditorMenu extends AnchorPane {
 		root.setSpacing(10);
 		for(ActorData enemy:enemies){
 			ImageView image=new ImageView(new Image(enemy.getImagePath()));
-			root.getChildren().add(UIHelper.buttonStack(e->toggleActive(enemy), Optional.of(new Label(enemy.getName())), Optional.of(image), Pos.BOTTOM_CENTER, true));
+			root.getChildren().add(UIHelper.buttonStack(e->toggleActive(enemy), Optional.of(new Label(enemy.getName())), Optional.of(image), Pos.CENTER, true));
 			
 		}
 		bottomSide.setContent(root);
