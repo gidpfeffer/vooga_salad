@@ -3,6 +3,7 @@ package ui.authoring.actor;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import gamedata.ActorData;
 import gamedata.BasicData;
+import gamedata.composition.LimitedHealthData;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -59,14 +61,15 @@ public class ActorEditorView extends AnchorPane {
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
 	private ActorInfoView myActorInfoView;
-	private BasicActorType myType;
+	private BasicActorType myActorType;
 
 	// TODO get projectile data first
 	public ActorEditorView(PopViewDelegate delegate, BasicActorType type) {
 		super();
 		myDelegate = delegate;
-		myType = type;
+		myActorType = type;
 		myActors = new HashMap<StackPane, ActorData>();
+		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
 
 	}
@@ -91,19 +94,16 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	private void setupInfoView(ScrollPane scroll){
-		if(!this.myActors.isEmpty())
-			myActorInfoView = new ActorInfoView(myActors.get(myActors.keySet().iterator().next()));
-		else
-			myActorInfoView = new ActorInfoView();
+		myActorInfoView = new ActorInfoView();
 		myActorInfoView.prefWidthProperty().bind(scroll.widthProperty());
-		myActorInfoView.prefHeightProperty().bind(scroll.heightProperty());
+		myActorInfoView.minHeightProperty().bind(scroll.heightProperty());
 		scroll.setContent(myActorInfoView);
 	}
 	
 	private void setupAddTowerButton() {
 		Label label = new Label("Add New");
-		label.setFont(Preferences.FONT_MEDIUM);
-		label.setTextFill(CustomColors.INDIGO_100);
+		label.setFont(Preferences.FONT_MEDIUM_BOLD);
+		label.setTextFill(CustomColors.BLUE_50);
 		ImageView imageView = new ImageView(new Image("add_icon_w.png"));
 		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
@@ -111,7 +111,7 @@ public class ActorEditorView extends AnchorPane {
 				Optional.of(label), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
-		UIHelper.setBackgroundColor(view, CustomColors.AMBER_700);
+		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
 		this.myActorsView.getChildren().add( view);
 
@@ -126,10 +126,10 @@ public class ActorEditorView extends AnchorPane {
 		AnchorPane.setRightAnchor(rightSide, inset);
 		AnchorPane.setLeftAnchor(leftSide, inset);
 
-		rightSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
-		rightSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
-		leftSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
-		leftSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+		rightSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
+		rightSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
+		leftSide.setStyle("-fx-background-color: #" + UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
+		leftSide.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
 	
 		leftSide.setBorder(new Border(new BorderStroke[] {new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.SOLID, new CornerRadii(4), BorderWidths.DEFAULT) }));
 		rightSide.setBorder(Border.EMPTY);
@@ -178,10 +178,10 @@ public class ActorEditorView extends AnchorPane {
 		TextField field = new TextField(name);
 		field.setFont(Preferences.FONT_MEDIUM);
 		field.setAlignment(Pos.CENTER);
-		field.setBackground(UIHelper.backgroundForColor(CustomColors.AMBER_700));
+		field.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_200));
 		field.setStyle("-fx-text-fill-color: #FFFFFF");
-		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.AMBER_200) + ";");
-		StackPane.setMargin(field, new Insets(8,8,8,64));
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
+		StackPane.setMargin(field, new Insets(8,32,8,32));
 		lblWrapper.getChildren().add(field);
 		
 		StackPane view = UIHelper.buttonStack(e -> {}, 
@@ -190,10 +190,10 @@ public class ActorEditorView extends AnchorPane {
 		view.setPrefHeight(BUTTON_HEIGHT);
 		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectTower(view));
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
-		UIHelper.setBackgroundColor(view, CustomColors.AMBER_700);
+		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
-		myActors.put(view, new ActorData(myType, new BasicData(name, imgPath)));
-		this.myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
+		myActors.put(view, new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
+		myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
 	}
 
 	/**
@@ -209,7 +209,6 @@ public class ActorEditorView extends AnchorPane {
 			String s = selectedFile.getName();
 			addTower(s,s.substring(0, s.indexOf(".")) );
 		}
-		// addTower();
 	}
 	
 	private void selectTower(StackPane stackButton){
@@ -220,8 +219,11 @@ public class ActorEditorView extends AnchorPane {
 		this.myActors.get(pane).getBasic().setName(text);	
 	}
 	
-	public void getTowerData() {
-		// TODO
+	public Collection<ActorData> getActorData() {
+		
+		return	myActors.values();
+		
+		
 	}
 	
 	

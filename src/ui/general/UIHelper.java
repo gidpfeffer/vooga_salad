@@ -1,5 +1,7 @@
 package ui.general;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 
 import javafx.animation.ScaleTransition;
@@ -9,6 +11,7 @@ import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
@@ -126,5 +129,29 @@ public class UIHelper {
 		return Integer.toHexString((int)r) + Integer.toHexString((int)g) + Integer.toHexString((int)b);
 	}
 	
+	public static void addNodeToPaneWithAnimation(Pane parent, Node child){
+		ScaleTransition sc = new ScaleTransition(Duration.seconds(0.3));
+		sc.setNode(child);
+		child.setScaleX(0);
+		child.setScaleY(0);
+		sc.setToX(1);
+		sc.setToY(1);
+		parent.getChildren().add(child);
+		sc.play();
+	}
+	public static void removeNodeFromPaneWithAnimation(Pane parent, Node child){
+		ScaleTransition sc = new ScaleTransition(Duration.seconds(0.3));
+		sc.setNode(child);
+		child.setScaleX(1);
+		child.setScaleY(1);
+		sc.setToX(0);
+		sc.setToY(0);
+		sc.play();
+		sc.setOnFinished(e -> parent.getChildren().remove(child));
+	}
+	
+	public static String printMap(Map<?,?> map){
+		return Arrays.toString(map.entrySet().toArray());
+	}
 	
 }

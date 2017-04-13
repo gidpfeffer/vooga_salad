@@ -1,9 +1,12 @@
 package ui.authoring.level;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import gamedata.ActorData;
+import gamedata.PathData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -25,19 +28,22 @@ public class LevelEditorView extends VBox{
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
 	private PopViewDelegate myDelegate;
-	private ActorEditorView enemies;
-	public LevelEditorView(PopViewDelegate d,ActorEditorView enemies){
+	private Collection<ActorData> enemies;
+	private PathData myPathData;
+	public LevelEditorView(PopViewDelegate d,Collection<ActorData>enemies,PathData pathData){
 		super();
+		System.out.println(enemies);
 		this.enemies=enemies;
 		myDelegate=d;
-		this.setSpacing(10);
 		level=1;
-		
+		myPathData=pathData;
 		//TODO:move text to resource file
 		StackPane levelOne=nextLevel();
 		this.getChildren().add(levelOne);
 		StackPane newLevel=UIHelper.buttonStack(e->addNewLevel(), Optional.of(labelForStackButton("Add Wave")), Optional.of(imageForStackButton("add_icon.png")), Pos.CENTER_RIGHT, true);
 		newLevel.setPrefHeight(56);
+		VBox.setMargin(newLevel, new Insets(8));
+
 		this.getChildren().add(newLevel);
 	}
 	private void addNewLevel(){
@@ -48,10 +54,12 @@ public class LevelEditorView extends VBox{
 		StackPane nextLevel= UIHelper.buttonStack(e->launchWaveEditor(),  Optional.of(labelForStackButton(String.format("Wave %d",level))), Optional.ofNullable(null),Pos.CENTER, true);
 		level++;
 		nextLevel.setPrefHeight(56);
+		VBox.setMargin(nextLevel, new Insets(8));
 		return nextLevel;
 	}
 	private void launchWaveEditor(){
-		LevelEditorMenu lem=new LevelEditorMenu(myDelegate,enemies);
+		
+		LevelEditorMenu lem=new LevelEditorMenu(myDelegate,enemies,myPathData);
 		myDelegate.openView(lem);
 	}
 	private void editWaveData(){

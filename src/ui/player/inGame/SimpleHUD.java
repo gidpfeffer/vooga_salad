@@ -4,6 +4,11 @@ import gameengine.player.GameStatus;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
+/**
+ * Creates a simple grid pane HUD
+ * @author anngelyque
+ *
+ */
 public class SimpleHUD {
 
 	private GridPane hud;

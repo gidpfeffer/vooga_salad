@@ -207,5 +207,8 @@ public class MapEditorView extends StackPane {
 						new Tuple<Double, Double>(myBackgroundView.getWidth(), myBackgroundView.getHeight()),
 						myBackgroundView.getImageInsets());
 	}
-
+public PathData getPathData(){
+	return myPathData;
 }
+}
+

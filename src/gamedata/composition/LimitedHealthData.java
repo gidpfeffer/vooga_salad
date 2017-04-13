@@ -3,7 +3,12 @@ package gamedata.composition;
 import gamedata.compositiongen.HealthData;
 
 public class LimitedHealthData extends HealthData{
-	public double startHealth;
+	
+	private double startHealth;
+	
+	public LimitedHealthData(){
+		this(0.0);
+	}
 	
 	public LimitedHealthData(Double health){
 		startHealth = health;

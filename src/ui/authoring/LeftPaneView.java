@@ -1,12 +1,15 @@
 package ui.authoring;
 
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
+import gamedata.ActorData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -51,8 +54,11 @@ public class LeftPaneView extends StackPane{
 	private StackPane myLeftPaneBack; //contains the views for buttons 
 	private ActorEditorView myTowerView;
 	private ActorEditorView myEnemyView;
+
 	//private ProjectileEditorMain myProjectileView;
-	
+
+	private ActorEditorView myProjectileView;
+
 	
 	public LeftPaneView(PopViewDelegate delegate){
 		super();
@@ -69,6 +75,8 @@ public class LeftPaneView extends StackPane{
 		myLeftPaneBack.setScaleX(0);
 		this.getChildren().add(myLeftPaneBack);
 		this.getChildren().add(myLeftPaneFront);
+		initializeEnemyView();
+		
 	}
 	
 	private void setupLeftPaneButtons() {
@@ -118,7 +126,6 @@ public class LeftPaneView extends StackPane{
 		if(myTowerView == null){
 			myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
 			myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
-			UIHelper.setBackgroundColor(myTowerView, CustomColors.ORANGE_700);
 		}
 		myDelegate.openView(myTowerView);
 	}
@@ -128,20 +135,25 @@ public class LeftPaneView extends StackPane{
 		if(myEnemyView == null){
 			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-			UIHelper.setBackgroundColor(myEnemyView, CustomColors.ORANGE_700);
 		}
 		myDelegate.openView(myEnemyView);
 
 	}
-	
-//	private void launchProjectileView(){
-//		if(myProjectileView == null){
-//			myProjectileView = new ProjectileEditorMain(myDelegate);
-//		UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
-//		}
-//		myDelegate.openView(myProjectileView);
-//	}
-	
+	private void initializeEnemyView(){
+		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
+		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
+	}
+	public Collection<ActorData>getEnemyData(){
+		return myEnemyView.getActorData();
+	}
+
+	private void launchProjectileView(){
+		if(myProjectileView == null){
+			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Shot);
+		}
+		myDelegate.openView(myProjectileView);
+	}
+
 	
 	
 }

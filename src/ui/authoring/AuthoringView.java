@@ -159,7 +159,8 @@ public class AuthoringView extends AnchorPane {
 	}
 
 	private void setupLevelView() {
-		myLevelView = new LevelEditorView(new PopDelegate(),leftPaneView.getEnemyView());
+		
+		myLevelView = new LevelEditorView(new PopDelegate(),myLeftPane.getEnemyData(),myMapView.getPathData());
 				UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);

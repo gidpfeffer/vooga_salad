@@ -3,6 +3,10 @@ package gamedata.compositiongen;
 import gameengine.actors.status.StatusDuration;
 import types.BasicActorType;
 
+/**
+ * @author sarahzhou
+ *
+ */
 public class PoisonedStatusData extends StatusData{
 	
 	double myDamage;

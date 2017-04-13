@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ui.Preferences;
 import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
 import util.observerobservable.VoogaObserver;
@@ -20,6 +21,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	private AnchorPane anchorPaneRoot;
 	private ImageViewPane ivp;
+	
 	@SuppressWarnings("unused")
 	private Stage myStage;
 	private Scene myScene;
@@ -38,42 +40,22 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 				ivp.getImageInsets().x, ivp.getWidth() - ivp.getImageInsets().x);
 	}
 	
-/*	//temporary data
-	public GameScreen(Stage stage, UIHandler uihandler, TempData tempData) {
-		this.anchorPaneRoot = new AnchorPane();
-		this.myScene = new Scene(anchorPaneRoot);
-		this.ActorsMap = new HashMap<Integer, Actor>();		
-		hud = new SimpleHUD();
-		this.tempData = tempData;
-		this.myStage = stage;
-		this.uihandler = uihandler;
-		setup();
-	}*/
-	
 	public GameScreen(Stage stage, UIHandler uihandler){
+		stage.setHeight(Preferences.SCREEN_HEIGHT);
+		stage.setWidth(Preferences.SCREEN_WIDTH);
 		this.anchorPaneRoot = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
 		this.actorsMap = new HashMap<Integer, Actor>();
 		hud = new SimpleHUD();
-		//this.borderPane = new BorderPane();
 		this.uihandler = uihandler;
 		myStage = stage;
 		
 		setup(uihandler.getShotOptions(), uihandler.getTowerOptions(), 
 				uihandler.getTroopOptions(), uihandler.getBaseOptions());
 	}
-	
-/*	//temp setup
-	private void setup() {
-		setupBackground();
-		setupRight();
-		setupLeft();
-		setupHUD();
-	}*/
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
-		//setupBorderPane();
 		setupBackground();
 		setupRight(shots, towers, troops, bases);
 		setupLeft();
@@ -92,14 +74,6 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		AnchorPane.setRightAnchor(ivp, 0.0);
 	}
 	
-/*	//temp right
-	private void setupRight() {
-		SidePanelTemp sidePanelTemp = new SidePanelTemp(uihandler, listOfActors, anchorPaneRoot, tempData);
-		AnchorPane.setRightAnchor(sidePanelTemp.getSidePane(), 10.0);
-		anchorPaneRoot.getChildren().add(sidePanelTemp.getSidePane());
-		sidePanelTemp.addInternalPanesToRoot();
-	}*/
-	
 	
 	private void setupRight(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
 			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
@@ -110,7 +84,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	}
 	
 	private void setupLeft() {
-		SettingsPane settingsPane = new SettingsPane();
+		SettingsPane settingsPane = new SettingsPane(myStage);
 		Button helpButton = settingsPane.getHelpButton();
 		AnchorPane settings = settingsPane.getHelpPane();
 		AnchorPane.setLeftAnchor(helpButton, 10.);
@@ -127,24 +101,28 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
-		System.out.println("asdhkjf: "+ actorsMap.size());
-		for (Integer i : arg.keySet()) {
-			Actor actor;
-			if (actorsMap.containsKey(i.toString())) {
-				actor = actorsMap.get(i.toString());
-			} else {
-				actor = new Actor(ivp, uihandler, actorsMap, i, 
-						uihandler.getOptions().get(i.toString()).getName(), 
-						uihandler.getOptions().get(i.toString()).getImagePath());
-				actorsMap.put(i, actor);
+		actorsMap.keySet().removeIf(id -> {
+			if(arg.containsKey(id)) {
+				return false;
 			}
-			Pane paneActor = actor.getActor();
-			double xCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getX(),myScene.getWidth());
-			double yCoor = util.Transformer.ratioToCoordinate(arg.get(i).getActorLocation().getY(), myScene.getHeight());
-			paneActor.setLayoutX(xCoor);
-			paneActor.setLayoutY(yCoor);
-		}
-		
+			anchorPaneRoot.getChildren().remove(actorsMap.get(id).getActor());
+			return true;
+		});
+		arg.keySet().stream().forEach(id -> {
+			Integer actorOption = arg.get(id).getActorOption();
+			if(!actorsMap.containsKey(id)) {
+				Actor newActor = new Actor(ivp, uihandler, actorsMap, actorOption, uihandler.getOptions().get(actorOption).getName(),
+						uihandler.getOptions().get(actorOption).getImagePath());
+				actorsMap.put(id, newActor);
+				anchorPaneRoot.getChildren().add(newActor.getActor());
+			}
+			Actor actor = actorsMap.get(id);
+			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(),myScene.getWidth());
+			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), myScene.getHeight());
+			actor.getActor().setLayoutX(xCoor);
+			actor.getActor().setLayoutY(yCoor);
+			System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);
+		});
 	}
 	
 }

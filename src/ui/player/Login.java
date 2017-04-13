@@ -63,7 +63,6 @@ public class Login{
 			passwords = new Passwords();
 			//ex.printStackTrace();
 		}
-		//passwords = fileChooser.readInPasswords(mySerializer);
 		gridPane = new GridPane();
 		gridPane.setHgap(50);
 		gridPane.setVgap(20);
@@ -102,11 +101,9 @@ public class Login{
 
 	private void setupTitle(){
 		Label towerDefenseTitle = createTitle(loginResource.getString("towerDefense"), 50);
-		//towerDefenseTitle.setPrefWidth(Preferences.SCREEN_WIDTH);
 		towerDefenseTitle.setId("title");
 		borderPane.setTop(towerDefenseTitle);
 		BorderPane.setAlignment(towerDefenseTitle, Pos.CENTER);
-		
 	}
 
 	private void setupLoginNewAccountTitle() {
@@ -146,7 +143,7 @@ public class Login{
 		GridPane.setHalignment(loginEnter, HPos.CENTER);
 		GridPane.setHalignment(signupEnter, HPos.CENTER);
 		final Text actiontarget = new Text();
-		gridPane.add(actiontarget, 1, 4);
+		gridPane.add(actiontarget, 1, 5);
 
 		loginEnter.setOnAction(e -> loginClicked(actiontarget));
 		signupEnter.setOnAction(e -> signupClicked(actiontarget));
@@ -166,6 +163,7 @@ public class Login{
 	}
 
 	private void loginClicked(Text actiontarget){
+		
 /*		for (Map.Entry<String, TextField> entry : login.entrySet()) {
 		    String key = entry.getKey();
 		    ArrayList<String> value = entry.getValue();
@@ -175,18 +173,19 @@ public class Login{
 		{
 			System.out.println(entry.getKey() + "/" + entry.getValue());
 		}*/
-		System.out.println(login.getUsername().getText());
-		showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + login.getUsername().getText(),
-				"Login currently does nothing");
-/*		if (passwords.login(login.getUsername().getText(), login.getPassword().getText())) {
+		if (passwords.login(login.getUsername().getText(), login.getPassword().getText())) {
+			System.out.println(login.getUsername().getText());
+			showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + login.getUsername().getText(),
+					"Let's Play A Game!");
 			actiontarget.setFill(Color.GREEN);
 			actiontarget.setText(loginResource.getString("successfulLogin"));
 			login.getUsername().clear();
 			login.getPassword().clear();
+			gotoGameSelector();
 		} else {
 			actiontarget.setFill(Color.FIREBRICK);
 			actiontarget.setText(loginResource.getString("incorrectLogin"));
-		}*/
+		}
 	}
 
 	private void signupClicked(Text actiontarget){

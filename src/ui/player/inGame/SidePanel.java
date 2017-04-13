@@ -23,8 +23,10 @@ import ui.handlers.UIHandler;
 import util.GUIBindingUtil;
 
 /**
- * Creates a pane of all the possible options
- * @author Anngelyque
+ * Creates a pane containing buttons linking to the possible user options.
+ * Upon click, the pane with the relative nodes will slide out.
+ * 
+ * @author anngelyque
  *
  */
 public class SidePanel {
@@ -81,6 +83,9 @@ public class SidePanel {
 		addAnimationButtons();
 	}
 	
+	/**
+	 * Creates the panes to link to their respective main buttons.
+	 */
 	private void createInternalPanes() {
 		OptionsPane towers = getPane(towersMap, "Tower");
 		OptionsPane shots = getPane(shotsMap, "Shot");
@@ -90,6 +95,11 @@ public class SidePanel {
 		listOfPanes.addAll(Arrays.asList(otherList));
 	}
 	
+	/**
+	 * Links the internal pane that exists off screen to the main button on screen.
+	 * Upon click, the pane will slide out
+	 * If pane is empty, no button will be generated / placed on screen
+	 */
 	private void linkMainPaneToInternalPanes() {
 		mainBox.getStylesheets().add(panel);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
@@ -97,8 +107,6 @@ public class SidePanel {
 			listOfPanes.stream().filter(pane -> pane.getPaneName().equals(entry.getKey())).forEach(pane -> GUIBindingUtil.bindVisisble(optionButton.getButton(), pane.getMap().keySet()));;
 			mainBox.getChildren().add(optionButton.getButton());
 		}
-		//DIFFERENT
-		//root.getChildren().add(mainBox);
 		sidePane.getChildren().add(mainBox);
 		mainBox.setAlignment(Pos.CENTER_RIGHT);
 		
@@ -107,6 +115,9 @@ public class SidePanel {
 		AnchorPane.setTopAnchor(mainBox, 20.0);
 	}
 	
+	/**
+	 * Creates the bottom animation buttons for playing, pausing, and stoping the animation
+	 */
 	private void addAnimationButtons() {
 		HBox animationButtons = new HBox(20);
 		animationButtons.getStylesheets().add(panel);
@@ -121,8 +132,8 @@ public class SidePanel {
 	
 	public void addInternalPanesToRoot() {
 		for (OptionsPane op : listOfPanes) {
-			root.getChildren().add(op.getStackPane());
-			AnchorPane.setRightAnchor(op.getStackPane(), -op.getWidth());
+			root.getChildren().add(op.getPane());
+			AnchorPane.setRightAnchor(op.getPane(), -op.getWidth() - 10);
 		}
 	}
 	
@@ -137,15 +148,10 @@ public class SidePanel {
 	    @Override
 	    public void handle( final MouseEvent ME ) {
 	        Object obj = ME.getSource();
-
 	        if ( obj instanceof Button ) {
 	        	for (OptionsPane optionsPane : listOfPanes) {
 	        		if (((Button) obj).getText().equals(optionsPane.getPaneName())) {
-	        			//GUIBindingUtil.bindVisisble((Button) obj, optionsPane.getMap().keySet());
-	        			System.out.println("testcollection");
-	    	    		System.out.println(optionsPane.getMap().entrySet());
 	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
-	    	    		System.out.println(optionsPane.getPaneName());
 	    	    		t.setNode(optionsPane.getPane());
 	    	    		t.setToX(-optionsPane.getWidth());
 	    	    		t.play();
