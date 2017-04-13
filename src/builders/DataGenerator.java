@@ -18,8 +18,7 @@ import gamedata.compositiongen.Data;
 
 public class DataGenerator {
 
-	public static Data makeData(String dataType, Object ... args){
-		String data = dataType + "Data";
+	public static Data makeData(String data, Object ... args){
 		DataFactory factory = new DataFactory();
 		Data toRet = factory.make(data, args);
 		return toRet;

@@ -125,7 +125,6 @@ public class LeftPaneView extends StackPane{
 		if(myTowerView == null){
 			myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
 			myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
-			UIHelper.setBackgroundColor(myTowerView, CustomColors.ORANGE_700);
 		}
 		myDelegate.openView(myTowerView);
 	}
@@ -135,7 +134,6 @@ public class LeftPaneView extends StackPane{
 		if(myEnemyView == null){
 			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-			UIHelper.setBackgroundColor(myEnemyView, CustomColors.ORANGE_700);
 		}
 		myDelegate.openView(myEnemyView);
 
