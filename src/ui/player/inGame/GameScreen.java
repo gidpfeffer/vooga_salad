@@ -5,6 +5,7 @@ import java.util.Map;
 
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
+import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui.Preferences;
 import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
@@ -52,6 +54,10 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		
 		setup(uihandler.getShotOptions(), uihandler.getTowerOptions(), 
 				uihandler.getTroopOptions(), uihandler.getBaseOptions());
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), anchorPaneRoot);
+		ft.setFromValue(0.0);
+		ft.setToValue(1.0);
+		ft.play();
 	}
 
 	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
@@ -106,6 +112,9 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 				return false;
 			}
 			anchorPaneRoot.getChildren().remove(actorsMap.get(id).getActor());
+			//delete node from screen entirely
+			
+			
 			return true;
 		});
 		arg.keySet().stream().forEach(id -> {
