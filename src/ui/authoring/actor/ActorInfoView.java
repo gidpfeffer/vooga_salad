@@ -159,16 +159,8 @@ private void setupImageView(Image img) {
 	 */
 	
 	@Override
-	public void setData(Data oldData, Data newData) {
-		System.out.println("setData called from DataView");
-		myActorData.getMyData().remove(oldData);
-		myActorData.getMyData().add(newData);
-		for(Data d: myActorData.getMyData()){
-			if(d==null){
-				System.out.println("found null value");
-				myActorData.getMyData().remove(d);
-			}
-		}
+	public void setData(Data newData) {
+		myActorData.addData(newData);
 	}
 
 	@Override
@@ -193,7 +185,8 @@ private void setupImageView(Image img) {
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
-		this.myActorData.getMyData().add(d);
+		//this.myActorData.getMyData().add(d);
+		this.myActorData.addData(d);
 		addDataView(d);
 	}
 
