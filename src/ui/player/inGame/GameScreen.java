@@ -1,9 +1,6 @@
 package ui.player.inGame;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import gamedata.ActorData;
@@ -23,6 +20,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	private AnchorPane anchorPaneRoot;
 	private ImageViewPane ivp;
+	@SuppressWarnings("unused")
 	private Stage myStage;
 	private Scene myScene;
 	private UIHandler uihandler;

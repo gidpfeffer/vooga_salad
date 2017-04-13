@@ -199,9 +199,11 @@ public class OptionGenerator {
 	public static Map<String, Object>  getFields(Data data){
 		Class clzz = data.getClass();
 		Map<String, Object> fieldMap = new LinkedHashMap<String,Object>();
+
 		Field[] fields = FieldGenerator.getFields(clzz);
 		for(Field f: fields){
 			try {
+				f.setAccessible(true);
 				fieldMap.put(f.getName(), f.get(data));
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				// TODO Auto-generated catch block

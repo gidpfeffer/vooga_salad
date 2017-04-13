@@ -12,12 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.handlers.UIHandler;
 import ui.player.Login;
+
 
 /**
  * Creates a pane for settings elements such as returning back to main, changing volume, etc
@@ -94,6 +94,7 @@ public class SettingsPane {
 		backToLogin.setOnAction(e -> returnToMain());
 		helpPaneOptions.forEach(name -> helpLinks.add(new Hyperlink(name)));
 		VBox helpBox = new VBox(20);
+		//helpLinks.forEach(link -> link.setOnAction(value)); TODO: Enable return to main
 		helpLinks.forEach(link -> helpBox.getChildren().add(link));
 		helpBox.getChildren().add(backToLogin);
 		settings.getChildren().add(helpBox);
