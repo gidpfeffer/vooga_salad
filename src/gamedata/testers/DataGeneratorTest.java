@@ -14,6 +14,7 @@ public class DataGeneratorTest {
 
 	@Test
 	public void noErrors() {
+		assertNotEquals(DataGenerator.makeData("LimitedHealth"), null);
 		DataGenerator.makeData("LimitedHealth", 10.0);
 		DataGenerator.makeData("ShootTargetNear", 10.0, 10, BasicActorType.Tower, 10, 10.0);
 		DataGenerator.makeData("ShootTargetFar", 10.0, 10, BasicActorType.Tower, 10, 10.0);

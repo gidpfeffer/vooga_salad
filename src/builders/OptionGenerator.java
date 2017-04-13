@@ -200,6 +200,7 @@ public class OptionGenerator {
 		Class clzz = data.getClass();
 		Map<String, Object> fieldMap = new LinkedHashMap<String,Object>();
 		Field[] fields = FieldGenerator.getFields(clzz);
+		
 		for(Field f: fields){
 			try {
 				fieldMap.put(f.getName(), f.get(data));

@@ -1,3 +1,5 @@
 package gamedata.compositiongen;
 
-public interface Data{}
+public interface Data{
+	
+}
