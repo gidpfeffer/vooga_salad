@@ -1,6 +1,6 @@
-##Use Cases (Extra)
+## Use Cases (Extra)
 
-###Combination Use Case: Shoot Property
+### Combination Use Case: Shoot Property
 
 **1. User adds ShootTargetFar property to an actor in the authoring environment**
 
@@ -48,3 +48,15 @@ If the user defines no information for an ActorData, but still adds it to a game
 **10. The user adds a new category of actor.**
 
 When the user clicks the "+" button to add a new category, they are given the chance to choose a name (e.g., "Monster") for this new type of Actor. This new category is added to a list of BasicActorTypes, which can be addressed as a target type, an ally type, etc. In this authoring environment, this spawns a new editor dedicated to this category for creation of relevant actors.
+
+**11. A pathed actor "walks" off of the grid.**
+
+The actor will be processed depending on whether or not there is a base they should be dealing damage to before being filtered off of the grid. If so, the damage will be applied and the actor will be filtered off from the grid. 
+
+**12. A user pauses the game.**
+
+The controller will be given this information and halt the stepping of the actor grid. When the game is resumed, the grid will continue stepping through.
+
+**13. An enemy is given shoot capabilities.**
+
+An actordata is made which holds the actor ding the shooting as well as the type of projectile that the actor will be shooting. The type of projectile will contian information about the targeting of the projectile and it's damage.
