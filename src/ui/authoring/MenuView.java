@@ -23,16 +23,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import ui.Preferences;
-import ui.authoring.AuthoringView.PopDelegate;
 import ui.authoring.delegates.MenuDelegate;
 import ui.general.CustomColors;
 import ui.general.StackButton;
 import ui.general.ToggleSwitch;
 import ui.general.UIHelper;
-import ui.general.vbox.VBoxCustom;
 
 public class MenuView extends AnchorPane {
 
@@ -46,7 +45,7 @@ public class MenuView extends AnchorPane {
 	
 	private MenuDelegate myDelegate;
 	private PreferencesData myData;
-	private VBoxCustom myVBox;
+	private VBox myVBox;
 	
 	private Collection<String> mySwitchTitles;
 	
@@ -97,7 +96,7 @@ public class MenuView extends AnchorPane {
 	}
 
 	private void setupVBox() {
-		myVBox = new VBoxCustom(3);
+		myVBox = new VBox(3);
 		myVBox.setAlignment(Pos.CENTER_LEFT);
 		makeNumLivesField();
 		//myVBox.setBackground(UIHelper.backgroundForColor(CustomColors.INDIGO));

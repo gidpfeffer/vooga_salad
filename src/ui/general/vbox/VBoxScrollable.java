@@ -25,16 +25,16 @@ import util.Tuple;
  * @author TNK
  *
  */
-public class VBoxCustom extends VBox {
+public class VBoxScrollable extends VBox {
 	
 	private List<StackButton> myData = new ArrayList<>();
 	
 	private Insets itemInsets;
 	
-	public VBoxCustom(double vGap){
+	public VBoxScrollable(double vGap){
 		this(vGap, VBoxStyle.SPACED);
 	}
-	public VBoxCustom(double vGap, VBoxStyle style){
+	public VBoxScrollable(double vGap, VBoxStyle style){
 		super(vGap);
 		setStyle(style);
 	}

@@ -1,9 +1,11 @@
 package ui.authoring.actor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import builders.DataGenerator;
@@ -23,6 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import types.BasicActorType;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
@@ -40,6 +43,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private List<DataView> myDataViews = new ArrayList<DataView>();
 	private ImageView myActorImageView;
 	private ActorOptionPicker myOptionPickerView;
+	private Set<BasicActorType> myActorTypeOptions;
 
 
 	
@@ -110,7 +114,7 @@ private void setupImageView(Image img) {
 		}
 	}
 	private void addDataView(Data data){
-		DataView view = new DataView(data, this);
+		DataView view = new DataView(data, this, Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
 		myDataViews.add(view);
@@ -193,6 +197,10 @@ private void setupImageView(Image img) {
 	@Override
 	public void didClickClose() { 
 		UIHelper.removeNodeFromPaneWithAnimation(this, myOptionPickerView);
+	}
+
+	public void setActorTypeOptions(Set<BasicActorType> keySet) {
+		this.myActorTypeOptions = keySet;
 	}
 
 }

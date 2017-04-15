@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 
 import gamedata.ActorData;
 import gamedata.BasicData;
@@ -61,10 +62,10 @@ public class ActorEditorView extends AnchorPane {
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
 	private ActorInfoView myActorInfoView;
-	private String myActorType;
+	private BasicActorType myActorType;
 
 	// TODO get projectile data first
-	public ActorEditorView(PopViewDelegate delegate, String type) {
+	public ActorEditorView(PopViewDelegate delegate, BasicActorType type) {
 		super();
 		myDelegate = delegate;
 		myActorType = type;
@@ -221,6 +222,11 @@ public class ActorEditorView extends AnchorPane {
 	
 	public Collection<ActorData> getActorData() {
 		return	myActors.values();
+	}
+
+	public void setActorTypeOptions(Set<BasicActorType> keySet) {
+		this.myActorInfoView.setActorTypeOptions(keySet);
+		
 	}
 	
 	
