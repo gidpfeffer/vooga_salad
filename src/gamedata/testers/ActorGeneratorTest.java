@@ -32,13 +32,13 @@ public class ActorGeneratorTest {
 	public void basicGenerate() {
 		System.out.println("\n"
 				+ "Generate 1");
-		ActorData toTest = new ActorData(BasicActorType.Tower, new BasicData("Bob", "imagePath"));
+		ActorData toTest = new ActorData(new BasicActorType("Tower"), new BasicData("Bob", "imagePath"));
 		MainActor actor = ActorGenerator.makeActor(1, toTest);
 		assertNotEquals(actor, null);
 		int ID = actor.getID();
 		int option = actor.getMyOption();
 		BasicActorType type = actor.getType();
-		assertEquals(type, BasicActorType.Tower);
+		assertEquals(type, new BasicActorType("Tower"));
 		//assertEquals(ID, 0);//first item generated, should yield a 0
 		assertEquals(option, 1);
 		System.out.println(actor.getMyProperties().size());
@@ -46,14 +46,15 @@ public class ActorGeneratorTest {
 	
 	@Test
 	public void noErrors(){
+		
 		System.out.println("\nGenerate 2");
-		ActorData toTest2 = new ActorData(BasicActorType.Tower, new BasicData("Bob", "imagePath"));
-		toTest2.addData(new ShootTargetFarData(100.0, 50, BasicActorType.Base, 10, 10.0));
+		ActorData toTest2 = new ActorData(new BasicActorType("Troop"), new BasicData("Bob", "imagePath"));
+		toTest2.addData(new ShootTargetFarData(100.0, 50, new BasicActorType("Base"), 10, 10.0));
 		MainActor actor1 = ActorGenerator.makeActor(1, toTest2);
 		System.out.println(actor1.getMyProperties().size());
 		
 		System.out.println("\nGenerate 3");
-		ActorData toTest3 = new ActorData(BasicActorType.Troop, new BasicData("Billy", "imagePath"));
+		ActorData toTest3 = new ActorData(new BasicActorType("Troop"), new BasicData("Billy", "imagePath"));
 		
 		List<Grid2D> samplePath = new ArrayList<Grid2D>();
 		samplePath.add(new Coordinates(0,0.5));

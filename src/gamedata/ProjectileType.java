@@ -18,6 +18,10 @@ public class ProjectileType {
 	private boolean restrictive;
 	private double damage; 
 	
+	public ProjectileType(){
+		this("images/projectile_icon.png", 20, false, false);
+	}
+	
 	public ProjectileType(String image, double damage, boolean expl, boolean rest){
 		imagePath = image ; 
 		explosive = expl; 
