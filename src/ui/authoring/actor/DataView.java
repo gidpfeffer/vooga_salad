@@ -13,6 +13,8 @@ import gamedata.StringToFieldFactory;
 import gamedata.compositiongen.Data;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -91,15 +93,15 @@ public class DataView extends AnchorPane {
 		Class clazz = value.getClass();
 		if(clazz == double.class ||clazz == Integer.class ||clazz == Double.class ||clazz == int.class ){
 			addNumberField(nameKey, value);
-		}else if(clazz == BasicActorType.class){
-			addActorTypeField(nameKey, (BasicActorType)value);
+		}else if(clazz == String.class){
+			addActorTypeField(nameKey, (String) value);
 		}else{
 			
 		}
 		
 	}
 	
-	private void addActorTypeField(String nameKey, BasicActorType value) {
+	private void addActorTypeField(String nameKey, String value) {
 		AnchorPane content = new AnchorPane();
 
 		Label fieldName = new Label(nameKey + ":");
@@ -174,7 +176,7 @@ public class DataView extends AnchorPane {
      		setMyData(d); 
          }
 	}
-	private void didEditBasicActorType(BasicActorType newType, String varName){
+	private void didEditBasicActorType(String newType, String varName){
 		this.myFields.put(varName, 
 				newType
  				);
@@ -199,28 +201,28 @@ public class DataView extends AnchorPane {
 final class BasicActorPicker extends StackPane{
 	
 	private int pos = 0;
-	private List<BasicActorType> types = OptionGenerator.getActorTypes();
+	private List<String> actorTypes = OptionGenerator.getActorTypes();
 	private Label myLabel;
-	private ObjectProperty<BasicActorType> myType;
-	public BasicActorPicker(BasicActorType type){
+	private StringProperty myType;
+	public BasicActorPicker(String actorType){
 		super();
-		myType = new SimpleObjectProperty<BasicActorType>(type);
-		myLabel = new Label(type.name());
+		myType = new SimpleStringProperty(actorType);
+		myLabel = new Label(actorType);
 		myLabel.setFont(Preferences.FONT_SMALL);
 		myLabel.setAlignment(Pos.CENTER);
 		myLabel.setTextAlignment(TextAlignment.CENTER);
-		pos = types.indexOf(type);
+		pos = actorTypes.indexOf(actorType);
 		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> toggle());
 		this.getChildren().add(myLabel);
 	}
 	public void toggle(){
 		pos++;
-		if(pos==types.size())
+		if(pos==actorTypes.size())
 			pos = 0;
-		myType.set(types.get(pos));
-		myLabel.setText(myType.get().name());
+		myType.set(actorTypes.get(pos));
+		myLabel.setText(myType.get());
 	}
-	public ObjectProperty<BasicActorType> getBasicActorTypeProperty(){
+	public StringProperty getBasicActorTypeProperty(){
 		return myType;
 	}
 	

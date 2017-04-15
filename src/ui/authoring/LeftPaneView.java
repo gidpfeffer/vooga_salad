@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
@@ -17,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
@@ -26,6 +28,12 @@ import ui.general.CustomColors;
 import ui.general.UIHelper;
 
 public class LeftPaneView extends StackPane{
+	
+	private final Color[] COLOR_ROTATION = {
+			CustomColors.BLUE_800,
+			CustomColors.INDIGO,
+			CustomColors.GREEN_900
+	};
 	
 	private static final Map<String, String> DEFAULT_TOWERS;
 	static {
@@ -62,13 +70,14 @@ public class LeftPaneView extends StackPane{
 	
 	private PopViewDelegate myDelegate;
 	private VBox myLeftPaneFront; //contains the buttons
-	private StackPane myLeftPaneBack; //contains the views for buttons 
-	private ActorEditorView myTowerView;
-	private ActorEditorView myEnemyView;
+//	private ActorEditorView myTowerView;
+//	private ActorEditorView myEnemyView;
+//	private ActorEditorView myProjectileView;
+
+	private Map<String, ActorEditorView> actorTypeToView;
 
 	//private ProjectileEditorMain myProjectileView;
 
-	private ActorEditorView myProjectileView;
 
 	
 	public LeftPaneView(PopViewDelegate delegate){
@@ -79,46 +88,62 @@ public class LeftPaneView extends StackPane{
 	
 	private void setupViews() {
 		myLeftPaneFront = new VBox(16);
-		myLeftPaneBack = new StackPane();
 		myLeftPaneFront.setAlignment(Pos.CENTER);
 		StackPane.setMargin(myLeftPaneFront, new Insets(10));
-		setupLeftPaneButtons();
-		myLeftPaneBack.setScaleX(0);
-		this.getChildren().add(myLeftPaneBack);
 		this.getChildren().add(myLeftPaneFront);
-		initializeEnemyView();
-		
+		setupDefaultActors();
+
 	}
 	
-	private void setupLeftPaneButtons() {
-		StackPane enemy = UIHelper.buttonStack(e -> launchEnemyView(), 
-				Optional.of(labelForStackButton("Enemy Editor")), 
-				Optional.of(imageForStackButton("enemy_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane tower = UIHelper.buttonStack(e -> launchTowerView(), 
-				Optional.of(labelForStackButton("Tower Editor")), 
-				Optional.of(imageForStackButton("tower_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane splash = UIHelper.buttonStack(e -> System.out.println(e), 
-				Optional.of(labelForStackButton("Splash Editor")), 
-				Optional.of(imageForStackButton("splash_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane projectile = UIHelper.buttonStack(e -> launchProjectileView(), 
-				Optional.of(labelForStackButton("Projectile Editor")), 
-				Optional.of(imageForStackButton("projectile_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane game = UIHelper.buttonStack(e -> System.out.println("game"), 
-				Optional.of(labelForStackButton("Layout Editor")), 
-				Optional.of(imageForStackButton("layout_icon.png")), 
-				Pos.CENTER_RIGHT, true);
+	private void setupDefaultActors() {
+		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS);
+		addActor("Enemy","enemy_icon.png", DEFAULT_ENEMIES);
+		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
 		
-		enemy.setPrefHeight(56);
-		tower.setPrefHeight(56);
-		splash.setPrefHeight(56);
-		projectile.setPrefHeight(56);
-		game.setPrefHeight(56);
+	}
+
+//	private void setupLeftPaneButtons() {
+//		StackPane enemy = UIHelper.buttonStack(e -> launchEnemyView(), 
+//				Optional.of(labelForStackButton("Enemy Editor")), 
+//				Optional.of(imageForStackButton("enemy_icon.png")), 
+//				Pos.CENTER_RIGHT, true);
+//		StackPane tower = UIHelper.buttonStack(e -> launchTowerView(), 
+//				Optional.of(labelForStackButton("Tower Editor")), 
+//				Optional.of(imageForStackButton("tower_icon.png")), 
+//				Pos.CENTER_RIGHT, true);
+//		StackPane projectile = UIHelper.buttonStack(e -> launchProjectileView(), 
+//				Optional.of(labelForStackButton("Projectile Editor")), 
+//				Optional.of(imageForStackButton("projectile_icon.png")), 
+//				Pos.CENTER_RIGHT, true);
+////		StackPane game = UIHelper.buttonStack(e -> System.out.println("game"), 
+////				Optional.of(labelForStackButton("Layout Editor")), 
+////				Optional.of(imageForStackButton("layout_icon.png")), 
+////				Pos.CENTER_RIGHT, true);
+////		StackPane splash = UIHelper.buttonStack(e -> System.out.println(e), 
+////				Optional.of(labelForStackButton("Splash Editor")), 
+////				Optional.of(imageForStackButton("splash_icon.png")), 
+////				Pos.CENTER_RIGHT, true);
+//		
+//		enemy.setPrefHeight(56);
+//		tower.setPrefHeight(56);
+//		projectile.setPrefHeight(56);
+////		splash.setPrefHeight(56);
+////		game.setPrefHeight(56);
+//		
+//		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile);//, splash, game);
+//	}
+	private void addActor(String actorType, String imagePath, Map<String,String> defaultActors){
+		ActorEditorView view = new ActorEditorView(myDelegate, actorType);
+		view.setupDefaultActors(defaultActors);
+		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
+		this.actorTypeToView.put(actorType, view);
+		StackPane button = UIHelper.buttonStack(e -> myDelegate.openView(view), 
+				Optional.of(labelForStackButton(actorType)), 
+				Optional.of(imageForStackButton(imagePath)), 
+				Pos.CENTER_RIGHT, true);
+		button.setPrefHeight(56);
+		myLeftPaneFront.getChildren().add(button);
 		
-		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile, splash, game);
 	}
 	private Label labelForStackButton(String title){
 		Label lbl = new Label(title);
@@ -132,47 +157,18 @@ public class LeftPaneView extends StackPane{
 		iv.setPreserveRatio(true);
 		return iv;
 	}
-
-	private void launchTowerView() {
-		if(myTowerView == null){
-			myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
-			myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
+	
+	private void deleteActorType(String actorType){
+		//TODO
+		this.actorTypeToView.get(actorType);
+	}
+	
+	public Map<String, Collection<ActorData>> getActors(){
+		Map<String, Collection<ActorData>> map = new HashMap<String, Collection<ActorData>>();
+		for(Entry<String, ActorEditorView> entry : this.actorTypeToView.entrySet()){
+			map.put(entry.getKey(), entry.getValue().getActorData());
 		}
-		myDelegate.openView(myTowerView);
-	}
-
-	
-	private void launchEnemyView() {
-		myDelegate.openView(myEnemyView);
-	}
-	
-	private void initializeEnemyView(){
-		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
-		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-		UIHelper.setBackgroundColor(myEnemyView, CustomColors.INDIGO);
-	}
-
-
-	private void launchProjectileView(){
-		if(myProjectileView == null){
-			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Shot);
-			myProjectileView.setupDefaultTowers(DEFAULT_PROJECTILES);
-			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
-
-		}
-		myDelegate.openView(myProjectileView);
-	}
-
-	public Collection<ActorData> getEnemyData(){
-		return myEnemyView.getActorData();
-	}
-	
-	public Collection<ActorData> getTowerData(){
-		return myTowerView.getActorData();
-	}
-	
-	public Collection<ActorData> getProjectileData(){
-		return myProjectileView.getActorData();
+		return map;
 	}
 	
 }

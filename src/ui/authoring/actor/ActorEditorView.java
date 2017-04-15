@@ -61,10 +61,10 @@ public class ActorEditorView extends AnchorPane {
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
 	private ActorInfoView myActorInfoView;
-	private BasicActorType myActorType;
+	private String myActorType;
 
 	// TODO get projectile data first
-	public ActorEditorView(PopViewDelegate delegate, BasicActorType type) {
+	public ActorEditorView(PopViewDelegate delegate, String type) {
 		super();
 		myDelegate = delegate;
 		myActorType = type;
@@ -87,7 +87,7 @@ public class ActorEditorView extends AnchorPane {
 		ScrollPane rightSide = new ScrollPane();
 		setupSides(leftSide, rightSide);
 		setupVBox(leftSide);
-		setupAddTowerButton();
+		setupAddActorButton();
 		setupInfoView(rightSide);
 		setupBackButton();
 		
@@ -100,7 +100,7 @@ public class ActorEditorView extends AnchorPane {
 		scroll.setContent(myActorInfoView);
 	}
 	
-	private void setupAddTowerButton() {
+	private void setupAddActorButton() {
 		Label label = new Label("Add New");
 		label.setFont(Preferences.FONT_MEDIUM_BOLD);
 		label.setTextFill(CustomColors.BLUE_50);
@@ -156,20 +156,20 @@ public class ActorEditorView extends AnchorPane {
 		pane.setContent(myActorsView);
 	}
 
-	public void setupDefaultTowers(Map<String,String> mapOfNameToImagePath) {
+	public void setupDefaultActors(Map<String,String> mapOfNameToImagePath) {
 		for (Entry<String, String> entry : mapOfNameToImagePath.entrySet()) 
-			addTower(entry.getValue(), entry.getKey());
+			addActor(entry.getValue(), entry.getKey());
 	}
 
 	/**
-	 * This method adds a StackButton to the Vbox with the tower image
+	 * This method adds a StackButton to the Vbox with the actor image
 	 * and name. It also creates an ActorData and stores it in the 
 	 * myTowers map, binding the ActorData to the StackButton
 	 * 
-	 * @param imgPath the fil path of the image
-	 * @param name the name of the tower, can be changed later.
+	 * @param imgPath the String path of the image
+	 * @param name the name of the actor, can be changed later.
 	 */
-	private void addTower(String imgPath, String name){
+	private void addActor(String imgPath, String name){
 		Image img = new Image(imgPath);
 		ImageView imageView = new ImageView(img);
 		imageView.setFitWidth(40);
@@ -188,7 +188,7 @@ public class ActorEditorView extends AnchorPane {
 				Optional.of(field), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
-		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectTower(view));
+		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectActor(view));
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
@@ -207,11 +207,11 @@ public class ActorEditorView extends AnchorPane {
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if(selectedFile!= null){
 			String s = selectedFile.getName();
-			addTower(s,s.substring(0, s.indexOf(".")) );
+			addActor(s,s.substring(0, s.indexOf(".")) );
 		}
 	}
 	
-	private void selectTower(StackPane stackButton){
+	private void selectActor(StackPane stackButton){
 		myActorInfoView.setActorData(this.myActors.get(stackButton));
 	}
 	
@@ -220,10 +220,7 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	public Collection<ActorData> getActorData() {
-		
 		return	myActors.values();
-		
-		
 	}
 	
 	
