@@ -103,7 +103,7 @@ public class LeftPaneView extends StackPane{
 				Optional.of(labelForStackButton("Splash Editor")), 
 				Optional.of(imageForStackButton("splash_icon.png")), 
 				Pos.CENTER_RIGHT, true);
-		StackPane projectile = UIHelper.buttonStack(e -> System.out.println(),//launchProjectileView(), 
+		StackPane projectile = UIHelper.buttonStack(e -> launchProjectileView(), 
 				Optional.of(labelForStackButton("Projectile Editor")), 
 				Optional.of(imageForStackButton("projectile_icon.png")), 
 				Pos.CENTER_RIGHT, true);
@@ -143,21 +143,15 @@ public class LeftPaneView extends StackPane{
 
 	
 	private void launchEnemyView() {
-		if(myEnemyView == null){
-			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
-			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-			UIHelper.setBackgroundColor(myEnemyView, CustomColors.INDIGO);
-		}
 		myDelegate.openView(myEnemyView);
-
 	}
+	
 	private void initializeEnemyView(){
 		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
 		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
+		UIHelper.setBackgroundColor(myEnemyView, CustomColors.INDIGO);
 	}
-	public Collection<ActorData>getEnemyData(){
-		return myEnemyView.getActorData();
-	}
+
 
 	private void launchProjectileView(){
 		if(myProjectileView == null){
@@ -169,6 +163,16 @@ public class LeftPaneView extends StackPane{
 		myDelegate.openView(myProjectileView);
 	}
 
+	public Collection<ActorData> getEnemyData(){
+		return myEnemyView.getActorData();
+	}
 	
+	public Collection<ActorData> getTowerData(){
+		return myTowerView.getActorData();
+	}
+	
+	public Collection<ActorData> getProjectileData(){
+		return myProjectileView.getActorData();
+	}
 	
 }
