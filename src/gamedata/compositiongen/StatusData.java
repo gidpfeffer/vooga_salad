@@ -9,7 +9,7 @@ public abstract class StatusData implements Data{
 	StatusDuration myLife;
 
 	public StatusData(){
-		this(BasicActorType.Tower, new StatusDuration(0));
+		this(new BasicActorType("Troop"), new StatusDuration(0));
 	}
 	
 	public StatusData(BasicActorType type, StatusDuration statusDuration) {

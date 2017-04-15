@@ -60,3 +60,19 @@ The controller will be given this information and halt the stepping of the actor
 **13. An enemy is given shoot capabilities.**
 
 An actordata is made which holds the actor ding the shooting as well as the type of projectile that the actor will be shooting. The type of projectile will contian information about the targeting of the projectile and it's damage.
+
+**14. Enemy with set path is poisoned or confused.**
+
+The move property is deactivated according to a timer from the controller before it can keep polling a new position from the list of its path coordinates. 
+
+If the effect is to slow down the enemy at a specific rate, add into the list of path coordinates more coordnates with smaller increments (go through pair of points in the list and call path utility to get more increment points)
+
+**15. Enemy with free movement.** 
+
+A free movement property will take in the base coordinates and use path utility to get a list of random coordinates to go to but heading towards the base coordinates (assume user did not define any path in the authoring environment).
+
+**16. Enemy waves contain many types of enemy, each type may take on one or many paths**
+
+User specifies each wave with the types of enemy, the number of them, and one or more path options. If there is more than one path option, each enemy of that type will get assigned one randomly. 
+ 
+
