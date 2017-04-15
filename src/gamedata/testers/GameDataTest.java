@@ -6,13 +6,15 @@ import org.junit.Test;
 
 import builders.GameDataGenerator;
 import gamedata.GameData;
+import types.BasicActorType;
 
 public class GameDataTest {
 
 	@Test
 	public void testOptions() {
 		GameData game = GameDataGenerator.getSampleGame();
-		boolean check = game.getTowerOptions().size() == 0;
+		//There are multiple towers
+		boolean check = game.getAllOfType(new BasicActorType("Tower")).size() == 0;
 		assertNotEquals(check, true);
 	}
 	

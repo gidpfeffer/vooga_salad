@@ -41,7 +41,7 @@ public class ActorGenerator{
 		List<Data> properties = data.getMyData();
 		PropertyFactory propFactory = new PropertyFactory();
 		
-		toBuild.add(data.getActor()); //add type
+		toBuild.add(data.getType()); //add type
 		toBuild.add(option);
 		int index = IDGenerator.getNewID();
 		toBuild.add(index); //add ID
