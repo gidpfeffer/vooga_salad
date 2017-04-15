@@ -21,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -64,13 +65,42 @@ public class MenuView extends AnchorPane {
 	private void setupViews() {
 		setupBackButton();
 		setupVBox();
+		setupSaveLoadButtons();
 	}
 	
+	private void setupSaveLoadButtons() {
+		StackPane save = UIHelper.buttonStack(e-> saveButtonClicked(), Optional.of(getPlainLabel("Save")),
+				Optional.ofNullable(null), Pos.CENTER, false); //TODO remove
+		StackPane load = UIHelper.buttonStack(e-> saveButtonClicked(), Optional.of(getPlainLabel("Load")),
+				Optional.ofNullable(null), Pos.CENTER, false);
+		save.setPrefHeight(40);
+		load.setPrefHeight(40);
+		UIHelper.setBackgroundColor(load, Color.TRANSPARENT);
+		UIHelper.setBackgroundColor(save, Color.TRANSPARENT);
+		
+		Pane spacing = new Pane();
+		spacing.setPrefHeight(40);
+		myVBox.getChildren().addAll(spacing,load,save);
+		
+	}
+	private Label getPlainLabel(String s){
+		Label label = new Label(s);
+		label.setFont(Preferences.FONT_SMALL);
+		label.setTextFill(Color.WHITE);
+		return label;
+	}
+	private void saveButtonClicked(){
+		
+	}
+	private void loadButtonClicked(){
+		
+	}
+
 	private void setupVBox() {
 		myVBox = new VBoxCustom(3);
 		myVBox.setAlignment(Pos.CENTER_LEFT);
 		makeNumLivesField();
-		myVBox.setBackground(UIHelper.backgroundForColor(CustomColors.INDIGO));
+		//myVBox.setBackground(UIHelper.backgroundForColor(CustomColors.INDIGO));
 		mySwitchTitles.stream().forEach(t -> makeSwitchEntry(t));
 		double inset = 10.0;
 		setTopAnchor(myVBox, inset * 6);
@@ -115,13 +145,13 @@ public class MenuView extends AnchorPane {
 		Label label = new Label(title);
 		label.setFont(Preferences.FONT_SMALL_BOLD);
 		label.setTextFill(Color.WHITE);
-		label.setPrefWidth(150);
+		label.setPrefWidth(136);
 		label.setAlignment(Pos.CENTER_LEFT);
 		button.setIconNode(label);
 		button.setIconInsets(new Insets(8, 8, 8, 8));
 		button.setCenterNode(entry);
 		button.setCenterInsets(new Insets(8, 8, 8, 200));
-		button.setHeight(64);
+		button.setHeight(56);
 		return button;
 	}
 

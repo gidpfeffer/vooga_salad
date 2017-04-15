@@ -37,7 +37,7 @@ public class ActorData {
 	private final static double HEALTH = 1;
 	
 	private Map<String,Data> myData;
-	private BasicActorType actor;
+	private BasicActorType type;
 	private HealthData health;
 	private BasicData basic;
 	
@@ -76,7 +76,7 @@ public class ActorData {
 			addData(d);
 		}
 		this.health=health;
-		this.actor=actor;
+		this.type=actor;
 		this.basic=data;
 	}
 	
@@ -137,12 +137,12 @@ public class ActorData {
 		this.myData = data;
 	}
 
-	public BasicActorType getActor() {
-		return actor;
+	public BasicActorType getType() {
+		return type;
 	}
 
-	public void setActor(BasicActorType actor) {
-		this.actor = actor;
+	public void setType(BasicActorType actor) {
+		this.type = actor;
 	}
 
 	public BasicData getBasic() {

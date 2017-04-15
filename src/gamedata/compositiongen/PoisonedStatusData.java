@@ -1,5 +1,6 @@
 package gamedata.compositiongen;
 
+import gamedata.compositiongen.StatusData;
 import gameengine.actors.status.StatusDuration;
 import types.BasicActorType;
 

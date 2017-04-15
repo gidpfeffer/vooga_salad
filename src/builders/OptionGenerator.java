@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import gamedata.FieldData;
+import gamedata.GameData;
 import gamedata.compositiongen.Data;
 import gamedata.reflections.Reflections;
 import types.BasicActorType;
@@ -32,8 +33,18 @@ import util.general.PropertyUtil;
 public class OptionGenerator {
 	private static final String DATA_PATH = "gamedata.composition";
 	
-	public static List<BasicActorType> getActorTypes(){
-		return Arrays.asList(BasicActorType.values());
+	/**
+	 * REFACTORED! Now returns currently defined Strings for
+	 * categories (e.g., Monster, Troop)
+	 * 
+	 * @param data Current GameData
+	 * @return Current available categories
+	 */
+	public static List<String> getActorTypes(GameData data){
+		return data.getTypes()
+				.stream()
+				.map(p-> p.getType())
+				.collect(Collectors.toList());
 	}
 	
 	//TODO: Refactor
@@ -174,10 +185,6 @@ public class OptionGenerator {
 		return toRet;
 	}
 	
-	public static Map<String, List<FieldData>> getPropertyTypeWithArgsOfType(String superclass){
-		//TODO: Implement
-		return null;
-	}
 	
 	/**
 	 * Get the name (representing the type) of the current data object

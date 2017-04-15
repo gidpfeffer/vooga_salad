@@ -79,7 +79,7 @@ private void setActorData(Element root, Document doc){
 		ActorData current=myGameData.getOption(i);
 		Element actor=doc.createElement("Actor");
 		Element type=doc.createElement("type");
-		type.appendChild(doc.createTextNode(current.getActor().name()));
+		type.appendChild(doc.createTextNode(current.getType().name()));
 		BasicData currentBasic=current.getBasic();
 		Element name=doc.createElement("Name");
 		name.appendChild(doc.createTextNode(currentBasic.getName()));

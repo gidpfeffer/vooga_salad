@@ -173,7 +173,7 @@ private void setupImageView(Image img) {
 		sc.play();
 		sc.setOnFinished(e -> {
 			this.myGridPane.getChildren().remove(dataView);
-			this.myActorData.getMyData().remove(dataView.getData());
+			this.myActorData.removeData(dataView.getData());
 			this.myDataViews.remove(dataView);
 			});
 	}

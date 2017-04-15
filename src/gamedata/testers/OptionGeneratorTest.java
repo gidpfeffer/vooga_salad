@@ -11,9 +11,11 @@ import org.junit.Test;
 import builders.DataGenerator;
 import builders.OptionGenerator;
 import gamedata.FieldData;
+import gamedata.GameData;
 import gamedata.compositiongen.Data;
+import types.BasicActorType;
 
-import java.lang.reflect.Field;
+//import java.lang.reflect.Field;
 
 /**
  * Test OptionGenerator
@@ -24,14 +26,19 @@ import java.lang.reflect.Field;
 public class OptionGeneratorTest {
 
 	@Test
-	public void correctActors() {
-		//TODO: Implement
+	public void correctChoices() {
+		GameData data = new GameData();
+		data.addType("Bear");
+		data.addType("Monster");
+		data.addType("HI");
+		assertEquals(data.getTypes().size(), 3);
+		assertEquals(data.getTypes().get(0), new BasicActorType("Bear"));
 	}
 	
 	@Test
 	public void correctProperties(){
 		List<String> properties = OptionGenerator.getPropertyTypes();
-		assertEquals(properties.get(0), "AfflictStatus");
+		assertEquals(properties.get(0), "BaseDamage");
 		System.out.println("Properties");
 		Arrays.asList(properties).stream().forEach(p -> System.out.println(p));
 	}
@@ -51,7 +58,7 @@ public class OptionGeneratorTest {
 	@Test
 	public void correctTypeProperties(){
 		List<String> properties = OptionGenerator.getGeneralPropertyTypes();
-		assertEquals(properties.get(0), "Status");
+		assertEquals(properties.get(0), "Damageable");
 		System.out.println("General Properties");
 		Arrays.asList(properties).stream().forEach(p -> System.out.println(p));
 	}

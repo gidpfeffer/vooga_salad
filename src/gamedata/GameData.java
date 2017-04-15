@@ -1,5 +1,6 @@
 package gamedata;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +52,10 @@ public class GameData {
 	//Path information
 	PathData myPaths;
 	
+	List<BasicActorType> types;
+	
 	//Possible projectiles
-	ProjectileData myProjectiles;
+	//ProjectileData myProjectiles;
 	
 	//Information about how the game is visually displayed
 	DisplayData display;
@@ -65,9 +68,10 @@ public class GameData {
 	public GameData(){
 		levels=new HashMap<Integer,LevelData>();
 		myPaths = new PathData();
-		myProjectiles = new ProjectileData();
+		//myProjectiles = new ProjectileData();
 		display = new DisplayData();
 		pieces = new HashMap<Integer, ActorData>();
+		types = new ArrayList<BasicActorType>();
 		numOptions = 0;
 	}
 	
@@ -79,21 +83,21 @@ public class GameData {
 		return pieces;
 	}
 	
-	public Map<Integer,ActorData> getTowerOptions(){
-		return getOptionType(BasicActorType.Tower);
+	/**
+	 * Get all option matching to a certain type (Troop, Tower, etc.) of
+	 * Actor. 
+	 * @param type Type to match
+	 * @return All Actors available matching this type
+	 */
+	public Map<Integer,ActorData> getAllOfType(BasicActorType type){
+		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
+		pieces.forEach((key, value) 
+				-> {if (value.getType().equals(type)) { 
+					toRet.put(key,value);
+					}});
+		return toRet;
 	}
 	
-	public Map<Integer,ActorData> getTroopOptions(){
-		return getOptionType(BasicActorType.Troop);
-	}
-	
-	public Map<Integer,ActorData> getBaseOptions(){
-		return getOptionType(BasicActorType.Base);
-	}
-	
-	public Map<Integer,ActorData> getShotOptions(){
-		return getOptionType(BasicActorType.Shot);
-	}
 	
 	
 	/**
@@ -112,11 +116,6 @@ public class GameData {
 	
 	
 	
-	
-	
-	
-	
-	
 	/**
 	 * This is implementation for use in the Authoring Environment
 	 * 
@@ -129,9 +128,20 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
-	
 	public void add(ActorData data){
 		pieces.put(numOptions++, data);
+	}
+	
+	/**
+	 * Add another category type -- defined by user.
+	 * Example: addType("Monster")
+	 * @param newCategory New category
+	 * @return BasicActorType Created category
+	 */
+	public BasicActorType addType(String newCategory){
+		BasicActorType toRet = new BasicActorType(newCategory);
+		types.add(toRet);
+		return toRet;
 	}
 	
 	/**
@@ -168,35 +178,6 @@ public class GameData {
 		return myPaths.getMyPaths();
 	}
 	
-	/**
-	 * Returns Integers corresponding to a path number, matched to the 
-	 * Path that is defined by that number.
-	 * 
-	 * @return Map of Integers mapped to Paths
-	 */
-	public Map<Integer, ProjectileType> getProjectileOptions(){
-		return myProjectiles.getMyProjectiles();
-	}
-	public void setProjectileOptions(ProjectileData projectiles){
-		myProjectiles=projectiles;
-	}
-	
-	
-	
-	/**
-	 * Get all option matching to a certain type (Troop, Tower, etc.) of
-	 * Actor. 
-	 * @param type Type to match
-	 * @return All Actors available matching this type
-	 */
-	private Map<Integer,ActorData> getOptionType(BasicActorType type){
-		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
-		pieces.forEach((key, value) 
-				-> {if (value.getActor().equals(type)) { 
-					toRet.put(key,value);
-					}});
-		return toRet;
-	}
 	
 	
 	//Getters and setters
@@ -226,14 +207,14 @@ public class GameData {
 		this.myPaths = myPaths;
 	}
 
-
-	public ProjectileData getMyProjectiles() {
-		return myProjectiles;
+	public List<BasicActorType> getTypes() {
+		return types;
 	}
 
-	public void setMyProjectiles(ProjectileData myProjectiles) {
-		this.myProjectiles = myProjectiles;
+	public void setTypes(List<BasicActorType> types) {
+		this.types = types;
 	}
-	
+
+
 	
 }
