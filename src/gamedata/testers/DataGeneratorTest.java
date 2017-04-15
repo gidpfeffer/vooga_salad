@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import builders.DataGenerator;
-import gamedata.composition.AfflictStatusData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 import types.BasicActorType;
@@ -18,8 +17,8 @@ public class DataGeneratorTest {
 		System.out.println(DataGenerator.makeData("LimitedHealthData"));
 		assertNotEquals(DataGenerator.makeData("MoveWithSetPathData"), null);
 		DataGenerator.makeData("LimitedHealthData", 10.0);
-		DataGenerator.makeData("ShootTargetNearData", 10.0, 10, BasicActorType.Tower, 10, 10.0);
-		DataGenerator.makeData("ShootTargetFarData", 10.0, 10, BasicActorType.Tower, 10, 10.0);
+		DataGenerator.makeData("ShootTargetNearData", 10.0, 10, new BasicActorType("Tower"), 10, 10.0);
+		DataGenerator.makeData("ShootTargetFarData", 10.0, 10, new BasicActorType("Tower"), 10, 10.0);
 	}
 	
 	public void testSavedData(){
@@ -27,9 +26,9 @@ public class DataGeneratorTest {
 		LimitedHealthData health = (LimitedHealthData)data;
 		assertEquals(10.0, health.getStartHealth());
 		
-		Data data1 = DataGenerator.makeData("AfflictStatusData");
+		/*Data data1 = DataGenerator.makeData("AfflictStatusData");
 		AfflictStatusData status = (AfflictStatusData)data1;
-		assertNotEquals(status, null);
+		assertNotEquals(status, null);*/
 	}
 
 }

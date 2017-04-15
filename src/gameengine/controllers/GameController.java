@@ -92,7 +92,7 @@ public class GameController {
 
 			@Override
 			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
-				if (myGameData.getOption(currentOption).getActor().equals(myGameData.getOption(newOption).getActor())) {
+				if (myGameData.getOption(currentOption).getType().equals(myGameData.getOption(newOption).getType())) {
 					Grid2D location = myGrid.getLocationOf(id);
 					addGameObject(newOption,location.getX(),location.getY());
 					deleteGameObject(id);

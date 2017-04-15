@@ -9,6 +9,7 @@ public class Delay {
 
 	public Delay(int actionsPerStep) {
 		actionDelay = actionsPerStep * delayMod;
+		steps = 0;
 	}
 
 	public boolean delayAction() {
