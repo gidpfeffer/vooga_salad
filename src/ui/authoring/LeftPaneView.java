@@ -52,7 +52,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		map.put("Jigglypuff", path + "jigglypuff.png");
 		DEFAULT_TOWERS = map;
 	}
-	private static final Map<String, String> DEFAULT_ENEMIES;
+	private static final Map<String, String> DEFAULT_TROOPS;
 	static {
 		String path = "balloons/";
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -60,7 +60,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		map.put("Green", path + "green.png");
 		map.put("Blue", path + "blue.png");
 
-		DEFAULT_ENEMIES = map;
+		DEFAULT_TROOPS = map;
 	}
 	private static final Map<String, String> DEFAULT_PROJECTILES;
 	static {
@@ -141,7 +141,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 
 	private void setupDefaultActors() {
 		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
-		addActor("Enemy","enemy_icon.png", DEFAULT_ENEMIES);
+		addActor("Troop","enemy_icon.png", DEFAULT_TROOPS);
 		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
 		
 	}
