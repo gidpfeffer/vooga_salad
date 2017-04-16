@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.handlers.UIHandler;
-import ui.player.Login;
+import ui.player.login.Login;
 
 
 /**

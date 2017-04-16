@@ -23,8 +23,6 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 
 	private AnchorPane anchorPaneRoot;
 	private ImageViewPane ivp;
-	
-	@SuppressWarnings("unused")
 	private Stage myStage;
 	private Scene myScene;
 	private UIHandler uihandler;
@@ -52,18 +50,16 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 		this.uihandler = uihandler;
 		myStage = stage;
 		
-		setup(uihandler.getShotOptions(), uihandler.getTowerOptions(), 
-				uihandler.getTroopOptions(), uihandler.getBaseOptions());
+		setup();
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), anchorPaneRoot);
 		ft.setFromValue(0.0);
 		ft.setToValue(1.0);
 		ft.play();
 	}
 
-	private void setup(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
-			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
+	private void setup() {
 		setupBackground();
-		setupRight(shots, towers, troops, bases);
+		setupRight();
 		setupLeft();
 		setupHUD();
 	}
@@ -81,9 +77,8 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	}
 	
 	
-	private void setupRight(Map<Integer, ActorData> shots, Map<Integer, ActorData> towers,
-			Map<Integer, ActorData> troops, Map<Integer, ActorData> bases) {
-		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, anchorPaneRoot, towers, shots, troops, bases, ivp);
+	private void setupRight() {
+		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, anchorPaneRoot, uihandler.getOptions(), ivp);
 		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 10.0);
 		anchorPaneRoot.getChildren().add(sidePanel.getSidePane());
 		sidePanel.addInternalPanesToRoot();

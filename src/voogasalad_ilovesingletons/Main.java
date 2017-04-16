@@ -3,7 +3,7 @@ package voogasalad_ilovesingletons;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import ui.player.Login;
+import ui.player.login.Login;
 
 public class Main extends Application{
 

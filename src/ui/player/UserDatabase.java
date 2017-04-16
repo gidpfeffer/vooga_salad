@@ -8,6 +8,11 @@ import com.thoughtworks.xstream.XStream;
 public class UserDatabase {
 	
 	private Collection<User> database = new ArrayList<User>();
+	private Passwords passwords = new Passwords();
+	
+	public Passwords getPasswords(){
+		return passwords;
+	}
 	
 	public Collection<User> getDatabase(){
 		return database;
