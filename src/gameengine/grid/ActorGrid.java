@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -27,23 +28,32 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private Coordinates limits;
 	private Collection<SettableActorLocator> actors;
 	private Function<Integer, Actor> actorMaker;
+	private Stack<SettableActorLocator> newActors;
 	
 	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
 		super();
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
+		newActors = new Stack<>();
 		this.actorMaker = actorMaker;
 	}
 
 	@Override
 	public void step() {
 		actors.forEach(a -> a.getActor().act(this));
+		addNewActors();
 		actors = filter(actors, a -> a.getActor().isActive());
 		myMap = Collections.unmodifiableMap(actors.stream()
 				.collect(Collectors.toMap(a -> a.getActor().getID(), 
 						a -> new DisplayInfo(a.getLocation(), 
 								a.getActor().getPercentHealth(), a.getActor().getMyOption()))));
 		notifyObservers();
+	}
+	
+	private void addNewActors(){
+		while(!newActors.isEmpty()){
+			actors.add(newActors.pop());
+		}
 	}
 	
 	private <T> Collection<T> filter(Collection<T> items, Predicate<T> predicate){
@@ -137,7 +147,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	
 	private void addActor(Actor newActor, double startX, double startY){
 		SettableActorLocator movingActor = new ActorLocator(new Coordinates(startX, startY), newActor);
-		actors.add(movingActor);
+		newActors.push(movingActor);
 	}
 
 	@Override

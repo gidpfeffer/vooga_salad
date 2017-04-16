@@ -17,11 +17,17 @@ These will be saved in the form of a ShootTargetFarData in an ActorData represen
 
 The ShootTargetFarData object to be removed will be passed into the ActorData. The actor data will iterate through its current data objects and remove the matching one, if it is present. The memory of this data object will be forgotten within the ActorData.
 
-**3. User has added ShootTargetFar property to an actor in the game environment and now adds that actor in the game player (MOSES)**
+**3. User has added ShootTargetFar property to an actor in the game environment and now adds that actor in the game player (MOSES) **
+
+When the user places the actor on the board, this actually instantiates the Actor via the ActorGenerator. As a result, the ShootTargetFarData object is passed to the PropertyFactory to create a ShootTargetFarProperty. This gives the Actor a property with shooting behavior (called via the action method).
 
 **4. User presses play, the actor's target is NOT in range (MOSES) **
 
+The Actor will "search" for a target and find none within range (a variable within property). As a result, it will do nothing.
+
 **5. Target moves into range (MOSES)**
+
+The Actor will "search" for a target and find one within range. It will then spawn a projectile within its action method and "send" that towards its target. This projectile actually becomes an actor itself. These projectiles will be spawned periodically, depending on the defined duration, until the target moves from within range. 
 
 ###Combination Use Case: Enemy waves
 
@@ -98,3 +104,12 @@ Using authoring environment, user can create new actor options by specifying inf
 **23. Creating/Designing a level**
 
 In the authoring environment, user can specify their preferences (preferenceData), and design levels by creating enemy waves, which will be made into enemyWaveData objects and stored in LevelData objects that LevelController will use to spawn the enemy waves during gameplay.
+
+**24. Saving an authored game**
+
+The user has created a game, adding new Actors (in the form of ActorDatas), building levels (LevelDatas) and delineating settings. This all must be saved! This information is held in a GameData object, which is serialized. All of the components (e.g., fields in the data items) are stored for later reconstruction.
+
+**25. Loading an authored game**
+
+The user wants to load a previously authored game. To do this, they press the load button in the side menu to pull up the file directory. They choose their desired folder to restore, and open it. This file is then sent through the XMLParser and used to reconstruct the original GameData. This information is then dispersed to the components of the authoring environment (e.g., actors are put in the editors, all of the categories are laid out).
+

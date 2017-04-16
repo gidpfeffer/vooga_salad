@@ -56,5 +56,4 @@ public class Authenticator {
 		ImageView imageView = new ImageView(new Image(url));
 		return imageView;
 	}
-
 }
