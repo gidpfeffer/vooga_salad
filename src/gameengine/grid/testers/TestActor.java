@@ -11,10 +11,12 @@ import types.BasicActorType;
 public class TestActor implements Actor{
 	private boolean alive;
 	private int ID;
+	private BasicActorType type;
 	
 	public TestActor(int ID){
 		alive = true;
 		this.ID = ID;
+		type = new BasicActorType("troop");
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class TestActor implements Actor{
 
 	@Override
 	public BasicActorType getType() {
-		return BasicActorType.Troop;
+		return type;
 	}
 
 	@Override
