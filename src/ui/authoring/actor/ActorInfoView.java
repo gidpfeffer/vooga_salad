@@ -190,6 +190,7 @@ private void setupImageView(Image img) {
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
 		//this.myActorData.getMyData().add(d);
+		System.out.println("makeData: " + d + "dataName: "+ dataName);
 		this.myActorData.addData(d);
 		addDataView(d);
 	}
