@@ -56,7 +56,7 @@ public class PathFinder  {
 		
 		System.out.println("**********");
 		
-		path.forEach(e -> System.out.println(e.asString()));
+		//path.forEach(e -> System.out.println(e.asString()));
 		
 	}
 

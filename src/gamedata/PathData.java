@@ -69,5 +69,14 @@ public class PathData {
 		return myPaths.remove(myPaths.size() - 1);
 	}
 
+	/**
+	 * get all base locations in all path, assuming that base is placed at the end of every enemy's path
+	 * @return
+	 */
+	public List<Grid2D> getBaseLocations(){
+		List<Grid2D> allBaseLocations = new ArrayList<Grid2D>();
+		myPaths.values().forEach(p -> allBaseLocations.add(p.get(p.size()-1)));
+		return allBaseLocations;
+	}
 }
 
