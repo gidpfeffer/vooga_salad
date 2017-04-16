@@ -33,7 +33,7 @@ public abstract class DataEntryGrid {
 	private void setGridProperties() {
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(25, 25, 25, 25));
+		//grid.setPadding(new Insets(25, 25, 25, 25));
 	}
 	
 	public void addToGrid(Map<Text, TextField> entries) {

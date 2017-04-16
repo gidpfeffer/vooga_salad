@@ -11,7 +11,20 @@ public class Passwords {
 
 	private Map<String, String> database = new HashMap<>();
 	public static final String SALT = "anngelyque";
+	
 
+	public String getUserPassword(String user){
+		if (existingUserCheck(user)) return database.get(user);
+		return null;
+	}
+	
+	public void changePassword(String user, String newPassword) {
+		if(existingUserCheck(user)) {
+			database.remove(user);
+			signup(user, newPassword);
+		}
+	}
+	
 	public Boolean existingUserCheck(String username) {
 		return database.containsKey(username);
 	}
