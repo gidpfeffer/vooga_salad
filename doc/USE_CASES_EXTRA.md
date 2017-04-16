@@ -86,3 +86,15 @@ As the map updates, the object will be removed from the screen. If object was in
 **19. Adding new objects while the game is playing.**
 
 User must select preferred object, drag and drop onto the screen, and then click secondarily to place the object into the back end grid.
+
+**21. Removing objects during gameplay**
+
+User drags the object off screen, removing it from both front end display and back end grid.
+
+**22. Creating a new actor**
+
+Using authoring environment, user can create new actor options by specifying information such as imagepath, and basic actor type. An XML file storing this info will be created and used to create an ActorData object, which can be used to instantiate this actor. 
+
+**23. Creating/Designing a level**
+
+In the authoring environment, user can specify their preferences (preferenceData), and design levels by creating enemy waves, which will be made into enemyWaveData objects and stored in LevelData objects that LevelController will use to spawn the enemy waves during gameplay.
