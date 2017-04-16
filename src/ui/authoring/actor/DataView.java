@@ -165,25 +165,36 @@ public class DataView extends AnchorPane {
 		 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
 			 field.setText(oldValue);
          }else{
-        	Object val = StringToFieldFactory.getObject(newValue, myFields.get(varName).getClass());
+        	 System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+        	 System.out.println("\tADDING NEW DATA TO ACTORDATA");
      		this.myFields.put(varName, 
-     				val
+     				StringToFieldFactory.getObject(newValue, myFields.get(varName).getClass())
      				);
      		
      		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
-     		System.out.println("className: "+myDataClassName +"\tfieldsClass: "+myFields.values().toArray().getClass());
-     		for(Object o : myFields.values()){
-     			System.out.println("value:" + o + "\ttype:"+o.getClass());
-     		}
+     		printMyData();
      		setMyData(d); 
+     		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
          }
 	}
 	private void didEditBasicActorType(BasicActorType basicActorType, String varName){
+   	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+   	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
 		this.myFields.put(varName, 
 				basicActorType
  				);
 		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+ 		printMyData();
  		setMyData(d); 
+ 		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
+
+	}
+	
+	private void printMyData(){
+		System.out.println("className: "+myDataClassName +"\tfieldsClass: ");
+ 		for(Object o : myFields.values()){
+ 			System.out.println("\t-value:" + o + "\ttype:"+o.getClass().getSimpleName());
+ 		}
 	}
 
 	public Data getMyData() {
@@ -200,33 +211,4 @@ public class DataView extends AnchorPane {
 	
 }
 
-final class BasicActorPicker extends StackPane{
-	
-	private int pos = 0;
-	private List<BasicActorType> actorTypes;
-	private Label myLabel;
-	private ObjectProperty<BasicActorType> myType;
-	public BasicActorPicker(BasicActorType actorType, List<BasicActorType> actorTypes){
-		super();
-		this.actorTypes = actorTypes;
-		this.myType = new SimpleObjectProperty<BasicActorType>(actorType);
-		myLabel = new Label(actorType.getType());
-		myLabel.setFont(Preferences.FONT_SMALL);
-		myLabel.setAlignment(Pos.CENTER);
-		myLabel.setTextAlignment(TextAlignment.CENTER);
-		pos = actorTypes.indexOf(actorType);
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> toggle());
-		this.getChildren().add(myLabel);
-	}
-	public void toggle(){
-		pos++;
-		if(pos==actorTypes.size())
-			pos = 0;
-		myType.set(actorTypes.get(pos));
-		myLabel.setText(myType.get().getType());
-	}
-	public ObjectProperty<BasicActorType> getBasicActorTypeProperty(){
-		return myType;
-	}
-	
-}
+

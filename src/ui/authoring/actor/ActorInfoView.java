@@ -42,7 +42,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private ActorData myActorData;
 	private List<DataView> myDataViews = new ArrayList<DataView>();
 	private ImageView myActorImageView;
-	private ActorOptionPicker myOptionPickerView;
+	private DataSelectionView myOptionPickerView;
 	private Set<BasicActorType> myActorTypeOptions;
 
 
@@ -142,7 +142,7 @@ private void setupImageView(Image img) {
 	
 	private void didClickNewClassButton(){
 		if(myOptionPickerView == null)
-			myOptionPickerView = new ActorOptionPicker(this);
+			myOptionPickerView = new DataSelectionView(this);
 		AnchorPane.setBottomAnchor(myOptionPickerView, 8.0);
 		AnchorPane.setTopAnchor(myOptionPickerView, 8.0);
 		AnchorPane.setRightAnchor(myOptionPickerView, 8.0);
@@ -169,7 +169,7 @@ private void setupImageView(Image img) {
 
 	@Override
 	public void didClickDelete(DataView dataView) {
-
+		
 		ScaleTransition sc = new ScaleTransition(Duration.seconds(0.3));
 		sc.setNode(dataView);
 		sc.setToX(0);

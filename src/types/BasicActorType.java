@@ -35,4 +35,8 @@ public class BasicActorType {
 		return b.getType().equals(this.getType());
 	}
 	
+	public String toString(){
+		return this.getType();
+	}
+	
 }

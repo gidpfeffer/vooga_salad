@@ -20,14 +20,14 @@ import ui.Preferences;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
-public class ActorOptionPicker extends GridPane{
+public class DataSelectionView extends GridPane{
 	
 	private final int GRID_X_DIM = 3;
 	
 	private OptionPickerDelegate myDelegate;
 	private static Map<String, List<FieldData>> OPTIONS = OptionGenerator.getPropertyTypesWithArgs();
 	
-	public ActorOptionPicker(OptionPickerDelegate delegate){
+	public DataSelectionView(OptionPickerDelegate delegate){
 		super();
 		myDelegate = delegate;
 		setupViews();
