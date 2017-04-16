@@ -1,5 +1,6 @@
 package ui.authoring.actor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -91,18 +92,55 @@ public class DataView extends AnchorPane {
 		this.getChildren().addAll(name,vbox,remove);		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void addField(String nameKey, Object value){
-		Class clazz = value.getClass();
+		Class<?> clazz = value.getClass();
+		System.out.println(clazz);
 		if(clazz == double.class ||clazz == Integer.class ||clazz == Double.class ||clazz == int.class ){
 			addNumberField(nameKey, value);
 		}else if(clazz == BasicActorType.class){
 			addActorTypeField(nameKey, (BasicActorType) value);
-		}else{
+		}else if(clazz == List.class || clazz == ArrayList.class){
+			addActorTypeList(nameKey,  (List<BasicActorType>) value);
+		}
+		else{
 			
 		}
 		
 	}
+
 	
+	private void addActorTypeList(String nameKey, List<BasicActorType> value) {
+		AnchorPane content = new AnchorPane();
+
+		Label fieldName = new Label(nameKey);
+		fieldName.setTextFill(CustomColors.BLUE_800);
+		fieldName.setAlignment(Pos.CENTER);
+		AnchorPane.setLeftAnchor(fieldName, 4.0);
+		AnchorPane.setTopAnchor(fieldName, 4.0);
+		AnchorPane.setRightAnchor(fieldName, 4.0);
+		fieldName.setPrefHeight(28);
+		content.getChildren().add(fieldName);
+		
+		ActorTypeListSelectionView input = new ActorTypeListSelectionView(this.myActorTypes);
+		AnchorPane.setTopAnchor(input, 28.0);
+		AnchorPane.setLeftAnchor(input, 4.0);
+		AnchorPane.setBottomAnchor(input, 4.0);
+		AnchorPane.setRightAnchor(input, 4.0);
+		content.getChildren().add(input);
+		input.getBasicActorTypeList().addListener(e -> {
+			System.out.println("toggled basic actor field input thing");
+			didEditBasicActorTypeList(input.getBasicActorTypeList().get(),nameKey);
+			
+		});
+		
+		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
+		VBox.setMargin(content, new Insets(8.0));
+		vbox.getChildren().add(content);
+		
+	}
+
+
 	private void addActorTypeField(String nameKey, BasicActorType value) {
 		AnchorPane content = new AnchorPane();
 
@@ -165,8 +203,8 @@ public class DataView extends AnchorPane {
 		 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
 			 field.setText(oldValue);
          }else{
-        	 System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
-        	 System.out.println("\tADDING NEW DATA TO ACTORDATA");
+        	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+        	System.out.println("\tADDING NEW DATA TO ACTORDATA");
      		this.myFields.put(varName, 
      				StringToFieldFactory.getObject(newValue, myFields.get(varName).getClass())
      				);
@@ -188,6 +226,19 @@ public class DataView extends AnchorPane {
  		setMyData(d); 
  		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
 
+	}
+
+	private void didEditBasicActorTypeList(List<BasicActorType> list, String nameKey) {
+   	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+   	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
+		this.myFields.put(nameKey, 
+				list
+ 				);
+		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+ 		printMyData();
+ 		setMyData(d); 
+ 		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
+		
 	}
 	
 	private void printMyData(){

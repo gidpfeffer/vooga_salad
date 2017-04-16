@@ -301,12 +301,16 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	@Override
-	public void didPressLoadButton(GameData gameData) {
-		loadGameData(gameData);
+	public void didPressLoadButton() {
+		GameData data = getGameData();
+		//loadGameData(gameData);
 		
 	}
 
-
+	private GameData getGameData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void didPressSaveButton() {

@@ -102,7 +102,7 @@ private void setupImageView(Image img) {
 		this.getChildren().addAll(myGridPane, myUpgradePickerView);
 	} 
 	public void setActorData(ActorData actorData){
-		System.out.println(actorData.getName() + " : size=" + actorData.getMyData().size());
+		System.out.println("ActorInfoView.setActorData: "+actorData.getName() + " : size=" + actorData.getMyData().size());
 		myActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
@@ -118,7 +118,6 @@ private void setupImageView(Image img) {
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
 		myDataViews.add(view);
-		System.out.println("col:"+col+" \trow:"+row);
 		double inset = 12;
 		view.prefWidthProperty().bind(this.widthProperty().divide(3).add(-inset*(GRID_X_DIM + 1)/GRID_X_DIM));
 		view.prefHeightProperty().bind(view.prefWidthProperty());
@@ -189,8 +188,6 @@ private void setupImageView(Image img) {
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
-		//this.myActorData.getMyData().add(d);
-		System.out.println("makeData: " + d + "dataName: "+ dataName);
 		this.myActorData.addData(d);
 		addDataView(d);
 	}

@@ -10,7 +10,7 @@ import gamedata.GameData;
 public interface MenuDelegate {
 	
 	public abstract void didPressBackButton();
-	public abstract void didPressLoadButton(GameData gameData);
+	public abstract void didPressLoadButton();
 	public abstract void didPressSaveButton();
 	
 }
