@@ -15,11 +15,11 @@ These will be saved in the form of a ShootTargetFarData in an ActorData represen
 
 **2. User subsequently removes ShootTargetFar property from that actor**
 
-The ShootTargetFarData object to be removed will be passed into the ActorData. The actor data will iterate through its current data objects and remove the matching one, if it is present. The memory of this data object will be “forgotten” within the ActorData.
+The ShootTargetFarData object to be removed will be passed into the ActorData. The actor data will iterate through its current data objects and remove the matching one, if it is present. The memory of this data object will be forgotten within the ActorData.
 
 **3. User has added ShootTargetFar property to an actor in the game environment and now adds that actor in the game player (MOSES)**
 
-**4. User presses play, the actor’s target is NOT in range (MOSES) **
+**4. User presses play, the actor's target is NOT in range (MOSES) **
 
 **5. Target moves into range (MOSES)**
 
@@ -27,18 +27,18 @@ The ShootTargetFarData object to be removed will be passed into the ActorData. T
 
 **6. User tries to add more than one of the same type of property to an actor**
 
-In future implementations, we plan to have error checking for the types of properties added to an Actor. For instance, it doesn’t make all that much sense to have an Actor have two types of health (E.g., LimitedHealth and ImmuneHealth). We will group properties/datas so that actors can only be given one of each property type. If another is added, it will replace the old one. This will be accomplished with a drop-down for each component type.
+In future implementations, we plan to have error checking for the types of properties added to an Actor. For instance, it doesn't make all that much sense to have an Actor have two types of health (E.g., LimitedHealth and ImmuneHealth). We will group properties/datas so that actors can only be given one of each property type. If another is added, it will replace the old one. This will be accomplished with a drop-down for each component type.
 
 **7. User toggles preferences on side bar**
 
-When the user changes preferences on the sidebar of the authoring environment, these are saved to a PreferenceData in the GameData object being created currently. For instance, if the user decides to forego enemy waves, then they can switch this to “off” — this will be stored as “false” in the preference data and be used in the GameController to decide how to place and create enemies on the board.
+When the user changes preferences on the sidebar of the authoring environment, these are saved to a PreferenceData in the GameData object being created currently. For instance, if the user decides to forego enemy waves, then they can switch this to off and this will be stored as false in the preference data and be used in the GameController to decide how to place and create enemies on the board.
 
 
 ###Additional Use Cases
 
 **8. User changes the theme color in the game (in the authoring environment).**
 
-The user will be given control over the game “look and feel” in the second sprint. As a result, they will have a layout editor which will allow them to make changes to simple elements of the GUI. One of these elements will be color theme. We will have several stored color themes, indexed by number, which will be available to the user. They will be able to choose any one of these themes (by integer) to be loaded into the Game Player. 
+The user will be given control over the game look and feel in the second sprint. As a result, they will have a layout editor which will allow them to make changes to simple elements of the GUI. One of these elements will be color theme. We will have several stored color themes, indexed by number, which will be available to the user. They will be able to choose any one of these themes (by integer) to be loaded into the Game Player. 
 
 
 **9.The user makes an Actor with no information in it.**
@@ -75,4 +75,14 @@ A free movement property will take in the base coordinates and use path utility 
 
 User specifies each wave with the types of enemy, the number of them, and one or more path options. If there is more than one path option, each enemy of that type will get assigned one randomly. 
  
+**17. User tries to move a re-draggable object during the game**
 
+For best results, the user should pause the game, move the object, and then continue. However, moving the object while playing will update its new location the same.
+
+**18. Object is defeated**
+
+As the map updates, the object will be removed from the screen. If object was in a path, the path will now be unobstructed.
+
+**19. Adding new objects while the game is playing.**
+
+User must select preferred object, drag and drop onto the screen, and then click secondarily to place the object into the back end grid.
