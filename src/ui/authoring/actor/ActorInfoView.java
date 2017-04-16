@@ -42,7 +42,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private ActorData myActorData;
 	private List<DataView> myDataViews = new ArrayList<DataView>();
 	private ImageView myActorImageView;
-	private ActorOptionPicker myOptionPickerView;
+	private DataSelectionView myOptionPickerView;
 	private Set<BasicActorType> myActorTypeOptions;
 
 
@@ -102,7 +102,7 @@ private void setupImageView(Image img) {
 		this.getChildren().addAll(myGridPane, myUpgradePickerView);
 	} 
 	public void setActorData(ActorData actorData){
-		System.out.println(actorData.getName() + " : size=" + actorData.getMyData().size());
+		System.out.println("ActorInfoView.setActorData: "+actorData.getName() + " : size=" + actorData.getMyData().size());
 		myActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
@@ -118,7 +118,6 @@ private void setupImageView(Image img) {
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
 		myDataViews.add(view);
-		System.out.println("col:"+col+" \trow:"+row);
 		double inset = 12;
 		view.prefWidthProperty().bind(this.widthProperty().divide(3).add(-inset*(GRID_X_DIM + 1)/GRID_X_DIM));
 		view.prefHeightProperty().bind(view.prefWidthProperty());
@@ -142,7 +141,7 @@ private void setupImageView(Image img) {
 	
 	private void didClickNewClassButton(){
 		if(myOptionPickerView == null)
-			myOptionPickerView = new ActorOptionPicker(this);
+			myOptionPickerView = new DataSelectionView(this);
 		AnchorPane.setBottomAnchor(myOptionPickerView, 8.0);
 		AnchorPane.setTopAnchor(myOptionPickerView, 8.0);
 		AnchorPane.setRightAnchor(myOptionPickerView, 8.0);
@@ -169,7 +168,7 @@ private void setupImageView(Image img) {
 
 	@Override
 	public void didClickDelete(DataView dataView) {
-
+		
 		ScaleTransition sc = new ScaleTransition(Duration.seconds(0.3));
 		sc.setNode(dataView);
 		sc.setToX(0);
@@ -189,8 +188,6 @@ private void setupImageView(Image img) {
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
-		//this.myActorData.getMyData().add(d);
-		System.out.println("makeData: " + d + "dataName: "+ dataName);
 		this.myActorData.addData(d);
 		addDataView(d);
 	}

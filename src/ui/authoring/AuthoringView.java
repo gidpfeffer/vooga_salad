@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -250,6 +251,24 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		s.setOnFinished(e -> this.getChildren().remove(pane));
 	}
 	
+	/**
+	 * purpose: to feed the GameData into all the subcomponents of authoring view
+	 * @param gameData The object that holds all the 
+	 */
+	private void loadGameData(GameData gameData) {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * purpose: to retreive the data objects from various
+	 * components and to integrate them into a GameData object.
+	 * 
+	 * @param gameData
+	 */
+	private void saveGameData() {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 	/*
@@ -281,4 +300,23 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		slideMenuOut();		
 	}
 
+	@Override
+	public void didPressLoadButton() {
+		GameData data = getGameData();
+		//loadGameData(gameData);
+		
+	}
+
+	private GameData getGameData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void didPressSaveButton() {
+		saveGameData();
+		
+	}
+
+	
 }

@@ -1,0 +1,30 @@
+<ui.player.UserDatabase>
+  <database class="list">
+    <ui.player.User>
+      <username>bleubird</username>
+      <password>3c6d6d6c0acafe521fe7aac8cc33e44aafeb7242</password>
+      <scores/>
+      <avatar>profile_icon.png</avatar>
+      <email>ams191@duke.edu</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>appleseed man</username>
+      <password>0112b6f1f335082e9c089ac49a10c1b925d79e2e</password>
+      <scores/>
+      <avatar>profile_icon.png</avatar>
+      <email>honey@duke.edu</email>
+    </ui.player.User>
+  </database>
+  <passwords>
+    <database>
+      <entry>
+        <string>appleseed man</string>
+        <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>
+      </entry>
+      <entry>
+        <string>bleubird</string>
+        <string>3c6d6d6c0acafe521fe7aac8cc33e44aafeb7242</string>
+      </entry>
+    </database>
+  </passwords>
+</ui.player.UserDatabase>

@@ -51,7 +51,7 @@ public class CreateActorTypeView extends VBox {
 
 	private void setupViews() {
 		setupButtons();
-		UIHelper.setBackgroundColor(this, CustomColors.BLUE_200);
+		UIHelper.setBackgroundColor(this, CustomColors.GREEN_200);
 
 		myImageView = new ImageView(new Image(NO_IMAGE));
 		myImageView.setFitHeight(96);
@@ -66,7 +66,7 @@ public class CreateActorTypeView extends VBox {
 				myImageView.setImage(new Image(myImagePath));
 			}
 		}, Optional.ofNullable(null), Optional.of(myImageView), Pos.CENTER, true);
-		UIHelper.setBackgroundColor(imageButton, CustomColors.BLUE_50);
+		UIHelper.setBackgroundColor(imageButton, CustomColors.GREEN_50);
 		VBox.setMargin(imageButton, new Insets(12.0));
 		imageButton.setMaxHeight(104);
 		imageButton.setMaxWidth(104);
@@ -78,7 +78,7 @@ public class CreateActorTypeView extends VBox {
 		Label label = new Label("Please enter name for actor type"); //TODO
 		label.setAlignment(Pos.CENTER);
 		label.setFont(Preferences.FONT_SMALL);
-		label.setTextFill(Color.GRAY);
+		label.setTextFill(CustomColors.GREEN_50);
 		VBox.setMargin(label, new Insets(16.0, 8,0,8));
 		
 		this.setAlignment(Pos.CENTER);

@@ -25,7 +25,7 @@ public class XStreamFileChooser {
 	 * This creates a new file / overwrites file containing the XStream serialization
 	 * @param xml is the String from using the XStream serializer
 	 */
-	public void writePasswords(String xml){
+	public void writeFile(String xml){
 		try {
 			File file = new File(filename);
 			FileWriter fileWriter = new FileWriter(file);

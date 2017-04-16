@@ -70,7 +70,7 @@ public class MenuView extends AnchorPane {
 	private void setupSaveLoadButtons() {
 		StackPane save = UIHelper.buttonStack(e-> saveButtonClicked(), Optional.of(getPlainLabel("Save")),
 				Optional.ofNullable(null), Pos.CENTER, false); //TODO remove
-		StackPane load = UIHelper.buttonStack(e-> saveButtonClicked(), Optional.of(getPlainLabel("Load")),
+		StackPane load = UIHelper.buttonStack(e-> loadButtonClicked(), Optional.of(getPlainLabel("Load")),
 				Optional.ofNullable(null), Pos.CENTER, false);
 		save.setPrefHeight(40);
 		load.setPrefHeight(40);
@@ -89,10 +89,12 @@ public class MenuView extends AnchorPane {
 		return label;
 	}
 	private void saveButtonClicked(){
-		
+		myDelegate.didPressSaveButton();
+		myDelegate.didPressBackButton();
 	}
 	private void loadButtonClicked(){
-		
+		myDelegate.didPressLoadButton();
+		myDelegate.didPressBackButton();
 	}
 
 	private void setupVBox() {

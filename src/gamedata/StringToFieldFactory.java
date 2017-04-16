@@ -18,8 +18,10 @@ public class StringToFieldFactory {
 		if(c==double.class){
 			return (double)Double.parseDouble(s);
 		}
+		//NOTE FROM TALHA: i fixed this method after maddie changed the BasicActorType class
+		//because this method was giving an error.
 		if(c==BasicActorType.class){
-			return BasicActorType.valueOf(s);
+			return new BasicActorType(s);
 		}
 		if(c==String.class){
 			return s;

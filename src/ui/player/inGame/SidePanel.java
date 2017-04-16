@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import gamedata.ActorData;
 import javafx.animation.TranslateTransition;
@@ -40,6 +43,7 @@ public class SidePanel {
 	private List<OptionsPane> listOfPanes;
 	private Map<Integer, Actor> actorsMap;
 	
+	private Map<Integer, ActorData> options;
 	private Map<Integer, ActorData> towersMap;
 	private Map<Integer, ActorData> shotsMap;
 	private Map<Integer, ActorData> troopsMap;
@@ -51,17 +55,12 @@ public class SidePanel {
 		return sidePane;
 	}
 	
-	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> towersMap, 
-			 Map<Integer, ActorData> shotsMap,  Map<Integer, ActorData> enemiesMap,
-			 Map<Integer, ActorData> basesMap, ImageViewPane ivp) {
+	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> options, ImageViewPane ivp) {
 		this.ivp = ivp;
+		this.options = options;
 		this.uihandler = uihandler;
 		this.root = root;
 		this.actorsMap = actorsMap;
-		this.towersMap = towersMap;
-		this.shotsMap = shotsMap;
-		this.troopsMap = enemiesMap;
-		this.basesMap = basesMap;
 		this.listOfPanes = new ArrayList<>();
 		this.sidePane = new AnchorPane();
 		this.iconImages = new HashMap<>();
@@ -87,12 +86,22 @@ public class SidePanel {
 	 * Creates the panes to link to their respective main buttons.
 	 */
 	private void createInternalPanes() {
-		OptionsPane towers = getPane(towersMap, "Tower");
-		OptionsPane shots = getPane(shotsMap, "Shot");
-		OptionsPane	troops = getPane(troopsMap, "Troop");
-		OptionsPane bases = getPane(basesMap, "Base");
-		OptionsPane[] otherList = new OptionsPane[] {towers, troops, shots, bases};
-		listOfPanes.addAll(Arrays.asList(otherList));
+		Set<String> types = new HashSet<>();
+		listOfPanes = new ArrayList<>();
+		options.keySet().forEach(option -> types.add(options.get(option).getType().toString()));
+		//HashSet<String> types2 = options.keySet().forEach(option -> types.add(options.get(option).getType().toString());
+		
+		types.forEach(type -> {
+			Map<Integer, ActorData> map = new HashMap<>();
+			options.keySet().forEach(option -> {
+				if (options.get(option).getType().toString().equals(type)) {
+					map.put(option, options.get(option));
+				}
+				
+			});
+			OptionsPane actors = getPane(map, type);
+			listOfPanes.add(actors);
+		});
 	}
 	
 	/**

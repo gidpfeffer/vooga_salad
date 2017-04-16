@@ -14,6 +14,7 @@ public class CustomColors {
 	public static final Color GREEN_100 = Color.rgb(224,242,241);
 	public static final Color GREEN_200 = Color.rgb(128,203,196);
 	public static final Color GREEN = Color.rgb(0,150,136);
+	public static final Color GREEN_50 = Color.rgb(224,242,241);
 	public static final Color GREEN_900 = Color.rgb(0,77,64);
 	public static final Color AMBER = Color.rgb(255,202,40);
 	public static final Color AMBER_200 = Color.rgb(255,224,130);
