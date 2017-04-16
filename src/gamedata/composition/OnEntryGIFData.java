@@ -1,5 +1,7 @@
 package gamedata.composition;
 
-public class OnEntryGIFData {
+import gamedata.compositiongen.Data;
+
+public class OnEntryGIFData implements Data{
 
 }
