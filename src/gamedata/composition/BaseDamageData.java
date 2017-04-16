@@ -9,7 +9,7 @@ public class BaseDamageData implements Data {
 	private BasicActorType myTarget;
 
 	public BaseDamageData(){
-		this(0.0, BasicActorType.Tower);
+		this(0.0, new BasicActorType("Troop"));
 	}
 	
 	public BaseDamageData(Double radius, BasicActorType type) {

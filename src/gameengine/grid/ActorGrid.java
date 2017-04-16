@@ -65,7 +65,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	}
 	
 	private Collection<SettableActorLocator> specificActorTypes(BasicActorType type){
-		return filter(actors, a -> a.getActor().getType() == type);
+		return filter(actors, a -> a.getActor().getType().equals(type));
 	}
 	
 	private SettableActorLocator getActorFromID(int ID){
