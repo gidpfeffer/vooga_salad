@@ -8,7 +8,6 @@ import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.json.JsonObject;
-import com.restfb.types.User;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,7 +27,7 @@ public class Authenticator {
 		driver = new ChromeDriver();
 	}
 	
-	public ImageView access(){
+	public FacebookClient access(){
 		String accessToken;
 		driver.get(authURL);
 		
@@ -40,17 +39,21 @@ public class Authenticator {
 				break;
 			}
 		}
-		
 		FacebookClient client = new DefaultFacebookClient(accessToken, Version.LATEST);
+		return client;
+	}
 	
+	public ImageView getProfilePicFromClient(FacebookClient client){
 		JsonObject picture = 
-		      client.fetchObject("me/picture", 
-			      JsonObject.class, Parameter.with("redirect","false"));
-		
-		String url = picture.get("data").asObject().get("url").asString();
-		System.out.println(url);
+			      client.fetchObject("me/picture", 
+				      JsonObject.class, Parameter.with("redirect","false"));
+			
+			String url = picture.get("data").asObject().get("url").asString();
+			return extractImageViewFromURL(url);
+	}
+	
+	private ImageView extractImageViewFromURL(String url){
 		ImageView imageView = new ImageView(new Image(url));
-		
 		return imageView;
 	}
 

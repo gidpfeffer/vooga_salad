@@ -26,7 +26,8 @@ public class TestMain extends Application{
             public void handle(ActionEvent event) {
                 System.out.println("Hello World!");
                 Authenticator a = new Authenticator();
-                root.getChildren().add(a.access());
+                root.getChildren().add(a.getProfilePicFromClient(a.access()));
+                root.getChildren().remove(btn);
             }
         });
        
