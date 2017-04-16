@@ -78,7 +78,7 @@ public class GameDataGenerator {
 		BasicData b6 = new BasicData("Grass", "grass.png");
 		
 		ActorData a1 = new ActorData(BasicActorType.Tower, b1);
-		//a1.addData(shoot);
+		a1.addData(shoot);
 		ActorData a2 = new ActorData(BasicActorType.Shot, b2);
 		
 		ActorData a3 = new ActorData(BasicActorType.Troop, b3);
