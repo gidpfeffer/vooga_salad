@@ -1,4 +1,4 @@
-package gameengine.player;
+package gamestatus;
 
 import java.util.Optional;
 

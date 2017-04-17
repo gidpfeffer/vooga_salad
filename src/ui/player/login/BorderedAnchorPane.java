@@ -6,8 +6,8 @@ import javafx.scene.layout.Pane;
 
 public class BorderedAnchorPane {
 
-	Pane root;
-	BorderPane borderPane;
+	protected Pane root;
+	protected BorderPane borderPane;
 	
 	public Pane getRoot() {
 		return root;
