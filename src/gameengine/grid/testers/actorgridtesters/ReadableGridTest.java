@@ -34,10 +34,10 @@ public class ReadableGridTest {
 	public void actorTypeFilteringTest() {
 		setUp();
 		ReadableGrid grid = myGrid;
-		assertEquals(grid.getActorLocations(BasicActorType.Troop).size(), 1);
-		assertEquals(grid.getActorLocations(BasicActorType.Tower).size(), 0);
-		assertEquals(grid.getActorLocations(BasicActorType.Troop).iterator().next().getX(), 5, 0);
-		assertEquals(grid.getActorLocations(BasicActorType.Troop).iterator().next().getY(), 20, 0);
+		assertEquals(grid.getActorLocations(new BasicActorType("troop")).size(), 1);
+		assertEquals(grid.getActorLocations(new BasicActorType("tower")).size(), 0);
+		assertEquals(grid.getActorLocations(new BasicActorType("troop")).iterator().next().getX(), 5, 0);
+		assertEquals(grid.getActorLocations(new BasicActorType("troop")).iterator().next().getY(), 20, 0);
 	}
 	
     // tests the getActorLocationsInRadius
@@ -45,9 +45,9 @@ public class ReadableGridTest {
 	public void radiusTest() {
 		setUp();
 		ReadableGrid grid = myGrid;
-		assertEquals(grid.getActorLocationsInRadius(5, 25, 5, BasicActorType.Troop).size(), 1);
-		assertEquals(grid.getActorLocationsInRadius(5, 25, 4.999, BasicActorType.Troop).size(), 0);
-		assertEquals(grid.getActorLocationsInRadius(5, 20, 100, BasicActorType.Tower).size(), 0);
+		assertEquals(grid.getActorLocationsInRadius(5, 25, 5, new BasicActorType("troop")).size(), 1);
+		assertEquals(grid.getActorLocationsInRadius(5, 25, 4.999, new BasicActorType("troop")).size(), 0);
+		assertEquals(grid.getActorLocationsInRadius(5, 20, 100, new BasicActorType("tower")).size(), 0);
 	}
 	
     // tests the boundary system

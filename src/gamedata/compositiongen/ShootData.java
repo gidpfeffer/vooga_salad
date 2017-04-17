@@ -11,7 +11,7 @@ public class ShootData implements Data {
 	private double mySpeed;
 
 	public ShootData(){
-		this(0.0, 0, BasicActorType.Tower, 0, 0.0);
+		this(0.0, 0, new BasicActorType("Troop"), 0, 0.0);
 	}
 	
 	public ShootData(Double range, Integer rate, BasicActorType type, Integer projectile, Double speed) {

@@ -1,5 +1,6 @@
 package ui.authoring.actor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,6 +14,8 @@ import gamedata.StringToFieldFactory;
 import gamedata.compositiongen.Data;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -38,11 +41,13 @@ public class DataView extends AnchorPane {
 	private String myDataClassName;
 	private VBox vbox;
 	private Map<String, Object> myFields;
+	private List<BasicActorType> myActorTypes;
 	private DataViewDelegate myDelegate;
 	
-	public DataView(Data data, DataViewDelegate delegate){
+	public DataView(Data data, DataViewDelegate delegate,  List<BasicActorType> actorTypes){
 		super();
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_50);
+		myActorTypes = actorTypes;
 		myData = data;
 		myDataClassName = data.getClass().getSimpleName();
 		myFields = OptionGenerator.getFields(data);
@@ -87,18 +92,55 @@ public class DataView extends AnchorPane {
 		this.getChildren().addAll(name,vbox,remove);		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void addField(String nameKey, Object value){
-		Class clazz = value.getClass();
+		Class<?> clazz = value.getClass();
+		System.out.println(clazz);
 		if(clazz == double.class ||clazz == Integer.class ||clazz == Double.class ||clazz == int.class ){
 			addNumberField(nameKey, value);
 		}else if(clazz == BasicActorType.class){
-			addActorTypeField(nameKey, (BasicActorType)value);
-		}else{
+			addActorTypeField(nameKey, (BasicActorType) value);
+		}else if(clazz == List.class || clazz == ArrayList.class){
+			addActorTypeList(nameKey,  (List<BasicActorType>) value);
+		}
+		else{
 			
 		}
 		
 	}
+
 	
+	private void addActorTypeList(String nameKey, List<BasicActorType> value) {
+		AnchorPane content = new AnchorPane();
+
+		Label fieldName = new Label(nameKey);
+		fieldName.setTextFill(CustomColors.BLUE_800);
+		fieldName.setAlignment(Pos.CENTER);
+		AnchorPane.setLeftAnchor(fieldName, 4.0);
+		AnchorPane.setTopAnchor(fieldName, 4.0);
+		AnchorPane.setRightAnchor(fieldName, 4.0);
+		fieldName.setPrefHeight(28);
+		content.getChildren().add(fieldName);
+		
+		ActorTypeListSelectionView input = new ActorTypeListSelectionView(this.myActorTypes);
+		AnchorPane.setTopAnchor(input, 28.0);
+		AnchorPane.setLeftAnchor(input, 4.0);
+		AnchorPane.setBottomAnchor(input, 4.0);
+		AnchorPane.setRightAnchor(input, 4.0);
+		content.getChildren().add(input);
+		input.getBasicActorTypeList().addListener(e -> {
+			System.out.println("toggled basic actor field input thing");
+			didEditBasicActorTypeList(input.getBasicActorTypeList().get(),nameKey);
+			
+		});
+		
+		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
+		VBox.setMargin(content, new Insets(8.0));
+		vbox.getChildren().add(content);
+		
+	}
+
+
 	private void addActorTypeField(String nameKey, BasicActorType value) {
 		AnchorPane content = new AnchorPane();
 
@@ -111,7 +153,7 @@ public class DataView extends AnchorPane {
 		fieldName.setMaxWidth(80);
 		content.getChildren().add(fieldName);
 		
-		BasicActorPicker input = new BasicActorPicker(value);
+		BasicActorPicker input = new BasicActorPicker(value, myActorTypes);
 		input.getBasicActorTypeProperty().addListener(e -> {
 			System.out.println("toggled basic actor field input thing");
 			didEditBasicActorType(input.getBasicActorTypeProperty().get(),nameKey);
@@ -161,25 +203,49 @@ public class DataView extends AnchorPane {
 		 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
 			 field.setText(oldValue);
          }else{
-        	Object val = StringToFieldFactory.getObject(newValue, myFields.get(varName).getClass());
+        	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+        	System.out.println("\tADDING NEW DATA TO ACTORDATA");
      		this.myFields.put(varName, 
-     				val
+     				StringToFieldFactory.getObject(newValue, myFields.get(varName).getClass())
      				);
      		
      		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
-     		System.out.println("className: "+myDataClassName +"\tfieldsClass: "+myFields.values().toArray().getClass());
-     		for(Object o : myFields.values()){
-     			System.out.println("value:" + o + "\ttype:"+o.getClass());
-     		}
+     		printMyData();
      		setMyData(d); 
+     		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
          }
 	}
-	private void didEditBasicActorType(BasicActorType newType, String varName){
+	private void didEditBasicActorType(BasicActorType basicActorType, String varName){
+   	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+   	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
 		this.myFields.put(varName, 
-				newType
+				basicActorType
  				);
 		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+ 		printMyData();
  		setMyData(d); 
+ 		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
+
+	}
+
+	private void didEditBasicActorTypeList(List<BasicActorType> list, String nameKey) {
+   	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+   	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
+		this.myFields.put(nameKey, 
+				list
+ 				);
+		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+ 		printMyData();
+ 		setMyData(d); 
+ 		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
+		
+	}
+	
+	private void printMyData(){
+		System.out.println("className: "+myDataClassName +"\tfieldsClass: ");
+ 		for(Object o : myFields.values()){
+ 			System.out.println("\t-value:" + o + "\ttype:"+o.getClass().getSimpleName());
+ 		}
 	}
 
 	public Data getMyData() {
@@ -196,32 +262,4 @@ public class DataView extends AnchorPane {
 	
 }
 
-final class BasicActorPicker extends StackPane{
-	
-	private int pos = 0;
-	private List<BasicActorType> types = OptionGenerator.getActorTypes();
-	private Label myLabel;
-	private ObjectProperty<BasicActorType> myType;
-	public BasicActorPicker(BasicActorType type){
-		super();
-		myType = new SimpleObjectProperty<BasicActorType>(type);
-		myLabel = new Label(type.name());
-		myLabel.setFont(Preferences.FONT_SMALL);
-		myLabel.setAlignment(Pos.CENTER);
-		myLabel.setTextAlignment(TextAlignment.CENTER);
-		pos = types.indexOf(type);
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> toggle());
-		this.getChildren().add(myLabel);
-	}
-	public void toggle(){
-		pos++;
-		if(pos==types.size())
-			pos = 0;
-		myType.set(types.get(pos));
-		myLabel.setText(myType.get().name());
-	}
-	public ObjectProperty<BasicActorType> getBasicActorTypeProperty(){
-		return myType;
-	}
-	
-}
+

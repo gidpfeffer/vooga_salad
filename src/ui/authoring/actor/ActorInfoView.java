@@ -1,9 +1,11 @@
 package ui.authoring.actor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import builders.DataGenerator;
@@ -23,6 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import types.BasicActorType;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
@@ -39,7 +42,8 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private ActorData myActorData;
 	private List<DataView> myDataViews = new ArrayList<DataView>();
 	private ImageView myActorImageView;
-	private ActorOptionPicker myOptionPickerView;
+	private DataSelectionView myOptionPickerView;
+	private Set<BasicActorType> myActorTypeOptions;
 
 
 	
@@ -98,7 +102,7 @@ private void setupImageView(Image img) {
 		this.getChildren().addAll(myGridPane, myUpgradePickerView);
 	} 
 	public void setActorData(ActorData actorData){
-		System.out.println(actorData.getName() + " : size=" + actorData.getMyData().size());
+		System.out.println("ActorInfoView.setActorData: "+actorData.getName() + " : size=" + actorData.getMyData().size());
 		myActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
@@ -110,11 +114,10 @@ private void setupImageView(Image img) {
 		}
 	}
 	private void addDataView(Data data){
-		DataView view = new DataView(data, this);
+		DataView view = new DataView(data, this, Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
 		myDataViews.add(view);
-		System.out.println("col:"+col+" \trow:"+row);
 		double inset = 12;
 		view.prefWidthProperty().bind(this.widthProperty().divide(3).add(-inset*(GRID_X_DIM + 1)/GRID_X_DIM));
 		view.prefHeightProperty().bind(view.prefWidthProperty());
@@ -138,7 +141,7 @@ private void setupImageView(Image img) {
 	
 	private void didClickNewClassButton(){
 		if(myOptionPickerView == null)
-			myOptionPickerView = new ActorOptionPicker(this);
+			myOptionPickerView = new DataSelectionView(this);
 		AnchorPane.setBottomAnchor(myOptionPickerView, 8.0);
 		AnchorPane.setTopAnchor(myOptionPickerView, 8.0);
 		AnchorPane.setRightAnchor(myOptionPickerView, 8.0);
@@ -165,7 +168,7 @@ private void setupImageView(Image img) {
 
 	@Override
 	public void didClickDelete(DataView dataView) {
-
+		
 		ScaleTransition sc = new ScaleTransition(Duration.seconds(0.3));
 		sc.setNode(dataView);
 		sc.setToX(0);
@@ -185,7 +188,6 @@ private void setupImageView(Image img) {
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
-		//this.myActorData.getMyData().add(d);
 		this.myActorData.addData(d);
 		addDataView(d);
 	}
@@ -193,6 +195,10 @@ private void setupImageView(Image img) {
 	@Override
 	public void didClickClose() { 
 		UIHelper.removeNodeFromPaneWithAnimation(this, myOptionPickerView);
+	}
+
+	public void setActorTypeOptions(Set<BasicActorType> keySet) {
+		this.myActorTypeOptions = keySet;
 	}
 
 }

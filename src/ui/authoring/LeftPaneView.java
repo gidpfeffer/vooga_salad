@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
@@ -15,17 +16,30 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
-
+import ui.authoring.actor.CreateActorDelegate;
+import ui.authoring.actor.CreateActorTypeView;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
+import util.Tuple;
 
-public class LeftPaneView extends StackPane{
+public class LeftPaneView extends StackPane implements CreateActorDelegate{
+	
+	private static final double ICON_WIDTH = 24;
+	private static final double BUTTON_HEIGHT = 56;
+	private final Color[] COLOR_ROTATION = {
+			CustomColors.BLUE_800,
+			CustomColors.INDIGO,
+			CustomColors.GREEN,
+			CustomColors.AMBER
+	};
 	
 	private static final Map<String, String> DEFAULT_TOWERS;
 	static {
@@ -38,7 +52,7 @@ public class LeftPaneView extends StackPane{
 		map.put("Jigglypuff", path + "jigglypuff.png");
 		DEFAULT_TOWERS = map;
 	}
-	private static final Map<String, String> DEFAULT_ENEMIES;
+	private static final Map<String, String> DEFAULT_TROOPS;
 	static {
 		String path = "balloons/";
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -46,7 +60,7 @@ public class LeftPaneView extends StackPane{
 		map.put("Green", path + "green.png");
 		map.put("Blue", path + "blue.png");
 
-		DEFAULT_ENEMIES = map;
+		DEFAULT_TROOPS = map;
 	}
 	private static final Map<String, String> DEFAULT_PROJECTILES;
 	static {
@@ -61,16 +75,16 @@ public class LeftPaneView extends StackPane{
 	}
 	
 	private PopViewDelegate myDelegate;
-	private VBox myLeftPaneFront; //contains the buttons
-	private StackPane myLeftPaneBack; //contains the views for buttons 
-	private ActorEditorView myTowerView;
-	private ActorEditorView myEnemyView;
+	private VBox myVBox; //contains the buttons
+	private Map<BasicActorType, ActorEditorView> actorTypeToView = new HashMap<>();
 
-	//private ProjectileEditorMain myProjectileView;
-
-	private ActorEditorView myProjectileView;
-
-	
+	/**
+	 * Constructs a panel with a list of button that
+	 * lead to ActorEditorView
+	 * Provides the ability to add new actor types.
+	 * 
+	 * @param delegate required so that this class can launch the ActorEditorView's
+	 */
 	public LeftPaneView(PopViewDelegate delegate){
 		super();
 		myDelegate = delegate;
@@ -78,48 +92,78 @@ public class LeftPaneView extends StackPane{
 	}
 	
 	private void setupViews() {
-		myLeftPaneFront = new VBox(16);
-		myLeftPaneBack = new StackPane();
-		myLeftPaneFront.setAlignment(Pos.CENTER);
-		StackPane.setMargin(myLeftPaneFront, new Insets(10));
-		setupLeftPaneButtons();
-		myLeftPaneBack.setScaleX(0);
-		this.getChildren().add(myLeftPaneBack);
-		this.getChildren().add(myLeftPaneFront);
-		initializeEnemyView();
-		
+		setupVBox();
+		setupTitle();
+		setupAddButton();
+		setupDefaultActors();
+
 	}
 	
-	private void setupLeftPaneButtons() {
-		StackPane enemy = UIHelper.buttonStack(e -> launchEnemyView(), 
-				Optional.of(labelForStackButton("Enemy Editor")), 
-				Optional.of(imageForStackButton("enemy_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane tower = UIHelper.buttonStack(e -> launchTowerView(), 
-				Optional.of(labelForStackButton("Tower Editor")), 
-				Optional.of(imageForStackButton("tower_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane splash = UIHelper.buttonStack(e -> System.out.println(e), 
-				Optional.of(labelForStackButton("Splash Editor")), 
-				Optional.of(imageForStackButton("splash_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane projectile = UIHelper.buttonStack(e -> System.out.println(),//launchProjectileView(), 
-				Optional.of(labelForStackButton("Projectile Editor")), 
-				Optional.of(imageForStackButton("projectile_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane game = UIHelper.buttonStack(e -> System.out.println("game"), 
-				Optional.of(labelForStackButton("Layout Editor")), 
-				Optional.of(imageForStackButton("layout_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		
-		enemy.setPrefHeight(56);
-		tower.setPrefHeight(56);
-		splash.setPrefHeight(56);
-		projectile.setPrefHeight(56);
-		game.setPrefHeight(56);
-		
-		myLeftPaneFront.getChildren().addAll(tower, enemy, projectile, splash, game);
+	private void setupTitle() {
+		Label title = new Label("Actor Editor");//TODO
+		title.setTextFill(CustomColors.BLUE_50);
+		title.setAlignment(Pos.CENTER);
+		title.setFont(Preferences.FONT_MEDIUM);
+		StackPane.setAlignment(title, Pos.TOP_CENTER);
+		StackPane.setMargin(title, new Insets(12.0));
+		this.getChildren().add(title);
 	}
+
+	private void setupVBox() {
+		myVBox = new VBox(16);
+		myVBox.setAlignment(Pos.CENTER);
+		StackPane.setMargin(myVBox, new Insets(64,12,12,12));
+		this.getChildren().add(myVBox);		
+	}
+
+	private void setupAddButton() {
+		ImageView add = new ImageView(new Image("add_icon_w.png"));
+		add.setFitWidth(ICON_WIDTH);
+		add.setPreserveRatio(true);
+		StackPane button = UIHelper.buttonStack(e -> addNewActor(), Optional.ofNullable(null), Optional.of(add), Pos.CENTER, true);
+		button.setPrefHeight(BUTTON_HEIGHT);
+		UIHelper.setBackgroundColor(button, Color.TRANSPARENT);
+		myVBox.getChildren().add(button);
+	}
+	
+	/**
+	 * asks for an image icon and name for actor type
+	 * creates an ActorEditorView for the new type of actor
+	 */
+	private void addNewActor() {
+		Pane pane = new CreateActorTypeView(this);
+		pane.setPrefHeight(200);
+		pane.setPrefWidth(200);
+		
+		myDelegate.openViewWithSize(pane, PopupSize.SMALL);
+		
+	}
+
+	private void setupDefaultActors() {
+		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
+		addActor("Troop","enemy_icon.png", DEFAULT_TROOPS);
+		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
+		
+	}
+
+	private void addActor(String actorType, String imagePath, Map<String,String> defaultActors){
+		ActorEditorView view = new ActorEditorView(myDelegate, new BasicActorType(actorType));
+		view.setupDefaultActors(defaultActors);
+		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
+		this.actorTypeToView.put(new BasicActorType(actorType), view);
+		StackPane button = UIHelper.buttonStack(e -> launchEditor(view), 
+				Optional.of(labelForStackButton(actorType + " Editor")), //TODO resources
+				Optional.of(imageForStackButton(imagePath)), 
+				Pos.CENTER_RIGHT, true);
+		button.setPrefHeight(BUTTON_HEIGHT);
+		myVBox.getChildren().add(myVBox.getChildren().size() - 1, button);
+		
+	}
+	private void launchEditor(ActorEditorView view) {
+		view.setActorTypeOptions(this.actorTypeToView.keySet());
+		myDelegate.openView(view);
+	}
+
 	private Label labelForStackButton(String title){
 		Label lbl = new Label(title);
 		lbl.setTextFill(CustomColors.GREEN_100);
@@ -128,47 +172,33 @@ public class LeftPaneView extends StackPane{
 	}
 	private ImageView imageForStackButton(String imagePath){
 		ImageView iv = new ImageView(new Image(imagePath));
-		iv.setFitWidth(24);
+		iv.setFitWidth(ICON_WIDTH);
 		iv.setPreserveRatio(true);
 		return iv;
 	}
-
-	private void launchTowerView() {
-		if(myTowerView == null){
-			myTowerView = new ActorEditorView(myDelegate, BasicActorType.Tower);
-			myTowerView.setupDefaultTowers(DEFAULT_TOWERS);
-		}
-		myDelegate.openView(myTowerView);
-	}
-
 	
-	private void launchEnemyView() {
-		if(myEnemyView == null){
-			myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
-			myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-			UIHelper.setBackgroundColor(myEnemyView, CustomColors.INDIGO);
-		}
-		myDelegate.openView(myEnemyView);
-
+	private void deleteActorType(BasicActorType actorType){
+		//TODO
+		this.actorTypeToView.get(actorType);
 	}
-	private void initializeEnemyView(){
-		myEnemyView = new ActorEditorView(myDelegate, BasicActorType.Troop);
-		myEnemyView.setupDefaultTowers(DEFAULT_ENEMIES);
-	}
-	public Collection<ActorData>getEnemyData(){
-		return myEnemyView.getActorData();
-	}
-
-	private void launchProjectileView(){
-		if(myProjectileView == null){
-			myProjectileView = new ActorEditorView(myDelegate, BasicActorType.Shot);
-			myProjectileView.setupDefaultTowers(DEFAULT_PROJECTILES);
-			UIHelper.setBackgroundColor(myProjectileView, CustomColors.GREEN);
-
-		}
-		myDelegate.openView(myProjectileView);
-	}
-
 	
+	public Map<BasicActorType, Collection<ActorData>> getActors(){
+		Map<BasicActorType, Collection<ActorData>> map = new HashMap<BasicActorType, Collection<ActorData>>();
+		for(Entry<BasicActorType, ActorEditorView> entry : this.actorTypeToView.entrySet()){
+			map.put(entry.getKey(), entry.getValue().getActorData());
+		}
+		return map;
+	}
+
+	@Override
+	public void closeSelfAndReturn(Pane pane, String actorName, String imagePath) {
+		this.addActor(actorName, imagePath, new HashMap<String, String>());
+		closeSelf(pane);
+	}
+	
+	@Override
+	public void closeSelf(Pane pane){
+		myDelegate.closeView(pane);
+	}
 	
 }

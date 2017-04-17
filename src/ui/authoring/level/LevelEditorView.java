@@ -32,6 +32,8 @@ public class LevelEditorView extends VBox{
 	private PathData myPathData;
 	public LevelEditorView(PopViewDelegate d,Collection<ActorData>enemies,PathData pathData){
 		super();
+		this.setAlignment(Pos.CENTER);
+		
 		System.out.println(enemies);
 		this.enemies=enemies;
 		myDelegate=d;

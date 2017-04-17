@@ -23,16 +23,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import ui.Preferences;
-import ui.authoring.AuthoringView.PopDelegate;
 import ui.authoring.delegates.MenuDelegate;
 import ui.general.CustomColors;
 import ui.general.StackButton;
 import ui.general.ToggleSwitch;
 import ui.general.UIHelper;
-import ui.general.vbox.VBoxCustom;
 
 public class MenuView extends AnchorPane {
 
@@ -46,7 +45,7 @@ public class MenuView extends AnchorPane {
 	
 	private MenuDelegate myDelegate;
 	private PreferencesData myData;
-	private VBoxCustom myVBox;
+	private VBox myVBox;
 	
 	private Collection<String> mySwitchTitles;
 	
@@ -71,7 +70,7 @@ public class MenuView extends AnchorPane {
 	private void setupSaveLoadButtons() {
 		StackPane save = UIHelper.buttonStack(e-> saveButtonClicked(), Optional.of(getPlainLabel("Save")),
 				Optional.ofNullable(null), Pos.CENTER, false); //TODO remove
-		StackPane load = UIHelper.buttonStack(e-> saveButtonClicked(), Optional.of(getPlainLabel("Load")),
+		StackPane load = UIHelper.buttonStack(e-> loadButtonClicked(), Optional.of(getPlainLabel("Load")),
 				Optional.ofNullable(null), Pos.CENTER, false);
 		save.setPrefHeight(40);
 		load.setPrefHeight(40);
@@ -90,14 +89,16 @@ public class MenuView extends AnchorPane {
 		return label;
 	}
 	private void saveButtonClicked(){
-		
+		myDelegate.didPressSaveButton();
+		myDelegate.didPressBackButton();
 	}
 	private void loadButtonClicked(){
-		
+		myDelegate.didPressLoadButton();
+		myDelegate.didPressBackButton();
 	}
 
 	private void setupVBox() {
-		myVBox = new VBoxCustom(3);
+		myVBox = new VBox(3);
 		myVBox.setAlignment(Pos.CENTER_LEFT);
 		makeNumLivesField();
 		//myVBox.setBackground(UIHelper.backgroundForColor(CustomColors.INDIGO));

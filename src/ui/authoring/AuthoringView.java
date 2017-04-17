@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -21,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
 import ui.authoring.delegates.*;
@@ -32,7 +34,7 @@ import ui.general.UIHelper;
 import util.Location;
 
 
-public class AuthoringView extends AnchorPane {
+public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
 
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 160;
@@ -116,7 +118,7 @@ public class AuthoringView extends AnchorPane {
 		this.getChildren().add(menuButton);
 		
 		double width = 300;
-		myMenuView = new MenuView(new MenuViewDelegate());
+		myMenuView = new MenuView(this);
 		myMenuView.setLayoutX(-width - 5);
 		myMenuView.setPrefWidth(width);
 		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
@@ -160,7 +162,7 @@ public class AuthoringView extends AnchorPane {
 
 	private void setupLevelView() {
 		
-		myLevelView = new LevelEditorView(new PopDelegate(),myLeftPane.getEnemyData(),myMapView.getPathData());
+		myLevelView = new LevelEditorView(this,myLeftPane.getActors().get(new BasicActorType("Enemy")),myMapView.getPathData());
 				UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
@@ -171,7 +173,7 @@ public class AuthoringView extends AnchorPane {
 	}
 	
 	private void setupLeftPane(){
-		myLeftPane = new LeftPaneView(new PopDelegate());
+		myLeftPane = new LeftPaneView(this);
 		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
 		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
@@ -202,14 +204,15 @@ public class AuthoringView extends AnchorPane {
 		t.setToX(0);
 		t.play();
 	}
-	private void openPaneWithAnimation(Pane pane){
+	private void openPaneWithAnimation(Pane pane, PopupSize size){
 		setDim(true, Duration.seconds(0.4));//dim background
 
-		double inset = 32;
-		AnchorPane.setBottomAnchor(pane, inset);
-		AnchorPane.setTopAnchor(pane, inset);
-		AnchorPane.setLeftAnchor(pane, inset);
-		AnchorPane.setRightAnchor(pane, inset);
+		Insets inset = insetForPopupSize(size);
+		System.out.println(inset);
+		AnchorPane.setBottomAnchor(pane, inset.getBottom());
+		AnchorPane.setTopAnchor(pane, inset.getTop());
+		AnchorPane.setLeftAnchor(pane, inset.getLeft());
+		AnchorPane.setRightAnchor(pane, inset.getRight());
 		pane.setScaleX(0);
 		pane.setScaleY(0);
 		this.getChildren().add(pane);
@@ -221,6 +224,23 @@ public class AuthoringView extends AnchorPane {
 		st.setToY(1);
 		st.play();
 	}
+	private Insets insetForPopupSize(PopupSize size) {
+		
+		switch(size){
+		case FULL:
+			return new Insets(32.0);
+		case MEDIUM:
+			return new Insets(128.0);
+		case SMALL:
+			double vInset = 128.0;
+			double popHeight = (this.getHeight() - 2*vInset);
+			double hInset = (this.getWidth() - popHeight)/2.0;
+			return new Insets(vInset,hInset,vInset,hInset);
+		default:
+			return new Insets(0.0);
+		}
+	}
+
 	private void closePaneWithAnimation(Pane pane){
 		setDim(false, Duration.seconds(0.4));
 		ScaleTransition s = new ScaleTransition(Duration.seconds(0.5));
@@ -231,57 +251,72 @@ public class AuthoringView extends AnchorPane {
 		s.setOnFinished(e -> this.getChildren().remove(pane));
 	}
 	
-	
-	//MARK: delegate classs
-	
-	class MenuViewDelegate implements MenuDelegate{
-
-		@Override
-		public void didPressBackButton() {
-			slideMenuOut();
-			
-		}
-		
-	}
-
-	
-	class PopDelegate implements PopViewDelegate{
-
-		@Override
-		public void openView(Pane pane) {
-			openPaneWithAnimation(pane);
-		}
-
-		@Override
-		public void closeView(Pane pane) {
-			closePaneWithAnimation(pane);
-		}
-
-		
-		
-	}
-
 	/**
-	 * This method is meant to used by the components of the authoring environment.
-	 * This is basically a helper method 
-	 * 
-	 * @param inputType the class type that is required for the user to input
-	 * @return a node that will allow the user to input whatever kind of data
-	 * is needed.
+	 * purpose: to feed the GameData into all the subcomponents of authoring view
+	 * @param gameData The object that holds all the 
 	 */
-	public static Pane getInputNodeForInputType(Class inputType) {
-		if(
-				inputType.isInstance(double.class) ||
-				inputType.isInstance(int.class)||
-				inputType.isInstance(Integer.class)||
-				inputType.isInstance(Double.class)
-				){
-			Pane p = new Pane();
-			p.getChildren().add(new TextField());
-			return p;
-		}
-		System.out.println("ERROR: class type not accounted for");
+	private void loadGameData(GameData gameData) {
+		// TODO Auto-generated method stub
+		
+	}
+	/**
+	 * purpose: to retreive the data objects from various
+	 * components and to integrate them into a GameData object.
+	 * 
+	 * @param gameData
+	 */
+	private void saveGameData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/*
+	 * PopViewDelegate
+	 * @see ui.authoring.delegates.PopViewDelegate#openView(javafx.scene.layout.Pane)
+	 */
+	
+	@Override
+	public void openViewWithSize(Pane pane, PopupSize size) {
+		openPaneWithAnimation(pane, size);		
+	}
+	
+	@Override
+	public void openView(Pane pane) {
+		openPaneWithAnimation(pane, PopupSize.FULL);		
+	}
+
+	@Override
+	public void closeView(Pane pane) {
+		closePaneWithAnimation(pane);		
+	}
+
+	/*
+	 * MenuDelegate
+	 * @see ui.authoring.delegates.MenuDelegate#didPressBackButton()
+	 */
+	@Override
+	public void didPressBackButton() {
+		slideMenuOut();		
+	}
+
+	@Override
+	public void didPressLoadButton() {
+		GameData data = getGameData();
+		//loadGameData(gameData);
+		
+	}
+
+	private GameData getGameData() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public void didPressSaveButton() {
+		saveGameData();
+		
+	}
+
+	
 }

@@ -31,10 +31,10 @@ public class User {
 	public void setScores(HashMap<String, List<Integer>> scores) {
 		this.scores = scores;
 	}
-	public String getAvatar() {
+	public String getProfilePicture() {
 		return avatar;
 	}
-	public void setAvatar(String avatar) {
+	public void setProfilePicture(String avatar) {
 		this.avatar = avatar;
 	}
 	public String getEmail() {
