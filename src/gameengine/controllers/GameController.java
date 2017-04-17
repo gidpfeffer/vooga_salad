@@ -151,29 +151,10 @@ public class GameController {
 			}
 
 			@Override
-			public Map<Integer, ActorData> getTroopOptions() {
-				return myGameData.getTroopOptions();
-			}
-
-			@Override
-			public Map<Integer, ActorData> getShotOptions() {
-				return myGameData.getShotOptions();
-			}
-
-			@Override
-			public Map<Integer, ActorData> getBaseOptions() {
-				return myGameData.getBaseOptions();
-			}
-
-			@Override
 			public void changeLevel(int level) throws VoogaException {
 				myLevelController.changeLevel(myGameData, level);
 			}
 
-			@Override
-			public Map<Integer, ActorData> getTowerOptions() {
-				return myGameData.getTowerOptions();
-			}
 		
 		};
 	}

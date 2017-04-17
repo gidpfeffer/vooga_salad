@@ -1,20 +1,19 @@
 package ui.player.inGame;
 
-import gameengine.player.GameStatus;
+import java.util.Map;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import util.observerobservable.VoogaObserver;
 
 /**
  * Creates a simple grid pane HUD
- * @author anngelyque
+ * @author anngelyque, sarahzhou
  *
  */
-public class SimpleHUD {
+public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 
 	private GridPane hud;
-	private GameStatus gameStatus;
-	private int x;
-	private int y;
+	int colIdx = 0, rowIdx = 0;
 	
 	public GridPane getGrid(){
 		return hud;
@@ -23,44 +22,16 @@ public class SimpleHUD {
 	public SimpleHUD(){
 		hud = new GridPane();
 		hud.setStyle("-fx-background-color: slateblue; -fx-opacity: .5");
-		hud.add(new Text("GAME STATUS"), 0, 0);
-		hud.add(new Text("LEVEL: "), 0, 1);
-		hud.add(new Text("1"), 1, 1);
-		x = 0;
-		y = 0;
-		setup();
 	}
 	
-	public void setup() {
-		addHealth();
-		addScore();
-		addExperience();
-		addMoney();
-		addLevel();
+	@Override
+	public void update(Map<String, String> arg) {
+		arg.forEach((k,v) -> display(k,v,colIdx,rowIdx));
 	}
-
-	private void addLevel() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void addMoney() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void addExperience() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void addScore() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void addHealth() {
-		// TODO Auto-generated method stub
-		
+	
+	private void display(String key, String val, int colIdx,int rowIdx) {
+		hud.add(new Text(key+ " "+val), colIdx, rowIdx);
+		colIdx++;
+		rowIdx++;
 	}
 }
