@@ -49,13 +49,13 @@ public class GameData {
 	//Level information (preferences, no & type of enemies)
 	Map<Integer,LevelData> levels;
 	
+	//TODO: Assess change
+	PreferencesData preferences;
+	
 	//Path information
 	PathData myPaths;
 	
 	List<BasicActorType> types;
-	
-	//Possible projectiles
-	//ProjectileData myProjectiles;
 	
 	//Information about how the game is visually displayed
 	DisplayData display;
@@ -68,7 +68,7 @@ public class GameData {
 	public GameData(){
 		levels=new HashMap<Integer,LevelData>();
 		myPaths = new PathData();
-		//myProjectiles = new ProjectileData();
+		preferences = new PreferencesData();
 		display = new DisplayData();
 		pieces = new HashMap<Integer, ActorData>();
 		types = new ArrayList<BasicActorType>();
@@ -215,6 +215,15 @@ public class GameData {
 		this.types = types;
 	}
 
+	public PreferencesData getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(PreferencesData preferences) {
+		this.preferences = preferences;
+	}
+
+	
 
 	
 }

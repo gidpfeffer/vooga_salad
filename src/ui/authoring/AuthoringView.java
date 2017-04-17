@@ -1,9 +1,11 @@
 package ui.authoring;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -150,7 +152,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupMapView() {
 		//this calculation assumes that height < width
-
 		myMapView = new MapEditorView();
 		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
@@ -161,9 +162,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupLevelView() {
-		
-		myLevelView = new LevelEditorView(this,myLeftPane.getActors().get(new BasicActorType("Enemy")),myMapView.getPathData());
-				UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
+		Collection<ActorData> enemies = myLeftPane.getActors(new BasicActorType("Troop"));
+		myLevelView = new LevelEditorView(this, enemies);
+			
+		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLevelView.setPrefWidth(SIDE_PANE_WIDTH);
