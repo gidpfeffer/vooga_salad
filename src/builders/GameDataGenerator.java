@@ -47,9 +47,9 @@ public class GameDataGenerator {
 	public static GameData getComplexSampleGame(){
 		GameData game = new GameData();
 		
-		BasicActorType tower = game.addType("Tower");
-		BasicActorType shot = game.addType("Shot");
-		BasicActorType troop = game.addType("Troop");
+		//BasicActorType tower = game.addType("Tower");
+		//BasicActorType shot = game.addType("Shot");
+		//BasicActorType troop = game.addType("Troop");
 		BasicActorType base = game.addType("Base");
 		
 		List<Grid2D> samplePath = new ArrayList<Grid2D>();
@@ -78,7 +78,7 @@ public class GameDataGenerator {
 		MoveWithSetPathData pathData = PathGenerator.generateMoveData
 				(game.getMyPaths(), possiblePaths, .005);
 		ShootTargetFarData shoot = 
-				new ShootTargetFarData(10.0, 10, troop, 1, .01);
+				new ShootTargetFarData(10.0, 10, new BasicActorType("Troop"), 1, .01);
 		//Shoots with Actor at index 1 (shot)
 		
 		BasicData b1 = new BasicData("Tower", "tower_icon.png");
@@ -90,18 +90,18 @@ public class GameDataGenerator {
 		
 		BasicData b6 = new BasicData("Grass", "grass.png");
 		
-		ActorData a1 = new ActorData(tower, b1); //0
-		a1.addData(shoot);
 		
-		ActorData a2 = new ActorData(shot, b2);//1
+		ActorData a1 = new ActorData(new BasicActorType("Tower"), b1); //0
+		a1.addData(shoot); //tower has shooting capabilities
+		ActorData a2 = new ActorData(new BasicActorType("Projectile"), b2);//1
 		
-		ActorData a3 = new ActorData(troop, b3);//2
+		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3);//2
 		a3.addData(pathData);
 		
-		ActorData a4 = new ActorData(troop, b4);//3
+		ActorData a4 = new ActorData(new BasicActorType("Troop"), b4);//3
 		a4.addData(pathData);
 		
-		ActorData a5 = new ActorData(troop, b5);//4
+		ActorData a5 = new ActorData(new BasicActorType("Troop"), b5);//4
 		a4.addData(pathData);
 		
 		ActorData a6 = new ActorData(base, b6);//5
