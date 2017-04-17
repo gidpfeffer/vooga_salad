@@ -1,26 +1,19 @@
 package ui.authoring.level;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import gamedata.ActorData;
 import gamedata.LevelData;
-import gamedata.PathData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ui.Preferences;
-import ui.authoring.actor.ActorEditorView;
+import ui.authoring.PopupSize;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -70,7 +63,7 @@ public class LevelEditorView extends VBox{
 	
 	private void launchWaveChooser(){
 		LevelEditorMenu wcm  = new LevelEditorMenu(myDelegate,enemies, myInfo);
-		myDelegate.openView(wcm);
+		myDelegate.openViewWithSize(wcm, PopupSize.MEDIUM);
 	}
 	
 	private ImageView imageForStackButton(String imagePath){
