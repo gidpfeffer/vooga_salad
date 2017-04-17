@@ -3,27 +3,30 @@ package gamedata;
 import java.util.List;
 
 public class EnemyInWaveData {
-
-	private ActorData myData;
+	
+	//Corresponds to a number in the Map.3
+	private ActorData myActor;
 	private int myNumber;
-	private List<Integer> myPaths;
+	//private List<Integer> myPaths;
 	
-	public EnemyInWaveData(ActorData myData, int myNumber, List<Integer> myPaths) {
-		this.myData = myData;
+	//TODO: Need paths?
+	public EnemyInWaveData(ActorData myActor, int myNumber) {
+		this.myActor = myActor;
 		this.myNumber = myNumber;
-		this.myPaths = myPaths;
+		//this.myPaths = myPaths;
 	}
 	
-	public void addPath(Integer i){
-		myPaths.add(i);
-	}
 	
-	public ActorData getMyData() {
-		return myData;
+
+	public ActorData getMyActor() {
+		return myActor;
 	}
-	public void setMyData(ActorData myData) {
-		this.myData = myData;
+
+	public void setMyActor(ActorData myActor) {
+		this.myActor = myActor;
 	}
+
+
 	public int getMyNumber() {
 		return myNumber;
 	}
@@ -31,14 +34,10 @@ public class EnemyInWaveData {
 		this.myNumber = myNumber;
 	}
 
-	public List<Integer> getMyPaths() {
-		return myPaths;
-	}
 
-	public void setMyPaths(List<Integer> myPaths) {
-		this.myPaths = myPaths;
+	public String toString(){
+		//TODO: NEED?
+		return null;
+		//return  "ActorData:" +myData.toString()+" Number: "+myNumber+"  Paths:  "+myPaths.toString();
 	}
-public String toString(){
-	return  "ActorData:" +myData.toString()+" Number: "+myNumber+"  Paths:  "+myPaths.toString();
-}
 }
