@@ -21,8 +21,7 @@ public class GameStatus2 extends VoogaObservableMap<String,String>{
 	}
 
 	public void spendMoney(double mon){
-		double newMon = Double.parseDouble(myMap.get(MONEY))-mon;
-		setMyMoney(newMon);
+		addMoney(-mon);
 	}
 
 	public void levelUp() {
