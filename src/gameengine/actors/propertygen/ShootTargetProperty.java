@@ -37,7 +37,7 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 	
 	protected void spawnProjectiles(G grid, Collection<Grid2D> targets, Grid2D myLoc) {
 		targets.stream().forEach(target -> {
-			IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(myRange, PathUtil.getAngle(myLoc, target), mySpeed);
+			IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(PathUtil.getAngle(myLoc, target), myRange, mySpeed);
 			grid.actorSpawnActor(myProjectile, myLoc.getX(), myLoc.getY()).accept(newProperty);
 		});
 	}
