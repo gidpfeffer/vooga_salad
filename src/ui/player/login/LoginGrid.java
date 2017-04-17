@@ -13,6 +13,7 @@ public class LoginGrid extends DataEntryGrid{
 	private Map<Text, TextField> entryMap;
 	private Map<String, TextField> dataMap;
 	private ResourceBundle loginResource;
+	private String css;
 	
 	public TextField getUsername() {
 		//System.out.println(entryMap.get(loginResource.getString("username")).getText());
@@ -29,9 +30,10 @@ public class LoginGrid extends DataEntryGrid{
 		return entryMap;
 	}
 	
-	public LoginGrid(ResourceBundle resource) {
+	public LoginGrid(ResourceBundle resource, String css) {
 		super(resource);
 		loginResource = resource;
+		this.css = css;
 		entryMap = new LinkedHashMap<>();
 		dataMap = new LinkedHashMap<>();
 		addValues();
@@ -40,11 +42,15 @@ public class LoginGrid extends DataEntryGrid{
 	
 	public void addValues(){
 		TextField username = new TextField();
-		entryMap.put(new Text(loginResource.getString("username")), username);
+		Text user = new Text(loginResource.getString("username"));
+		user.setId("text");
+		entryMap.put(user, username);
 		dataMap.put("username", username);
 		
 		PasswordField password = new PasswordField();
-		entryMap.put(new Text(loginResource.getString("password")), password);
+		Text pass = new Text(loginResource.getString("password"));
+		pass.setId("text");
+		entryMap.put(pass, password);
 		dataMap.put("password", password);
 	}
 }
