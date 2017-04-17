@@ -1,6 +1,6 @@
 package ui.player.inGame;
 
-import gameengine.player.GameStatus;
+import gamestatus.GameStatus;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
