@@ -1,11 +1,13 @@
 package facebookintegration;
 
+import facebookintegration.interfaces.MasterFacebookUser;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -22,19 +24,20 @@ public class TestMain extends Application{
         Button btn = new Button();
         btn.setText("Get FB Set Up!");
         StackPane root = new StackPane();
-        Authenticator a = null;
+        
         btn.setOnAction(new EventHandler<ActionEvent>() {
         	
             @Override
             public void handle(ActionEvent event) {
-	            Authenticator a = new Authenticator();
-	            a.setUp();
-                ImageView pic = a.getProfilePicFromClient();
-	            pic.setFitHeight(50);
-	            pic.setFitWidth(50);
-	            StackPane.setAlignment(pic, Pos.TOP_CENTER);
-	            root.getChildren().add(a.getProfilePicFromClient());
-	            btn.setText("Post What's Up to FB");
+	            MasterFacebookUser user = new Authenticator();
+	            user.authenticate();
+                Image pic = user.getProfilePicture();
+                ImageView IV = new ImageView(pic);
+	            IV.setFitHeight(50);
+	            IV.setFitWidth(50);
+	            StackPane.setAlignment(IV, Pos.TOP_CENTER);
+	            root.getChildren().add(IV);
+	            user.postWithoutVoogaLink("what's up everyone");
             }
         });
        
