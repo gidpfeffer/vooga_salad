@@ -46,7 +46,7 @@ public class GameStatus2 extends VoogaObservableMap<String,String>{
 	}
 
 	public void clear() {
-		myMap = new HashMap<String,String>();
+		myMap.clear();
 		notifyObservers();
 	}
 }
