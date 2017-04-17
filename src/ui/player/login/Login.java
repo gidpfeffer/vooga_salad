@@ -1,7 +1,10 @@
 package ui.player.login;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import gameengine.controllers.GameController;
 
@@ -9,6 +12,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javafx.animation.FadeTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,6 +26,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -118,7 +123,7 @@ public class Login extends BorderedAnchorPane{
 	}
 
 	private void setupLoginGrid(){
-		login = new LoginGrid(loginResource);
+		login = new LoginGrid(loginResource, css);
 		login.getGrid().getStyleClass().add("grid");
 		gridPane.add(login.getGrid(), 0, 2);
 	}
@@ -205,27 +210,41 @@ public class Login extends BorderedAnchorPane{
 	
 	private void gotoGameSelector() {
 		//TODO: Replace with actual games list
-		ArrayList<Button> gamesList = new ArrayList<Button>();
+/*		ArrayList<Button> gamesList = new ArrayList<Button>();
 		gamesList.add(new Button("Sample Game"));
 		gamesList.add(new Button("Also Sample Game"));
-		
-		GameSelector select = new GameSelector("English", "mainScreen.css", setUpGames(gamesList));
+		*/
+		List<Game> gamesList = new ArrayList<>(Arrays.asList(new Game("Bloons", "default_map_background_0.jpg", e -> gotoGameScreen()),
+				new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {}), new Game("Asteroids", "asteroids.png", e -> {})));
+		GameSelector select = new GameSelector("English", "mainScreen.css", gamesList);
 		stage.setScene(select.getScene());
 		stage.setTitle("GameSelector");
 		stage.show();
 		//gotoGameScreen();
 	}
 	
-	private GridPane setUpGames(List<Button> games) {
-		GridPane gameMenu = new GridPane();
-		gameMenu.setVgap(20);
-		int index = 0;
-		for(Button game : games) {
-			game.setOnAction(e -> gotoGameScreen());
-			gameMenu.add(game, 0, index);
-			index++;
+	public class Game{
+		String name;
+		String imagePath;
+		EventHandler<MouseEvent> clicked;
+		
+		public String getName() {
+			return name;
 		}
-		return gameMenu;
+
+		public String getImagePath() {
+			return imagePath;
+		}
+
+		public EventHandler<MouseEvent> getClicked() {
+			return clicked;
+		}
+
+		public Game(String name, String imagePath, EventHandler<MouseEvent> clicked){
+			this.name = name;
+			this.imagePath = imagePath;
+			this.clicked = clicked;
+		}
 	}
 
 	private void gotoGameScreen() {
