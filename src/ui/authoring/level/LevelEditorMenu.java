@@ -8,8 +8,10 @@ import java.util.Optional;
 import javax.swing.JTabbedPane;
 
 import gamedata.ActorData;
+import gamedata.EnemyInWaveData;
 import gamedata.LevelData;
 import gamedata.WaveData;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -19,14 +21,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.PopupSize;
+import ui.authoring.actor.ActorTypeListSelectionView;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
@@ -40,7 +45,8 @@ public class LevelEditorMenu extends AnchorPane {
 	private LevelData myData;
 	private List<ActorData> activeEnemies = new ArrayList<ActorData>();
 	private Collection<ActorData> enemies;
-	private Collection<StackPane> waveBoxes;
+	private List<StackPane> waveBoxes;
+	private List<TextField> textBoxes;
 	ScrollPane waves;
 	ScrollPane actors;
 	
@@ -50,10 +56,14 @@ public class LevelEditorMenu extends AnchorPane {
 		myDelegate = delegate;
 		waveBoxes = new ArrayList<StackPane>();
 		this.enemies = enemies;
-		editWave = null;
 		myData = level;
 		setupViews();
 		populateViews();
+		if(myData.getNumWaves()==0)
+			selectWave(addNewWave(), 0);
+		else{
+			selectWave(waveBoxes.get(0), 0);
+		}
 	}
 
 	private void setupViews() {
@@ -70,13 +80,13 @@ public class LevelEditorMenu extends AnchorPane {
 	
 	private void populateWaves(){
 		HBox root = generateCloseHBox();
+		addWaveButton(root);
 		int numWaves = myData.getNumWaves();
 		for(int i=0; i<numWaves; i++){
-			StackPane wave = nextWave();
+			StackPane wave = addWave(i);
 			waveBoxes.add(wave);
 			root.getChildren().add(wave);
 		}
-		addWaveButton(root);
 	}
 	
 	private void addWaveButton(HBox root){
@@ -92,15 +102,53 @@ public class LevelEditorMenu extends AnchorPane {
 	
 	private  void populateEnemies(){
 		HBox root=new HBox();
-		root.setSpacing(10);
+		root.setSpacing(25);
+		textBoxes = new ArrayList<TextField>();
 		for(ActorData enemy:enemies){
+			VBox enemyBox = new VBox();
+			enemyBox.setSpacing(10);
+			enemyBox.setAlignment(Pos.CENTER);
 			ImageView image=new ImageView(new Image(enemy.getImagePath()));
 			Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
 					Optional.of(label(enemy.getName())), Optional.of(image), Pos.CENTER, true);
-			root.getChildren().add(toAdd);
-			HBox.setMargin(toAdd, new Insets(20));
+			enemyBox.getChildren().add(toAdd);
+			
+			//TODO: Restore saved
+			TextField text = addField(enemy, "0");
+			textBoxes.add(text);
+			enemyBox.getChildren().add(text);
+			root.getChildren().add(enemyBox);
+			HBox.setMargin(enemyBox, new Insets(30));
 		}
 		actors.setContent(root);
+	}
+	
+	private TextField addField(ActorData data, String value){
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(value);
+		field.setPrefWidth(150);
+		field.setFont(Preferences.FONT_MEDIUM);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_200));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
+		lblWrapper.getChildren().add(field);
+		field.setOnMousePressed(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+               field.clear();
+            }
+        });
+		field.textProperty().addListener((o,oldText,newText) -> this.updateQuantity(newText, data));
+		return field;
+	}
+	
+	private void updateQuantity(String newVal, ActorData data){
+		try{
+			int quantity = Integer.parseInt(newVal);
+			editWave.addWaveEnemy(new EnemyInWaveData(data, quantity));
+		}catch(Exception e){
+			//TODO: Error checking
+		}
 	}
 	
 	private void promptUser(ActorData enemy){
@@ -133,15 +181,16 @@ public class LevelEditorMenu extends AnchorPane {
 		return generateHBox(5);
 	}
 	
-	private void addNewWave(){
+	private StackPane addNewWave(){
 		HBox root= generateCloseHBox();
 		StackPane newWave = nextWave();
 		Node content = waves.getContent();
 		root.getChildren().add(content);
 		root.getChildren().add(newWave);
 		waveBoxes.add(newWave);
+		waves.setContent(root); 
 		myData.addWave(new WaveData());
-		waves.setContent(root);
+		return newWave;
 	}
 	
 	private void selectWave(StackPane selected, int wave){
@@ -154,17 +203,26 @@ public class LevelEditorMenu extends AnchorPane {
 		for(StackPane box: waveBoxes){
 			box.setOpacity(1);
 		}
+		
+		for(TextField field: textBoxes){
+			//TODO: Restore saved
+			field.setText("0");
+		}
 		selected.setOpacity(.5);
 		root.getChildren().addAll(waveBoxes);
 		
 	}
 	
 	private StackPane nextWave(){
+		return addWave(myData.getNumWaves());
+	}
+	
+	private StackPane addWave(int waveNumber){
 		StackPane nextWave= UIHelper.buttonStack(e->{},  
-				Optional.of(label(String.format("      Wave %d       ", myData.getNumWaves()+1))), 
+				Optional.of(label(String.format("      Wave %d       ", waveNumber + 1))), 
 				Optional.ofNullable(null),Pos.CENTER_RIGHT, true);
 		nextWave.addEventHandler(MouseEvent.MOUSE_CLICKED, 
-				e -> selectWave(nextWave, myData.getNumWaves()-1));
+				e -> selectWave(nextWave, waveNumber));
 		nextWave.setPrefHeight(56);
 		HBox.setMargin(nextWave, new Insets(20));
 		return nextWave;
@@ -181,8 +239,8 @@ public class LevelEditorMenu extends AnchorPane {
 	private void setupBack(ScrollPane bottomSide, ScrollPane topSide){
 		double inset = 12.0;
 		setVerticalAnchors(inset, bottomSide, topSide);
-		setupBar(inset,bottomSide);
-		setupBar(inset, topSide);
+		setupBar(inset, 1.65, bottomSide);
+		setupBar(inset, 2.5, topSide);
 		this.getChildren().addAll(bottomSide, topSide);
 	}
 	
@@ -191,7 +249,7 @@ public class LevelEditorMenu extends AnchorPane {
 		AnchorPane.setBottomAnchor(bottomSide, inset);
 	}
 	
-	private void setupBar(double inset, ScrollPane pane){
+	private void setupBar(double inset, double size, ScrollPane pane){
 		AnchorPane.setLeftAnchor(pane, inset);
 		
 		AnchorPane.setRightAnchor(pane, 48.0);
@@ -200,7 +258,7 @@ public class LevelEditorMenu extends AnchorPane {
 		pane.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
 
 		UIHelper.setDropShadow(pane);
-		pane.prefHeightProperty().bind(this.heightProperty().divide(2.0).subtract(inset * 3 / 2));
+		pane.prefHeightProperty().bind(this.heightProperty().divide(size).subtract(inset * 3 / 2));
 	}
 	
 	public LevelData getLevelData(){
