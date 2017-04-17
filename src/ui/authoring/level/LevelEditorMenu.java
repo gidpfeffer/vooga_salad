@@ -26,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ui.Preferences;
+import ui.authoring.PopupSize;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
@@ -68,8 +69,7 @@ public class LevelEditorMenu extends AnchorPane {
 	}
 	
 	private void populateWaves(){
-		HBox root=new HBox();
-		root.setSpacing(30);
+		HBox root = generateCloseHBox();
 		int numWaves = myData.getNumWaves();
 		for(int i=0; i<numWaves; i++){
 			StackPane wave = nextWave();
@@ -85,20 +85,26 @@ public class LevelEditorMenu extends AnchorPane {
 				Optional.of(image("add_icon.png")),
 				Pos.CENTER_RIGHT, true);
 		newWave.setPrefHeight(56);
-		VBox.setMargin(newWave, new Insets(8));
+		HBox.setMargin(newWave, new Insets(20));
 		root.getChildren().add(newWave);
 		waves.setContent(root);
 	}
 	
 	private  void populateEnemies(){
 		HBox root=new HBox();
-		root.setSpacing(30);
+		root.setSpacing(10);
 		for(ActorData enemy:enemies){
 			ImageView image=new ImageView(new Image(enemy.getImagePath()));
-			root.getChildren().add(UIHelper.buttonStack(e->toggleActive(enemy),
-					Optional.of(label(enemy.getName())), Optional.of(image), Pos.CENTER, true));
+			Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
+					Optional.of(label(enemy.getName())), Optional.of(image), Pos.CENTER, true);
+			root.getChildren().add(toAdd);
+			HBox.setMargin(toAdd, new Insets(20));
 		}
 		actors.setContent(root);
+	}
+	
+	private void promptUser(ActorData enemy){
+		System.out.println("Prompt user");
 	}
 	
 	private Label label(String title){
@@ -116,14 +122,19 @@ public class LevelEditorMenu extends AnchorPane {
 		return imageView;
 	}
 	
-	private HBox generateHBox(){
+	private HBox generateHBox(int spacing){
 		HBox root=new HBox();
-		root.setSpacing(30);
+		root.setSpacing(10);
+		root.setAlignment(Pos.CENTER);
 		return root;
 	}
 	
+	private HBox generateCloseHBox(){
+		return generateHBox(5);
+	}
+	
 	private void addNewWave(){
-		HBox root= generateHBox();
+		HBox root= generateCloseHBox();
 		StackPane newWave = nextWave();
 		Node content = waves.getContent();
 		root.getChildren().add(content);
@@ -137,7 +148,7 @@ public class LevelEditorMenu extends AnchorPane {
 
 		editWave = myData.getMyWaves().get(wave);
 		
-		HBox root=generateHBox();
+		HBox root=generateCloseHBox();
 		addWaveButton(root);
 		
 		for(StackPane box: waveBoxes){
@@ -155,18 +166,8 @@ public class LevelEditorMenu extends AnchorPane {
 		nextWave.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 				e -> selectWave(nextWave, myData.getNumWaves()-1));
 		nextWave.setPrefHeight(56);
-		VBox.setMargin(nextWave, new Insets(8));
+		HBox.setMargin(nextWave, new Insets(20));
 		return nextWave;
-	}
-	
-	
-	private void toggleActive(ActorData enemy){
-		if(activeEnemies.contains(enemy)){
-			activeEnemies.remove(enemy);
-		}
-		else{
-			activeEnemies.add(enemy);
-		}
 	}
 
 	private void setupBackButton() {
