@@ -1,9 +1,12 @@
 package gameengine.path;
 
-import java.util.HashMap;
-
 import util.observerobservable.VoogaObservableMap;
 
+/**
+ * @author sarahzhou
+ * Observable Map of Game Status elements for front end to display (Experience, money, level)
+ *
+ */
 public class GameStatus2 extends VoogaObservableMap<String,String>{
 
 	private final String EXPERIENCE = "Experience";
