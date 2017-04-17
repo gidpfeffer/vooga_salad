@@ -59,7 +59,7 @@ public class GameSelector extends BorderedAnchorPane{
 	}
 
 	private void setupLayout(){
-		root.setId("towerBackground");
+		//root.setId("towerBackground");
 		gameMenu.getStyleClass().add("scroll-pane");
 		root.getStyleClass().add("anchor-pane");
 	}
