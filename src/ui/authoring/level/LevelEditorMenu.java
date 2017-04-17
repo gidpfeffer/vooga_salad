@@ -43,19 +43,17 @@ public class LevelEditorMenu extends AnchorPane {
 	PopViewDelegate myDelegate;
 	private WaveData editWave;
 	private LevelData myData;
-	private List<ActorData> activeEnemies = new ArrayList<ActorData>();
-	private Collection<ActorData> enemies;
+	private List<ActorData> enemies;
 	private List<StackPane> waveBoxes;
 	private List<TextField> textBoxes;
 	ScrollPane waves;
 	ScrollPane actors;
 	
-	//TODO: PathData needed?
 	public LevelEditorMenu(PopViewDelegate delegate, Collection<ActorData> enemies, LevelData level) {
 		super();
 		myDelegate = delegate;
 		waveBoxes = new ArrayList<StackPane>();
-		this.enemies = enemies;
+		this.enemies = new ArrayList<ActorData>(enemies);
 		myData = level;
 		setupViews();
 		populateViews();
@@ -67,6 +65,7 @@ public class LevelEditorMenu extends AnchorPane {
 	}
 
 	private void setupViews() {
+		//TODO: Fix scroll bar
 		waves = new ScrollPane();
 		actors = new ScrollPane();
 		setupBack(actors, waves);
@@ -114,7 +113,11 @@ public class LevelEditorMenu extends AnchorPane {
 			enemyBox.getChildren().add(toAdd);
 			
 			//TODO: Restore saved
-			TextField text = addField(enemy, "0");
+			String quantity = "0";
+			if(editWave !=null){
+				quantity = ""+editWave.getQuantity(enemy);
+			}
+			TextField text = addField(enemy, quantity);
 			textBoxes.add(text);
 			enemyBox.getChildren().add(text);
 			root.getChildren().add(enemyBox);
@@ -138,14 +141,19 @@ public class LevelEditorMenu extends AnchorPane {
                field.clear();
             }
         });
-		field.textProperty().addListener((o,oldText,newText) -> this.updateQuantity(newText, data));
+		field.textProperty().addListener((o,oldText,newText) -> 
+			this.updateQuantity(field.textProperty().getValue(), data));
 		return field;
 	}
 	
 	private void updateQuantity(String newVal, ActorData data){
 		try{
 			int quantity = Integer.parseInt(newVal);
-			editWave.addWaveEnemy(new EnemyInWaveData(data, quantity));
+			if(editWave.contains(data)){
+				editWave.setQuantity(data, quantity);
+			}else{
+				editWave.addWaveEnemy(new EnemyInWaveData(data, quantity));
+			}
 		}catch(Exception e){
 			//TODO: Error checking
 		}
@@ -204,9 +212,10 @@ public class LevelEditorMenu extends AnchorPane {
 			box.setOpacity(1);
 		}
 		
-		for(TextField field: textBoxes){
+		for(int i =0; i<textBoxes.size(); i++){
 			//TODO: Restore saved
-			field.setText("0");
+			int quantity = editWave.getQuantity(enemies.get(i));
+			textBoxes.get(i).setText(""+quantity);
 		}
 		selected.setOpacity(.5);
 		root.getChildren().addAll(waveBoxes);

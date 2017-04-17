@@ -15,8 +15,6 @@ public class EnemyInWaveData {
 		this.myNumber = myNumber;
 		//this.myPaths = myPaths;
 	}
-	
-	
 
 	public ActorData getMyActor() {
 		return myActor;
