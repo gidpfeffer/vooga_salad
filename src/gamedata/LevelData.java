@@ -1,5 +1,6 @@
 package gamedata;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,10 +23,9 @@ import java.util.Optional;
  *
  */
 public class LevelData {
-	private PreferencesData myPreferences;
 	
 	//TODO Upgrade to list later -- single wave for now
-	private WaveData myEnemyWave;
+	private List<WaveData> myWaves;
 	private double difficulty;
 	private double duration; 
 	
@@ -36,9 +36,22 @@ public class LevelData {
 	private Optional<Double> attackMultiplier;
 	private Optional<Double> speedMultiplier;
 
+	public LevelData(){
+		this(100);//TODO: Choose better #
+	}
+	
 	public LevelData(double duration){
 		this.duration = duration;
-		myEnemyWave=new WaveData();
+		this.difficulty = DEFAULT;
+		myWaves= new ArrayList<WaveData>();
+	}
+	
+	public int getNumWaves(){
+		return myWaves.size();
+	}
+	
+	public void addWave(WaveData data){
+		myWaves.add(data);
 	}
 	
 	/**
@@ -48,23 +61,14 @@ public class LevelData {
 	 * 
 	 * Assumption: There is only a single wave for sprint #1
 	 * 
-	 * @param actor ActorData representing enemy
+	 * @param ActorData Integer representing enemy in Actor map
 	 * @param number Number of the enemy (E.g., 50 attackers)
-	 * @param myPaths The possible paths this enemy can take
 	 */
-	public void addWaveEnemy(ActorData actor, Integer number, List<Integer> myPaths){
-		myEnemyWave.addWaveEnemy(new EnemyInWaveData(actor, number, myPaths));
+	/*public void addWaveEnemy(ActorData actor, Integer number){
+		myEnemyWave.addWaveEnemy(new EnemyInWaveData(actor, number));
 	}
+	*/
 	
-	//TODO: Add remove function
-
-	public PreferencesData getMyPreferences() {
-		return myPreferences;
-	}
-
-	public void setMyPreferences(PreferencesData myPreferences) {
-		this.myPreferences = myPreferences;
-	}
 
 	/**
 	 * Assumed single wave right now (for first sprint), retrieve all of the enemies attacking
@@ -73,9 +77,10 @@ public class LevelData {
 	 * @return A List of EnemyInWaveData objects, each which holds an ActorData, Integer 
 	 * (frequency) and List of paths.
 	 */
-	public List<EnemyInWaveData> getTroops() {
+	/*public List<EnemyInWaveData> getTroops() {
 		return myEnemyWave.getWaveEnemies();
-	}
+	}*/
+
 
 	public double getDifficulty() {
 		return difficulty;
@@ -115,6 +120,14 @@ public class LevelData {
 
 	public void setDifficulty(double d) {
 		difficulty = d;
+	}
+
+	public List<WaveData> getMyWaves() {
+		return myWaves;
+	}
+
+	public void setMyWaves(List<WaveData> myWaves) {
+		this.myWaves = myWaves;
 	}
 	
 	

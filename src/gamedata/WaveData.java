@@ -25,6 +25,34 @@ public class WaveData {
 		waveEnemies = new ArrayList<EnemyInWaveData>(); 
 	}
 	
+	public boolean contains(ActorData actor){
+		for(EnemyInWaveData enemy: waveEnemies){
+			
+			if(enemy.getMyActor().equals(actor)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void setQuantity(ActorData actor, int quantity){
+		for(EnemyInWaveData enemy: waveEnemies){
+			if(enemy.getMyActor().equals(actor)){
+				enemy.setMyNumber(quantity);
+			}
+		}
+	}
+	
+	public int getQuantity(ActorData actor){
+		int toRet = 0;
+		for(EnemyInWaveData enemy: waveEnemies){
+			if(enemy.getMyActor().equals(actor)){
+				toRet = enemy.getMyNumber();
+			}
+		}
+		return toRet;
+	}
+	
 	public void addWaveEnemy(EnemyInWaveData enemy){
 		waveEnemies.add(enemy); 
 	}
