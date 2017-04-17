@@ -9,15 +9,15 @@ import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.json.JsonObject;
 import com.restfb.types.FacebookType;
-import com.restfb.types.Page;
 
+import facebookintegration.interfaces.MasterFacebookUser;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-public class Authenticator {
+public class Authenticator implements MasterFacebookUser{
 	private String domain, appID, authURL;
 	private WebDriver driver;
 	private FacebookClient client;
+	private boolean authenticated;
 	
 	
 	public Authenticator(){
@@ -26,12 +26,30 @@ public class Authenticator {
 		authURL = "https://graph.facebook.com/oauth/authorize?type=user_agent&client_id="+appID+
 				"&redirect_uri="+domain+"&scope=email,user_about_me,user_friends,user_birthday," + 
 				"user_posts,user_photos,public_profile,manage_pages,publish_actions";
-		
 		System.setProperty("webdriver.chrome.driver", "lib/chromedriver");
 		driver = new ChromeDriver();
 	}
 	
-	public void setUp(){
+	private Image getProfilePicFromClient(){
+		JsonObject picture = 
+			      client.fetchObject("me/picture", 
+				      JsonObject.class, Parameter.with("redirect","false"));
+			
+			String url = picture.get("data").asObject().get("url").asString();
+			return extractImageViewFromURL(url);
+	}
+	
+	private Image extractImageViewFromURL(String url){
+		return new Image(url);
+	}
+
+	@Override
+	public boolean isAuthenticated() {
+		return authenticated;
+	}
+
+	@Override
+	public void authenticate() {
 		String accessToken;
 		driver.get(authURL);
 		
@@ -44,25 +62,23 @@ public class Authenticator {
 			}
 		}
 		client = new DefaultFacebookClient(accessToken, Version.LATEST);
+		authenticated = true;
 	}
-	
-	public ImageView getProfilePicFromClient(){
-		JsonObject picture = 
-			      client.fetchObject("me/picture", 
-				      JsonObject.class, Parameter.with("redirect","false"));
-			
-			String url = picture.get("data").asObject().get("url").asString();
-			return extractImageViewFromURL(url);
-	}
-	
-	private ImageView extractImageViewFromURL(String url){
-		ImageView imageView = new ImageView(new Image(url));
-		return imageView;
-	}
-	
-	public String postToTimeline(String toPost){
-		final Page page = client.fetchObject("me", Page.class);
+
+	@Override
+	public String postWithoutVoogaLink(String toPost) {
 		FacebookType response = client.publish("me/feed", FacebookType.class, Parameter.with("message", toPost));
 		return "fb.com/" + response.getId();
+	}
+
+	@Override
+	public String postWithVoogaLink(String toPost) {
+		return postWithoutVoogaLink(toPost + " Download I<3Singletons today" + 
+				"at https://coursework.cs.duke.edu/CompSci308_2017Spring/voogasalad_ilovesingletons");
+	}
+
+	@Override
+	public Image getProfilePicture() {
+		return getProfilePicFromClient();
 	}
 }
