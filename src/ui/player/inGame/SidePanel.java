@@ -2,13 +2,9 @@ package ui.player.inGame;
 
 import ui.general.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,8 +40,6 @@ public class SidePanel {
 	private List<OptionsPane> listOfPanes;
 	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> options;
-	private Set<String> types;
-	private ResourceBundle icons = ResourceBundle.getBundle("icons");
 	
 	private static final String panel = "panel.css";
 	

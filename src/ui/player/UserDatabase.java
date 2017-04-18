@@ -3,8 +3,6 @@ package ui.player;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.thoughtworks.xstream.XStream;
-
 public class UserDatabase {
 	
 	private Collection<User> database = new ArrayList<User>();
