@@ -67,7 +67,9 @@ public class LevelEditorMenu extends AnchorPane {
 	private void setupViews() {
 		//TODO: Fix scroll bar
 		waves = new ScrollPane();
+		waves.setHbarPolicy(ScrollBarPolicy.NEVER);
 		actors = new ScrollPane();
+		actors.setHbarPolicy(ScrollBarPolicy.NEVER);
 		setupBack(actors, waves);
 	}
 	
@@ -219,7 +221,6 @@ public class LevelEditorMenu extends AnchorPane {
 		}
 		selected.setOpacity(.5);
 		root.getChildren().addAll(waveBoxes);
-		
 	}
 	
 	private StackPane nextWave(){
@@ -263,15 +264,10 @@ public class LevelEditorMenu extends AnchorPane {
 		
 		AnchorPane.setRightAnchor(pane, 48.0);
 		
-		pane.setBackground(new Background(new BackgroundFill(CustomColors.GREEN_200,null,null)));
-		pane.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.GREEN_200) + ";");
+		pane.setBackground(new Background(new BackgroundFill(CustomColors.BLUE_50,null,null)));
+		pane.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
 
 		UIHelper.setDropShadow(pane);
 		pane.prefHeightProperty().bind(this.heightProperty().divide(size).subtract(inset * 3 / 2));
 	}
-	
-	public LevelData getLevelData(){
-		return myData;
-	}
-
 }
