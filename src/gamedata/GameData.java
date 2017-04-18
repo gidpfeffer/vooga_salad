@@ -145,8 +145,8 @@ public class GameData {
 	 * Upgrade the given lineage data
 	 * @param LineageData data to update
 	 */
-	public void upgrade(LineageData data){
-		data.upgrade();
+	public void upgrade(Integer option){
+		pieces.get(option).upgrade();
 	}
 	
 	/**
