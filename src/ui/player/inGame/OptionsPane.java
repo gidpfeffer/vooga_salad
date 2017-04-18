@@ -94,7 +94,7 @@ public class OptionsPane {
 
 	private void setup() {
 		addActorPane();
-		addBackButton(closePane);
+		addBackButton();
 	}
 
 	/**
@@ -119,8 +119,9 @@ public class OptionsPane {
 	 * 
 	 * @param clicked
 	 */
-	private void addBackButton(EventHandler<MouseEvent> clicked) {
-		Button back = createImageButton(0, "", "back_icon_flipped.png", clicked);
+	private void addBackButton() {
+		SlidingPane sp = new SlidingPane();
+		Button back = createImageButton(0, "", "back_icon_flipped.png", e -> sp.slidePane(buttonPane, buttonPane.getPrefWidth()));
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
@@ -167,9 +168,9 @@ public class OptionsPane {
 		}
 	};
 
-	/**
+/*	*//**
 	 * closes an open pane based on it's preferred size
-	 */
+	 *//*
 	EventHandler<MouseEvent> closePane = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
@@ -181,5 +182,5 @@ public class OptionsPane {
 				t.play();
 			}
 		}
-	};
+	};*/
 }
