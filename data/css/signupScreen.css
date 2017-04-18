@@ -17,6 +17,17 @@
 	-fx-font-weight: BOLD;
 }
 
+#pane {
+	-fx-background-color: #f4b942;
+	-fx-background-radius: 20;
+}
+
+#main-pane {
+	-fx-background-color: black;
+	-fx-opacity: .8;
+	-fx-background-radius: 20;
+}
+
 .grid {
 	-fx-grid-lines-visible: false;
 	-fx-background-color: transparent;
