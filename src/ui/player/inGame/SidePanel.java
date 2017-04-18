@@ -2,9 +2,13 @@ package ui.player.inGame;
 
 import ui.general.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,6 +44,8 @@ public class SidePanel {
 	private List<OptionsPane> listOfPanes;
 	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> options;
+	private Set<String> types;
+	private ResourceBundle icons = ResourceBundle.getBundle("icons");
 	
 	private static final String panel = "panel.css";
 	
@@ -104,6 +110,7 @@ public class SidePanel {
 	 * If pane is empty, no button will be generated / placed on screen
 	 */
 	private void linkMainPaneToInternalPanes() {
+		SlidingPane sp = new SlidingPane();
 		mainBox.getStylesheets().add(panel);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
 			System.out.println(entry.getValue());

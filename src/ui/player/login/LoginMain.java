@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 import gameengine.controllers.GameController;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -21,6 +24,7 @@ import ui.Preferences;
 import ui.authoring.AuthoringView;
 import ui.player.GameSelector;
 import ui.player.UserDatabase;
+import ui.player.XStreamFileChooser;
 import ui.player.login.Login.Game;
 
 public class LoginMain {
@@ -29,15 +33,24 @@ public class LoginMain {
 	private UserDatabase database;
 	private ResourceBundle loginResource;
 	private Login loginScreen;
+	public static final String userDatabase = "userDatabase.xml";
+	XStream mySerializer = new XStream(new DomDriver());
+	XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
 
-	public LoginMain(UserDatabase database, Stage stage, String css, String resource) {
+	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
-		this.database = database;
+		setupDatabase();
 		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
 		stage.setMinWidth(Preferences.SCREEN_WIDTH);
 		loginResource = ResourceBundle.getBundle(resource);
 		setupLoginScreen(css, resource);
 		stage.setScene(loginScreen.getScene());
+	}
+	
+	private void setupDatabase() {
+		XStream mySerializer = new XStream(new DomDriver());
+		XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+		database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
 	}
 	
 	private void setupLoginScreen(String css, String resource) {
@@ -144,6 +157,8 @@ public class LoginMain {
 		gameController.start(stage);
 		setUpGameScreenReturn();
 		stage.setScene(gameController.getGameScreen().getScene());
+		stage.setWidth(Preferences.SCREEN_WIDTH);
+		stage.setHeight(Preferences.SCREEN_HEIGHT);
 		stage.setTitle("GameSelector");
 	}
 	
@@ -154,8 +169,8 @@ public class LoginMain {
 				gameController.getGameScreen().getUIHandler().stop();
 				stage.setScene(loginScreen.getScene());
 				stage.setTitle("Login");
-				stage.setMaxWidth(Preferences.SCREEN_WIDTH);
-				stage.setMaxHeight(Preferences.SCREEN_HEIGHT);
+				stage.setWidth(Preferences.SCREEN_WIDTH);
+				stage.setHeight(Preferences.SCREEN_HEIGHT);
 			}
 		};
 		gameController.getGameScreen().setBackToLoginAction(backToLogin);
