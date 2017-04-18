@@ -53,7 +53,7 @@ private void writeXML(){
 	setPathData(root,doc);
 	setActorData(root,doc);
 	setLevelData(root,doc);
-	setProjectileData(root,doc);
+	//setProjectileData(root,doc);
 	printFile(doc);
 }
 private void setPathData(Element root, Document doc){
@@ -79,7 +79,7 @@ private void setActorData(Element root, Document doc){
 		ActorData current=myGameData.getOption(i);
 		Element actor=doc.createElement("Actor");
 		Element type=doc.createElement("type");
-		type.appendChild(doc.createTextNode(current.getType().name()));
+		type.appendChild(doc.createTextNode(current.getType().getType()));
 		BasicData currentBasic=current.getBasic();
 		Element name=doc.createElement("Name");
 		name.appendChild(doc.createTextNode(currentBasic.getName()));
@@ -88,9 +88,9 @@ private void setActorData(Element root, Document doc){
 		actor.appendChild(type);
 		actor.appendChild(name);
 		actor.appendChild(imagePath);
-		List<Data>dataList=current.getMyData();
+		List<Data>dataList=new ArrayList<Data>(current.getMyData());
 		dataList.add(current.getHealth());
-		for(Data d:current.getMyData()){
+		for(Data d:dataList){
 			Element dataElement=doc.createElement(d.getClass().toString().split("\\.")[d.getClass().toString().split("\\.").length-1]);
 			Map<String,Object> fields=OptionGenerator.getFields(d);
 			ArrayList<Object> fieldStrings=new ArrayList<Object>();
@@ -150,29 +150,29 @@ private void setLevelData(Element root,Document doc){
 	root.appendChild(levelData);
 	
 }
-private void setProjectileData(Element root,Document doc){
-	Element projectileData=doc.createElement("ProjectileData");
-	for(Integer i:myGameData.getMyProjectiles().getMyProjectiles().keySet()){
-		Element projectile=doc.createElement("Projectile");
-		ProjectileType proj=myGameData.getMyProjectiles().getMyProjectiles().get(i);
-		Element damage=doc.createElement("Damage");
-		damage.appendChild(doc.createTextNode(Double.toString(proj.getDamage())));
-		System.out.println(proj.getImagePath());
-		Element image=doc.createElement("Image");
-		image.appendChild(doc.createTextNode(proj.getImagePath()));
-		Element explosive=doc.createElement("Explosive");
-		explosive.appendChild(doc.createTextNode(Boolean.toString(proj.isExplosive())));
-		System.out.println(proj.isExplosive());
-		Element restrictive=doc.createElement("Restrictive");
-		restrictive.appendChild(doc.createTextNode(Boolean.toString(proj.isRestrictive())));
-		projectile.appendChild(damage);
-		projectile.appendChild(image);
-		projectile.appendChild(explosive);
-		projectile.appendChild(restrictive);
-		projectileData.appendChild(projectile);
-	}
-	root.appendChild(projectileData);
-}
+//private void setProjectileData(Element root,Document doc){
+//	Element projectileData=doc.createElement("ProjectileData");
+//	for(Integer i:myGameData.getMyProjectiles().getMyProjectiles().keySet()){
+//		Element projectile=doc.createElement("Projectile");
+//		ProjectileType proj=myGameData.getMyProjectiles().getMyProjectiles().get(i);
+//		Element damage=doc.createElement("Damage");
+//		damage.appendChild(doc.createTextNode(Double.toString(proj.getDamage())));
+//		System.out.println(proj.getImagePath());
+//		Element image=doc.createElement("Image");
+//		image.appendChild(doc.createTextNode(proj.getImagePath()));
+//		Element explosive=doc.createElement("Explosive");
+//		explosive.appendChild(doc.createTextNode(Boolean.toString(proj.isExplosive())));
+//		System.out.println(proj.isExplosive());
+//		Element restrictive=doc.createElement("Restrictive");
+//		restrictive.appendChild(doc.createTextNode(Boolean.toString(proj.isRestrictive())));
+//		projectile.appendChild(damage);
+//		projectile.appendChild(image);
+//		projectile.appendChild(explosive);
+//		projectile.appendChild(restrictive);
+//		projectileData.appendChild(projectile);
+//	}
+//	root.appendChild(projectileData);
+//}
 private void printFile(Document doc){
 	TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	Transformer transformer = null;
@@ -188,8 +188,8 @@ private void printFile(Document doc){
 	fileChooser.getExtensionFilters().addAll(new ExtensionFilter(".xml files","*.xml"));
 	fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 	Result result=null;
-	 result = new StreamResult(fileChooser.showSaveDialog(new Stage()));		
-	//result=new StreamResult(new File("ss.xml"));
+	 //result = new StreamResult(fileChooser.showSaveDialog(new Stage()));		
+	result=new StreamResult(new File("ss.xml"));
 	try {		
 		transformer.transform(source, result);
 	} catch (TransformerException e) {

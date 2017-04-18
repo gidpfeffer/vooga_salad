@@ -13,7 +13,7 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage s) throws Exception {
-		s.getIcons().add(new Image("tower2.jpg"));
+		//s.getIcons().add(new Image("tower2.jpg"));
 		Login login = new Login(s, "loginScreen.css", "login");
 		s.setScene(login.getScene());
 		s.setTitle("Login");

@@ -37,6 +37,21 @@
 <LimitedHealthData>1.0</LimitedHealthData>
 
 </Actor>
+<Actor>
+<type>Tower</type>
+<name>Bulbasaur</name>
+<imagePath>bulb.jpg</imagePath>
+<LimitedHealthData>1.0</LimitedHealthData>
+
+</Actor>
+<Actor>
+<type>Projectile</type>
+<name>Bullet</name>
+<imagePath>bullet.jpg</imagePath>
+<LimitedHealthData>1.0</LimitedHealthData>
+
+</Actor>
+
 </ActorData>
 <LevelData>
 
@@ -58,12 +73,5 @@
 </Enemy>
 </Wave>
 </LevelData>
-<ProjectileData>
-<Projectile>
-<Image>bullet.png</Image>
-<Damage>1.0</Damage>
-<Explosive>true</Explosive>
-<Restrictive>true</Restrictive>
-</Projectile>
-</ProjectileData>
+
 </type>

@@ -77,7 +77,7 @@ public class XMLReader {
 			throw new XMLException(e);
 		}
 		getLevelData();
-		getProjectileData();
+		//getProjectileData();
 
 	}
 	public GameData getData(){
@@ -117,7 +117,7 @@ public class XMLReader {
 		for (int i = 0; i < actors.getLength(); i++) {
 			Element actor = (Element) actors.item(i);
 			String type = getTextValue(actor, "type");
-			BasicActorType basicType = BasicActorType.valueOf(type);
+			BasicActorType basicType = new BasicActorType(type);
 			String imagePath = getTextValue(actor, "imagePath");
 			String name = getTextValue(actor, "name");
 			BasicData basicData = new BasicData(name, imagePath);
@@ -129,8 +129,13 @@ public class XMLReader {
 				Optional<String> fieldData = Optional.ofNullable(getTextValue(actor, field));
 				if (fieldData.isPresent() && fieldData.get().length() > 0) {
 					String[] fields = fieldData.get().split(" ");
-
-					Constructor<?> constr = c.getConstructors()[0];
+					Constructor<?>constr=null;
+					Constructor<?>[] constructors = c.getConstructors();
+					for(Constructor<?>current:constructors){
+						if(current.getParameterTypes().length==fields.length){
+							constr=current;
+						}
+					}
 					Class[] neededFields = constr.getParameterTypes();
 
 					Object[] convertedFields = new Object[neededFields.length];
@@ -138,12 +143,14 @@ public class XMLReader {
 						convertedFields[j] = StringToFieldFactory.getObject(fields[j], neededFields[j]);
 						
 					}
-
-					Object o = DataGenerator.makeData(field.substring(0, field.length() - 4), convertedFields);
+				
+					Object o = DataGenerator.makeData(field.substring(0, field.length() ), convertedFields);
 					if (o instanceof HealthData) {
 						healthData = (HealthData) o;
+					
 					} else {
 						data.add((Data) o);
+						
 					}
 
 				}
@@ -195,24 +202,24 @@ public class XMLReader {
 		myGameData.addLevel(levelData, 0);
 	}
 
-	private void getProjectileData() {
-		Element root = getRootElement(dataFile);
-		Element allProjectiles = (Element) root.getElementsByTagName("ProjectileData").item(0);
-		NodeList projectiles = allProjectiles.getElementsByTagName("Projectile");
-		ProjectileData projectileData=new ProjectileData(new HashMap<Integer,ProjectileType>());
-		for(int i=0;i<projectiles.getLength();i++){
-			Element projectile=(Element)projectiles.item(i);
-			String image=getTextValue(projectile,"Image");
-			Double damage=Double.parseDouble(getTextValue(projectile,"Damage"));
-		
-			Boolean explosive=Boolean.valueOf(getTextValue(projectile,"Explosive"));
-			Boolean restrictive=Boolean.valueOf(getTextValue(projectile,"Restrictive"));
-			ProjectileType newProjectile=new ProjectileType(image,damage,explosive,restrictive);
-		projectileData.addProjectile(newProjectile);
-		System.out.println(newProjectile.getDamage());
-		}
-		myGameData.setProjectileOptions(projectileData);
-	}
+//	private void getProjectileData() {
+//		Element root = getRootElement(dataFile);
+//		Element allProjectiles = (Element) root.getElementsByTagName("ProjectileData").item(0);
+//		NodeList projectiles = allProjectiles.getElementsByTagName("Projectile");
+//		ProjectileData projectileData=new ProjectileData(new HashMap<Integer,ProjectileType>());
+//		for(int i=0;i<projectiles.getLength();i++){
+//			Element projectile=(Element)projectiles.item(i);
+//			String image=getTextValue(projectile,"Image");
+//			Double damage=Double.parseDouble(getTextValue(projectile,"Damage"));
+//		
+//			Boolean explosive=Boolean.valueOf(getTextValue(projectile,"Explosive"));
+//			Boolean restrictive=Boolean.valueOf(getTextValue(projectile,"Restrictive"));
+//			ProjectileType newProjectile=new ProjectileType(image,damage,explosive,restrictive);
+//		projectileData.addProjectile(newProjectile);
+//		System.out.println(newProjectile.getDamage());
+//		}
+//		myGameData.add(data);
+//	}
 
 	private Optional<Double> getOptionalDouble(String s) {
 		try {
@@ -247,7 +254,7 @@ public class XMLReader {
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		XMLReader x = new XMLReader("data/voogatest.xml");
-		System.out.println(x.myGameData);
+		
 
 	}
 }

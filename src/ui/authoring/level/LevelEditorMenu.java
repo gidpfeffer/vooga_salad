@@ -22,6 +22,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -100,13 +101,24 @@ public class LevelEditorMenu extends AnchorPane {
 		activePaths.add(newValue);
 	}
 	private  void populateEnemies(){
-		HBox root=new HBox();
+		VBox root=new VBox();
+		HBox enemyRoot=new HBox();
+		HBox nums=new HBox();
+		enemyRoot.setSpacing(10);
 		root.setSpacing(10);
+		nums.setSpacing(10);
 		for(ActorData enemy:enemies){
 			ImageView image=new ImageView(new Image(enemy.getImagePath()));
-			root.getChildren().add(UIHelper.buttonStack(e->toggleActive(enemy), Optional.of(new Label(enemy.getName())), Optional.of(image), Pos.CENTER, true));
-			
+			StackPane button=UIHelper.buttonStack(e->toggleActive(enemy), Optional.of(new Label(enemy.getName())), Optional.of(image), Pos.CENTER, true);
+			enemyRoot.getChildren().add(button);
+			TextArea textArea=new TextArea();
+			textArea.setMaxWidth(button.getWidth());
+			textArea.setMaxHeight(button.getHeight());
+			nums.getChildren().add(new TextArea());
 		}
+		
+		root.getChildren().add(enemyRoot);
+		root.getChildren().add(nums);
 		bottomSide.setContent(root);
 		
 	}
