@@ -7,6 +7,9 @@ import java.util.List;
 import gamedata.ActorData;
 import gamedata.LevelData;
 import gamedata.WaveData;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -15,6 +18,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import ui.Preferences;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
@@ -44,6 +49,22 @@ public class LevelEditorMenu extends AnchorPane {
 	
 	private void populateViews(){
 		setupBackButton();
+		setupFields();
+	}
+	
+	private void setupFields(){
+		TextField difficulty = addField("Difficulty (0.0-1.0)");
+		difficulty.setMinWidth(180);
+		TextField duration = addField("Duration (seconds)");
+		duration.setMinWidth(180);
+		
+		VBox root = new VBox();
+		root.setAlignment(Pos.CENTER);
+		VBox.setMargin(duration, new Insets(20));
+		VBox.setMargin(difficulty, new Insets(20));
+		
+		root.getChildren().addAll(difficulty, duration);
+		settings.setContent(root);
 	}
 
 	private void setupViews() {
@@ -83,6 +104,19 @@ public class LevelEditorMenu extends AnchorPane {
 
 		UIHelper.setDropShadow(pane);
 		pane.prefHeightProperty().bind(this.heightProperty().divide(size).subtract(inset * 3 / 2));
+	}
+	
+	private TextField addField(String value){
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(value);
+		field.setPrefWidth(150);
+		field.setFont(Preferences.FONT_MEDIUM);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_200));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
+		lblWrapper.getChildren().add(field);
+		return field;
 	}
 
 }
