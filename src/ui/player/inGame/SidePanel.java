@@ -110,6 +110,7 @@ public class SidePanel {
 	 * If pane is empty, no button will be generated / placed on screen
 	 */
 	private void linkMainPaneToInternalPanes() {
+		SlidingPane sp = new SlidingPane();
 		mainBox.getStylesheets().add(panel);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
 			System.out.println(entry.getValue());

@@ -39,6 +39,7 @@ public class Signup extends BorderedAnchorPane {
 	private Button signupButton;
 	private UserDatabase database;
 	private String profilePicture = "profile_icon.png";
+	private String css;
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
 
@@ -49,6 +50,7 @@ public class Signup extends BorderedAnchorPane {
 	public Signup(UserDatabase database, ResourceBundle resource, String css) {
 		this.resource = resource;
 		this.database = database;
+		this.css = css;
 		signupGrid = new SignupGrid(resource);
 		scene = new Scene(root, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT);
 		scene.getStylesheets().add(css);
@@ -144,7 +146,7 @@ public class Signup extends BorderedAnchorPane {
 				String mySavedUsers = mySerializer.toXML(database);
 				System.out.println(mySavedUsers);
 				fileChooser.writeFile(mySavedUsers);
-
+				new Login(css, resource.getBaseBundleName()); //TODO broken?
 			} else {
 				showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
 			}

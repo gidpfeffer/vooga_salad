@@ -1,61 +1,64 @@
 package ui.player.login;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
-import gameengine.controllers.GameController;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import ui.*;
-import ui.authoring.AuthoringView;
 import ui.general.UIHelper;
-import ui.player.GameSelector;
-import ui.player.UserDatabase;
-import ui.player.XStreamFileChooser;
 
 public class Login extends BorderedAnchorPane {
 	// how to be "logged in"
-	private Stage stage;
 	private Scene scene;
-	private GameController gameController;
-	private UserDatabase database;
+	private Button loginEnter;
+	private Hyperlink signupEnter;
+	private Button auth;
+	private Button selector;
+	private final Text actiontarget;
 
 	private String css;
 	private GridPane gridPane;
 	private LoginGrid login;
 	private ResourceBundle loginResource;
-	public static final String userDatabase = "userDatabase.xml";
-	XStream mySerializer = new XStream(new DomDriver());
-	XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
 
 	public Scene getScene() {
 		return scene;
 	}
-
-	public Login(Stage stage, String css, String resource) {
-		this.stage = stage;
+	
+	public void setLoginAction(EventHandler<ActionEvent> value) {
+		loginEnter.setOnAction(value);
+	}
+	
+	public void setSignupAction(EventHandler<ActionEvent> value) {
+		signupEnter.setOnAction(value);
+	}
+	
+	public void setAuthAction(EventHandler<ActionEvent> value) {
+		auth.setOnAction(value);
+	}
+	
+	public void setSelectorAction(EventHandler<ActionEvent> value) {
+		selector.setOnAction(value);
+	}
+	
+	public Text getActionTarget() {
+		return actiontarget;
+	}
+	
+	public LoginGrid getLoginGrid() {
+		return login;
+	}
+	
+	public Login(String css, String resource) {
 		this.css = css;
-		this.database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
-		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
-		stage.setMinWidth(Preferences.SCREEN_WIDTH);
+		actiontarget = new Text();
 		loginResource = ResourceBundle.getBundle(resource);
 		gridPane = new GridPane();
 		setup();
@@ -102,26 +105,21 @@ public class Login extends BorderedAnchorPane {
 		gridPane.add(login.getGrid(), 0, 2);
 	}
 
-	private void setupButtons() {
-		Button loginEnter = new Button(loginResource.getString("login"));
-		Hyperlink signupEnter = new Hyperlink(loginResource.getString("signup"));
+	private void setupButtons(){
+		loginEnter = new Button(loginResource.getString("login"));
+		signupEnter = new Hyperlink(loginResource.getString("signup"));
 		gridPane.add(loginEnter, 0, 3);
 		gridPane.add(signupEnter, 0, 4);
 		GridPane.setHalignment(loginEnter, HPos.CENTER);
 		GridPane.setHalignment(signupEnter, HPos.CENTER);
-		final Text actiontarget = new Text();
 		gridPane.add(actiontarget, 0, 5);
-		GridPane.setHalignment(actiontarget, HPos.CENTER);
-
-		loginEnter.setOnAction(e -> loginClicked(actiontarget));
-		signupEnter.setOnAction(e -> gotoSignupPage());
 	}
 
-	private void setupAltButtons() {
-		Button auth = new Button(loginResource.getString("gotoAuth"));
-		Button selector = new Button(loginResource.getString("gotoSelector"));
-		auth.setOnAction(e -> gotoAuth());
-		selector.setOnAction(e -> gotoGameSelector());
+	private void setupAltButtons(){
+		auth = new Button(loginResource.getString("gotoAuth"));
+		selector = new Button(loginResource.getString("gotoSelector"));
+		UIHelper.setDropShadow(auth);
+		UIHelper.setDropShadow(selector);
 		HBox hbox = new HBox(100, auth, selector);
 		borderPane.setBottom(hbox);
 		hbox.setAlignment(Pos.CENTER);
@@ -137,67 +135,7 @@ public class Login extends BorderedAnchorPane {
 		borderPane.setCenter(sp);
 	}
 
-	private void loginClicked(Text actiontarget) {
-		if (database.getPasswords().login(login.getUsername().getText(), login.getPassword().getText())) {
-			showAlert(AlertType.INFORMATION, loginResource.getString("welcome"),
-					loginResource.getString("welcome") + ", " + login.getUsername().getText() + ".",
-					loginResource.getString("lets"));
-			login.getUsername().clear();
-			gotoGameSelector();
-		} else {
-			setBadActionTarget(actiontarget, Color.WHITE, loginResource.getString("incorrectLogin"));
-		}
-		login.getPassword().clear();
-	}
-
-	private void showAlert(AlertType type, String title, String heading, String content) {
-		Alert alert = new Alert(type);
-		alert.setTitle(title);
-		alert.setHeaderText(heading);
-		alert.setContentText(content);
-		alert.showAndWait();
-	}
-
-	private void setBadActionTarget(Text node, Color color, String error) {
-		node.setFill(color);
-		node.setText(error);
-		FadeTransition fade = createFader(node);
-		fade.play();
-	}
-
-	private FadeTransition createFader(Node node) {
-		FadeTransition fade = new FadeTransition(Duration.millis(3000), node);
-		fade.setFromValue(1);
-		fade.setToValue(0);
-		return fade;
-	}
-
-	private void gotoAuth() {
-		AuthoringView view = new AuthoringView();
-		Stage s = (Stage) scene.getWindow();
-		s.setScene(new Scene(view, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
-	}
-
-	private void gotoSignupPage() {
-		Signup signupPage = new Signup(database, loginResource, "signupScreen.css");
-		stage.setScene(signupPage.getScene());
-		stage.setTitle(loginResource.getString("signup"));
-	}
-
-	private void gotoGameSelector() {
-		// TODO: Replace with actual games list
-		List<Game> gamesList = new ArrayList<>(
-				Arrays.asList(new Game("Bloons", "default_map_background_0.jpg", e -> gotoGameScreen()),
-						new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {
-						}), new Game("Asteroids", "asteroids.png", e -> {
-						})));
-		GameSelector select = new GameSelector("English", "mainScreen.css", gamesList);
-		stage.setScene(select.getScene());
-		stage.setTitle(loginResource.getString("gameSelector"));
-		stage.show();
-	}
-
-	public class Game {
+	public class Game{
 		String name;
 		String imagePath;
 		EventHandler<MouseEvent> clicked;
@@ -219,12 +157,5 @@ public class Login extends BorderedAnchorPane {
 			this.imagePath = imagePath;
 			this.clicked = clicked;
 		}
-	}
-
-	private void gotoGameScreen() {
-		gameController = new GameController();
-		gameController.start(stage);
-		stage.setScene(gameController.getGameScreen().getScene());
-		stage.setTitle(loginResource.getString("gameScreen"));
 	}
 }
