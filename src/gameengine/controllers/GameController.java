@@ -68,10 +68,6 @@ public class GameController {
 		return myGameScreen;
 	}
 	
-	public SimpleHUD getSimpleHUD() {
-		return mySimpleHUD;
-	}
-	
 	private void setupGameStatus() {
 		mySimpleHUD = new SimpleHUD();
 		myGameStatus = new GameStatus();
@@ -170,7 +166,10 @@ public class GameController {
 				myLevelController.changeLevel(myGameData, level);
 			}
 
-		
+			@Override	
+			public SimpleHUD getSimpleHUD() {
+				return mySimpleHUD;
+			}
 		};
 	}
 	
