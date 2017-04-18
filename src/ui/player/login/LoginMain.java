@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 import gameengine.controllers.GameController;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -21,6 +24,7 @@ import ui.Preferences;
 import ui.authoring.AuthoringView;
 import ui.player.GameSelector;
 import ui.player.UserDatabase;
+import ui.player.XStreamFileChooser;
 import ui.player.login.Login.Game;
 
 public class LoginMain {
@@ -30,14 +34,20 @@ public class LoginMain {
 	private ResourceBundle loginResource;
 	private Login loginScreen;
 
-	public LoginMain(UserDatabase database, Stage stage, String css, String resource) {
+	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
-		this.database = database;
+		setupDatabase();
 		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
 		stage.setMinWidth(Preferences.SCREEN_WIDTH);
 		loginResource = ResourceBundle.getBundle(resource);
 		setupLoginScreen(css, resource);
 		stage.setScene(loginScreen.getScene());
+	}
+	
+	private void setupDatabase() {
+		XStream mySerializer = new XStream(new DomDriver());
+		XStreamFileChooser fileChooser = new XStreamFileChooser("userDatabase.xml");
+		database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
 	}
 	
 	private void setupLoginScreen(String css, String resource) {
