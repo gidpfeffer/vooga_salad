@@ -23,15 +23,12 @@ import java.util.Optional;
  *
  */
 public class LevelData {
-	
-	//TODO Upgrade to list later -- single wave for now
 	private List<WaveData> myWaves;
 	private double difficulty;
 	private double duration; 
 	
 	private final double DEFAULT = 1;
 	
-	//Increase by level
 	private Optional<Double> healthMultiplier;
 	private Optional<Double> attackMultiplier;
 	private Optional<Double> speedMultiplier;
