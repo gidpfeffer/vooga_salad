@@ -4,6 +4,13 @@ import java.util.List;
 import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
+/**
+ * Actor is able to be damaged.
+ * 
+ * @author maddiebriere
+ * 
+ */
+
 public class ActorDamageableData implements Data {
 	
 	private double myHitRadius;
@@ -24,12 +31,15 @@ public class ActorDamageableData implements Data {
 	public double getMyHitRadius() {
 		return myHitRadius;
 	}
+	
 	public void setMyHitRadius(double myHitRadius) {
 		this.myHitRadius = myHitRadius;
 	}
+	
 	public List<BasicActorType> getMyEnemyTypes() {
 		return myEnemyTypes;
 	}
+	
 	public void setMyEnemyTypes(List<BasicActorType> myEnemyTypes) {
 		this.myEnemyTypes = myEnemyTypes;
 	}

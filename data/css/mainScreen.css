@@ -8,36 +8,8 @@
 #title {
 	-fx-font-family: "HelveticaNeue";
 	-fx-font-size: 70;
-	-fx-text-fill: #7C4B36;
-	-fx-effect: innershadow( one-pass-box , rgba(214,73,51) , 10,.5,2,2 );
-}
-
-.button {
-	-fx-background-radius: 15;
-	-fx-font-family: "HelveticaNeue";
-	-fx-alignment: CENTER;
-    -fx-background-color: #E94117;
-    -fx-font-weight: lighter;
-    -fx-text-fill: white;
-    -fx-font-size: 1.875em;
-    -fx-scale-x: .75;
-    -fx-scale-y: .75;
-    -fx-stroke: #42dfb8;
-    -fx-stroke-width: 2;
-}
-
-.button:hover {
-	-fx-font-family: "HelveticaNeue";
-    -fx-alignment: CENTER;
-    -fx-content-display: LEFT;
-    -fx-background-color: #DB7C26;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-font-size: 1.875em;
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-    -fx-stroke: #42dfb8;
-    -fx-stroke-width: 2;
+	-fx-text-fill: black;
+	-fx-font-weight: BOLD;
 }
 
 .grid {
@@ -48,25 +20,47 @@
 .label {
 	-fx-font-family: "HelveticaNeue";
 	-fx-font-size: 20;
-	-fx-text-fill: #FF8C42;
-	-fx-effect: dropshadow( two-pass-box , rgba(214,73,51) , 10,.5,2,2 );
+	-fx-text-fill: white;
+	
 }
 
 #text {
 	-fx-font-family: "HelveticaNeue";
 	-fx-font-size: 30;
-	-fx-font-weight: NORMAL;
+	-fx-font-weight: BOLD;
 	-fx-fill: #D64933;
-	-fx-effect: dropshadow( gaussian , rgba(255, 140, 66) , 10,.5,2,2 );
 }
 
 .anchor-pane {
 		-fx-background-color: linear-gradient(#D1D5DE, white);
 }
 
-.stack-pane {
+.image-stack-pane {
 		-fx-background-color: linear-gradient(#7C4B36, #D64933);
+		-fx-effect: dropshadow( one-pass-box , rgba(0, 0, 0, .3) , 10, .1, 7, 7);
+		-fx-scale-x: 1;
+    	-fx-scale-y: 1;
+    	-fx-opacity: .9;
+    	-fx-background-radius: 10;
+}
+
+.image-stack-pane:hover {
+		-fx-scale-x: 1.05;
+    	-fx-scale-y: 1.05;
+    	-fx-opacity: 1;
+}
+
+.stack-pane {
+		-fx-background-color: linear-gradient(#D64933, #D64933, black);
 		-fx-effect: dropshadow( gaussian , rgba(209, 213, 222, .5) , 10,.5,2,2 );
+		-fx-scale-x: 1;
+    	-fx-scale-y: 1;
+    	-fx-background-radius: 10;
+}
+
+.stack-pane:hover {
+		-fx-scale-x: 1.1;
+    	-fx-scale-y: 1.2;
 }
 
 .grid-pane {

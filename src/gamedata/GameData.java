@@ -61,7 +61,7 @@ public class GameData {
 	DisplayData display;
 	
 	//Actors available for entire game
-	private Map<Integer, ActorData> pieces;
+	private Map<Integer, LineageData> pieces;
 	
 	private int numOptions;
 	
@@ -70,7 +70,7 @@ public class GameData {
 		myPaths = new PathData();
 		preferences = new PreferencesData();
 		display = new DisplayData();
-		pieces = new HashMap<Integer, ActorData>();
+		pieces = new HashMap<Integer, LineageData>();
 		types = new ArrayList<BasicActorType>();
 		numOptions = 0;
 	}
@@ -78,9 +78,14 @@ public class GameData {
 	/**
 	 * This is for use in the GamePlayer. Returns
 	 * all of possible options for creation in the 
+	 * game.
 	 */
-	public Map<Integer,ActorData> getOptions(){
-		return pieces;
+	public Map<Integer, ActorData> getOptions(){
+		HashMap<Integer, ActorData> toRet = new HashMap<Integer, ActorData>();
+		for(Integer lineage: pieces.keySet()){
+			toRet.put(lineage, pieces.get(lineage).getCurrent());
+		}
+		return toRet;
 	}
 	
 	/**
@@ -91,7 +96,7 @@ public class GameData {
 	 */
 	public Map<Integer,ActorData> getAllOfType(BasicActorType type){
 		Map<Integer,ActorData> toRet = new HashMap<Integer,ActorData>();
-		pieces.forEach((key, value) 
+		getOptions().forEach((key, value) 
 				-> {if (value.getType().equals(type)) { 
 					toRet.put(key,value);
 					}});
@@ -111,7 +116,7 @@ public class GameData {
 	 * @return ActorData mapping to that option
 	 */
 	public ActorData getOption(Integer option){
-		return pieces.get(option);
+		return getOptions().get(option);
 	}
 	
 	
@@ -129,7 +134,19 @@ public class GameData {
 	 * 
 	 */
 	public void add(ActorData data){
-		pieces.put(numOptions++, data);
+		pieces.put(numOptions++, new LineageData(data));
+	}
+	
+	public void addUpgrade(LineageData data, ActorData toAdd){
+		data.addGeneration(toAdd);
+	}
+	
+	/**
+	 * Upgrade the given lineage data
+	 * @param LineageData data to update
+	 */
+	public void upgrade(Integer option){
+		pieces.get(option).upgrade();
 	}
 	
 	/**
@@ -177,7 +194,6 @@ public class GameData {
 	public Map<Integer, List<Grid2D>> getPathOptions(){
 		return myPaths.getMyPaths();
 	}
-	
 	
 	
 	//Getters and setters

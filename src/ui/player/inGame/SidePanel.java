@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,12 +43,9 @@ public class SidePanel {
 	private VBox mainBox;
 	private List<OptionsPane> listOfPanes;
 	private Map<Integer, Actor> actorsMap;
-	
 	private Map<Integer, ActorData> options;
-	private Map<Integer, ActorData> towersMap;
-	private Map<Integer, ActorData> shotsMap;
-	private Map<Integer, ActorData> troopsMap;
-	private Map<Integer, ActorData> basesMap;
+	private Set<String> types;
+	private ResourceBundle icons = ResourceBundle.getBundle("icons");
 	
 	private static final String panel = "panel.css";
 	
@@ -86,11 +84,13 @@ public class SidePanel {
 	 * Creates the panes to link to their respective main buttons.
 	 */
 	private void createInternalPanes() {
-		Set<String> types = new HashSet<>();
+/*		Set<String> types = new HashSet<>();
 		listOfPanes = new ArrayList<>();
-		options.keySet().forEach(option -> types.add(options.get(option).getType().toString()));
-		//HashSet<String> types2 = options.keySet().forEach(option -> types.add(options.get(option).getType().toString());
+		options.keySet().forEach(option -> types.add(options.get(option).getType().toString()));*/
+		//HashSet<String> types2 = options.keySet().forEach(option -> types.add(options.get(option).getType().toString())).collect(Collectors.toCollection(HashSet::new));
+		Set<String> types = options.keySet().stream().map(option -> options.get(option).getType().toString()).collect(Collectors.toSet());//.collect(supplier, accumulator, combiner);//collect(Collectors.toCollection(HashSet::new)));
 		
+		types.forEach(e -> System.out.println(e));
 		types.forEach(type -> {
 			Map<Integer, ActorData> map = new HashMap<>();
 			options.keySet().forEach(option -> {
@@ -112,6 +112,7 @@ public class SidePanel {
 	private void linkMainPaneToInternalPanes() {
 		mainBox.getStylesheets().add(panel);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
+			System.out.println(entry.getValue());
 			OptionButton optionButton = new OptionButton(0, entry.getKey(), entry.getValue(), openPane);
 			listOfPanes.stream().filter(pane -> pane.getPaneName().equals(entry.getKey())).forEach(pane -> GUIBindingUtil.bindVisisble(optionButton.getButton(), pane.getMap().keySet()));;
 			mainBox.getChildren().add(optionButton.getButton());
