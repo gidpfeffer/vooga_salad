@@ -77,4 +77,40 @@ public class PathUtil {
 		return Math.sin(angle);
 	}
 	
+	/**
+	 * utility for checking if a point is within a polygon area or not - for use with placeable 
+	 * @param polygon the list of points representing the polygon 
+	 * @param point the point to place an actor 
+	 * @return true if the point is within the polygon and false otherwise
+	 */
+	public static boolean isWithinPolygon(List<Grid2D> polygon, Grid2D point){
+		int i;
+	    int j;
+	    boolean result = false;
+	    for (i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
+	       if ((polygon.get(i).getY() > point.getY()) != (polygon.get(j).getY() > point.getY()) &&
+	          (point.getX() < (polygon.get(j).getX() - polygon.get(i).getX()) * (point.getY() - polygon.get(i).getY()) / (polygon.get(j).getY()-polygon.get(i).getY()) + polygon.get(i).getX())) {
+	          result = !result;
+	         }
+	      }
+	    return result;
+	}
+	
+	
+	public static void main(String[] args){
+		
+		List<Grid2D> poly = new ArrayList<Grid2D>(); 
+		poly.add(new Coordinates(0.1,0.1)); 
+		poly.add(new Coordinates(0.2,0.4)); 
+		poly.add(new Coordinates(0.4,0.5)); 
+		poly.add(new Coordinates(0.4,0.3));
+		poly.add(new Coordinates(0.3,0.2));
+		
+	
+		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.2,0.2)));
+		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.3,0.3)));
+		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.25,0.45)));
+		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.6,0.6)));
+		
+	}
 }
