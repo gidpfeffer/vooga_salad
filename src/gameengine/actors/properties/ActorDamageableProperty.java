@@ -3,7 +3,7 @@ package gameengine.actors.properties;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import gamedata.compositiongen.ActorDamageableData;
+import gamedata.composition.ActorDamageableData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import types.BasicActorType;
@@ -22,13 +22,11 @@ public class ActorDamageableProperty<G extends ReadAndDamageGrid> implements IAc
 	}
 
 	public void action(G grid, Integer actorID) {
-		System.out.println("Wjat is wrong?");
-		/*
 		myTypes.stream().forEach(type -> grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(),
-				grid.getLocationOf(actorID).getX(), hitBox, type).forEach((health, damage) -> {
+				grid.getLocationOf(actorID).getY(), hitBox, type).forEach((health, damage) -> {
 					grid.getMyDamageable(actorID).accept(health);
 					damage.accept(health);
-				}));*/
+				}));
 	}
 
 	@Override
