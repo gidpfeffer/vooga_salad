@@ -1,58 +1,53 @@
 package gamestatus;
 
-import java.util.Optional;
+import java.util.HashMap;
 
-/**
- * 
- * Holds basic information about current status
- * of the game, including experience (if none, just set equal
- * to the levels won), money, and current level.
- * 
- * @author maddiebriere
- *
- */
+import util.observerobservable.VoogaObservableMap;
 
-public class GameStatus {
-	//NOTE: Don't need to have experience or money
-	public Optional<Double> myExperience;
-	public Optional<Double> myMoney;
-	
-	//TODO: Replace with Predicate
+public class GameStatus extends VoogaObservableMap<String,String>{
+
+	private final String EXPERIENCE = "Experience";
+	private final String MONEY = "Money";
+	private final String LEVEL = "Level";
+
 	public void addExperience(double exp){
-		if(myExperience.isPresent()){
-			myExperience = Optional.of(myExperience.get()+exp);
-		}
+		double newExp = Double.parseDouble(myMap.get(EXPERIENCE))+exp;
+		setMyExperience(newExp);
 	}
-	
+
 	public void addMoney(double mon){
-		if(myMoney.isPresent()){
-			myMoney = Optional.of(myMoney.get()+mon);
-		}
+		double newMon = Double.parseDouble(myMap.get(MONEY))+mon;
+		setMyMoney(newMon);
 	}
-	
+
 	public void spendMoney(double mon){
-		addMoney(-mon);
+		double newMon = Double.parseDouble(myMap.get(MONEY))-mon;
+		setMyMoney(newMon);
 	}
-	
-	public double getMyExperience() {
-		return myExperience.get();
+
+	public void levelUp() {
+		int newLevel = Integer.parseInt(myMap.get(LEVEL))+1;
+		setMyLevel(newLevel);
 	}
-	
-	//TODO: Is the check necessary?
+
 	public void setMyExperience(double myExperience) {
-		if(this.myExperience.isPresent()) //if we are considering experience
-			this.myExperience = Optional.of(myExperience);
+		myMap.put(EXPERIENCE, Double.toString(myExperience));
+		notifyObservers();
 	}
-	
-	public double getMyMoney() {
-		return myMoney.get();
-	}
-	
+
 	public void setMyMoney(double myMoney) {
-		if(this.myMoney.isPresent()) //if we are considering experience
-			this.myMoney = Optional.of(myMoney);
+		myMap.put(MONEY, Double.toString(myMoney));
+		notifyObservers();
 	}
-	
-	
+
+	public void setMyLevel(double myLevel) {
+		myMap.put(LEVEL, Double.toString(myLevel));
+		notifyObservers();
+	}
+
+	public void clear() {
+		myMap = new HashMap<String,String>();
+		notifyObservers();
+	}
 	
 }

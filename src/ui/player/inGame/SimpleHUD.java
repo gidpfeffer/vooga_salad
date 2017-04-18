@@ -13,7 +13,7 @@ import util.observerobservable.VoogaObserver;
 public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 
 	private GridPane hud;
-	int colIdx = 0, rowIdx = 0;
+	int rowIdx = 0;
 	
 	public GridPane getGrid(){
 		return hud;
@@ -26,12 +26,13 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 	
 	@Override
 	public void update(Map<String, String> arg) {
-		arg.forEach((k,v) -> display(k,v,colIdx,rowIdx));
+		hud.getChildren().clear();
+		arg.forEach((k,v) -> display(k,v,rowIdx));
 	}
 	
-	private void display(String key, String val, int colIdx,int rowIdx) {
-		hud.add(new Text(key+ " "+val), colIdx, rowIdx);
-		colIdx++;
+	private void display(String key, String val, int rowIdx) {
+		hud.add(new Text(key), 0, rowIdx);
+		hud.add(new Text(val), 1, rowIdx);
 		rowIdx++;
 	}
 }
