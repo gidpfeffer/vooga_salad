@@ -8,6 +8,8 @@ import gamedata.BasicData;
 import gamedata.GameData;
 import gamedata.ProjectileData;
 import gamedata.ProjectileType;
+import gamedata.composition.ActorDamageableData;
+import gamedata.composition.LimitedHealthData;
 import gamedata.composition.MoveWithSetPathData;
 import gamedata.composition.ShootTargetFarData;
 import gameengine.grid.classes.Coordinates;
@@ -80,9 +82,10 @@ public class GameDataGenerator {
 		ShootTargetFarData shoot = 
 				new ShootTargetFarData(0.5, 10, new BasicActorType("Troop"), 1, .1);
 		//Shoots with Actor at index 1 (shot)
+		ActorDamageableData damage = new ActorDamageableData(.15, new BasicActorType("Projectile"));
 		
 		BasicData b1 = new BasicData("Tower", "tower_icon.png");
-		BasicData b2 = new BasicData("Shoot", "projectile_icon.png");
+		BasicData b2 = new BasicData("Shoot", "spike_ball.png");
 		
 		BasicData b3 = new BasicData("Bob", "enemy_icon.png");
 		BasicData b4 = new BasicData("Jiggly", "Pokemon Icons/jigglypuff.png");
@@ -95,8 +98,9 @@ public class GameDataGenerator {
 		a1.addData(shoot); //tower has shooting capabilities
 		ActorData a2 = new ActorData(new BasicActorType("Projectile"), b2);//1
 		
-		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3);//2
-		a3.addData(pathData);
+		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3, new LimitedHealthData(10.0),pathData,damage);//2
+		//a3.addData(pathData);
+		//a3.addData(damage);
 		
 		ActorData a4 = new ActorData(new BasicActorType("Troop"), b4);//3
 		a4.addData(pathData);

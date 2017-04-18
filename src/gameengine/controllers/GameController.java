@@ -12,12 +12,14 @@ import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
+import gamestatus.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
+import ui.player.inGame.SimpleHUD;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 
@@ -31,12 +33,14 @@ public class GameController {
 	private Timeline animation;
 	
 	private GameData myGameData;
+	private GameStatus myGameStatus;
 	
 	private UIHandler myUIHandler;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
 	
 	private GameScreen myGameScreen;
+	private SimpleHUD mySimpleHUD;
 	
 	private final int MAX_X = 1;
 	private final int MAX_Y = 1;
@@ -46,6 +50,7 @@ public class GameController {
 	public GameController() {
 		myGameData = GameDataGenerator.getComplexSampleGame();//new GameData();
 		initializeUIHandler();
+		setupGameStatus();
 	}
 
 	/**
@@ -61,6 +66,12 @@ public class GameController {
 	
 	public GameScreen getGameScreen() {
 		return myGameScreen;
+	}
+	
+	private void setupGameStatus() {
+		mySimpleHUD = new SimpleHUD();
+		myGameStatus = new GameStatus();
+		myGameStatus.addObserver(mySimpleHUD);
 	}
 	
 	public void start(Stage stage) {
@@ -155,7 +166,10 @@ public class GameController {
 				myLevelController.changeLevel(myGameData, level);
 			}
 
-		
+			@Override	
+			public SimpleHUD getSimpleHUD() {
+				return mySimpleHUD;
+			}
 		};
 	}
 	

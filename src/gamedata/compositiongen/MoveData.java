@@ -8,6 +8,10 @@ public abstract class MoveData implements Data {
 		this.mySpeed = mySpeed;
 	}
 
+	public String getCategory(){
+		return "Types of Movement";
+	}
+	
 	public double getMySpeed() {
 		return mySpeed;
 	}

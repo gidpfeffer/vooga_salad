@@ -22,6 +22,16 @@ import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
+/**
+ * Represents the right hand bar in the authoring environment.
+ * Dictates the list of Levels and add level button. 
+ * Allows access to WaveChooserMenu and LevelEditorMenu
+ * by clicking on the Level buttons.
+ * 
+ * @author maddiebriere
+ * @author alex blumenstock
+ */
+
 public class LevelEditorView extends VBox{
 	//# of Enemies
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
@@ -29,7 +39,6 @@ public class LevelEditorView extends VBox{
 	private Map<Integer, LevelData> myInfo; //Essentially the model
 	private PopViewDelegate myDelegate;
 	private Collection<ActorData> enemies;
-	//private PathData myPathData;
 	
 	public LevelEditorView(PopViewDelegate delegate, Collection<ActorData> enemies){
 		super();
@@ -58,11 +67,16 @@ public class LevelEditorView extends VBox{
 	private StackPane nextLevel(){
 		LevelData newLevel = new LevelData();
 		myInfo.put(level, newLevel);
-		ImageView img = imageForStackButton("splash_icon.png");
+		ImageView img = imageForStackButton("gear.png");
+		UIHelper.setDropShadow(img);
+		img.setFitWidth(32);
+		img.setFitHeight(32);
+		Label label = labelForStackButton(String.format("Level %d",level));
 		int localLevel = level;
 		img.setOnMousePressed(e->launchLevelEditor());
-		StackPane nextLevel= UIHelper.buttonStack(e->launchWaveChooser(localLevel),  
-				Optional.of(labelForStackButton(String.format("Level %d",level))), 
+		label.setOnMousePressed(e->launchWaveChooser(localLevel));
+		StackPane nextLevel= UIHelper.buttonStack(e->{},  
+				Optional.of(label), 
 				Optional.ofNullable(img),Pos.CENTER_RIGHT, true);
 		level++;
 		nextLevel.setPrefHeight(56);
@@ -70,13 +84,21 @@ public class LevelEditorView extends VBox{
 		return nextLevel;
 	}
 	
+	public void update(Collection<ActorData> updated){
+		//TODO: Make more sophisticated -- removal
+		//TODO: CALL
+		enemies = new ArrayList<ActorData>(updated);
+	}
+	
 	private void launchLevelEditor(){
-		
+		LevelData current = myInfo.get(level);
+		LevelEditorMenu lem  = new LevelEditorMenu(myDelegate, current);
+		myDelegate.openViewWithSize(lem, PopupSize.SMALL);
 	}
 	
 	private void launchWaveChooser(int level){
 		LevelData current = myInfo.get(level);
-		LevelEditorMenu wcm  = new LevelEditorMenu(myDelegate, enemies, current);
+		WaveChooserMenu wcm  = new WaveChooserMenu(myDelegate, enemies, current);
 		myDelegate.openViewWithSize(wcm, PopupSize.MEDIUM);
 	}
 	
