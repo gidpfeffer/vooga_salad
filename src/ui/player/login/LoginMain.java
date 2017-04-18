@@ -33,6 +33,9 @@ public class LoginMain {
 	private UserDatabase database;
 	private ResourceBundle loginResource;
 	private Login loginScreen;
+	public static final String userDatabase = "userDatabase.xml";
+	XStream mySerializer = new XStream(new DomDriver());
+	XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
 
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
@@ -46,7 +49,7 @@ public class LoginMain {
 	
 	private void setupDatabase() {
 		XStream mySerializer = new XStream(new DomDriver());
-		XStreamFileChooser fileChooser = new XStreamFileChooser("userDatabase.xml");
+		XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
 		database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
 	}
 	
@@ -154,6 +157,8 @@ public class LoginMain {
 		gameController.start(stage);
 		setUpGameScreenReturn();
 		stage.setScene(gameController.getGameScreen().getScene());
+		stage.setWidth(Preferences.SCREEN_WIDTH);
+		stage.setHeight(Preferences.SCREEN_HEIGHT);
 		stage.setTitle("GameSelector");
 	}
 	
@@ -164,8 +169,8 @@ public class LoginMain {
 				gameController.getGameScreen().getUIHandler().stop();
 				stage.setScene(loginScreen.getScene());
 				stage.setTitle("Login");
-				stage.setMaxWidth(Preferences.SCREEN_WIDTH);
-				stage.setMaxHeight(Preferences.SCREEN_HEIGHT);
+				stage.setWidth(Preferences.SCREEN_WIDTH);
+				stage.setHeight(Preferences.SCREEN_HEIGHT);
 			}
 		};
 		gameController.getGameScreen().setBackToLoginAction(backToLogin);

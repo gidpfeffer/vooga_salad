@@ -14,15 +14,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import ui.general.UIHelper;
 
-public class Login extends BorderedAnchorPane{
+public class Login extends BorderedAnchorPane {
+	// how to be "logged in"
 	private Scene scene;
-	
 	private Button loginEnter;
 	private Hyperlink signupEnter;
 	private Button auth;
 	private Button selector;
 	private final Text actiontarget;
-	
+
 	private String css;
 	private GridPane gridPane;
 	private LoginGrid login;
@@ -47,7 +47,7 @@ public class Login extends BorderedAnchorPane{
 	public void setSelectorAction(EventHandler<ActionEvent> value) {
 		selector.setOnAction(value);
 	}
-
+	
 	public Text getActionTarget() {
 		return actiontarget;
 	}
@@ -84,8 +84,8 @@ public class Login extends BorderedAnchorPane{
 		scene = new Scene(root);
 		scene.getStylesheets().add(css);
 	}
-	
-	private void setupTitle(){
+
+	private void setupTitle() {
 		Label towerDefenseTitle = new Label(loginResource.getString("towerDefense"));
 		towerDefenseTitle.setPadding(new Insets(10., 0., 0., 0.));
 		towerDefenseTitle.setId("title");
@@ -99,7 +99,7 @@ public class Login extends BorderedAnchorPane{
 		GridPane.setHalignment(welcomeBackTitle, HPos.CENTER);
 	}
 
-	private void setupLoginGrid(){
+	private void setupLoginGrid() {
 		login = new LoginGrid(loginResource);
 		login.getGrid().getStyleClass().add("grid");
 		gridPane.add(login.getGrid(), 0, 2);
@@ -108,7 +108,6 @@ public class Login extends BorderedAnchorPane{
 	private void setupButtons(){
 		loginEnter = new Button(loginResource.getString("login"));
 		signupEnter = new Hyperlink(loginResource.getString("signup"));
-		//UIHelper.setDropShadow(loginEnter);
 		gridPane.add(loginEnter, 0, 3);
 		gridPane.add(signupEnter, 0, 4);
 		GridPane.setHalignment(loginEnter, HPos.CENTER);
@@ -127,12 +126,11 @@ public class Login extends BorderedAnchorPane{
 		hbox.setPadding(new Insets(0., 0., 30., 0.));
 	}
 
-	private void setupCenter(){
+	private void setupCenter() {
 		StackPane top = new StackPane();
 		top.getStyleClass().add("stack-pane");
 		StackPane.setMargin(top, new Insets(0., 300., 30., 300.));
 		StackPane sp = new StackPane(top);
-		sp.setBackground(Background.EMPTY);
 		sp.getChildren().add(gridPane);
 		borderPane.setCenter(sp);
 	}
@@ -141,7 +139,7 @@ public class Login extends BorderedAnchorPane{
 		String name;
 		String imagePath;
 		EventHandler<MouseEvent> clicked;
-		
+
 		public String getName() {
 			return name;
 		}
@@ -154,7 +152,7 @@ public class Login extends BorderedAnchorPane{
 			return clicked;
 		}
 
-		public Game(String name, String imagePath, EventHandler<MouseEvent> clicked){
+		public Game(String name, String imagePath, EventHandler<MouseEvent> clicked) {
 			this.name = name;
 			this.imagePath = imagePath;
 			this.clicked = clicked;
