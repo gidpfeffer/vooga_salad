@@ -81,7 +81,7 @@ public class GameDataGenerator {
 		ShootTargetFarData shoot = 
 				new ShootTargetFarData(0.5, 10, new BasicActorType("Troop"), 1, .1);
 		//Shoots with Actor at index 1 (shot)
-		ActorDamageableData damage = new ActorDamageableData(.05, new BasicActorType("Projectile"));
+		ActorDamageableData damage = new ActorDamageableData(.15, new BasicActorType("Projectile"));
 		
 		BasicData b1 = new BasicData("Tower", "tower_icon.png");
 		BasicData b2 = new BasicData("Shoot", "spike_ball.png");
