@@ -4,6 +4,13 @@ import java.util.List;
 import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
+/**
+ * Actor is able to be damaged.
+ * 
+ * @author maddiebriere
+ * 
+ */
+
 public class ActorDamageableData implements Data {
 	
 	private double myHitRadius;
