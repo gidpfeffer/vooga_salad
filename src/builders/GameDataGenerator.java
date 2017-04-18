@@ -78,7 +78,7 @@ public class GameDataGenerator {
 		MoveWithSetPathData pathData = PathGenerator.generateMoveData
 				(game.getMyPaths(), possiblePaths, .005);
 		ShootTargetFarData shoot = 
-				new ShootTargetFarData(10.0, 10, new BasicActorType("Troop"), 1, .01);
+				new ShootTargetFarData(0.5, 10, new BasicActorType("Troop"), 1, .1);
 		//Shoots with Actor at index 1 (shot)
 		
 		BasicData b1 = new BasicData("Tower", "tower_icon.png");
@@ -93,7 +93,6 @@ public class GameDataGenerator {
 		
 		ActorData a1 = new ActorData(new BasicActorType("Tower"), b1); //0
 		a1.addData(shoot); //tower has shooting capabilities
-		
 		ActorData a2 = new ActorData(new BasicActorType("Projectile"), b2);//1
 		
 		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3);//2

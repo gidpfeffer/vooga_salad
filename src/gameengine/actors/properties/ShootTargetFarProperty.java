@@ -19,6 +19,7 @@ public class ShootTargetFarProperty<G extends ReadAndSpawnGrid> extends ShootTar
 	@Override
 	protected Collection<Grid2D> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos) {
 		ArrayList<Grid2D> retCollection = new ArrayList<>();
+		if(points.size()==0) return points;
 		retCollection.add(points.stream().max(Comparator.comparingDouble(point -> PathUtil.getDistance(myPos, point))).get());
 		return retCollection;
 	}
