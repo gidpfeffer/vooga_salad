@@ -16,7 +16,7 @@ public class ShootTargetWithMouseProperty<G extends ReadAndSpawnGrid> extends Sh
 	}
 
 	@Override
-	protected Collection<Grid2D> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos) {
+	protected Collection<Double> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos) {
 		// TODO Auto-generated method stub
 		return null;
 	}

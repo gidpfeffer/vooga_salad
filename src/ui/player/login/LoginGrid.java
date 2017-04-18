@@ -13,15 +13,13 @@ public class LoginGrid extends DataEntryGrid{
 	private Map<Text, TextField> entryMap;
 	private Map<String, TextField> dataMap;
 	private ResourceBundle loginResource;
-	private String css;
 	
 	public TextField getUsername() {
-		//System.out.println(entryMap.get(loginResource.getString("username")).getText());
-		return dataMap.get("username");
+		return dataMap.get(loginResource.getString("username"));
 	}
 	
 	public TextField getPassword() {
-		return dataMap.get("password");
+		return dataMap.get(loginResource.getString("password"));
 	}
 	
 	
@@ -30,10 +28,9 @@ public class LoginGrid extends DataEntryGrid{
 		return entryMap;
 	}
 	
-	public LoginGrid(ResourceBundle resource, String css) {
+	public LoginGrid(ResourceBundle resource) {
 		super(resource);
 		loginResource = resource;
-		this.css = css;
 		entryMap = new LinkedHashMap<>();
 		dataMap = new LinkedHashMap<>();
 		addValues();
@@ -41,16 +38,7 @@ public class LoginGrid extends DataEntryGrid{
 	}
 	
 	public void addValues(){
-		TextField username = new TextField();
-		Text user = new Text(loginResource.getString("username"));
-		user.setId("text");
-		entryMap.put(user, username);
-		dataMap.put("username", username);
-		
-		PasswordField password = new PasswordField();
-		Text pass = new Text(loginResource.getString("password"));
-		pass.setId("text");
-		entryMap.put(pass, password);
-		dataMap.put("password", password);
+		addTextField(dataMap, entryMap, loginResource.getString("username"), new TextField());
+		addTextField(dataMap, entryMap, loginResource.getString("password"), new PasswordField());
 	}
 }

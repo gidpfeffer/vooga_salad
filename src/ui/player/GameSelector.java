@@ -1,6 +1,5 @@
 package ui.player;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -14,7 +13,6 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -23,14 +21,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -58,7 +52,6 @@ public class GameSelector extends BorderedAnchorPane{
 	
 	private void setup() {
 		setupLayout();
-		//setupBorderPane();
 		setupTitle();
 		setupScrollPane();
 		setupSideArrows();
@@ -66,16 +59,13 @@ public class GameSelector extends BorderedAnchorPane{
 	}
 
 	private void setupLayout(){
-		root.setId("towerBackground");
+		//root.setId("towerBackground");
 		gameMenu.getStyleClass().add("scroll-pane");
 		root.getStyleClass().add("anchor-pane");
-		//root.getStyleClass().add("anchor-pane-2");
 	}
 	
 	private void setupTitle() {
 		Label title = new Label(resource.getString("gameselector"));
-		//title.setFont(Preferences.FONT_BIG);
-		//title.getStyleClass().add("title");
 		title.setId("title");
 		BorderPane.setAlignment(title, Pos.CENTER);
 		borderPane.setTop(title);
@@ -88,9 +78,8 @@ public class GameSelector extends BorderedAnchorPane{
 		gamesList.forEach(game -> {
 			VBox vbox = new VBox(40);
 			StackPane g = new StackPane();
-			//g.setBackground(Background.EMPTY);
-			ImageView imv = new ImageView(new Image(game.getImagePath(), 350, 300, false, true));
-			g.getChildren().add(imv);
+			g.getStyleClass().add("image-stack-pane");
+			g.getChildren().add(new ImageView(new Image(game.getImagePath(), 300, 250, false, true)));
 			g.setOnMouseClicked(game.getClicked());
 			Text name = new Text(game.getName());
 			name.setId("text");
@@ -106,7 +95,7 @@ public class GameSelector extends BorderedAnchorPane{
 		//gameMenu.setStyle("-fx-background-color: green");
 		gameMenu.setPadding(new Insets(15, 12, 15, 12));
 		borderPane.setCenter(gameMenu);
-		BorderPane.setAlignment(gameMenu, Pos.CENTER);
+		BorderPane.setAlignment(gamesHBox, Pos.CENTER);
 	}
 	
 	private void setupSideArrows(){
@@ -129,21 +118,22 @@ public class GameSelector extends BorderedAnchorPane{
 	}
 	
 	private void setupBottom(){
-		StackPane profile = UIHelper.buttonStack(e -> System.out.println("go to profile"), 
-				Optional.of(new Label("Profile")), 
-				Optional.of(imageForStackButton("profile-icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		StackPane help = UIHelper.buttonStack(e -> System.out.println("go to help"), 
-				Optional.of(new Label("Help")), 
-				Optional.of(imageForStackButton("splash_icon.png")), 
-				Pos.CENTER_RIGHT, true);
-		profile.getStyleClass().add("stack-pane");
-		help.getStyleClass().add("stack-pane");
+		StackPane profile = simpleImageStackPane("Profile", "profile_icon.png", e -> {});
+		StackPane help = simpleImageStackPane("Help", "splash_icon.png", e -> {});
 		HBox hbox = new HBox(100);
 		hbox.setPadding(new Insets(15, 12, 15, 12));
 		hbox.getChildren().addAll(profile, help);
 		hbox.setAlignment(Pos.CENTER);
 		borderPane.setBottom(hbox);
+	}
+	
+	private StackPane simpleImageStackPane(String name, String image, EventHandler<MouseEvent> event){
+		StackPane sp = UIHelper.buttonStack(event, 
+				Optional.of(new Label(name)), 
+				Optional.of(imageForStackButton(image)), 
+				Pos.CENTER_RIGHT, true);
+		sp.getStyleClass().add("stack-pane");
+		return sp;
 	}
 	
 	private ImageView imageForStackButton(String imagePath){

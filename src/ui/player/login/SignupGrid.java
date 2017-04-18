@@ -15,23 +15,23 @@ public class SignupGrid extends DataEntryGrid{
 	private ResourceBundle loginResource;
 	
 	public TextField getUsername() {
-		return dataMap.get("username");
+		return dataMap.get(loginResource.getString("username"));
 	}
 	
 	public TextField getPassword() {
-		return dataMap.get("password");
+		return dataMap.get(loginResource.getString("password"));
 	}
 	
 	public TextField getRePassword() {
-		return dataMap.get("repassword");
+		return dataMap.get(loginResource.getString("repassword"));
 	}
 	
 	public TextField getEmail() {
-		return dataMap.get("email");
+		return dataMap.get(loginResource.getString("email"));
 	}
 	
 	public TextField getReEmail() {
-		return dataMap.get("reemail");
+		return dataMap.get(loginResource.getString("reemail"));
 	}
 	
 	@Override
@@ -49,24 +49,10 @@ public class SignupGrid extends DataEntryGrid{
 	}
 	
 	public void addValues(){
-		TextField username = new TextField();
-		entryMap.put(new Text(loginResource.getString("username")), username);
-		dataMap.put("username", username);
-		
-		PasswordField password = new PasswordField();
-		entryMap.put(new Text(loginResource.getString("password")), password);
-		dataMap.put("password", password);
-		
-		PasswordField reenter = new PasswordField();
-		entryMap.put(new Text(loginResource.getString("reenter")), reenter);
-		dataMap.put("repassword", reenter);
-		
-		TextField email = new TextField();
-		entryMap.put(new Text(loginResource.getString("email")), email);
-		dataMap.put("email", email);
-		
-		TextField reemail = new TextField();
-		entryMap.put(new Text(loginResource.getString("reemail")), reemail);
-		dataMap.put("reemail", reemail);
+		addTextField(dataMap, entryMap, loginResource.getString("username"), new TextField());
+		addTextField(dataMap, entryMap, loginResource.getString("password"), new PasswordField());
+		addTextField(dataMap, entryMap, loginResource.getString("repassword"), new PasswordField());
+		addTextField(dataMap, entryMap, loginResource.getString("email"), new TextField());
+		addTextField(dataMap, entryMap, loginResource.getString("reemail"), new TextField());
 	}
 }
