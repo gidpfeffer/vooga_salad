@@ -82,7 +82,7 @@ public class GameDataGenerator {
 		//Shoots with Actor at index 1 (shot)
 		
 		BasicData b1 = new BasicData("Tower", "tower_icon.png");
-		BasicData b2 = new BasicData("Shoot", "projectile_icon.png");
+		BasicData b2 = new BasicData("Shoot", "spike_ball.png");
 		
 		BasicData b3 = new BasicData("Bob", "enemy_icon.png");
 		BasicData b4 = new BasicData("Jiggly", "Pokemon Icons/jigglypuff.png");
