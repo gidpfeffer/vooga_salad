@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import gamedata.composition.ShootMultiData;
-import gamedata.compositiongen.ShootData;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
