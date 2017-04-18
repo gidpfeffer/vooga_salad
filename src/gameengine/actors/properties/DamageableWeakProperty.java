@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import gamedata.composition.DamageableData;
+import gamedata.compositiongen.DamageableData;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import types.BasicActorType;
 
-public class DamageableSingleTargetWeakProperty<G extends ReadAndDamageGrid> extends DamageableProperty<G> {
+public class DamageableWeakProperty<G extends ReadAndDamageGrid> extends DamageableProperty<G> {
 
-	public DamageableSingleTargetWeakProperty(DamageableData data) {
+	public DamageableWeakProperty(DamageableData data) {
 		super(data);
 	}
 

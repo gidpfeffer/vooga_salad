@@ -8,7 +8,7 @@ package types;
  *
  */
 
-public class BasicActorType {
+public class BasicActorType implements Comparable {
 	private String type;
 	
 	public BasicActorType(String type){
@@ -37,6 +37,17 @@ public class BasicActorType {
 	
 	public String toString(){
 		return this.getType();
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		if(o == null){
+			return -1;
+		}
+		if(!(o instanceof BasicActorType)){
+			return -1;
+		}
+		return this.getType().compareTo(((BasicActorType)o).getType());
 	}
 	
 }

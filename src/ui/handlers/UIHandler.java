@@ -18,10 +18,6 @@ public interface UIHandler {
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
 	int addGameObject(Integer option, double x, double y) throws VoogaException;
 	Map<Integer,ActorData> getOptions();
-	Map<Integer,ActorData> getTroopOptions();
-	Map<Integer,ActorData> getShotOptions();
-	Map<Integer,ActorData> getBaseOptions();
-	Map<Integer,ActorData> getTowerOptions();
 	void pause();
 	void play();
 	void stop();
