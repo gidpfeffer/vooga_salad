@@ -29,15 +29,15 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 	
 	@Override
 	public void action(G grid, Integer actorID) {
-		Collection<Grid2D> dirCoordinates = getEnemyToShoot(grid.getActorLocationsInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRange, myTarget), grid.getLocationOf(actorID));
+		Collection<Double> dirCoordinates = getEnemyToShoot(grid.getActorLocationsInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRange, myTarget), grid.getLocationOf(actorID));
 		spawnProjectiles(grid, dirCoordinates,grid.getLocationOf(actorID));
 	}
 	
-	protected abstract Collection<Grid2D> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos);
+	protected abstract Collection<Double> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos);
 	
-	protected void spawnProjectiles(G grid, Collection<Grid2D> targets, Grid2D myLoc) {
+	protected void spawnProjectiles(G grid, Collection<Double> targets, Grid2D myLoc) {
 		targets.stream().forEach(target -> {
-			IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(PathUtil.getAngle(myLoc, target), myRange, mySpeed);
+			IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(target, myRange, mySpeed);
 			grid.actorSpawnActor(myProjectile, myLoc.getX(), myLoc.getY()).accept(newProperty);
 		});
 	}
