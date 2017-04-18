@@ -1,6 +1,10 @@
 package ui.authoring.level;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import gamedata.ActorData;
@@ -22,7 +26,7 @@ public class LevelEditorView extends VBox{
 	//# of Enemies
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
-	private LevelData myInfo; //Essentially the model
+	private Map<Integer, LevelData> myInfo; //Essentially the model
 	private PopViewDelegate myDelegate;
 	private Collection<ActorData> enemies;
 	//private PathData myPathData;
@@ -33,7 +37,7 @@ public class LevelEditorView extends VBox{
 		this.enemies=enemies;
 		myDelegate=delegate;
 		level=1;
-		myInfo = new LevelData();
+		myInfo = new HashMap<Integer, LevelData>();
 
 		//TODO:move text to resource file
 		StackPane levelOne = nextLevel();
@@ -52,17 +56,27 @@ public class LevelEditorView extends VBox{
 	}
 	
 	private StackPane nextLevel(){
-		StackPane nextLevel= UIHelper.buttonStack(e->launchWaveChooser(),  
+		LevelData newLevel = new LevelData();
+		myInfo.put(level, newLevel);
+		ImageView img = imageForStackButton("splash_icon.png");
+		int localLevel = level;
+		img.setOnMousePressed(e->launchLevelEditor());
+		StackPane nextLevel= UIHelper.buttonStack(e->launchWaveChooser(localLevel),  
 				Optional.of(labelForStackButton(String.format("Level %d",level))), 
-				Optional.ofNullable(null),Pos.CENTER_RIGHT, true);
+				Optional.ofNullable(img),Pos.CENTER_RIGHT, true);
 		level++;
 		nextLevel.setPrefHeight(56);
 		VBox.setMargin(nextLevel, new Insets(8));
 		return nextLevel;
 	}
 	
-	private void launchWaveChooser(){
-		LevelEditorMenu wcm  = new LevelEditorMenu(myDelegate,enemies, myInfo);
+	private void launchLevelEditor(){
+		
+	}
+	
+	private void launchWaveChooser(int level){
+		LevelData current = myInfo.get(level);
+		LevelEditorMenu wcm  = new LevelEditorMenu(myDelegate, enemies, current);
 		myDelegate.openViewWithSize(wcm, PopupSize.MEDIUM);
 	}
 	
@@ -79,6 +93,10 @@ public class LevelEditorView extends VBox{
 		lbl.setTextFill(CustomColors.GREEN_100);
 		lbl.setFont(Preferences.FONT_SMALL_BOLD);
 		return lbl;
+	}
+	
+	public Map<Integer, LevelData> getLevels(){
+		return myInfo;
 	}
 
 }
