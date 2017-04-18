@@ -13,26 +13,25 @@ public class SignupGrid extends DataEntryGrid{
 	private Map<Text, TextField> entryMap;
 	private Map<String, TextField> dataMap;
 	private ResourceBundle loginResource;
-	private String css;
 	
 	public TextField getUsername() {
-		return dataMap.get("username");
+		return dataMap.get(loginResource.getString("username"));
 	}
 	
 	public TextField getPassword() {
-		return dataMap.get("password");
+		return dataMap.get(loginResource.getString("password"));
 	}
 	
 	public TextField getRePassword() {
-		return dataMap.get("repassword");
+		return dataMap.get(loginResource.getString("repassword"));
 	}
 	
 	public TextField getEmail() {
-		return dataMap.get("email");
+		return dataMap.get(loginResource.getString("email"));
 	}
 	
 	public TextField getReEmail() {
-		return dataMap.get("reemail");
+		return dataMap.get(loginResource.getString("reemail"));
 	}
 	
 	@Override
@@ -40,35 +39,20 @@ public class SignupGrid extends DataEntryGrid{
 		return entryMap;
 	}
 	
-	public SignupGrid(ResourceBundle resource, String css){
+	public SignupGrid(ResourceBundle resource){
 		super(resource);
 		loginResource = resource;
 		entryMap = new LinkedHashMap<>();
 		dataMap = new LinkedHashMap<>();
 		addValues();
 		addToGrid(entryMap);
-		this.css = css;
 	}
 	
 	public void addValues(){
-		TextField username = new TextField();
-		Text user = new Text(loginResource.getString("username"));
-		user.setId("text");
-		entryMap.put(user, username);
-		dataMap.put("username", username);
-		
-		//addTextField(loginResource.getString("username"), new TextField());
-		addTextField(loginResource.getString("password"), new PasswordField());
-		addTextField(loginResource.getString("reenter"), new PasswordField());
-		addTextField(loginResource.getString("email"), new TextField());
-		addTextField(loginResource.getString("reemail"), new TextField());
-	}
-	
-	private void addTextField(String s, TextField field){
-		TextField textfield = field;
-		Text text = new Text(s);
-		entryMap.put(text, textfield);
-		dataMap.put("username", textfield);
-		text.setId("text");
+		addTextField(dataMap, entryMap, loginResource.getString("username"), new TextField());
+		addTextField(dataMap, entryMap, loginResource.getString("password"), new PasswordField());
+		addTextField(dataMap, entryMap, loginResource.getString("repassword"), new PasswordField());
+		addTextField(dataMap, entryMap, loginResource.getString("email"), new TextField());
+		addTextField(dataMap, entryMap, loginResource.getString("reemail"), new TextField());
 	}
 }

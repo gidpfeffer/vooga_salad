@@ -2,38 +2,24 @@ package ui.player.login;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import gameengine.controllers.GameController;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.shape.Shape;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -45,42 +31,25 @@ import ui.player.GameSelector;
 import ui.player.UserDatabase;
 import ui.player.XStreamFileChooser;
 
-//tweaked from http://docs.oracle.com/javafx/2/get_started/form.htm
 public class Login extends BorderedAnchorPane{
 	private Stage stage;
 	private Scene scene;
 	private GameController gameController;
+	private UserDatabase database;
 	
 	private String css;
 	private GridPane gridPane;
 	private LoginGrid login;
 	private ResourceBundle loginResource;
-	private static final String castle = "castle.png";
-	
-	private UserDatabase database;
-	private XStream mySerializer = new XStream(new DomDriver());
-	private String mySavedUsers = "";
-	private static final String userDatabase = "userDatabase.xml";
-	private XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-
 
 	public Scene getScene() {
 		return scene;
 	}
 
-	public Login(Stage stage, String css, String resource) {
+	public Login(UserDatabase database, Stage stage, String css, String resource) {
 		this.stage = stage;
 		this.css = css;
-		
-		try {
-			mySavedUsers = fileChooser.readInClass();
-			database = (UserDatabase) mySerializer.fromXML(mySavedUsers);
-		}
-		catch (Exception ex) {
-			database = new UserDatabase();
-			//ex.printStackTrace();
-		}
-		
+		this.database = database;
 		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
 		stage.setMinWidth(Preferences.SCREEN_WIDTH);
 		loginResource = ResourceBundle.getBundle(resource);
@@ -101,7 +70,6 @@ public class Login extends BorderedAnchorPane{
 	private void setupLayout() {
 		gridPane.setHgap(50);
 		gridPane.setVgap(20);
-		//borderPane.setCenter(gridPane);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.getStyleClass().add("grid");
 		root.getStyleClass().add("anchor-pane");
@@ -125,7 +93,7 @@ public class Login extends BorderedAnchorPane{
 	}
 
 	private void setupLoginGrid(){
-		login = new LoginGrid(loginResource, css);
+		login = new LoginGrid(loginResource);
 		login.getGrid().getStyleClass().add("grid");
 		gridPane.add(login.getGrid(), 0, 2);
 	}
@@ -215,7 +183,7 @@ public class Login extends BorderedAnchorPane{
 	}
 
 	private void gotoSignupPage() {
-		Signup signupPage = new Signup(loginResource, "signupScreen.css");
+		Signup signupPage = new Signup(database, loginResource, "signupScreen.css");
 		stage.setScene(signupPage.getScene());
 		stage.setTitle(loginResource.getString("signup"));
 	}

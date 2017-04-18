@@ -14,9 +14,31 @@
       <avatar>profile_icon.png</avatar>
       <email>honey@duke.edu</email>
     </ui.player.User>
+    <ui.player.User>
+      <username>appleseed man 2</username>
+      <password>0112b6f1f335082e9c089ac49a10c1b925d79e2e</password>
+      <scores/>
+      <avatar>profile_icon.png</avatar>
+      <email>honey@duke.edu</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>apple</username>
+      <password>aba5185e32de95ed7f82e48f0ba6987e3baf5a23</password>
+      <scores/>
+      <avatar>profile_icon.png</avatar>
+      <email>s@s.com</email>
+    </ui.player.User>
   </database>
   <passwords>
     <database>
+      <entry>
+        <string>appleseed man 2</string>
+        <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>
+      </entry>
+      <entry>
+        <string>apple</string>
+        <string>aba5185e32de95ed7f82e48f0ba6987e3baf5a23</string>
+      </entry>
       <entry>
         <string>appleseed man</string>
         <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>
