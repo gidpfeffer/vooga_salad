@@ -12,6 +12,10 @@ public abstract class StatusData implements Data{
 		this(new BasicActorType("Troop"), new StatusDuration(0));
 	}
 	
+	public String getCategory(){
+		return "Current Status Properties";
+	}
+	
 	public StatusData(BasicActorType type, StatusDuration statusDuration) {
 		myTarget = type;
 		myLife = statusDuration;

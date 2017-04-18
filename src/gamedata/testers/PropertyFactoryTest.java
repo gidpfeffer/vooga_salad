@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import factories.PropertyFactory;
+import gamedata.composition.ActorDamageableData;
 import gamedata.composition.BaseDamageData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.composition.MoveWithSetPathData;
@@ -31,6 +32,7 @@ public class PropertyFactoryTest {
 		assertNotEquals(p.make("ShootTargetFarProperty", new ShootTargetFarData(10.0, 10, new BasicActorType("Tower"), 10, 10.0)), null);
 		assertNotEquals(p.make("ShootTargetNearProperty", new ShootTargetNearData(10.0, 10, new BasicActorType("Tower"), 10, 10.0)), null);
 		assertNotEquals(p.make("ShootTargetWithMouseProperty", new ShootTargetWithMouseData(10.0, 10, new BasicActorType("Tower"), 10, 10.0)), null);
+		assertNotEquals(p.make("ActorDamageableProperty", new ActorDamageableData(10.0, new BasicActorType("Tower"))), null);
 	}
 
 }
