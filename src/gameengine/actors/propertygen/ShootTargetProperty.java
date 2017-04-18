@@ -9,7 +9,6 @@ import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 import util.Delay;
-import util.PathUtil;
 
 public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements IActProperty<G>{
 	
