@@ -52,7 +52,8 @@ public class LevelEditorView extends VBox{
 		StackPane levelOne = nextLevel();
 		this.getChildren().add(levelOne);
 		StackPane newLevel = UIHelper.buttonStack(e->addNewLevel(), 
-				Optional.of(labelForStackButton("Add Level")), Optional.of(imageForStackButton("add_icon.png")),
+				Optional.of(LevelUtil.labelForStackButton("Add Level")), 
+				Optional.of(LevelUtil.imageForStackButton("add_icon.png")),
 				Pos.CENTER_RIGHT, true);
 		newLevel.setPrefHeight(56);
 		VBox.setMargin(newLevel, new Insets(8));
@@ -67,11 +68,11 @@ public class LevelEditorView extends VBox{
 	private StackPane nextLevel(){
 		LevelData newLevel = new LevelData();
 		myInfo.put(level, newLevel);
-		ImageView img = imageForStackButton("gear.png");
+		ImageView img = LevelUtil.imageForStackButton("gear.png");
 		UIHelper.setDropShadow(img);
 		img.setFitWidth(32);
 		img.setFitHeight(32);
-		Label label = labelForStackButton(String.format("Level %d",level));
+		Label label = LevelUtil.labelForStackButton(String.format("Level %d",level));
 		int localLevel = level;
 		img.setOnMousePressed(e->launchLevelEditor());
 		label.setOnMousePressed(e->launchWaveChooser(localLevel));
@@ -100,21 +101,6 @@ public class LevelEditorView extends VBox{
 		LevelData current = myInfo.get(level);
 		WaveChooserMenu wcm  = new WaveChooserMenu(myDelegate, enemies, current);
 		myDelegate.openViewWithSize(wcm, PopupSize.MEDIUM);
-	}
-	
-	private ImageView imageForStackButton(String imagePath){
-		Image img = new Image(imagePath);
-		ImageView imageView = new ImageView(img);
-		imageView.setFitWidth(40);
-		imageView.setPreserveRatio(true);
-		return imageView;
-	}
-	
-	private Label labelForStackButton(String title){
-		Label lbl = new Label(title);
-		lbl.setTextFill(CustomColors.GREEN_100);
-		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		return lbl;
 	}
 	
 	public Map<Integer, LevelData> getLevels(){

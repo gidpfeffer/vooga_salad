@@ -78,13 +78,13 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private void populateViews(){
-		setupBackButton();
+		LevelUtil.setupBackButton(myDelegate, this);
 		populateEnemies();
 		populateWaves();
 	}
 	
 	private void populateWaves(){
-		HBox root = generateCloseHBox();
+		HBox root = LevelUtil.generateHBox();
 		addWaveButton(root);
 		int numWaves = myData.getNumWaves();
 		for(int i=0; i<numWaves; i++){
@@ -96,8 +96,8 @@ public class WaveChooserMenu extends AnchorPane {
 	
 	private void addWaveButton(HBox root){
 		StackPane newWave = UIHelper.buttonStack(e->addNewWave(), 
-				Optional.of(label("Add Wave")), 
-				Optional.of(image("add_icon.png")),
+				Optional.of(LevelUtil.labelForStackButton("Add Wave")), 
+				Optional.of(LevelUtil.imageForStackButton("add_icon.png")),
 				Pos.CENTER_RIGHT, true);
 		newWave.setPrefHeight(56);
 		HBox.setMargin(newWave, new Insets(20));
@@ -115,7 +115,8 @@ public class WaveChooserMenu extends AnchorPane {
 			enemyBox.setAlignment(Pos.CENTER);
 			ImageView image=new ImageView(new Image(enemy.getImagePath()));
 			Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
-					Optional.of(label(enemy.getName())), Optional.of(image), Pos.CENTER, true);
+					Optional.of(LevelUtil.labelForStackButton(enemy.getName())), 
+					Optional.of(image), Pos.CENTER, true);
 			enemyBox.getChildren().add(toAdd);
 			
 			//TODO: Restore saved
@@ -133,15 +134,7 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private TextField addField(ActorData data, String value){
-		StackPane lblWrapper = new StackPane();
-		TextField field = new TextField(value);
-		field.setPrefWidth(150);
-		field.setFont(Preferences.FONT_MEDIUM);
-		field.setAlignment(Pos.CENTER);
-		field.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_200));
-		field.setStyle("-fx-text-fill-color: #FFFFFF");
-		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
-		lblWrapper.getChildren().add(field);
+		TextField field = LevelUtil.addField(value);
 		field.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                field.clear();
@@ -167,36 +160,11 @@ public class WaveChooserMenu extends AnchorPane {
 	
 	private void promptUser(ActorData enemy){
 		System.out.println("Prompt user");
-	}
-	
-	private Label label(String title){
-		Label lbl = new Label(title);
-		lbl.setTextFill(CustomColors.GREEN_100);
-		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		return lbl;
-	}
-	
-	private ImageView image(String imagePath){
-		Image img = new Image(imagePath);
-		ImageView imageView = new ImageView(img);
-		imageView.setFitWidth(40);
-		imageView.setPreserveRatio(true);
-		return imageView;
-	}
-	
-	private HBox generateHBox(int spacing){
-		HBox root=new HBox();
-		root.setSpacing(10);
-		root.setAlignment(Pos.CENTER);
-		return root;
-	}
-	
-	private HBox generateCloseHBox(){
-		return generateHBox(5);
+		//TODO: Implement
 	}
 	
 	private StackPane addNewWave(){
-		HBox root= generateCloseHBox();
+		HBox root= LevelUtil.generateHBox();
 		StackPane newWave = nextWave();
 		Node content = waves.getContent();
 		root.getChildren().add(content);
@@ -211,7 +179,7 @@ public class WaveChooserMenu extends AnchorPane {
 
 		editWave = myData.getMyWaves().get(wave);
 		
-		HBox root=generateCloseHBox();
+		HBox root=LevelUtil.generateHBox();
 		addWaveButton(root);
 		
 		for(StackPane box: waveBoxes){
@@ -233,7 +201,8 @@ public class WaveChooserMenu extends AnchorPane {
 	
 	private StackPane addWave(int waveNumber){
 		StackPane nextWave= UIHelper.buttonStack(e->{},  
-				Optional.of(label(String.format("      Wave %d       ", waveNumber + 1))), 
+				Optional.of(LevelUtil.labelForStackButton
+				(String.format("      Wave %d       ", waveNumber + 1))), 
 				Optional.ofNullable(null),Pos.CENTER_RIGHT, true);
 		nextWave.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 				e -> selectWave(nextWave, waveNumber));
@@ -241,37 +210,12 @@ public class WaveChooserMenu extends AnchorPane {
 		HBox.setMargin(nextWave, new Insets(20));
 		return nextWave;
 	}
-
-	private void setupBackButton() {
-		ImageButton b = new ImageButton("back_icon.png", new Location(30., 30.));
-		AnchorPane.setTopAnchor(b, 4.0);
-		AnchorPane.setLeftAnchor(b, 4.0);
-		b.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> myDelegate.closeView(this));
-		this.getChildren().add(b);
-	}
 	
 	private void setupBack(ScrollPane bottomSide, ScrollPane topSide){
 		double inset = 12.0;
-		setVerticalAnchors(inset, bottomSide, topSide);
-		setupBar(inset, 1.65, bottomSide);
-		setupBar(inset, 2.5, topSide);
+		LevelUtil.setVerticalAnchors(inset, bottomSide, topSide);
+		LevelUtil.setupBar(inset, 1.65, bottomSide, this, 3 / 2);
+		LevelUtil.setupBar(inset, 2.5, topSide, this, 3 / 2);
 		this.getChildren().addAll(bottomSide, topSide);
-	}
-	
-	private void setVerticalAnchors(double inset, ScrollPane bottomSide, ScrollPane topSide){
-		AnchorPane.setTopAnchor(topSide, inset);
-		AnchorPane.setBottomAnchor(bottomSide, inset);
-	}
-	
-	private void setupBar(double inset, double size, ScrollPane pane){
-		AnchorPane.setLeftAnchor(pane, inset);
-		
-		AnchorPane.setRightAnchor(pane, 48.0);
-		
-		pane.setBackground(new Background(new BackgroundFill(CustomColors.BLUE_50,null,null)));
-		pane.setStyle("-fx-background: #" + UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
-
-		UIHelper.setDropShadow(pane);
-		pane.prefHeightProperty().bind(this.heightProperty().divide(size).subtract(inset * 3 / 2));
 	}
 }
