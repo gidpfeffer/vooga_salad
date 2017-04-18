@@ -6,7 +6,6 @@ import builders.ActorGenerator;
 import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.LevelData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -75,7 +74,7 @@ public class GameController {
 	}
 	
 	public void start(Stage stage) {
-		myGameScreen = new GameScreen(stage,myUIHandler);
+		myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(1,() -> getNewActorGrid(myGameScreen));
 		intitializeTimeline();

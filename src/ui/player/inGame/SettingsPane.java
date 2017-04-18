@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gameengine.controllers.GameController;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,11 +13,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import ui.handlers.UIHandler;
-import ui.player.login.Login;
-
 
 /**
  * Creates a pane for settings elements such as returning back to main, changing volume, etc
@@ -26,15 +22,13 @@ import ui.player.login.Login;
  */
 public class SettingsPane {
 
-	private Stage stage;
 	private Button button;
 	private AnchorPane settings;
+	private Hyperlink backToLogin;
 	private double paneWidth = 150.;
 	private List<String> helpPaneOptions = new ArrayList<>(Arrays.asList("Help", "Settings"));
 	private List<Hyperlink> helpLinks = new ArrayList<>();
 	private static final String panel = "panel.css";
-	private static final String loginCSS = "loginScreen.css";
-	private static final String loginBundle = "login";
 
 	public Button getHelpButton() {
 		return button;
@@ -43,9 +37,12 @@ public class SettingsPane {
 	public AnchorPane getHelpPane() {
 		return settings;
 	}
+	
+	public void setBackToLoginAction(EventHandler<ActionEvent> value) {
+		backToLogin.setOnAction(value);
+	}
 
-	public SettingsPane(Stage myStage) {
-		this.stage = myStage;
+	public SettingsPane() {
 		setup();
 	}
 
@@ -90,8 +87,7 @@ public class SettingsPane {
 	 * Creates various hyperlinks needed in the pane including returning to main
 	 */
 	private void addHyperlinks() {
-		Hyperlink backToLogin = new Hyperlink("Return to Main");
-		backToLogin.setOnAction(e -> returnToMain());
+		backToLogin = new Hyperlink("Return to Main");
 		helpPaneOptions.forEach(name -> helpLinks.add(new Hyperlink(name)));
 		VBox helpBox = new VBox(20);
 		//helpLinks.forEach(link -> link.setOnAction(value)); TODO: Enable return to main
@@ -99,13 +95,6 @@ public class SettingsPane {
 		helpBox.getChildren().add(backToLogin);
 		settings.getChildren().add(helpBox);
 		helpBox.setAlignment(Pos.CENTER_LEFT);
-	}
-
-	private void returnToMain() {
-		System.out.println("here");
-		Login login = new Login(stage, loginCSS, loginBundle);
-		stage.setScene(login.getScene());
-		stage.setTitle("Login");
 	}
 
 	EventHandler<MouseEvent> closePane = new EventHandler<MouseEvent>() {

@@ -3,10 +3,8 @@ package ui.player.login;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public abstract class DataEntryGrid {

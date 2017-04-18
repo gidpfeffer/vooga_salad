@@ -3,19 +3,17 @@ package ui.player.inGame;
 import java.util.HashMap;
 import java.util.Map;
 
-import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import ui.Preferences;
 import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
 import util.observerobservable.VoogaObserver;
@@ -25,14 +23,17 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	private AnchorPane anchorPaneRoot;
 	private AnchorPane actorPane;
 	private ImageViewPane ivp;
-	private Stage myStage;
+	private SettingsPane settingsPane;
 	private Scene myScene;
 	private UIHandler uihandler;
 	private SimpleHUD hud;
 	private String backgroundImagePath = "default_map_background_0.jpg";
 	private Map<Integer, Actor> actorsMap;
 	
-
+	public void setBackToLoginAction(EventHandler<ActionEvent> value) {
+		settingsPane.setBackToLoginAction(value);
+	}
+	
 	public Scene getScene() {
 		return myScene;
 	}
@@ -42,16 +43,17 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 				ivp.getImageInsets().x, ivp.getWidth() - ivp.getImageInsets().x);
 	}
 	
-	public GameScreen(Stage stage, UIHandler uihandler){
+	public UIHandler getUIHandler() {
+		return uihandler;
+	}
+	
+	public GameScreen(UIHandler uihandler){
 		this.uihandler = uihandler;
-		stage.setHeight(Preferences.SCREEN_HEIGHT);
-		stage.setWidth(Preferences.SCREEN_WIDTH);
 		this.anchorPaneRoot = new AnchorPane();
 		actorPane = new AnchorPane();
 		this.myScene = new Scene(anchorPaneRoot);
 		this.actorsMap = new HashMap<Integer, Actor>();
 		hud = uihandler.getSimpleHUD();
-		myStage = stage;
 		setup();
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), anchorPaneRoot);
 		ft.setFromValue(0.0);
@@ -95,7 +97,7 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 	}
 	
 	private void setupLeft() {
-		SettingsPane settingsPane = new SettingsPane(myStage);
+		settingsPane = new SettingsPane();
 		Button helpButton = settingsPane.getHelpButton();
 		AnchorPane settings = settingsPane.getHelpPane();
 		AnchorPane.setLeftAnchor(helpButton, 10.);

@@ -1,19 +1,13 @@
 package ui.player.login;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -28,12 +22,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ui.Preferences;
-import ui.player.Passwords;
 import ui.player.User;
 import ui.player.UserDatabase;
 import ui.player.XStreamFileChooser;
@@ -46,6 +38,7 @@ public class Signup extends BorderedAnchorPane {
 	private SignupGrid signupGrid;
 	private Button signupButton;
 	private UserDatabase database;
+	private String css;
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
 
@@ -56,6 +49,7 @@ public class Signup extends BorderedAnchorPane {
 	public Signup(UserDatabase database, ResourceBundle resource, String css) {
 		this.resource = resource;
 		this.database = database;
+		this.css = css;
 		signupGrid = new SignupGrid(resource);
 		scene = new Scene(root, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT);
 		scene.getStylesheets().add(css);
@@ -158,6 +152,7 @@ public class Signup extends BorderedAnchorPane {
 						ex.printStackTrace();
 					}
 				}
+				new Login(css, resource.getBaseBundleName()); //TODO broken?
 			} else {
 				showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
 			}

@@ -28,9 +28,20 @@
       <avatar>profile_icon.png</avatar>
       <email>s@s.com</email>
     </ui.player.User>
+    <ui.player.User>
+      <username>duvall</username>
+      <password>73c2e8db3532034b5efdc9dc70a99019428afc4d</password>
+      <scores/>
+      <avatar>profile_icon.png</avatar>
+      <email>leedle@example.com</email>
+    </ui.player.User>
   </database>
   <passwords>
     <database>
+      <entry>
+        <string>duvall</string>
+        <string>73c2e8db3532034b5efdc9dc70a99019428afc4d</string>
+      </entry>
       <entry>
         <string>appleseed man 2</string>
         <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>

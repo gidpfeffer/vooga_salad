@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import ui.player.UserDatabase;
 import ui.player.XStreamFileChooser;
-import ui.player.login.Login;
+import ui.player.login.LoginMain;
 
 public class Main extends Application{
 
@@ -20,8 +20,7 @@ public class Main extends Application{
 	public void start(Stage s) throws Exception {
 		s.getIcons().add(new Image("tower_icon.png"));
 		UserDatabase database = getUserDatabase();
-		Login login = new Login(database, s, "loginScreen.css", "login");
-		s.setScene(login.getScene());
+		new LoginMain(database, s, "loginScreen.css", "login");
 		s.setTitle("Login");
 		s.setResizable(true);
 		s.show();
