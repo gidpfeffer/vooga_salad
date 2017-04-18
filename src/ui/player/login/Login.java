@@ -28,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -94,12 +95,13 @@ public class Login extends BorderedAnchorPane{
 		setupLoginGrid();
 		setupButtons();
 		setupAltButtons();
+		setupCenter();
 	}
 
 	private void setupLayout() {
 		gridPane.setHgap(50);
 		gridPane.setVgap(20);
-		borderPane.setCenter(gridPane);
+		//borderPane.setCenter(gridPane);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.getStyleClass().add("grid");
 		root.getStyleClass().add("anchor-pane");
@@ -131,7 +133,7 @@ public class Login extends BorderedAnchorPane{
 	private void setupButtons(){
 		Button loginEnter = new Button(loginResource.getString("login"));
 		Hyperlink signupEnter = new Hyperlink(loginResource.getString("signup"));
-		UIHelper.setDropShadow(loginEnter);
+		//UIHelper.setDropShadow(loginEnter);
 		gridPane.add(loginEnter, 0, 3);
 		gridPane.add(signupEnter, 0, 4);
 		GridPane.setHalignment(loginEnter, HPos.CENTER);
@@ -156,6 +158,16 @@ public class Login extends BorderedAnchorPane{
 		hbox.setPadding(new Insets(0., 0., 30., 0.));
 	}
 
+	private void setupCenter(){
+		StackPane top = new StackPane();
+		top.getStyleClass().add("stack-pane");
+		StackPane.setMargin(top, new Insets(0., 300., 30., 300.));
+		StackPane sp = new StackPane(top);
+		sp.setBackground(Background.EMPTY);
+		sp.getChildren().add(gridPane);
+		borderPane.setCenter(sp);
+	}
+	
 	private void loginClicked(Text actiontarget){
 		if (database.getPasswords().login(login.getUsername().getText(), login.getPassword().getText())) {
 			System.out.println(login.getUsername().getText());
@@ -203,7 +215,7 @@ public class Login extends BorderedAnchorPane{
 	}
 
 	private void gotoSignupPage() {
-		Signup signupPage = new Signup(loginResource, css);
+		Signup signupPage = new Signup(loginResource, "signupScreen.css");
 		stage.setScene(signupPage.getScene());
 		stage.setTitle(loginResource.getString("signup"));
 	}

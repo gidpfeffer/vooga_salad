@@ -13,6 +13,7 @@ public class SignupGrid extends DataEntryGrid{
 	private Map<Text, TextField> entryMap;
 	private Map<String, TextField> dataMap;
 	private ResourceBundle loginResource;
+	private String css;
 	
 	public TextField getUsername() {
 		return dataMap.get("username");
@@ -39,34 +40,35 @@ public class SignupGrid extends DataEntryGrid{
 		return entryMap;
 	}
 	
-	public SignupGrid(ResourceBundle resource){
+	public SignupGrid(ResourceBundle resource, String css){
 		super(resource);
 		loginResource = resource;
 		entryMap = new LinkedHashMap<>();
 		dataMap = new LinkedHashMap<>();
 		addValues();
 		addToGrid(entryMap);
+		this.css = css;
 	}
 	
 	public void addValues(){
 		TextField username = new TextField();
-		entryMap.put(new Text(loginResource.getString("username")), username);
+		Text user = new Text(loginResource.getString("username"));
+		user.setId("text");
+		entryMap.put(user, username);
 		dataMap.put("username", username);
 		
-		PasswordField password = new PasswordField();
-		entryMap.put(new Text(loginResource.getString("password")), password);
-		dataMap.put("password", password);
-		
-		PasswordField reenter = new PasswordField();
-		entryMap.put(new Text(loginResource.getString("reenter")), reenter);
-		dataMap.put("repassword", reenter);
-		
-		TextField email = new TextField();
-		entryMap.put(new Text(loginResource.getString("email")), email);
-		dataMap.put("email", email);
-		
-		TextField reemail = new TextField();
-		entryMap.put(new Text(loginResource.getString("reemail")), reemail);
-		dataMap.put("reemail", reemail);
+		//addTextField(loginResource.getString("username"), new TextField());
+		addTextField(loginResource.getString("password"), new PasswordField());
+		addTextField(loginResource.getString("reenter"), new PasswordField());
+		addTextField(loginResource.getString("email"), new TextField());
+		addTextField(loginResource.getString("reemail"), new TextField());
+	}
+	
+	private void addTextField(String s, TextField field){
+		TextField textfield = field;
+		Text text = new Text(s);
+		entryMap.put(text, textfield);
+		dataMap.put("username", textfield);
+		text.setId("text");
 	}
 }

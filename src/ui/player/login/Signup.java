@@ -40,6 +40,7 @@ public class Signup extends BorderedAnchorPane{
 	private SignupGrid signupGrid;
 	private Button signupButton;
 	public final static String generic_profile = "profile_icon.png";
+	private String css;
 	
 	private UserDatabase database;
 	private XStream mySerializer = new XStream(new DomDriver());
@@ -54,6 +55,7 @@ public class Signup extends BorderedAnchorPane{
 	
 	public Signup(ResourceBundle resource, String css) {
 		this.resource = resource;
+		this.css = css;
 		try {
 			mySavedUsers = fileChooser.readInClass();
 			database = (UserDatabase) mySerializer.fromXML(mySavedUsers);
@@ -70,21 +72,43 @@ public class Signup extends BorderedAnchorPane{
 	
 	
 	private void setup(){
+		setupLayout();
 		setupTop();
 		setupMiddle();
 	}
 
 
+	private void setupLayout() {
+		root.setId("towerBackground");
+	}
+
+	
 	private void setupTop(){
+		StackPane top = new StackPane();
+		top.setStyle("-fx-background-color: #f4b942; -fx-background-radius: 20;");
+		StackPane.setMargin(top, new Insets(10., 150., 5., 150.));
+		StackPane sp = new StackPane(top);
+		sp.setBackground(Background.EMPTY);
+		
 		Text signupTitle = new Text(resource.getString("newAccount"));
-		signupTitle.setStyle("-fx-font-family: Baby_Eskimo_Kisses_Black");
+		//signupTitle.setStyle("-fx-font-family: Baby_Eskimo_Kisses_Black");
+		signupTitle.setId("title");
 	    BorderPane.setAlignment(signupTitle, Pos.CENTER);
-	    BorderPane.setMargin(signupTitle, new Insets(40,20,20,20));
-		borderPane.setTop(signupTitle);
+	    BorderPane.setMargin(signupTitle, new Insets(40,20,30,20));
+	    
+		sp.getChildren().add(signupTitle);
+		borderPane.setTop(sp);
+		BorderPane.setAlignment(sp, Pos.CENTER);
 	}
 
 
 	private void setupMiddle() {
+		StackPane top = new StackPane();
+		top.setStyle("-fx-background-color: black; -fx-opacity: .8; -fx-background-radius: 20;");
+		StackPane.setMargin(top, new Insets(50., 150., 50., 150.));
+		StackPane sp = new StackPane(top);
+		sp.setBackground(Background.EMPTY);
+		
 		GridPane middle = new GridPane();
 		middle.setPadding(new Insets(25, 25, 25, 25));
 		middle.setHgap(25.);
@@ -95,16 +119,18 @@ public class Signup extends BorderedAnchorPane{
 		middle.add(profileImage, 0, 0);
 		middle.add(signupGrid.getGrid(), 1, 0);
 		middle.add(signupButton, 1, 1);
-		middle.setAlignment(Pos.TOP_CENTER);
+		middle.setAlignment(Pos.CENTER);
 		//GridPane.setHalignment(signupGrid.getGrid(), HPos.CENTER);
 		GridPane.setHalignment(signupButton, HPos.RIGHT);
 		//middle.setStyle("-fx-background-color: red");
 		BorderPane.setMargin(middle, new Insets(12,12,12,12));
-		borderPane.setCenter(middle);
+		sp.getChildren().add(middle);
+		borderPane.setCenter(sp);
+		BorderPane.setAlignment(sp, Pos.CENTER);
 	}
 	
 	private void setupGrid() {
-		signupGrid = new SignupGrid(resource);
+		signupGrid = new SignupGrid(resource, css);
 		signupGrid.getGrid().setBackground(Background.EMPTY);
 		//signupGrid.getGrid().setGridLinesVisible(true);
 	}
@@ -117,7 +143,7 @@ public class Signup extends BorderedAnchorPane{
 	private void setupProfileImage() {
 		profileImage = new StackPane();
 		profileImage.setBackground(Background.EMPTY);
-		Image pic = new Image(generic_profile, 100, 100, true, true);
+		Image pic = new Image(generic_profile, 200, 200, true, true);
 		ImageView image = new ImageView(pic);
 		profileImage.getChildren().add(image);
 		borderPane.setLeft(profileImage);
