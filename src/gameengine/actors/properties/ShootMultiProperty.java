@@ -3,6 +3,7 @@ package gameengine.actors.properties;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import gamedata.composition.ShootMultiData;
 import gamedata.compositiongen.ShootData;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
@@ -15,8 +16,8 @@ public class ShootMultiProperty<G extends ReadAndSpawnGrid> extends ShootTargetP
 	public ShootMultiProperty(ShootMultiData myData) {
 		super(myData);
 		shotAngles = new ArrayList<>();
-		for(int shot = 0; shot<myData.getShotNumber(); shot++) {
-			shotAngles.add(shot*2*(Math.PI/myData.getShotNumber()));
+		for(int shot = 0; shot<myData.getNumShots(); shot++) {
+			shotAngles.add(shot*2*(Math.PI/myData.getNumShots()));
 		}
 	}
 
