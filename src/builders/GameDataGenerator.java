@@ -8,6 +8,7 @@ import gamedata.BasicData;
 import gamedata.GameData;
 import gamedata.ProjectileData;
 import gamedata.ProjectileType;
+import gamedata.composition.ActorDamageableData;
 import gamedata.composition.MoveWithSetPathData;
 import gamedata.composition.ShootTargetFarData;
 import gameengine.grid.classes.Coordinates;
@@ -80,6 +81,7 @@ public class GameDataGenerator {
 		ShootTargetFarData shoot = 
 				new ShootTargetFarData(0.5, 10, new BasicActorType("Troop"), 1, .1);
 		//Shoots with Actor at index 1 (shot)
+		ActorDamageableData damage = new ActorDamageableData(.05, new BasicActorType("Projectile"));
 		
 		BasicData b1 = new BasicData("Tower", "tower_icon.png");
 		BasicData b2 = new BasicData("Shoot", "spike_ball.png");
@@ -97,6 +99,7 @@ public class GameDataGenerator {
 		
 		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3);//2
 		a3.addData(pathData);
+		a3.addData(damage);
 		
 		ActorData a4 = new ActorData(new BasicActorType("Troop"), b4);//3
 		a4.addData(pathData);
