@@ -42,7 +42,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	private final double SIDE_PANE_WIDTH_MIN = 160;
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
 	
-	
+	private GameData myGameData;
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
@@ -54,6 +54,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	public AuthoringView() {
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
+		myGameData = new GameData();
 		setupViews();
 	}
 
@@ -152,7 +153,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupMapView() {
 		//this calculation assumes that height < width
-		myMapView = new MapEditorView();
+		myMapView = new MapEditorView(myGameData.getMyPaths());
 		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
