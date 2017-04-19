@@ -173,10 +173,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 		this.myBorderPane.setRight(myLevelView);
 		
-	}
+	} 
 	
 	private void setupLeftPane(){
-		myLeftPane = new LeftPaneView(this);
+		myLeftPane = new LeftPaneView(this, myGameData);
 		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
 		AnchorPane.setBottomAnchor(myLeftPane, 12.0);

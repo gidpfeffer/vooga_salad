@@ -13,6 +13,7 @@ import java.util.Set;
 
 import gamedata.ActorData;
 import gamedata.BasicData;
+import gamedata.GameData;
 import gamedata.composition.LimitedHealthData;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -58,6 +59,7 @@ public class ActorEditorView extends AnchorPane {
 	private static final double BUTTON_HEIGHT = 72;
 	
 	
+	private GameData myGameData; //NOTE: this is the legit thing don't fuck with it
 	private HashMap<StackPane, ActorData> myActors;
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
@@ -65,10 +67,11 @@ public class ActorEditorView extends AnchorPane {
 	private BasicActorType myActorType;
 
 	// TODO get projectile data first
-	public ActorEditorView(PopViewDelegate delegate, BasicActorType type) {
+	public ActorEditorView(PopViewDelegate delegate, BasicActorType type, GameData gameData) {
 		super();
 		myDelegate = delegate;
 		myActorType = type;
+		myGameData = gameData;
 		myActors = new HashMap<StackPane, ActorData>();
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
