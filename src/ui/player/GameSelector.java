@@ -41,8 +41,8 @@ public class GameSelector extends BorderedAnchorPane{
 		return myScene;
 	}
 	
-	public GameSelector(String lang, String css, List<Game> gamesList){
-		this.gamesList = gamesList;
+	public GameSelector(String lang, String css, List<Game> gamesList2){
+		this.gamesList = gamesList2;
 		gameMenu = new ScrollPane();
 		myScene = new Scene(root, width, height);
 		myScene.getStylesheets().add(css);
