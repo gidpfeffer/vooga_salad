@@ -68,13 +68,13 @@ public class LevelEditorView extends VBox{
 	private StackPane nextLevel(){
 		LevelData newLevel = new LevelData();
 		myInfo.put(level, newLevel);
-		ImageView img = LevelUtil.imageForStackButton("gear.png");
+		ImageView img = LevelUtil.imageForStackButton("pencil.png");
 		UIHelper.setDropShadow(img);
 		img.setFitWidth(32);
 		img.setFitHeight(32);
 		Label label = LevelUtil.labelForStackButton(String.format("Level %d",level));
 		int localLevel = level;
-		img.setOnMousePressed(e->launchLevelEditor());
+		img.setOnMousePressed(e->launchLevelEditor(localLevel));
 		label.setOnMousePressed(e->launchWaveChooser(localLevel));
 		StackPane nextLevel= UIHelper.buttonStack(e->{},  
 				Optional.of(label), 
@@ -91,9 +91,9 @@ public class LevelEditorView extends VBox{
 		enemies = new ArrayList<ActorData>(updated);
 	}
 	
-	private void launchLevelEditor(){
-		LevelData current = myInfo.get(level);
-		LevelEditorMenu lem  = new LevelEditorMenu(myDelegate, current);
+	private void launchLevelEditor(int localLevel){
+		LevelData current = myInfo.get(localLevel);
+		LevelEditorMenu lem  = new LevelEditorMenu(myDelegate, current, localLevel);
 		myDelegate.openViewWithSize(lem, PopupSize.SMALL);
 	}
 	

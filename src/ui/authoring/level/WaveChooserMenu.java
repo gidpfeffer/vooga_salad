@@ -140,6 +140,8 @@ public class WaveChooserMenu extends AnchorPane {
                field.clear();
             }
         });
+		
+		//TODO: why did I do this
 		field.textProperty().addListener((o,oldText,newText) -> 
 			this.updateQuantity(field.textProperty().getValue(), data));
 		return field;

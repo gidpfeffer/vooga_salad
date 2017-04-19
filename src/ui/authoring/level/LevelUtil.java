@@ -46,6 +46,20 @@ public class LevelUtil {
 		return lbl;
 	}
 	
+	public static Label labelForStackButtonBlue(String title){
+		Label lbl = new Label(title);
+		lbl.setTextFill(CustomColors.BLUE_800);
+		lbl.setFont(Preferences.FONT_SMALL_BOLD);
+		return lbl;
+	}
+	
+	public static Label labelForTitle(String title){
+		Label lbl = new Label(title);
+		lbl.setTextFill(CustomColors.GREEN_900);
+		lbl.setFont(Preferences.FONT_BIG_BOLD);
+		return lbl;
+	}
+	
 	public static void setupBackButton(PopViewDelegate delegate, AnchorPane pane) {
 		ImageButton b = new ImageButton("back_icon.png", new Location(30., 30.));
 		AnchorPane.setTopAnchor(b, 4.0);
