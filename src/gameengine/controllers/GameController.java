@@ -1,13 +1,17 @@
 package gameengine.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import builders.ActorGenerator;
 import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
+import gamedata.map.LayerData;
+import gamedata.map.PolygonData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
+import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
@@ -19,6 +23,7 @@ import javafx.util.Duration;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
+import util.PathUtil;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 
@@ -121,10 +126,28 @@ public class GameController {
 				}
 				
 			}
+			/**
+			 * method to check if actor is being placed in the right layer
+			 * x, y is from 0 -1 ?
+			 * @return
+			 */
+			private boolean isPlaceable(List<LayerData> layers, double x, double y){
+				for (LayerData layer:layers){
+					for (PolygonData poly: layer.getMyPolygons()){
+						if (!PathUtil.isWithinPolygon(poly.getMyPoints(), x,y)){
+							return false;
+						}
+					}
+				}
+				return true;
+			}
 
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
+				//check for placeable here 
+				//isPlaceable(myGameData.getLayers().getAssignedLayers(actorData.getLayerIndexes()),xRatio, yRatio)
+				
 				Actor actor = ActorGenerator.makeActor(option,actorData);
 				if (myGrid.isValidLoc(xRatio, yRatio)) {
 					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
