@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -23,9 +24,11 @@ import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.AuthoringView;
 import ui.player.GameSelector;
-import ui.player.UserDatabase;
 import ui.player.XStreamFileChooser;
 import ui.player.login.Login.Game;
+import ui.player.users.ProfileCard;
+import ui.player.users.User;
+import ui.player.users.UserDatabase;
 
 public class LoginMain {
 	private Stage stage;
@@ -34,8 +37,6 @@ public class LoginMain {
 	private ResourceBundle loginResource;
 	private Login loginScreen;
 	public static final String userDatabase = "userDatabase.xml";
-	XStream mySerializer = new XStream(new DomDriver());
-	XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
 
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
@@ -48,9 +49,13 @@ public class LoginMain {
 	}
 	
 	private void setupDatabase() {
-		XStream mySerializer = new XStream(new DomDriver());
-		XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-		database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
+		try {
+			XStream mySerializer = new XStream(new DomDriver());
+			XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+			database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
+		} catch (Exception e) {
+			database = new UserDatabase();
+		}
 	}
 	
 	private void setupLoginScreen(String css, String resource) {
@@ -92,24 +97,36 @@ public class LoginMain {
 		if (database.getPasswords().login(loginScreen.getLoginGrid().getUsername().getText(), 
 				loginScreen.getLoginGrid().getPassword().getText())) 
 		{
-			System.out.println(loginScreen.getLoginGrid().getUsername().getText());
-			showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + 
-					loginScreen.getLoginGrid().getUsername().getText() + ".", "Let's Play A Game!");
+			User user = null;
+			for (User u : database.getDatabase()) {
+				System.out.println(u.getUsername());
+				System.out.println(loginScreen.getLoginGrid().getUsername().getText());
+				if (u.getUsername().equals(loginScreen.getLoginGrid().getUsername().getText())) {
+					user = u;
+					break;
+				}
+			}
+
+			//User user = database.getDatabase().stream().filter(u -> u.equals(loginScreen.getLoginGrid().getUsername()));
+			ProfileCard card = new ProfileCard("profile", user, "profile.css");
+			HBox hb = card.getCard();
+			loginScreen.getRoot().getChildren().add(hb);
+			//showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + 
+			//		loginScreen.getLoginGrid().getUsername().getText() + ".", "Let's Play A Game!");
 			loginScreen.getActionTarget().setFill(Color.GREEN);
 			loginScreen.getActionTarget().setText(loginResource.getString("successfulLogin"));
 			loginScreen.getLoginGrid().getUsername().clear();
-			loginScreen.getLoginGrid().getPassword().clear();
-			gotoGameSelector();
+			//gotoGameSelector();
 		} else {
-			setBadActionTarget(loginScreen.getActionTarget(), Color.FIREBRICK, 
+			setBadActionTarget(loginScreen.getActionTarget(), Color.WHITE, 
 					loginResource.getString("incorrectLogin"));
 		}
+		loginScreen.getLoginGrid().getPassword().clear();
 	}
 
 	private void setBadActionTarget(Text node, Color color, String error){
 		node.setFill(color);
 		node.setText(error);
-		loginScreen.getLoginGrid().getPassword().clear();
 		FadeTransition fade = createFader(node);
 		fade.play();
 	}
