@@ -55,6 +55,11 @@ public class PathData {
 		this.myPaths = myPaths;
 	}
 	
+	public void clear(){
+		myPaths = new HashMap<Integer, List<Grid2D>>();
+		numOptions = 0;
+	}
+	
 	public List<Grid2D> poll(){
 		if(myPaths.isEmpty()){
 			addPath(new ArrayList<Grid2D>());
