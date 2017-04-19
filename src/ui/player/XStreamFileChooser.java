@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import com.thoughtworks.xstream.XStream;
 
+import ui.player.users.Passwords;
+
 public class XStreamFileChooser {
 
 	String filename;

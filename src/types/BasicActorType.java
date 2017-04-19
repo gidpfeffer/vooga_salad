@@ -10,9 +10,15 @@ package types;
 
 public class BasicActorType implements Comparable {
 	private String type;
+	private boolean placeable;
 	
 	public BasicActorType(String type){
+		this(type, true);
+	}
+	
+	public BasicActorType(String type, boolean placeable){
 		this.type=type;
+		this.placeable=placeable;
 	}
 
 	public String getType() {
@@ -23,6 +29,14 @@ public class BasicActorType implements Comparable {
 		this.type = type;
 	}
 	
+	public boolean isPlaceable() {
+		return placeable;
+	}
+
+	public void setPlaceable(boolean placeable) {
+		this.placeable = placeable;
+	}
+
 	@Override
 	public boolean equals(Object o){
 		if(o==null){

@@ -47,6 +47,7 @@
 }
 
 .hyperlink {
+	-fx-text-fill: white;
 	-fx-font-size: 15;
 	-fx-effect: dropshadow( one-pass-box , black , 5,.5,1,1 );
 }
@@ -59,7 +60,7 @@
 .label {
 	-fx-font-family: "HelveticaNeue";
 	-fx-font-size: 40;
-	-fx-text-fill: #780116;
+	-fx-text-fill: white;
 	-fx-font-weight: BOLD;
 	-fx-effect: dropshadow( one-pass-box , black , 5,.5,1,1 );
 }
@@ -67,7 +68,7 @@
 	-fx-font-family: "HelveticaNeue";
 	-fx-font-size: 20;
 	-fx-font-weight: BOLD;
-	-fx-fill: #4593CC;
+	-fx-fill: white;
 	-fx-effect: dropshadow( one-pass-box , black , 5,.5,1,1 );
 }
 
@@ -102,7 +103,8 @@
 }
 
 .stack-pane {
-	-fx-background-color: #E94117;
+	-fx-background-color: #4593CC;
 	-fx-background-radius: 50;
+	-fx-opacity: .7;
 	-fx-effect: dropshadow( one-pass-box , gray , 20, .1, 5, 5);
 }
