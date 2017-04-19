@@ -18,7 +18,12 @@ public class SocialCenterMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
+		SocialCenterView view = new SocialCenterView(primaryStage);
 		
 	}
 
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
 }
