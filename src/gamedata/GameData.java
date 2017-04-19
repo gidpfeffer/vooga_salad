@@ -49,7 +49,7 @@ public class GameData {
 	//Level information (preferences, no & type of enemies)
 	Map<Integer,LevelData> levels;
 	
-	//TODO: Assess change
+	//Preferences for game
 	PreferencesData preferences;
 	
 	//Path information
@@ -57,7 +57,8 @@ public class GameData {
 	
 	//Layer information
 	MapData myLayers; 
-	
+
+	//Categories available (e.g. Troop)
 	List<BasicActorType> types;
 	
 	//Information about how the game is visually displayed
