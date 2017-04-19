@@ -1,4 +1,4 @@
-package ui.player;
+package ui.player.users;
 
 import java.util.ArrayList;
 import java.util.Collection;

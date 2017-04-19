@@ -26,9 +26,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ui.Preferences;
-import ui.player.User;
-import ui.player.UserDatabase;
 import ui.player.XStreamFileChooser;
+import ui.player.users.User;
+import ui.player.users.UserDatabase;
 
 public class Signup extends BorderedAnchorPane {
 	//need to save image somehow and store as string to the location userImages/...
@@ -203,6 +203,7 @@ public class Signup extends BorderedAnchorPane {
 		}
 
 		private boolean fieldsFilledIn() {
+			System.out.println(!signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty()));
 			return !signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty());
 		}
 	};
