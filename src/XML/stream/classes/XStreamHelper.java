@@ -5,11 +5,11 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import XML.xstream.interfaces.VoogaSerializer;
 
-public class XStreamMain implements VoogaSerializer{
+public class XStreamHelper implements VoogaSerializer{
 	
 	private XStream xstream;
 	
-	public XStreamMain(){
+	public XStreamHelper(){
 		xstream = new XStream(new DomDriver());
 	}
 
