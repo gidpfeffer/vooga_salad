@@ -27,7 +27,7 @@ public class WaveData {
 	
 	public boolean contains(ActorData actor){
 		for(EnemyInWaveData enemy: waveEnemies){
-			
+
 			if(enemy.getMyActor().equals(actor)){
 				return true;
 			}

@@ -4,26 +4,150 @@
       <username>bleubird</username>
       <password>3c6d6d6c0acafe521fe7aac8cc33e44aafeb7242</password>
       <scores/>
-      <avatar>profile_icon.png</avatar>
+      <avatar>
+        
+        
+        
+        
+        
+      </avatar>
       <email>ams191@duke.edu</email>
     </ui.player.User>
     <ui.player.User>
       <username>appleseed man</username>
       <password>0112b6f1f335082e9c089ac49a10c1b925d79e2e</password>
       <scores/>
-      <avatar>profile_icon.png</avatar>
+      <avatar>
+        
+        
+        
+        
+        
+      </avatar>
       <email>honey@duke.edu</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>appleseed man 2</username>
+      <password>0112b6f1f335082e9c089ac49a10c1b925d79e2e</password>
+      <scores/>
+      <avatar>
+        
+        
+        
+        
+        
+      </avatar>
+      <email>honey@duke.edu</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>apple</username>
+      <password>aba5185e32de95ed7f82e48f0ba6987e3baf5a23</password>
+      <scores/>
+      <avatar>
+        
+        
+        
+        
+        
+      </avatar>
+      <email>s@s.com</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>work</username>
+      <password>f1c79a657f13f52193f1c1c776ff3fa4e539a597</password>
+      <scores/>
+      <avatar>
+        
+        
+        
+        
+        
+      </avatar>
+      <email>work@work.com</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>m</username>
+      <password>05eb390b2ec5eef4215c05bf03d08f130b0a4b26</password>
+      <scores/>
+      <avatar>
+        
+        
+        
+        
+        
+      </avatar>
+      <email>m@m.com</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>help</username>
+      <password>241ff54e38f024df1690636f0c60dafb19b98a69</password>
+      <scores/>
+      <avatar>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </avatar>
+      <email>help@help.com</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>p</username>
+      <password>3a1e03fae7103a0e32c04e59a386997aacf77a95</password>
+      <scores/>
+      <avatar>file:/C:/Users/Lyque/Pictures/61b27fc1fc63f0a8796abdc94206c72e.jpg</avatar>
+      <email>p@p.co</email>
+    </ui.player.User>
+    <ui.player.User>
+      <username>o</username>
+      <password>4e780e38640ef3bb41aba66b358d2b7d2d8b0aa9</password>
+      <scores/>
+      <avatar>profile_icon.png</avatar>
+      <email>o@o.com</email>
     </ui.player.User>
   </database>
   <passwords>
     <database>
       <entry>
+        <string>p</string>
+        <string>3a1e03fae7103a0e32c04e59a386997aacf77a95</string>
+      </entry>
+      <entry>
+        <string>appleseed man 2</string>
+        <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>
+      </entry>
+      <entry>
+        <string>apple</string>
+        <string>aba5185e32de95ed7f82e48f0ba6987e3baf5a23</string>
+      </entry>
+      <entry>
+        <string>help</string>
+        <string>241ff54e38f024df1690636f0c60dafb19b98a69</string>
+      </entry>
+      <entry>
+        <string>work</string>
+        <string>f1c79a657f13f52193f1c1c776ff3fa4e539a597</string>
+      </entry>
+      <entry>
         <string>appleseed man</string>
         <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>
       </entry>
       <entry>
+        <string>m</string>
+        <string>05eb390b2ec5eef4215c05bf03d08f130b0a4b26</string>
+      </entry>
+      <entry>
         <string>bleubird</string>
         <string>3c6d6d6c0acafe521fe7aac8cc33e44aafeb7242</string>
+      </entry>
+      <entry>
+        <string>o</string>
+        <string>4e780e38640ef3bb41aba66b358d2b7d2d8b0aa9</string>
       </entry>
     </database>
   </passwords>

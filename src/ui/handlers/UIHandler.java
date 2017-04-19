@@ -3,7 +3,7 @@ package ui.handlers;
 import java.util.Map;
 
 import gamedata.ActorData; 
-import gamedata.LevelData;
+import ui.player.inGame.SimpleHUD;
 import util.VoogaException;
 
 /**
@@ -23,4 +23,5 @@ public interface UIHandler {
 	void stop();
 	void exit();
 	void changeLevel(int level) throws VoogaException;
+	SimpleHUD getSimpleHUD();
 }
