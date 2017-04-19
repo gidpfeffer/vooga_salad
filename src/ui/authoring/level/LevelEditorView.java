@@ -22,6 +22,16 @@ import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
+/**
+ * Represents the right hand bar in the authoring environment.
+ * Dictates the list of Levels and add level button. 
+ * Allows access to WaveChooserMenu and LevelEditorMenu
+ * by clicking on the Level buttons.
+ * 
+ * @author maddiebriere
+ * @author alex blumenstock
+ */
+
 public class LevelEditorView extends VBox{
 	//# of Enemies
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
@@ -29,7 +39,6 @@ public class LevelEditorView extends VBox{
 	private Map<Integer, LevelData> myInfo; //Essentially the model
 	private PopViewDelegate myDelegate;
 	private Collection<ActorData> enemies;
-	//private PathData myPathData;
 	
 	public LevelEditorView(PopViewDelegate delegate, Collection<ActorData> enemies){
 		super();
@@ -43,7 +52,8 @@ public class LevelEditorView extends VBox{
 		StackPane levelOne = nextLevel();
 		this.getChildren().add(levelOne);
 		StackPane newLevel = UIHelper.buttonStack(e->addNewLevel(), 
-				Optional.of(labelForStackButton("Add Level")), Optional.of(imageForStackButton("add_icon.png")),
+				Optional.of(LevelUtil.labelForStackButton("Add Level")), 
+				Optional.of(LevelUtil.imageForStackButton("add_icon.png")),
 				Pos.CENTER_RIGHT, true);
 		newLevel.setPrefHeight(56);
 		VBox.setMargin(newLevel, new Insets(8));
@@ -58,11 +68,16 @@ public class LevelEditorView extends VBox{
 	private StackPane nextLevel(){
 		LevelData newLevel = new LevelData();
 		myInfo.put(level, newLevel);
-		ImageView img = imageForStackButton("splash_icon.png");
+		ImageView img = LevelUtil.imageForStackButton("pencil.png");
+		UIHelper.setDropShadow(img);
+		img.setFitWidth(32);
+		img.setFitHeight(32);
+		Label label = LevelUtil.labelForStackButton(String.format("Level %d",level));
 		int localLevel = level;
-		img.setOnMousePressed(e->launchLevelEditor());
-		StackPane nextLevel= UIHelper.buttonStack(e->launchWaveChooser(localLevel),  
-				Optional.of(labelForStackButton(String.format("Level %d",level))), 
+		img.setOnMousePressed(e->launchLevelEditor(localLevel));
+		label.setOnMousePressed(e->launchWaveChooser(localLevel));
+		StackPane nextLevel= UIHelper.buttonStack(e->{},  
+				Optional.of(label), 
 				Optional.ofNullable(img),Pos.CENTER_RIGHT, true);
 		level++;
 		nextLevel.setPrefHeight(56);
@@ -70,29 +85,22 @@ public class LevelEditorView extends VBox{
 		return nextLevel;
 	}
 	
-	private void launchLevelEditor(){
-		
+	public void update(Collection<ActorData> updated){
+		//TODO: Make more sophisticated -- removal
+		//TODO: CALL
+		enemies = new ArrayList<ActorData>(updated);
+	}
+	
+	private void launchLevelEditor(int localLevel){
+		LevelData current = myInfo.get(localLevel);
+		LevelEditorMenu lem  = new LevelEditorMenu(myDelegate, current, localLevel);
+		myDelegate.openViewWithSize(lem, PopupSize.SMALL);
 	}
 	
 	private void launchWaveChooser(int level){
 		LevelData current = myInfo.get(level);
-		LevelEditorMenu wcm  = new LevelEditorMenu(myDelegate, enemies, current);
+		WaveChooserMenu wcm  = new WaveChooserMenu(myDelegate, enemies, current);
 		myDelegate.openViewWithSize(wcm, PopupSize.MEDIUM);
-	}
-	
-	private ImageView imageForStackButton(String imagePath){
-		Image img = new Image(imagePath);
-		ImageView imageView = new ImageView(img);
-		imageView.setFitWidth(40);
-		imageView.setPreserveRatio(true);
-		return imageView;
-	}
-	
-	private Label labelForStackButton(String title){
-		Label lbl = new Label(title);
-		lbl.setTextFill(CustomColors.GREEN_100);
-		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		return lbl;
 	}
 	
 	public Map<Integer, LevelData> getLevels(){

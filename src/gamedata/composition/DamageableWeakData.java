@@ -1,10 +1,9 @@
 package gamedata.composition;
 
-import gamedata.compositiongen.*;
 import types.BasicActorType;
 
 
-public class DamageableWeakData extends DamageableData{
+public class DamageableWeakData extends DamageableData {
 	public DamageableWeakData(){
 		super();
 	}
