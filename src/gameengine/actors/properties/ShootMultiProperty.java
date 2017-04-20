@@ -24,6 +24,7 @@ public class ShootMultiProperty<G extends ReadAndSpawnGrid> extends ShootTargetP
 	protected Collection<Double> getEnemyToShoot(Collection<Grid2D> points, Grid2D myPos) {
 		ArrayList<Double> retCollection = new ArrayList<>();
 		if(points.size()>0) {
+			System.out.println("I detect an object");
 			shotAngles.stream().forEach((angle) -> retCollection.add(angle));
 		}
 		return retCollection;

@@ -1,0 +1,29 @@
+<gamedata.GameData>
+  <levels/>
+  <preferences/>
+  <myPaths>
+    <myPaths/>
+    <numOptions>0</numOptions>
+  </myPaths>
+  <myLayers>
+    <myLayers/>
+    <index>1</index>
+  </myLayers>
+  <types>
+    <types.BasicActorType>
+      <type>test</type>
+      <placeable>true</placeable>
+    </types.BasicActorType>
+    <types.BasicActorType>
+      <type>test2</type>
+      <placeable>true</placeable>
+    </types.BasicActorType>
+  </types>
+  <display>
+    <splashScreenImage>images/enemy_icon.png</splashScreenImage>
+    <thumbnailImage>images/enemy_icon.png</thumbnailImage>
+    <colorTheme>0</colorTheme>
+  </display>
+  <pieces/>
+  <numOptions>0</numOptions>
+</gamedata.GameData>
