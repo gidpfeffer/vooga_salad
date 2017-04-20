@@ -128,15 +128,14 @@ public class GameController {
 			}
 			/**
 			 * method to check if actor is being placed in the right layer
-			 * x, y is from 0 -1 ?
+			 * x, y is from 0 -1 
 			 * @return
 			 */
-			private boolean isPlaceable(List<LayerData> layers, double x, double y){
-				for (LayerData layer:layers){
-					for (PolygonData poly: layer.getMyPolygons()){
-						if (!PathUtil.isWithinPolygon(poly.getMyPoints(), x,y)){
-							return false;
-						}
+			private boolean isPlaceable(LayerData layer, double x, double y){
+				
+				for (PolygonData poly: layer.getMyPolygons()){
+					if (!PathUtil.isWithinPolygon(poly.getMyPoints(), x,y)){
+						return false;
 					}
 				}
 				return true;
@@ -146,16 +145,14 @@ public class GameController {
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
 				//check for placeable here 
-				//isPlaceable(myGameData.getLayers().getAssignedLayers(actorData.getLayerIndexes()),xRatio, yRatio)
-				
-				Actor actor = ActorGenerator.makeActor(option,actorData);
-				if (myGrid.isValidLoc(xRatio, yRatio)) {
+				if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && myGrid.isValidLoc(xRatio, yRatio)){
+					Actor actor = ActorGenerator.makeActor(option,actorData);
 					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
-				} else {
+					return actor.getID();
+				}
+				else {
 					throw new VoogaException(VoogaException.INVALID_LOCATION);
 				}
-				
-				return actor.getID();
 			}
 
 			@Override
