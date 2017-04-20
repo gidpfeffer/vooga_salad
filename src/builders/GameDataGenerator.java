@@ -11,6 +11,7 @@ import gamedata.ProjectileType;
 import gamedata.composition.ActorDamageableData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.composition.MoveWithSetPathData;
+import gamedata.composition.ShootMultiData;
 import gamedata.composition.ShootTargetFarData;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -79,10 +80,10 @@ public class GameDataGenerator {
 		
 		MoveWithSetPathData pathData = PathGenerator.generateMoveData
 				(game.getMyPaths(), possiblePaths, .005);
-		ShootTargetFarData shoot = 
-				new ShootTargetFarData(0.5, 10, new BasicActorType("Troop"), 1, .1);
+		ShootTargetFarData shoot = new ShootTargetFarData(1.0, 1, new BasicActorType("Troop"), 1, .0075);
+		//ShootMultiData shoot = new ShootMultiData(0.25, 5, new BasicActorType("Troop"), 1, .01, 8);
 		//Shoots with Actor at index 1 (shot)
-		ActorDamageableData damage = new ActorDamageableData(.15, new BasicActorType("Projectile"));
+		ActorDamageableData damage = new ActorDamageableData(.05, new BasicActorType("Projectile"));
 		
 		BasicData b1 = new BasicData("Tower", "tower_icon.png");
 		BasicData b2 = new BasicData("Shoot", "spike_ball.png");
