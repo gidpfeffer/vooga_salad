@@ -15,12 +15,14 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.AuthoringView;
+import ui.handlers.LoginHandler;
 import ui.player.GameSelector;
 import ui.player.XStreamFileChooser;
 import ui.player.login.Login.Game;
@@ -35,16 +37,32 @@ public class LoginMain {
 	private ResourceBundle loginResource;
 	private Login loginScreen;
 	private Signup signupPage;
+	private LoginHandler loginhandler;
 	public static final String userDatabase = "userDatabase.xml";
 
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
 		setupDatabase();
+		setupLoginHandler();
 		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
 		stage.setMinWidth(Preferences.SCREEN_WIDTH);
 		loginResource = ResourceBundle.getBundle(resource);
 		setupLoginScreen(css, resource);
 		stage.setScene(loginScreen.getScene());
+	}
+	
+	private void setupLoginHandler() {
+		this.loginhandler = new LoginHandler() {
+			@Override
+			public User getActiveUser() {
+				return database.getActiveUser();
+			}
+			
+			@Override
+			public void showProfile() {
+				showProfileCard(getActiveUser());
+			}
+		};
 	}
 	
 	private void setupDatabase() {
@@ -118,22 +136,22 @@ public class LoginMain {
 					break;
 				}
 			}
-
-			//User user = database.getDatabase().stream().filter(u -> u.equals(loginScreen.getLoginGrid().getUsername()));
-			ProfileCard card = new ProfileCard("profile", user, "profile.css");
-			HBox hb = card.getCard();
-			loginScreen.getRoot().getChildren().add(hb);
-			//showAlert(AlertType.INFORMATION, "Welcome", "Welcome, " + 
-			//		loginScreen.getLoginGrid().getUsername().getText() + ".", "Let's Play A Game!");
+			showProfileCard(user);
+			database.setActiveUser(user);
 			loginScreen.getActionTarget().setFill(Color.GREEN);
 			loginScreen.getActionTarget().setText(loginResource.getString("successfulLogin"));
 			loginScreen.getLoginGrid().getUsername().clear();
-			//gotoGameSelector();
 		} else {
 			setBadActionTarget(loginScreen.getActionTarget(), Color.WHITE, 
 					loginResource.getString("incorrectLogin"));
 		}
 		loginScreen.getLoginGrid().getPassword().clear();
+	}
+	
+	private void showProfileCard(User user) {
+		ProfileCard card = new ProfileCard("profile", user, "profile.css");
+		HBox hb = card.getCard();
+		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
 	}
 
 	private void setBadActionTarget(Text node, Color color, String error){
@@ -168,7 +186,7 @@ public class LoginMain {
 				loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> gotoGameScreen()),
 				loginScreen.new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {}), 
 				loginScreen.new Game("Asteroids", "asteroids.png", e -> {})));
-		GameSelector select = new GameSelector("English", "mainScreen.css", gamesList);
+		GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
 		stage.setScene(select.getScene());
 		stage.setTitle("GameSelector");
 		stage.show();
