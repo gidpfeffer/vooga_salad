@@ -3,6 +3,8 @@ package XML.xstream.classes;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import XML.xstream.interfaces.XMLFileHelper;
 
@@ -31,6 +33,12 @@ public class FileHelperMain implements XMLFileHelper{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public String getFileContent(String filepathToDir, String filename) {
+		Path p = Paths.get(filepathToDir + filename + ".xml");
+		return p.getFileName().toString();
 	}
 
 }
