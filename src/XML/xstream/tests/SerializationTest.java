@@ -20,8 +20,8 @@ public class SerializationTest {
     public void setUp () {
        myData = new GameData();
        mySerializer = new XStreamHelper();
-		myData.addType("test1");
-		myData.addType("test2");
+       myData.addType("test1");
+       myData.addType("test2");
     }
 
     // adds data to the object, serializes it, then makes sure the data was preserved

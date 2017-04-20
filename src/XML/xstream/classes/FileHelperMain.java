@@ -3,7 +3,7 @@ package XML.xstream.classes;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import XML.xstream.interfaces.XMLFileHelper;
@@ -21,24 +21,43 @@ public class FileHelperMain implements XMLFileHelper{
 	}
 
 	@Override
-	public boolean addXMLToDirectory(String filepathToDir, String XMLString, String filename) {
+	public boolean addStringToDirectory(String filepathToDir, String fileContent, String filename) {
 		if(!directoryExists(filepathToDir)) return false;
-		File file = new File(filename);
+		File file = new File(filepathToDir + "/" + filename);
 		try {
 			FileWriter fileWriter = new FileWriter(file, false);
-			fileWriter.write(XMLString);
+			fileWriter.write(fileContent);
 			fileWriter.close();
 			return true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			// was unabl to process;
 		}
 		return false;
 	}
 
 	@Override
 	public String getFileContent(String filepathToDir, String filename) {
-		Path p = Paths.get(filepathToDir + filename + ".xml");
-		return p.getFileName().toString();
+		try {
+			return new String(Files.readAllBytes(Paths.get(filepathToDir + "/" + filename)));
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean makeDirectory(String filepath, String name) {
+		File theDir = new File(filepath + name);
+		
+		if (!theDir.exists()) {
+		    try{
+		        theDir.mkdir();
+		        return true;
+		    } 
+		    catch(SecurityException se){
+		    	return false;
+		    }        
+		}
+		return false;
 	}
 
 }

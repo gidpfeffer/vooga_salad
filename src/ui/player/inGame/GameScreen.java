@@ -18,14 +18,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import ui.general.ImageViewPane;
 import ui.handlers.UIHandler;
 import ui.player.login.BorderedAnchorPane;
+import ui.player.login.LoginElement;
 import util.observerobservable.VoogaObserver;
 
-public class GameScreen extends BorderedAnchorPane implements VoogaObserver<Map<Integer,FrontEndInformation>>{
+public class GameScreen extends BorderedAnchorPane 
+	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement{
 
 	//private AnchorPane anchorPaneRoot;
 	//private AnchorPane actorPane;
@@ -39,21 +40,25 @@ public class GameScreen extends BorderedAnchorPane implements VoogaObserver<Map<
 	private String backgroundImagePath = "default_map_background_0.jpg";
 	private Map<Integer, Actor> actorsMap;
 	
-	public void setBackToLoginAction(EventHandler<ActionEvent> value) {
+	@Override
+	public void setLoginReturn(EventHandler<ActionEvent> value) {
 		settingsPane.setBackToLoginAction(value);
 	}
 	
+	@Override
 	public Scene getScene() {
 		return myScene;
 	}
 	
-	public ScreenSize getWindow() {
-		return new ScreenSize(ivp.getImageInsets().y, ivp.getHeight() - ivp.getImageInsets().y,
-				ivp.getImageInsets().x, ivp.getWidth() - ivp.getImageInsets().x);
-	}
-	
-	public UIHandler getUIHandler() {
-		return uihandler;
+	@Override
+	public EventHandler<ActionEvent> getAction() {
+		EventHandler<ActionEvent> backToLogin = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				uihandler.stop();
+			}
+		};
+		return backToLogin;
 	}
 	
 	public GameScreen(UIHandler uihandler){
@@ -185,5 +190,4 @@ public class GameScreen extends BorderedAnchorPane implements VoogaObserver<Map<
 			//System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);
 		});
 	}
-	
 }

@@ -2,6 +2,7 @@ package XML.xstream.interfaces;
 /**
  * 
  * @author Gideon
+ * 
  *
  */
 public interface VoogaSerializer{
