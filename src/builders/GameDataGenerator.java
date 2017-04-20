@@ -12,6 +12,7 @@ import gamedata.composition.ActorDamageableData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.composition.MoveWithSetPathData;
 import gamedata.composition.ShootTargetFarData;
+import gamedata.map.LayerData;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
@@ -98,7 +99,7 @@ public class GameDataGenerator {
 		a1.addData(shoot); //tower has shooting capabilities
 		ActorData a2 = new ActorData(new BasicActorType("Projectile"), b2);//1
 		
-		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3, new LimitedHealthData(10.0),pathData,damage);//2
+		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3, new LimitedHealthData(10.0),new LayerData(),pathData,damage);//2
 		//a3.addData(pathData);
 		//a3.addData(damage);
 		
