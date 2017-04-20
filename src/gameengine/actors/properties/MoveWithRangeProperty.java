@@ -2,6 +2,7 @@ package gameengine.actors.properties;
 
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
+import util.PathUtil;
 
 public abstract class MoveWithRangeProperty<G extends MasterGrid> implements IActProperty<G> {
 
@@ -24,6 +25,11 @@ public abstract class MoveWithRangeProperty<G extends MasterGrid> implements IAc
 	}
 
 	abstract protected void moveProj(G grid, Integer actorID, double speed);
+	
+	protected void xyDist(G grid, Integer actorID, double speed, double angle) {
+		grid.move(actorID, grid.getLocationOf(actorID).getX()+(PathUtil.getXByAngle(angle)*speed), grid.getLocationOf(actorID).getY()+(PathUtil.getYByAngle(angle)*speed));
+
+	}
 
 	@Override
 	public boolean isOn() {

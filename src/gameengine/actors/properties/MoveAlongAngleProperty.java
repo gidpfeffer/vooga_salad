@@ -1,7 +1,6 @@
 package gameengine.actors.properties;
 
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
-import util.PathUtil;
 
 public class MoveAlongAngleProperty<G extends MasterGrid> extends MoveWithRangeProperty<G>{
 
@@ -13,7 +12,7 @@ public class MoveAlongAngleProperty<G extends MasterGrid> extends MoveWithRangeP
 	}
 	
 	protected void moveProj(G grid, Integer actorID, double speed) {
-		grid.move(actorID, grid.getLocationOf(actorID).getX()+(PathUtil.getXByAngle(myPathAngle)*speed), grid.getLocationOf(actorID).getY()+(PathUtil.getYByAngle(myPathAngle)*speed));
+		xyDist(grid,actorID,speed,myPathAngle);
 	}
 
 }

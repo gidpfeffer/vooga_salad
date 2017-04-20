@@ -19,7 +19,7 @@ public class MoveWithHeatSeekProperty<G extends MasterGrid> extends MoveWithRang
 	protected void moveProj(G grid, Integer actorID, double speed) {
 		grid.getActorLocations(myTarget).stream().min(Comparator.comparingDouble(point -> PathUtil.getDistance(grid.getLocationOf(actorID), point))).ifPresent((point) -> {
 			double pathAngle = PathUtil.getAngle(grid.getLocationOf(actorID), point);
-			grid.move(actorID, grid.getLocationOf(actorID).getX()+(PathUtil.getXByAngle(pathAngle)*speed), grid.getLocationOf(actorID).getY()+(PathUtil.getYByAngle(pathAngle)*speed));
+			xyDist(grid,actorID,speed,pathAngle);
 		});
 	}
 }
