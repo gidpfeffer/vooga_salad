@@ -16,6 +16,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -124,6 +126,7 @@ public class LoginMain {
 			loginScreen.getActionTarget().setFill(Color.GREEN);
 			loginScreen.getActionTarget().setText(loginResource.getString("successfulLogin"));
 			loginScreen.getLoginGrid().getUsername().clear();
+			loginScreen.getRoot().getChildren().add(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
 			//gotoGameSelector();
 		} else {
 			setBadActionTarget(loginScreen.getActionTarget(), Color.WHITE, 

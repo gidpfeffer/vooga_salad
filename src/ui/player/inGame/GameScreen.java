@@ -7,12 +7,16 @@ import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
@@ -83,7 +87,7 @@ public class GameScreen extends BorderedAnchorPane implements VoogaObserver<Map<
 	
 	private void setupBackground() {
 		//anchorPaneRoot.setStyle("-fx-background-color: mediumseagreen");
-		root.setStyle("-fx-background-color: mediumseagreen");
+		root.setStyle("-fx-background-color: white");
 		ivp = new ImageViewPane(new ImageView(new Image(backgroundImagePath)));
 		topPane = new Pane();
 		base = new AnchorPane(ivp, topPane);
@@ -92,8 +96,28 @@ public class GameScreen extends BorderedAnchorPane implements VoogaObserver<Map<
 		//root.getChildren().addAll(base);
 		setNodeInAnchorPane(ivp);
 		setNodeInAnchorPane(topPane);
+		addAnimationButtons();
 		//setNodeInAnchorPane(actorPane);
 	}
+	
+	/**
+	 * Creates the bottom animation buttons for playing, pausing, and stoping the animation
+	 */
+	private void addAnimationButtons() {
+		HBox animationButtons = new HBox(20);
+		animationButtons.setPadding(new Insets(10,10,10,10));
+		animationButtons.getStylesheets().add("panel.css");
+		OptionButton play = new OptionButton(0, "", "play_icon.png", e -> uihandler.play());
+		OptionButton pause = new OptionButton(0, "", "pause_icon_2.png", e -> uihandler.pause());
+		OptionButton stop = new OptionButton(0, "", "stop_icon.png", e -> uihandler.stop());
+		animationButtons.getChildren().addAll(play.getButton(), pause.getButton(), stop.getButton());
+		root.getChildren().add(animationButtons);
+		AnchorPane.setBottomAnchor(animationButtons, 10.0);
+		AnchorPane.setRightAnchor(animationButtons, 10.0);
+		//animationButtons.setAlignment(Pos.CENTER);
+		//BorderPane.setAlignment(animationButtons, Pos.CENTER);
+	}
+	
 	
 	private void setNodeInAnchorPane(Node node) {
 		AnchorPane.setBottomAnchor(node, 0.0);
@@ -107,7 +131,8 @@ public class GameScreen extends BorderedAnchorPane implements VoogaObserver<Map<
 		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, (AnchorPane) root, uihandler.getOptions(), ivp);
 		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 10.0);
 		//anchorPaneRoot.getChildren().add(sidePanel.getSidePane());
-		//borderPane.setRight(sidePanel.getSidePane());
+		borderPane.setRight(sidePanel.getSidePane());
+		//BorderPane.setAlignment(sidePanel.getSidePane(), Pos.TOP_LEFT);
 		root.getChildren().add(sidePanel.getSidePane());
 		sidePanel.addInternalPanesToRoot();
 	}
@@ -135,14 +160,15 @@ public class GameScreen extends BorderedAnchorPane implements VoogaObserver<Map<
 		//actorPane.getChildren().clear();
 		actorsMap.keySet().removeIf(id -> {
 			if(arg.containsKey(id)) {
-				System.out.println(arg.get(id).getActorOption());
 				return false;
 			}
 			root.getChildren().remove(actorsMap.get(id).getActor());
+			//actorsMap.get(id).deleteActor();
 			return true;
 		});
 		
 		arg.keySet().stream().forEach(id -> {
+			System.out.println("observer");
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
 				Actor newActor = new Actor(ivp, uihandler, actorsMap, actorOption, uihandler.getOptions().get(actorOption).getName(),
