@@ -11,6 +11,7 @@ import gamedata.ProjectileType;
 import gamedata.composition.ActorDamageableData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.composition.MoveWithSetPathData;
+import gamedata.composition.ShootHeatSeekingData;
 import gamedata.composition.ShootMultiData;
 import gamedata.composition.ShootTargetFarData;
 import gamedata.map.LayerData;
@@ -81,8 +82,9 @@ public class GameDataGenerator {
 		
 		MoveWithSetPathData pathData = PathGenerator.generateMoveData
 				(game.getMyPaths(), possiblePaths, .005);
-		ShootTargetFarData shoot = new ShootTargetFarData(1.0, 1, new BasicActorType("Troop"), 1, .0075);
+		//ShootTargetFarData shoot = new ShootTargetFarData(1.0, 1, new BasicActorType("Troop"), 1, .05);
 		//ShootMultiData shoot = new ShootMultiData(0.25, 5, new BasicActorType("Troop"), 1, .01, 8);
+		ShootHeatSeekingData shoot = new ShootHeatSeekingData(1.0, 1, new BasicActorType("Troop"), 1, .0075);
 		//Shoots with Actor at index 1 (shot)
 		ActorDamageableData damage = new ActorDamageableData(.05, new BasicActorType("Projectile"));
 		

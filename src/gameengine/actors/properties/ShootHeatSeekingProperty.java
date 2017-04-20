@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import gamedata.composition.ShootHeatSeekingData;
 import gamedata.composition.ShootTargetFarData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.ShootTargetProperty;
