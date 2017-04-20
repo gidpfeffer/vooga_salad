@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import gamedata.composition.ShootMultiData;
-import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 
-public class ShootMultiProperty<G extends ReadAndSpawnGrid> extends ShootTargetProperty<G> {
+public class ShootMultiProperty<G extends ReadAndSpawnGrid> extends ShootTargetLineProperty<G> {
 	
 	private Collection<Double> shotAngles;
 
