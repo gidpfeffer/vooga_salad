@@ -31,7 +31,7 @@ import ui.player.XStreamFileChooser;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
 
-public class Signup extends BorderedAnchorPane {
+public class Signup extends BorderedAnchorPane implements LoginElement {
 	//need to save image somehow and store as string to the location userImages/...
 	private Scene scene;
 	private StackPane profileImage;
@@ -40,19 +40,40 @@ public class Signup extends BorderedAnchorPane {
 	private Button signupButton;
 	private UserDatabase database;
 	private String profilePicture = "profile_icon.png";
-	private EventHandler<ActionEvent> signupUser;
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
 
+	@Override
 	public Scene getScene() {
 		return scene;
 	}
 
-	public void setSignupAction(EventHandler<ActionEvent> value) {
+	@Override
+	public void setLoginReturn(EventHandler<ActionEvent> value) {
 		signupButton.setOnAction(value);
 	}
 
-	public EventHandler<ActionEvent> getSignupAction() {
+	public EventHandler<ActionEvent> getAction() {
+		
+		EventHandler<ActionEvent> signupUser = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				if (fieldsFilledIn() && (!checkExistingUser() && checkPasswords() && checkEmails())) {
+					XStream mySerializer = new XStream(new DomDriver());
+					XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+					database.getPasswords().signup(signupGrid.getUsername().getText(), signupGrid.getPassword().getText());
+					User newUser = new User(signupGrid.getUsername().getText(),
+							database.getPasswords().getUserPassword(signupGrid.getUsername().getText()),
+							generic_profile, signupGrid.getEmail().getText());
+					database.addUser(newUser);
+					String mySavedUsers = mySerializer.toXML(database);
+					System.out.println(mySavedUsers);
+					fileChooser.writeFile(mySavedUsers);
+				} else {
+					showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
+				}
+			}
+		};
 		return signupUser;
 	}
 
@@ -92,7 +113,7 @@ public class Signup extends BorderedAnchorPane {
 		GridPane middle = new GridPane();
 		middle.setHgap(25.);
 		middle.setVgap(25.);
-		createSignupButton();
+		signupButton = new Button(resource.getString("signup"));		
 		setupProfileImage();
 		middle.add(profileImage, 0, 0);
 		middle.add(signupGrid.getGrid(), 1, 0);
@@ -110,31 +131,6 @@ public class Signup extends BorderedAnchorPane {
 		StackPane sp = new StackPane(top);
 		sp.setBackground(Background.EMPTY);
 		return sp;
-	}
-
-	private void createSignupButton() {
-		signupButton = new Button(resource.getString("signup"));
-		
-		signupUser = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				if (fieldsFilledIn() && (!checkExistingUser() && checkPasswords() && checkEmails())) {
-					XStream mySerializer = new XStream(new DomDriver());
-					XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-					database.getPasswords().signup(signupGrid.getUsername().getText(), signupGrid.getPassword().getText());
-					User newUser = new User(signupGrid.getUsername().getText(),
-							database.getPasswords().getUserPassword(signupGrid.getUsername().getText()),
-							generic_profile, signupGrid.getEmail().getText());
-					database.addUser(newUser);
-					String mySavedUsers = mySerializer.toXML(database);
-					System.out.println(mySavedUsers);
-					fileChooser.writeFile(mySavedUsers);
-				} else {
-					showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
-				}
-			}
-		};
-		signupButton.setOnAction(signupUser);
 	}
 
 	private void setupProfileImage() {

@@ -96,11 +96,11 @@ public class LoginMain {
 		EventHandler<ActionEvent> signupAction = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				signupPage.getSignupAction().handle(e);
+				signupPage.getAction().handle(e);
 				stage.setScene(loginScreen.getScene());
 			}
 		};
-		signupPage.setSignupAction(signupAction);
+		signupPage.setLoginReturn(signupAction);
 	}
 	
 	
@@ -185,16 +185,16 @@ public class LoginMain {
 	}
 	
 	private void setUpGameScreenReturn() {
-		EventHandler<ActionEvent> backToLogin = new EventHandler<ActionEvent>() {
+		EventHandler<ActionEvent> gameScreenHandler = new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				gameController.getGameScreen().getUIHandler().stop();
+			public void handle(ActionEvent e) {
+				gameController.getGameScreen().getAction();
 				stage.setScene(loginScreen.getScene());
 				stage.setTitle("Login");
 				stage.setWidth(Preferences.SCREEN_WIDTH);
 				stage.setHeight(Preferences.SCREEN_HEIGHT);
 			}
 		};
-		gameController.getGameScreen().setBackToLoginAction(backToLogin);
+		gameController.getGameScreen().setLoginReturn(gameScreenHandler);
 	}
 }

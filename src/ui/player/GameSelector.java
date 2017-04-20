@@ -7,9 +7,11 @@ import ui.Preferences;
 import ui.general.UIHelper;
 import ui.player.login.BorderedAnchorPane;
 import ui.player.login.Login.Game;
+import ui.player.login.LoginElement;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,7 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class GameSelector extends BorderedAnchorPane{
+public class GameSelector extends BorderedAnchorPane implements LoginElement {
 
 	private Scene myScene;
 	private List<Game> gamesList; 
@@ -37,8 +39,21 @@ public class GameSelector extends BorderedAnchorPane{
 	private ResourceBundle resource;
 	private ScrollPane gameMenu;
 	
+	@Override
 	public Scene getScene() {
 		return myScene;
+	}
+	
+	@Override
+	public void setLoginReturn(EventHandler<ActionEvent> value) {
+		//TODO: Implement when back button is made
+	}
+	
+
+	@Override
+	public EventHandler<ActionEvent> getAction() {
+		// TODO: Implement when back button is made
+		return null;
 	}
 	
 	public GameSelector(String lang, String css, List<Game> gamesList2){
