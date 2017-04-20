@@ -1,4 +1,4 @@
-package XML.xstream.tests;
+package XML.xmlmanager.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,8 +7,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import XML.xstream.classes.XStreamHelper;
-import XML.xstream.interfaces.VoogaSerializer;
+import XML.xmlmanager.classes.XStreamHelper;
+import XML.xmlmanager.interfaces.VoogaSerializer;
 import gamedata.GameData;
 import types.BasicActorType;
 

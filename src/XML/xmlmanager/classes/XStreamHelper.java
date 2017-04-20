@@ -1,9 +1,9 @@
-package XML.xstream.classes;
+package XML.xmlmanager.classes;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import XML.xstream.interfaces.VoogaSerializer;
+import XML.xmlmanager.interfaces.VoogaSerializer;
 
 public class XStreamHelper implements VoogaSerializer{
 	

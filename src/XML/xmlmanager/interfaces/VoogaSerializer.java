@@ -1,4 +1,4 @@
-package XML.xstream.interfaces;
+package XML.xmlmanager.interfaces;
 /**
  * 
  * @author Gideon

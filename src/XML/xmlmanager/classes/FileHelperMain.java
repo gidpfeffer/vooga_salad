@@ -1,4 +1,4 @@
-package XML.xstream.classes;
+package XML.xmlmanager.classes;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import XML.xstream.interfaces.XMLFileHelper;
+import XML.xmlmanager.interfaces.XMLFileHelper;
 
 public class FileHelperMain implements XMLFileHelper{
 	
@@ -37,6 +37,7 @@ public class FileHelperMain implements XMLFileHelper{
 
 	@Override
 	public String getFileContent(String filepathToDir, String filename) {
+		if(!directoryExists(filepathToDir)) return null;
 		try {
 			return new String(Files.readAllBytes(Paths.get(filepathToDir + "/" + filename)));
 		} catch (IOException e) {
@@ -46,8 +47,8 @@ public class FileHelperMain implements XMLFileHelper{
 
 	@Override
 	public boolean makeDirectory(String filepath, String name) {
-		File theDir = new File(filepath + name);
-		
+		if(directoryExists(filepath + "/" + name)) return false;
+		File theDir = new File(filepath + "/" + name);
 		if (!theDir.exists()) {
 		    try{
 		        theDir.mkdir();
@@ -58,6 +59,27 @@ public class FileHelperMain implements XMLFileHelper{
 		    }        
 		}
 		return false;
+	}
+
+	@Override
+	public boolean deleteDirectory(String filepath) {
+	    File dir = new File(filepath);
+	    return deleteDirHelper(dir);
+	}
+	
+	// recursive solution found at http://stackoverflow.com/questions/3775694/deleting-folder-from-java
+	private boolean deleteDirHelper(File dir){
+	    if (dir.isDirectory()) {
+	        String[] children = dir.list();
+	        for (int i = 0; i < children.length; i++) {
+	            boolean success = deleteDirHelper(new File(dir, children[i]));
+	            if (!success) {
+	                return false;
+	            }
+	        }
+	    }
+
+	    return dir.delete();
 	}
 
 }

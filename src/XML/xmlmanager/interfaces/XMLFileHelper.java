@@ -1,4 +1,4 @@
-package XML.xstream.interfaces;
+package XML.xmlmanager.interfaces;
 
 public interface XMLFileHelper {
 	
@@ -9,5 +9,7 @@ public interface XMLFileHelper {
 	String getFileContent(String filepathToDir, String filename);
 	
 	boolean makeDirectory(String filepath, String name);
+	
+	boolean deleteDirectory(String filepath);
 
 }

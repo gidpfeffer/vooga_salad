@@ -1,14 +1,14 @@
-package XML.xstream.tests;
+package XML.xmlmanager.tests;
 
-import XML.xstream.classes.FileHelperMain;
-import XML.xstream.classes.XStreamHelper;
-import XML.xstream.interfaces.VoogaSerializer;
-import XML.xstream.interfaces.XMLFileHelper;
+import XML.xmlmanager.classes.FileHelperMain;
+import XML.xmlmanager.classes.XStreamHelper;
+import XML.xmlmanager.interfaces.VoogaSerializer;
+import XML.xmlmanager.interfaces.XMLFileHelper;
 import gamedata.GameData;
 
 public class FileHelperTest {
 	public static void main(String[] main){
-		String filepath = "src/XML/xstream/tests";
+		String filepath = "src/XML/xmlmanager/tests";
 		XMLFileHelper helper = new FileHelperMain();
 		GameData gd = new GameData();
 		gd.addType("test");
@@ -19,6 +19,7 @@ public class FileHelperTest {
 //		System.out.println(helper.getFileContent(filepath, "test.xml"));
 		GameData newGD = mySerializer.makeObjectFromXMLString(helper.getFileContent(filepath, "test.xml"), GameData.class);
 		System.out.println(newGD.getTypes());
+		helper.makeDirectory(filepath, "testDir");
 	}
 
 }
