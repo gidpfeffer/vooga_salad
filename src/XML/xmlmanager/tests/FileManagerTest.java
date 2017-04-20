@@ -2,28 +2,21 @@ package XML.xmlmanager.tests;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import XML.xmlmanager.classes.FileHelperMain;
-import XML.xmlmanager.classes.XStreamHelper;
-import XML.xmlmanager.interfaces.VoogaSerializer;
-import XML.xmlmanager.interfaces.XMLFileHelper;
+import XML.xmlmanager.interfaces.FileHelper;
 import gamedata.GameData;
-import types.BasicActorType;
 
 public class FileManagerTest {
 	
 	private GameData myData;
-	private VoogaSerializer mySerializer;
 	private String filepath;
-	XMLFileHelper helper;
+	FileHelper helper;
 	
     public void setUp () {
        myData = new GameData();
-       mySerializer = new XStreamHelper();
        myData.addType("test1");
        myData.addType("test2");
        filepath = "src/XML/xmlmanager/tests";
@@ -48,6 +41,7 @@ public class FileManagerTest {
 		assertEquals(helper.getFileContent(filepath, "testing.txt"), "testing");
 		assertEquals(helper.getFileContent(filepath, "testinggg.txt"), null);
 		assertEquals(helper.getFileContent("src", "blah.blah"), null);
+		assertEquals(helper.getFileContent(filepath, "testing2.txt"), "line one\nline two");
 	}
 	
     // tests the mkdir functionality

@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import XML.xmlmanager.interfaces.XMLFileHelper;
+import XML.xmlmanager.interfaces.FileHelper;
 
-public class FileHelperMain implements XMLFileHelper{
+public class FileHelperMain implements FileHelper{
 	
 	public FileHelperMain(){
 
