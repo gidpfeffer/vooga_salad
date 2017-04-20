@@ -1,9 +1,9 @@
 package XML.xstream.interfaces;
 
-public interface VoogaSerializer {
+public interface VoogaSerializer{
 	
 	String getXMLStringFromObject(Object o);
 	
-	Object makeObjectFromXMLString(String XMLString);
+	<C> C makeObjectFromXMLString(String XMLString, Class<C> clazz);
 
 }

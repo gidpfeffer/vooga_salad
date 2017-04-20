@@ -103,11 +103,11 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	}
 	
 	@Override
-	public Map<Double, Consumer<Double>> getActorDamagablesInRadius(double x,
+	public Map<Consumer<Double>, Double> getActorDamagablesInRadius(double x,
 			double y, double radius, BasicActorType type) {
 		return Collections.unmodifiableMap(getActorsInRadius(x, y, radius, type).stream()
 					.collect(Collectors.toMap(
-							e -> e.getActor().getRemainingHealth(), e -> e.getActor().applyDamage())));
+							e -> e.getActor().applyDamage(), e -> e.getActor().getRemainingHealth())));
 	}
 
 	@Override
