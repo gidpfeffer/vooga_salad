@@ -75,10 +75,10 @@ public class ActorData {
 	 * @param data BasicData object with name and imagepath
 	 */
 	public ActorData(BasicActorType actor, BasicData data){
-		this(actor, data, new LimitedHealthData(HEALTH), new LayerData(),new Data[0]);
+		this(actor, data, new LimitedHealthData(HEALTH),new Data[0]);
 	}
-	
-	public ActorData(BasicActorType actor, BasicData data, HealthData health, LayerData layer, Data... properties){
+		
+	public ActorData(BasicActorType actor, BasicData data, HealthData health, Data... properties){
 		myData = new HashMap<String,Data>();
 		for(Data d: properties){
 			addData(d);
@@ -86,7 +86,7 @@ public class ActorData {
 		this.health=health;
 		this.type=actor;
 		this.basic=data;
-		this.layer = layer; 
+		this.layer = new LayerData(); 
 	}
 	
 	/**

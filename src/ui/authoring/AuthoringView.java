@@ -1,6 +1,5 @@
 package ui.authoring;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,23 +9,17 @@ import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import types.BasicActorType;
 import ui.Preferences;
-import ui.authoring.actor.ActorEditorView;
 import ui.authoring.delegates.*;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
@@ -254,14 +247,17 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		s.setOnFinished(e -> this.getChildren().remove(pane));
 	}
 	
+	
 	/**
 	 * purpose: to feed the GameData into all the subcomponents of authoring view
 	 * @param gameData The object that holds all the 
 	 */
-	private void loadGameData(GameData gameData) {
+	private void loadGameData() {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 	/**
 	 * purpose: to retreive the data objects from various
 	 * components and to integrate them into a GameData object.
@@ -269,7 +265,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * @param gameData
 	 */
 	private void saveGameData() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -305,14 +300,12 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	@Override
 	public void didPressLoadButton() {
-		GameData data = getGameData();
-		//loadGameData(gameData);
+		loadGameData();
 		
 	}
 
 	private GameData getGameData() {
-		// TODO Auto-generated method stub
-		return null;
+		return myGameData;
 	}
 
 	@Override
