@@ -7,6 +7,15 @@ public class UserDatabase {
 	
 	private Collection<User> database = new ArrayList<User>();
 	private Passwords passwords = new Passwords();
+	private User activeUser = null;
+	
+	public User getActiveUser() {
+		return activeUser;
+	}
+	
+	public void setActiveUser(User user) {
+		activeUser = user;
+	}
 	
 	public Passwords getPasswords(){
 		return passwords;
