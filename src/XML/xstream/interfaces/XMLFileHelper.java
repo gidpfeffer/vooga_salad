@@ -4,8 +4,10 @@ public interface XMLFileHelper {
 	
 	boolean directoryExists(String filepathToDir);
 	
-	boolean addXMLToDirectory(String filepathToDir, String XMLString, String filename);
+	boolean addStringToDirectory(String filepathToDir, String fileContent, String filename);
 	
 	String getFileContent(String filepathToDir, String filename);
+	
+	boolean makeDirectory(String filepath, String name);
 
 }
