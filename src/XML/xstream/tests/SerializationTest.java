@@ -1,14 +1,16 @@
 package XML.xstream.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import XML.xstream.classes.XStreamHelper;
 import XML.xstream.interfaces.VoogaSerializer;
 import gamedata.GameData;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+import types.BasicActorType;
 
 public class SerializationTest {
 	
@@ -18,18 +20,36 @@ public class SerializationTest {
     public void setUp () {
        myData = new GameData();
        mySerializer = new XStreamHelper();
+		myData.addType("test1");
+		myData.addType("test2");
     }
 
-    // tests the locational ability of finding actors on the grid
+    // adds data to the object, serializes it, then makes sure the data was preserved
 	@Test
 	public void BasicWriteAndReadTest() {
 		setUp();
-		myData.addType("test1");
-		myData.addType("test2");
 		String myDataString = mySerializer.getXMLStringFromObject(myData);
 		myData = mySerializer.makeObjectFromXMLString(myDataString, GameData.class);
-		assertEquals(myData.getTypes().size(), 2);
+		List<BasicActorType> types = myData.getTypes();
+		assertEquals(types.size(), 2);
+		Assert.assertTrue(types.contains(new BasicActorType("test1")));
+		Assert.assertTrue(types.contains(new BasicActorType("test2")));
 	}
 	
-
+    // tries to get an invalid class from an XML String
+	@Test
+	public void InvalidCastTest() {
+		setUp();
+		String myDataString = mySerializer.getXMLStringFromObject(myData);
+		String invalidString = mySerializer.makeObjectFromXMLString(myDataString, String.class);
+		assertEquals(invalidString, null);
+	}
+	
+    // sends an invalid String into the object generator
+	@Test
+	public void InvalidWrite() {
+		setUp();
+		myData = mySerializer.makeObjectFromXMLString("sdfasdf", GameData.class);
+		assertEquals(myData, null);
+	}
 }
