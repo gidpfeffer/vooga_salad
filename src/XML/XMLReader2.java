@@ -30,4 +30,14 @@ public class XMLReader2 {
 		String savedData=xStream.toXML(myGameData);
 		System.out.println(savedData);
 	}
+	public static void main(String[]args){
+		XMLReader you=new XMLReader("data/voogatest.xml");
+		GameData d=you.getData();
+		XStream xStream=new XStream(new DomDriver());
+		String savedData=xStream.toXML(d);
+		GameData data=(GameData)xStream.fromXML(savedData);
+		System.out.println(d.getOption(0).getMyData());
+		System.out.println(data.getOption(0).getMyData());
+	
+	}
 }

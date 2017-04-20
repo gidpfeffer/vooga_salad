@@ -121,8 +121,8 @@ public class GameScreen implements VoogaObserver<Map<Integer,FrontEndInformation
 				anchorPaneRoot.getChildren().add(newActor.getActor());
 			}
 			Actor actor = actorsMap.get(id);
-			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(),myScene.getWidth());
-			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), myScene.getHeight());
+			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
+			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
 			actor.getActor().setLayoutX(xCoor);
 			actor.getActor().setLayoutY(yCoor);
 			System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);

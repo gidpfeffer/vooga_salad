@@ -8,7 +8,7 @@ public class Delay {
 	private Integer steps;
 
 	public Delay(int actionsPerStep) {
-		actionDelay = actionsPerStep * delayMod;
+		actionDelay = delayMod/actionsPerStep;// * delayMod;
 		steps = 0;
 	}
 

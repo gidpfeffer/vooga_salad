@@ -82,7 +82,7 @@ public class MainActor implements Actor {
 	
 	@Override
 	public double getRemainingHealth() { 
-		return 0;
+		return myHealth.getRemaining();
 	}
 
 	public List<IActProperty<MasterGrid>> getMyProperties() {

@@ -187,16 +187,12 @@ public class XMLReader {
 				Element enemy = (Element) enemies.item(j);
 				Integer actorID = Integer.parseInt(getTextValue(enemy, "ActorID"));
 				Integer number = Integer.parseInt(getTextValue(enemy, "Number"));
-				String[] pathsUnprocessed = getTextValue(enemy, "Paths").split(" ");
-				List<Integer> pathIDs = new ArrayList<Integer>();
-				for (String s : pathsUnprocessed) {
-					pathIDs.add(Integer.parseInt(s));
-				}
-				EnemyInWaveData waveEnemy = new EnemyInWaveData(myActors.get(actorID), number, pathIDs);
-				// waveData.addWaveEnemy(waveEnemy);
-				levelData.addWaveEnemy(myActors.get(actorID), number, pathIDs);
+				
+				EnemyInWaveData waveEnemy = new EnemyInWaveData(myActors.get(actorID), number);
+				 waveData.addWaveEnemy(waveEnemy);
+				
 			}
-			// levelData.addWave(waveData)
+			 levelData.addWave(waveData);
 			// when multiple waves get implemented
 		}
 		myGameData.addLevel(levelData, 0);

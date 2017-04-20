@@ -27,6 +27,7 @@ import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LevelData;
 import gamedata.ProjectileType;
+import gamedata.WaveData;
 import gamedata.compositiongen.Data;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.stage.FileChooser;
@@ -125,28 +126,32 @@ private void setLevelData(Element root,Document doc){
 	levelData.appendChild(attackMultiplier);
 	levelData.appendChild(duration);
 	levelData.appendChild(difficulty);
-	Element wave=doc.createElement("Wave");
-	List<EnemyInWaveData> enemies=myLevelData.getTroops();
+	
+	List<WaveData> waves=myLevelData.getMyWaves();
+	for(WaveData currentWave:waves){
+		Element wave=doc.createElement("Wave");
+		List<EnemyInWaveData>enemies=currentWave.getWaveEnemies();
 	for(EnemyInWaveData enemy:enemies){
 		Element enemyElement=doc.createElement("Enemy");
 		for(Integer i:myGameData.getOptions().keySet()){
-			if (enemy.getMyData().equals(myGameData.getOption(i))){
+			if (enemy.getMyActor().equals(myGameData.getOption(i))){
 				Element actorID=doc.createElement("ActorID");
 				actorID.appendChild(doc.createTextNode(i.toString()));
 				enemyElement.appendChild(actorID);
 			}
 			
 		}
+	
 		Element number=doc.createElement("Number");
 		number.appendChild(doc.createTextNode(Integer.toString(enemy.getMyNumber())));
 		enemyElement.appendChild(number);
-		Element paths=doc.createElement("Paths");
-		List<Integer> pathChoice=enemy.getMyPaths();
-		paths.appendChild(doc.createTextNode(listToString(pathChoice)));
-		enemyElement.appendChild(paths);
+		
+		
 	wave.appendChild(enemyElement);
 	}
+	
 	levelData.appendChild(wave);
+	}
 	root.appendChild(levelData);
 	
 }

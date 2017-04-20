@@ -1,6 +1,7 @@
 package ui.authoring;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -182,12 +183,25 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		this.actorTypeToView.get(actorType);
 	}
 	
+
+	
 	public Map<BasicActorType, Collection<ActorData>> getActors(){
 		Map<BasicActorType, Collection<ActorData>> map = new HashMap<BasicActorType, Collection<ActorData>>();
 		for(Entry<BasicActorType, ActorEditorView> entry : this.actorTypeToView.entrySet()){
 			map.put(entry.getKey(), entry.getValue().getActorData());
 		}
 		return map;
+	}
+	
+	public Collection<ActorData> getActors(BasicActorType type){
+		Collection<ActorData> toRet = new ArrayList<ActorData>();
+		for(Entry<BasicActorType, ActorEditorView> entry : this.actorTypeToView.entrySet()){
+			if(entry.getKey().equals(type)){
+				toRet.addAll(entry.getValue().getActorData());
+			}
+			
+		}
+		return toRet;
 	}
 
 	@Override

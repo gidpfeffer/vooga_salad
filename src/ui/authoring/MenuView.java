@@ -52,9 +52,13 @@ public class MenuView extends AnchorPane {
 	private Map<String, ToggleSwitch> myPreferences;
 
 	public MenuView(MenuDelegate delegate) {
+		this(delegate, new PreferencesData());
+	}
+	
+	public MenuView(MenuDelegate delegate, PreferencesData data){
 		super();
 		myDelegate = delegate;
-		myData = new PreferencesData();
+		myData = data;
 		myPreferences = new HashMap<>();
 		mySwitchTitles = new ArrayList<>(Arrays.asList(ENEMY_LOOP_LABEL, TOWERS_ATTACKABLE_LABEL, WANT_MONEY_LABEL, EXP_BY_LEVEL_LABEL,
 				PAUSE_BETWEEN_WAVES_LABEL, CLEAN_LEVEL_LABEL)); 

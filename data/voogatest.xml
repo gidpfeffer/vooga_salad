@@ -64,12 +64,16 @@
 <Enemy>
 <ActorID>0</ActorID>
 <Number>50</Number>
-<Paths>0 1</Paths>
 </Enemy>
 <Enemy>
 <ActorID>1</ActorID>
 <Number>29</Number>
-<Paths>1</Paths>
+</Enemy>
+</Wave>
+<Wave>
+<Enemy>
+<ActorID>0</ActorID>
+<Number>50</Number>
 </Enemy>
 </Wave>
 </LevelData>

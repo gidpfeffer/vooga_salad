@@ -23,7 +23,7 @@ public class GameControls {
 	}
 	
 	public Consumer<Robot> virtualClick() {
-		return (thisRobot) -> thisRobot.keyPress(KeyEvent.VK_RIGHT);
+		return (thisRobot) -> thisRobot., y);
 	}
 	
 	public interface TriConsumer<var1,var2,var3> {
