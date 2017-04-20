@@ -75,7 +75,7 @@ public class ActorData {
 	 * @param data BasicData object with name and imagepath
 	 */
 	public ActorData(BasicActorType actor, BasicData data){
-		this(actor, data, new LimitedHealthData(HEALTH), new LayerData(new ArrayList<PolygonData>()),new Data[0]);
+		this(actor, data, new LimitedHealthData(HEALTH), new LayerData(),new Data[0]);
 	}
 	
 	public ActorData(BasicActorType actor, BasicData data, HealthData health, LayerData layer, Data... properties){
