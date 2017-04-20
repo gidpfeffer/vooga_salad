@@ -24,7 +24,7 @@ public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProp
 
 	@Override
 	public void action(G grid, Integer actorID) {
-		grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRadius, myTarget).forEach((remaining,damage) -> {
+		grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRadius, myTarget).forEach((damage,remaining) -> {
 			damage.accept(remaining);
 			grid.getMyDamageable(actorID).accept(remaining);
 				});
