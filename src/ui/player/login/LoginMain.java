@@ -14,10 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -38,6 +34,7 @@ public class LoginMain {
 	private UserDatabase database;
 	private ResourceBundle loginResource;
 	private Login loginScreen;
+	private Signup signupPage;
 	public static final String userDatabase = "userDatabase.xml";
 
 	public LoginMain(Stage stage, String css, String resource) {
@@ -48,12 +45,6 @@ public class LoginMain {
 		loginResource = ResourceBundle.getBundle(resource);
 		setupLoginScreen(css, resource);
 		stage.setScene(loginScreen.getScene());
-		//SORRY Anngelyque i just added this because I forgot my mouse and i had now
-		//way to test if authoring environment would launch
-		loginScreen.getScene().getRoot().addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-			if (e.getCode().equals(KeyCode.ENTER)) 
-				gotoAuth();
-		});
 	}
 	
 	private void setupDatabase() {
@@ -101,6 +92,19 @@ public class LoginMain {
 		loginScreen.setSelectorAction(handleSelector);
 	}
 	
+	private void setUpSignupPage() {
+		EventHandler<ActionEvent> signupAction = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				signupPage.getSignupAction().handle(e);
+				stage.setScene(loginScreen.getScene());
+			}
+		};
+		signupPage.setSignupAction(signupAction);
+	}
+	
+	
+	//Action listeners ------------------------------------------------------------------------------
 	private void loginClicked(){
 		if (database.getPasswords().login(loginScreen.getLoginGrid().getUsername().getText(), 
 				loginScreen.getLoginGrid().getPassword().getText())) 
@@ -139,14 +143,6 @@ public class LoginMain {
 		fade.play();
 	}
 	
-	private void showAlert(AlertType type, String title, String heading, String content) {
-		Alert alert = new Alert(type);
-		alert.setTitle(title);
-		alert.setHeaderText(heading);
-		alert.setContentText(content);
-		alert.showAndWait();
-	}
-	
     private FadeTransition createFader(Node node) {
         FadeTransition fade = new FadeTransition(Duration.millis(2000), node);
         fade.setFromValue(1);
@@ -160,7 +156,8 @@ public class LoginMain {
 	}
 
 	private void gotoSignupPage() {
-		Signup signupPage = new Signup(database, loginResource, "signupScreen.css");
+		signupPage = new Signup(database, loginResource, "signupScreen.css");
+		setUpSignupPage();
 		stage.setScene(signupPage.getScene());
 		stage.setTitle(loginResource.getString("signup"));
 	}
