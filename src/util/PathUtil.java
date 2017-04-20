@@ -83,13 +83,13 @@ public class PathUtil {
 	 * @param point the point to place an actor 
 	 * @return true if the point is within the polygon and false otherwise
 	 */
-	public static boolean isWithinPolygon(List<Grid2D> polygon, Grid2D point){
+	public static boolean isWithinPolygon(List<? extends Grid2D> polygon, double x, double y){
 		int i;
 	    int j;
 	    boolean result = false;
 	    for (i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
-	       if ((polygon.get(i).getY() > point.getY()) != (polygon.get(j).getY() > point.getY()) &&
-	          (point.getX() < (polygon.get(j).getX() - polygon.get(i).getX()) * (point.getY() - polygon.get(i).getY()) / (polygon.get(j).getY()-polygon.get(i).getY()) + polygon.get(i).getX())) {
+	       if ((polygon.get(i).getY() > y) != (polygon.get(j).getY() > y) &&
+	          (x < (polygon.get(j).getX() - polygon.get(i).getX()) * (y - polygon.get(i).getY()) / (polygon.get(j).getY()-polygon.get(i).getY()) + polygon.get(i).getX())) {
 	          result = !result;
 	         }
 	      }
@@ -107,10 +107,10 @@ public class PathUtil {
 		poly.add(new Coordinates(0.3,0.2));
 		
 	
-		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.2,0.2)));
-		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.3,0.3)));
-		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.25,0.45)));
-		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.6,0.6)));
+		System.out.println(PathUtil.isWithinPolygon(poly,0.6,0.6));
+//		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.3,0.3)));
+//		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.25,0.45)));
+//		System.out.println(PathUtil.isWithinPolygon(poly,new Coordinates(0.6,0.6)));
 		
 	}
 }

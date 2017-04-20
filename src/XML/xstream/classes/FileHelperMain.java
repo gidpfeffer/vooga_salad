@@ -1,4 +1,4 @@
-package XML.stream.classes;
+package XML.xstream.classes;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -9,6 +9,8 @@ import builders.OptionGenerator;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 import gamedata.compositiongen.HealthData;
+import gamedata.map.LayerData;
+import gamedata.map.PolygonData;
 import types.BasicActorType;
 
 /**
@@ -42,6 +44,12 @@ public class ActorData {
 	private BasicData basic;
 	
 	/**
+	 * This list holds the layer that this actor belong.  Layer is a list of polygons
+	 */
+	private LayerData layer; 
+	
+
+	/**
 	 * These constructors/methods can be used in the Game Authoring Environment to build
 	 * the possible Troop, Tower, etc. options for the GamePlayer
 	 * 
@@ -67,10 +75,10 @@ public class ActorData {
 	 * @param data BasicData object with name and imagepath
 	 */
 	public ActorData(BasicActorType actor, BasicData data){
-		this(actor, data, new LimitedHealthData(HEALTH), new Data[0]);
+		this(actor, data, new LimitedHealthData(HEALTH), new LayerData(new ArrayList<PolygonData>()),new Data[0]);
 	}
 	
-	public ActorData(BasicActorType actor, BasicData data, HealthData health, Data... properties){
+	public ActorData(BasicActorType actor, BasicData data, HealthData health, LayerData layer, Data... properties){
 		myData = new HashMap<String,Data>();
 		for(Data d: properties){
 			addData(d);
@@ -78,6 +86,7 @@ public class ActorData {
 		this.health=health;
 		this.type=actor;
 		this.basic=data;
+		this.layer = layer; 
 	}
 	
 	/**
@@ -163,6 +172,13 @@ public class ActorData {
 	}
 	
 
+	public LayerData getLayer() {
+		return layer;
+	}
+
+	public void setLayer(LayerData layer) {
+		this.layer = layer;
+	}
 
 	
 	
