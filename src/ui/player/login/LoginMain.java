@@ -167,7 +167,7 @@ public class LoginMain {
         fade.setToValue(0);
         return fade;
     }
-
+    
 	private void gotoAuth() {
  		AuthoringView view = new AuthoringView();
 		stage.setScene(new Scene(view, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
