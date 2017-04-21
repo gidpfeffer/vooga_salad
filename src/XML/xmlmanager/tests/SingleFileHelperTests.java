@@ -1,8 +1,10 @@
 package XML.xmlmanager.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import XML.xmlmanager.classes.FileHelperMain;
@@ -39,10 +41,24 @@ public class SingleFileHelperTests {
 	@Test
 	public void getFileContentTest() {
 		setUp();
-		assertEquals(helper.getFileContent(filepath, "testing.txt"), "testing");
-		assertEquals(helper.getFileContent(filepath, "testinggg.txt"), null);
-		assertEquals(helper.getFileContent("src", "blah.blah"), null);
-		assertEquals(helper.getFileContent(filepath, "testing2.txt"), "line one\nline two");
+		try{
+			assertEquals(helper.getFileContent(filepath, "testing.txt"), "testing");
+		}catch(IOException ex){
+			Assert.fail("Test failed : " + ex.getMessage());
+		}
+		try{
+			helper.getFileContent(filepath, "testinggg.txt");
+			Assert.fail("Test failed : no exception was thrown during illegal file access");
+		}catch(IOException ex){}
+		try{
+			helper.getFileContent("src", "blah.blah");
+			Assert.fail("Test failed : no exception was thrown during illegal file access");
+		}catch(IOException ex){}
+		try{
+			assertEquals(helper.getFileContent(filepath, "testing2.txt"), "line one\nline two");
+		}catch(IOException ex){
+			Assert.fail("Test failed : " + ex.getMessage());
+		}
 	}
 	
     // tests the mkdir functionality
@@ -62,7 +78,11 @@ public class SingleFileHelperTests {
 		setUp();
 		assertEquals(helper.makeDirectory(filepath, "newDir"), true);
 		assertEquals(helper.directoryExists(filepath + "/newDir"), true);
-		assertEquals(helper.addStringFileToDirectory(filepath + "/newDir", "foo", "foo.text"), true);
+		try{
+			assertEquals(helper.addStringFileToDirectory(filepath + "/newDir", "foo", "foo.text"), true);
+		}catch(IOException ex){
+			Assert.fail("Exception was thrown when not applicable");
+		}
 		assertEquals(helper.deleteDirectory(filepath + "/newDir"), true);
 		assertEquals(helper.deleteDirectory(filepath + "/newDir"), false);
 	}

@@ -25,44 +25,28 @@ public class FileHelperMain implements GroupFileHelper{
 	}
 
 	@Override
-	public boolean addStringFileToDirectory(String filepathToDir, String fileContent, String filename) {
-		if(!directoryExists(filepathToDir)) return false;
+	public boolean addStringFileToDirectory(String filepathToDir, String fileContent, String filename) throws IOException{
 		File file = new File(filepathToDir + "/" + filename);
-		try {
-			FileWriter fileWriter = new FileWriter(file, false);
-			fileWriter.write(fileContent);
-			fileWriter.close();
-			return true;
-		} catch (IOException e) {
-			// was unabl to process;
-		}
-		return false;
+		if(file.exists()) return false;
+		FileWriter fileWriter = new FileWriter(file, false);
+		fileWriter.write(fileContent);
+		fileWriter.close();
+		return true;
 	}
 
 	@Override
-	public String getFileContent(String filepathToDir, String filename) {
-		if(!directoryExists(filepathToDir)) return null;
-		try {
-			return new String(Files.readAllBytes(Paths.get(filepathToDir + "/" + filename)));
-		} catch (IOException e) {
-			return null;
-		}
+	public String getFileContent(String filepathToDir, String filename) throws IOException{
+		return new String(Files.readAllBytes(Paths.get(filepathToDir + "/" + filename)));
 	}
 
 	@Override
-	public boolean makeDirectory(String filepath, String name) {
+	public boolean makeDirectory(String filepath, String name) throws SecurityException{
 		String newDirPath = filepath + "/" + name;
-		if(directoryExists(newDirPath)) return false;
 		File theDir = new File(newDirPath);
 		if (!theDir.exists()) {
-		    try{
-		        theDir.mkdir();
-		        if(!addedDirectories.contains(newDirPath)) addedDirectories.add(newDirPath);
-		        return true;
-		    } 
-		    catch(SecurityException se){
-		    	return false;
-		    }        
+			theDir.mkdir();
+		    if(!addedDirectories.contains(newDirPath)) addedDirectories.add(newDirPath);
+		    return true;
 		}
 		return false;
 	}
