@@ -142,7 +142,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	
 	@Override
 	public void controllerSpawnActor(Actor actor, double startX, double startY){
-		addActor(actor, startX, startY);
+		actors.add(new ActorLocator(new Coordinates(startX, startY), actor));
 	}
 	
 	private void addActor(Actor newActor, double startX, double startY){
