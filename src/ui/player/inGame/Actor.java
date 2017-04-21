@@ -127,7 +127,6 @@ public class Actor{
 						if (removeable.isPresent() && !removeable.get()) ((Pane) obj).removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
 						mapOfActors.put(actorID, clazz);
 						actor.setId(actorID.toString());
-						System.out.println("actorID: " + actor.getId());
 					}
 				} catch (NumberFormatException | VoogaException e) {
 					System.out.println("Unable to add game object -- Actor ~ 132");

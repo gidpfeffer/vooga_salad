@@ -3,6 +3,7 @@ package ui.player.inGame;
 import ui.general.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,7 +33,6 @@ public class OptionsPane extends SlidingPane {
 
 	private ImageViewPane ivp;
 	private Pane root;
-	//private AnchorPane buttonPane;
 	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> mapOfOptions;
 	private UIHandler uihandler;
@@ -42,26 +42,6 @@ public class OptionsPane extends SlidingPane {
 	public String getPaneName() {
 		return paneName;
 	}
-
-/*	public void setHeight(double height) {
-		buttonPane.setPrefHeight(height);
-	}
-
-	public double getHeight() {
-		return buttonPane.getPrefHeight();
-	}
-
-	public void setWidth(double width) {
-		buttonPane.setPrefWidth(width);
-	}
-
-	public double getWidth() {
-		return buttonPane.getPrefWidth();
-	}
-
-	public AnchorPane getPane() {
-		return buttonPane;
-	}*/
 
 	public Map<Integer, ActorData> getMap() {
 		return mapOfOptions;
@@ -89,20 +69,14 @@ public class OptionsPane extends SlidingPane {
 		this.actorsMap = actorsMap;
 		this.uihandler = uihandler;
 		this.mapOfOptions = map;
-		//buttonPane = new AnchorPane();
 		this.setStyle("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
 				+ "-fx-background-radius: 10 0 0 10;");
+		this.setPrefWidth(width);
 		setup();
-		// TODO Auto-generated constructor stub
 	}
-/*	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map,
-			String name, ImageViewPane ivp) {
-
-	}*/
 
 	private void setup() {
 		addActorPane();
-		//addBackButton();
 	}
 
 	/**
@@ -111,46 +85,12 @@ public class OptionsPane extends SlidingPane {
 	 */
 	private void addActorPane() {
 		Collection<Button> listOfButtons = new ArrayList<>();
+		mapOfOptions.keySet().stream().forEach(entry -> listOfButtons.add(new OptionButton(entry, mapOfOptions.get(entry).getName(),mapOfOptions.get(entry).getImagePath(), pressed).getButton()));
 		VBox buttonBox = this.getVBox();
-		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
-			listOfButtons.add(createImageButton(entry.getKey(), entry.getValue().getName(),
-					entry.getValue().getImagePath(), pressed));
-		}
 		buttonBox.getChildren().addAll(listOfButtons);
-		//buttonPane.getChildren().add(buttonBox);
 		this.getChildren().add(buttonBox);
 	}
 
-	/**
-	 * Creates a back button for the pane and places in the upper left-hand
-	 * corner Links to an event handler that closes the pane
-	 * 
-	 * @param clicked
-	 */
-/*	private void addBackButton() {
-		SlidingPane sp = new SlidingPane();
-		Button back = createImageButton(0, "", "back_icon_flipped.png", e -> sp.slidePane(buttonPane, buttonPane.getPrefWidth()));
-		AnchorPane.setTopAnchor(back, 10.0);
-		AnchorPane.setLeftAnchor(back, 10.0);
-		buttonPane.getChildren().add(back);
-	}*/
-
-	/**
-	 * Creates a new option button bases on a given id, name, image path, and
-	 * event handler The id is the option (the can be multiple actors with
-	 * identical IDs) The event handler deals with adding the new node to the
-	 * screen
-	 * 
-	 * @param id
-	 * @param name
-	 * @param imagePath
-	 * @param pressed
-	 * @return
-	 */
-	private Button createImageButton(Integer id, String name, String imagePath, EventHandler<MouseEvent> pressed) {
-		OptionButton optionButton = new OptionButton(id, name, imagePath, pressed);
-		return optionButton.getButton();
-	}
 
 	/**
 	 * takes the source's id, image, and name and copies the data to the new
@@ -161,34 +101,13 @@ public class OptionsPane extends SlidingPane {
 		@Override
 		public void handle(final MouseEvent ME) {
 			Object obj = ME.getSource();
-
 			if (obj instanceof Button) {
 				Integer id = Integer.parseInt(((Button) obj).getId());
-				String name = ((Button) obj).getText();
-				String image = mapOfOptions.get(id).getImagePath();
-				Actor actor = new Actor(ivp, uihandler, actorsMap, id, name, image);
+				Actor actor = new Actor(ivp, uihandler, actorsMap, id, ((Button) obj).getText(), mapOfOptions.get(id).getImagePath());
 				root.getChildren().add(actor.getActor());
-				//double xLocation = root.getWidth() - buttonPane.getPrefWidth() + ((Button) obj).getLayoutX();
-				double xLocation = root.getWidth() - op.getPrefWidth() + ((Button) obj).getLayoutX();
-				actor.getActor().setLayoutX(xLocation);
+				actor.getActor().setLayoutX(root.getWidth() - op.getPrefWidth() + ((Button) obj).getLayoutX());
 				actor.getActor().setLayoutY(((Button) obj).getLayoutY());
 			}
 		}
 	};
-
-/*	*//**
-	 * closes an open pane based on it's preferred size
-	 *//*
-	EventHandler<MouseEvent> closePane = new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(final MouseEvent ME) {
-			Object obj = ME.getSource();
-			if (obj instanceof Button) {
-				TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
-				t.setNode(buttonPane);
-				t.setToX((buttonPane.getPrefWidth()));
-				t.play();
-			}
-		}
-	};*/
 }

@@ -2,28 +2,20 @@ package ui.player.inGame;
 
 import ui.general.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import gamedata.ActorData;
-import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import ui.handlers.UIHandler;
 import util.GUIBindingUtil;
 
@@ -45,8 +37,6 @@ public class SidePanel {
 	private List<OptionsPane> listOfPanes;
 	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> options;
-	private Set<String> types;
-	private ResourceBundle icons = ResourceBundle.getBundle("icons");
 	
 	private static final String panel = "panel.css";
 	
@@ -84,13 +74,7 @@ public class SidePanel {
 	 * Creates the panes to link to their respective main buttons.
 	 */
 	private void createInternalPanes() {
-/*		Set<String> types = new HashSet<>();
-		listOfPanes = new ArrayList<>();
-		options.keySet().forEach(option -> types.add(options.get(option).getType().toString()));*/
-		//HashSet<String> types2 = options.keySet().forEach(option -> types.add(options.get(option).getType().toString())).collect(Collectors.toCollection(HashSet::new));
-		Set<String> types = options.keySet().stream().map(option -> options.get(option).getType().toString()).collect(Collectors.toSet());//.collect(supplier, accumulator, combiner);//collect(Collectors.toCollection(HashSet::new)));
-		
-		types.forEach(e -> System.out.println(e));
+		Set<String> types = options.keySet().stream().map(option -> options.get(option).getType().toString()).collect(Collectors.toSet());
 		types.forEach(type -> {
 			Map<Integer, ActorData> map = new HashMap<>();
 			options.keySet().forEach(option -> {
@@ -134,7 +118,6 @@ public class SidePanel {
 	private OptionsPane getPane (Map<Integer, ActorData> map, String name) {
 		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name, ivp, 100);
 		optionPane.setPrefHeight(300);
-		optionPane.setPrefWidth(100);
 		return optionPane;
 	}
 	
