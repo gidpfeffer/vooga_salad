@@ -16,8 +16,8 @@ import gamedata.GameData;
 import gamedata.compositiongen.Data;
 import gamedata.reflections.Reflections;
 import types.BasicActorType;
-import util.general.FieldGenerator;
-import util.general.PropertyUtil;
+import util.FieldGenerator;
+import util.PropertyUtil;
 
 /**
  * 
@@ -171,7 +171,7 @@ public class OptionGenerator {
 		for(int i=0; i<datas.size(); i++)
 		{
 			String property = datas.get(i)+"Data";
-			Field [] fields = FieldGenerator.getFields(DATA_PATH + "." + property);
+			List<Field> fields = FieldGenerator.getFields(DATA_PATH + "." + property);
 			List<FieldData> fieldDatas = new ArrayList<FieldData>();
 			for(Field f : fields){
 				String name = f.getName();
@@ -208,7 +208,7 @@ public class OptionGenerator {
 		Class clzz = data.getClass();
 		Map<String, Object> fieldMap = new LinkedHashMap<String,Object>();
 
-		Field[] fields = FieldGenerator.getFields(clzz);
+		List<Field> fields = FieldGenerator.getFields(clzz);
 		
 		for(Field f: fields){
 			try {

@@ -22,10 +22,6 @@ public class ShootData implements Data {
 		mySpeed = speed;
 	}
 	
-	public String getCategory(){
-		return "Shooting Properties";
-	}
-
 	public double getRange() {
 		return myRange;
 	}

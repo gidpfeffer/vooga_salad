@@ -1,6 +1,5 @@
 package gamedata.composition;
 
-import gamedata.compositiongen.ShootData;
 import gamedata.compositiongen.ShootTargetLineData;
 import types.BasicActorType;
 

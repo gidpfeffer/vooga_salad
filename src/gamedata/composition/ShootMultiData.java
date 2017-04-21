@@ -16,6 +16,11 @@ public class ShootMultiData extends ShootTargetLineData {
 
 	private Integer numShots;
 	
+	public ShootMultiData(){
+		super();
+		this.numShots = 2; //double shot is default
+	}
+	
 	public ShootMultiData(Double range, Integer rate, BasicActorType type, 
 			Integer projectile, Double speed, Integer quantity){
 		super(range,rate,type,projectile,speed);
