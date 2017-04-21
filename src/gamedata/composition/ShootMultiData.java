@@ -1,6 +1,7 @@
 package gamedata.composition;
 
 import gamedata.compositiongen.ShootData;
+import gamedata.compositiongen.ShootTargetLineData;
 import types.BasicActorType;
 
 /**
@@ -11,7 +12,7 @@ import types.BasicActorType;
  *
  */
 
-public class ShootMultiData extends ShootData {
+public class ShootMultiData extends ShootTargetLineData {
 
 	private Integer numShots;
 	

@@ -1,9 +1,10 @@
 package gamedata.composition;
 
 import gamedata.compositiongen.ShootData;
+import gamedata.compositiongen.ShootTargetLineData;
 import types.BasicActorType;
 
-public class ShootTargetNearData extends ShootData{
+public class ShootTargetNearData extends ShootTargetLineData{
 	
 	public ShootTargetNearData(){
 		super();
