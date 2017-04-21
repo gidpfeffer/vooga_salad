@@ -29,13 +29,14 @@ public class GenericGameScreen extends AnchorPane{
 	public static final String backIcon = "splash_icon.png";
 	public static final String cssPath = "panel.css";
 	public static final String backgroundImagePath = "default_map_background_0.jpg";
+	private MusicPlayer musicPlayer; 
 	
 	public ImageViewPane getIVP() {
 		return ivp;
 	}
 	
 	public MediaPlayer getMediaPlayer() {
-		return settingsPane.getMediaPlayer();
+		return musicPlayer.getMediaPlayer();
 	}
 	
 	public void setLoginReturn(EventHandler<ActionEvent> value) {
@@ -63,7 +64,9 @@ public class GenericGameScreen extends AnchorPane{
 	}
 	
 	private void addSettings() {
+		musicPlayer = new MusicPlayer(Optional.ofNullable(null));
 		settingsPane = new SettingsPane(songString, 0);
+		settingsPane.addObject(musicPlayer.getNode());
 		OptionButton helpButton = new OptionButton(0, "", backIcon, e -> settingsPane.slidePane(settingsPane, settingsPane.getPrefWidth()));
 		AnchorPane.setLeftAnchor(helpButton.getButton(), 10.);
 		AnchorPane.setTopAnchor(helpButton.getButton(), 10.);
