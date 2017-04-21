@@ -1,4 +1,4 @@
-package util.general;
+package util;
 
 import java.util.ResourceBundle;
 

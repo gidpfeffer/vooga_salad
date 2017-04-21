@@ -13,7 +13,7 @@ public class MoveFreelyToBaseData extends MoveData {
 	private List<Grid2D> allBaseLocations;
 	
 	public MoveFreelyToBaseData(){
-		super(0.1);
+		super(0.0);
 		allBaseLocations= new ArrayList<Grid2D>();
 		
 	}
