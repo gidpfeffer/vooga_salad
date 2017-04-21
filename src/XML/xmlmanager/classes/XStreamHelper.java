@@ -3,6 +3,7 @@ package XML.xmlmanager.classes;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.interfaces.VoogaSerializer;
 
 public class XStreamHelper implements VoogaSerializer{
@@ -19,11 +20,11 @@ public class XStreamHelper implements VoogaSerializer{
 	}
 
 	@Override
-	public <C> C makeObjectFromXMLString(String XMLString, Class<C> clazz) {
+	public <C> C makeObjectFromXMLString(String XMLString, Class<C> clazz) throws IllegalXStreamCastException{
 		try{
 			return clazz.cast(xstream.fromXML(XMLString));
-		} catch (Exception e){
-			return null;
+		} catch(Exception ex){
+			throw new IllegalXStreamCastException(ex);
 		}
 	}
 }

@@ -5,13 +5,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
-import XML.xmlmanager.interfaces.FileHelper;
+import XML.xmlmanager.interfaces.GroupFileHelper;
 
-public class FileHelperMain implements FileHelper{
+public class FileHelperMain implements GroupFileHelper{
+	
+	List<String> addedDirectories;
 	
 	public FileHelperMain(){
-
+		addedDirectories = new ArrayList<>();
 	}
 
 	@Override
@@ -21,7 +25,7 @@ public class FileHelperMain implements FileHelper{
 	}
 
 	@Override
-	public boolean addStringToDirectory(String filepathToDir, String fileContent, String filename) {
+	public boolean addStringFileToDirectory(String filepathToDir, String fileContent, String filename) {
 		if(!directoryExists(filepathToDir)) return false;
 		File file = new File(filepathToDir + "/" + filename);
 		try {
@@ -47,11 +51,13 @@ public class FileHelperMain implements FileHelper{
 
 	@Override
 	public boolean makeDirectory(String filepath, String name) {
-		if(directoryExists(filepath + "/" + name)) return false;
-		File theDir = new File(filepath + "/" + name);
+		String newDirPath = filepath + "/" + name;
+		if(directoryExists(newDirPath)) return false;
+		File theDir = new File(newDirPath);
 		if (!theDir.exists()) {
 		    try{
 		        theDir.mkdir();
+		        if(!addedDirectories.contains(newDirPath)) addedDirectories.add(newDirPath);
 		        return true;
 		    } 
 		    catch(SecurityException se){
@@ -63,6 +69,8 @@ public class FileHelperMain implements FileHelper{
 
 	@Override
 	public boolean deleteDirectory(String filepath) {
+		if(!addedDirectories.contains(filepath)) return false;
+		addedDirectories.remove(filepath);
 	    File dir = new File(filepath);
 	    return deleteDirHelper(dir);
 	}
@@ -78,8 +86,16 @@ public class FileHelperMain implements FileHelper{
 	            }
 	        }
 	    }
-
 	    return dir.delete();
+	}
+
+	@Override
+	public boolean cleanse() {
+		if(addedDirectories.size() == 0) return false;
+		for(String dir : addedDirectories){
+			deleteDirectory(dir);
+		}
+		return true;
 	}
 
 }
