@@ -1,6 +1,9 @@
-package util.general;
+package util;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Return information about the fields from
@@ -11,7 +14,7 @@ import java.lang.reflect.Field;
  */
 public class FieldGenerator {
 
-	public static Field [] getFields(String className){
+	public static List<Field> getFields(String className){
 		Class propertyClass = null;
 		try {
 			propertyClass = Class.forName(className);
@@ -22,16 +25,13 @@ public class FieldGenerator {
 		return getFields(propertyClass);
 	}
 	
-	public static Field[] getFields(Class clzz){
-		Field[] fields = clzz.getDeclaredFields();
-		if(fields.length == 0){
-			try{
-				fields = clzz.getSuperclass().getDeclaredFields();
-			}catch(Exception e){
-				//TODO: Complete
-			}
+	public static List<Field> getFields(Class clzz){
+		ArrayList<Field> addList = new ArrayList<Field>();
+		while(!clzz.equals(Object.class)){
+			addList.addAll(Arrays.asList(clzz.getDeclaredFields()));
+			clzz = clzz.getSuperclass();
 		}
-		return fields;
+		return addList;
 	}
 	
 }

@@ -94,6 +94,7 @@ public class OptionGeneratorTest {
 	@Test
 	public void testPropertyDescriptions(){
 		System.out.println(OptionGenerator.getDescription("BaseDamage"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
 	}
 
 }

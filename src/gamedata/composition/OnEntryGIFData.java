@@ -4,4 +4,7 @@ import gamedata.compositiongen.Data;
 
 public class OnEntryGIFData implements Data{
 
+	public OnEntryGifData(){
+		//TODO: Complete
+	}
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +14,8 @@ import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.compositiongen.Data;
 import gamedata.reflections.Reflections;
-import types.BasicActorType;
-import util.general.FieldGenerator;
-import util.general.PropertyUtil;
+import util.FieldGenerator;
+import util.PropertyUtil;
 
 /**
  * 
@@ -171,7 +169,7 @@ public class OptionGenerator {
 		for(int i=0; i<datas.size(); i++)
 		{
 			String property = datas.get(i)+"Data";
-			Field [] fields = FieldGenerator.getFields(DATA_PATH + "." + property);
+			List<Field> fields = FieldGenerator.getFields(DATA_PATH + "." + property);
 			List<FieldData> fieldDatas = new ArrayList<FieldData>();
 			for(Field f : fields){
 				String name = f.getName();
@@ -208,7 +206,7 @@ public class OptionGenerator {
 		Class clzz = data.getClass();
 		Map<String, Object> fieldMap = new LinkedHashMap<String,Object>();
 
-		Field[] fields = FieldGenerator.getFields(clzz);
+		List<Field> fields = FieldGenerator.getFields(clzz);
 		
 		for(Field f: fields){
 			try {
@@ -222,8 +220,28 @@ public class OptionGenerator {
 		return fieldMap;
 	}
 	
-	//Use property file
+	/**
+	 * Returns a String defining the property. If there is no
+	 * String for the specific property, if will look for a description
+	 * for supertypes.
+	 * 
+	 * Pass this a propertyName, WITHOUT THE WORD "DATA"
+	 * appended to the end.
+	 * @param propertyName Property name (e.g., ShootMulti)
+	 * @return description A String defining the property
+	 */
 	public static String getDescription(String propertyName){
-		return PropertyUtil.getTerm("resources/property_descriptions", propertyName);
+		String toRet = PropertyUtil.getTerm("resources/property_descriptions", propertyName);
+		while(toRet.equals("")){
+			try{
+				Class clzz = Class.forName(propertyName + "Data");
+				Class superclass = clzz.getSuperclass();
+				String name = superclass.getSimpleName().replace("Data", "");
+				toRet = PropertyUtil.getTerm("resources/property_descriptions", name);
+			}catch(Exception e){
+				//TODO: Error catching
+			}
+		}
+		return toRet;
 	}
 }
