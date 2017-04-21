@@ -4,13 +4,16 @@ import ui.general.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import gamedata.ActorData;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -25,21 +28,22 @@ import ui.handlers.UIHandler;
  * @author anngelyque
  *
  */
-public class OptionsPane {
+public class OptionsPane extends SlidingPane {
 
 	private ImageViewPane ivp;
 	private Pane root;
-	private AnchorPane buttonPane;
+	//private AnchorPane buttonPane;
 	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> mapOfOptions;
 	private UIHandler uihandler;
 	private String paneName;
-
+	private OptionsPane op = this;
+	
 	public String getPaneName() {
 		return paneName;
 	}
 
-	public void setHeight(double height) {
+/*	public void setHeight(double height) {
 		buttonPane.setPrefHeight(height);
 	}
 
@@ -57,7 +61,7 @@ public class OptionsPane {
 
 	public AnchorPane getPane() {
 		return buttonPane;
-	}
+	}*/
 
 	public Map<Integer, ActorData> getMap() {
 		return mapOfOptions;
@@ -75,23 +79,30 @@ public class OptionsPane {
 	 * @param name
 	 * @param ivp
 	 */
+	
 	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map,
-			String name, ImageViewPane ivp) {
+			String name, ImageViewPane ivp, double width) {
+		super(Optional.of("back_icon_flipped.png"), width, Corner.TOPLEFT);
 		this.ivp = ivp;
 		this.paneName = name;
 		this.root = root;
 		this.actorsMap = actorsMap;
 		this.uihandler = uihandler;
 		this.mapOfOptions = map;
-		buttonPane = new AnchorPane();
-		buttonPane.setStyle("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
+		//buttonPane = new AnchorPane();
+		this.setStyle("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
 				+ "-fx-background-radius: 10 0 0 10;");
 		setup();
+		// TODO Auto-generated constructor stub
 	}
+/*	public OptionsPane(UIHandler uihandler, Pane root, Map<Integer, Actor> actorsMap, Map<Integer, ActorData> map,
+			String name, ImageViewPane ivp) {
+
+	}*/
 
 	private void setup() {
 		addActorPane();
-		addBackButton();
+		//addBackButton();
 	}
 
 	/**
@@ -100,14 +111,14 @@ public class OptionsPane {
 	 */
 	private void addActorPane() {
 		Collection<Button> listOfButtons = new ArrayList<>();
-		VBox buttonBox = new VBox(50);
+		VBox buttonBox = this.getVBox();
 		for (Map.Entry<Integer, ActorData> entry : mapOfOptions.entrySet()) {
 			listOfButtons.add(createImageButton(entry.getKey(), entry.getValue().getName(),
 					entry.getValue().getImagePath(), pressed));
 		}
-		buttonBox.getChildren().add(new Rectangle(25, 25, Color.TRANSPARENT));
 		buttonBox.getChildren().addAll(listOfButtons);
-		buttonPane.getChildren().add(buttonBox);
+		//buttonPane.getChildren().add(buttonBox);
+		this.getChildren().add(buttonBox);
 	}
 
 	/**
@@ -116,13 +127,13 @@ public class OptionsPane {
 	 * 
 	 * @param clicked
 	 */
-	private void addBackButton() {
+/*	private void addBackButton() {
 		SlidingPane sp = new SlidingPane();
 		Button back = createImageButton(0, "", "back_icon_flipped.png", e -> sp.slidePane(buttonPane, buttonPane.getPrefWidth()));
 		AnchorPane.setTopAnchor(back, 10.0);
 		AnchorPane.setLeftAnchor(back, 10.0);
 		buttonPane.getChildren().add(back);
-	}
+	}*/
 
 	/**
 	 * Creates a new option button bases on a given id, name, image path, and
@@ -156,9 +167,9 @@ public class OptionsPane {
 				String name = ((Button) obj).getText();
 				String image = mapOfOptions.get(id).getImagePath();
 				Actor actor = new Actor(ivp, uihandler, actorsMap, id, name, image);
-				// actorsMap.put(id, actor);
 				root.getChildren().add(actor.getActor());
-				double xLocation = root.getWidth() - buttonPane.getPrefWidth() + ((Button) obj).getLayoutX();
+				//double xLocation = root.getWidth() - buttonPane.getPrefWidth() + ((Button) obj).getLayoutX();
+				double xLocation = root.getWidth() - op.getPrefWidth() + ((Button) obj).getLayoutX();
 				actor.getActor().setLayoutX(xLocation);
 				actor.getActor().setLayoutY(((Button) obj).getLayoutY());
 			}

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ import util.GUIBindingUtil;
  *
  */
 public class SidePanel {
-	
+
 	private ImageViewPane ivp;
 	private UIHandler uihandler;
 	private Map<String, String> iconImages;
@@ -77,7 +78,6 @@ public class SidePanel {
 	public void setup() {
 		createInternalPanes();
 		linkMainPaneToInternalPanes();
-		addAnimationButtons();
 	}
 	
 	/**
@@ -110,10 +110,8 @@ public class SidePanel {
 	 * If pane is empty, no button will be generated / placed on screen
 	 */
 	private void linkMainPaneToInternalPanes() {
-		SlidingPane sp = new SlidingPane();
 		mainBox.getStylesheets().add(panel);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
-			System.out.println(entry.getValue());
 			OptionButton optionButton = new OptionButton(0, entry.getKey(), entry.getValue(), openPane);
 			listOfPanes.stream().filter(pane -> pane.getPaneName().equals(entry.getKey())).forEach(pane -> GUIBindingUtil.bindVisisble(optionButton.getButton(), pane.getMap().keySet()));;
 			mainBox.getChildren().add(optionButton.getButton());
@@ -126,32 +124,17 @@ public class SidePanel {
 		AnchorPane.setTopAnchor(mainBox, 20.0);
 	}
 	
-	/**
-	 * Creates the bottom animation buttons for playing, pausing, and stoping the animation
-	 */
-	private void addAnimationButtons() {
-		HBox animationButtons = new HBox(20);
-		animationButtons.getStylesheets().add(panel);
-		OptionButton play = new OptionButton(0, "Play", "play_icon.png", e -> uihandler.play());
-		OptionButton pause = new OptionButton(0, "Pause", "pause_icon.png", e -> uihandler.pause());
-		OptionButton stop = new OptionButton(0, "Stop", "stop_icon.png", e -> uihandler.stop());
-		animationButtons.getChildren().addAll(play.getButton(), pause.getButton(), stop.getButton());
-		root.getChildren().add(animationButtons);
-		AnchorPane.setBottomAnchor(animationButtons, 10.0);
-		AnchorPane.setRightAnchor(animationButtons, 10.0);
-	}
-	
 	public void addInternalPanesToRoot() {
 		for (OptionsPane op : listOfPanes) {
-			root.getChildren().add(op.getPane());
-			AnchorPane.setRightAnchor(op.getPane(), -op.getWidth() - 10);
+			root.getChildren().add(op);
+			AnchorPane.setRightAnchor(op, -op.getPrefWidth() - 10);
 		}
 	}
 	
 	private OptionsPane getPane (Map<Integer, ActorData> map, String name) {
-		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name, ivp);
-		optionPane.setHeight(300);
-		optionPane.setWidth(100);
+		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name, ivp, 100);
+		optionPane.setPrefHeight(300);
+		optionPane.setPrefWidth(100);
 		return optionPane;
 	}
 	
@@ -162,10 +145,7 @@ public class SidePanel {
 	        if ( obj instanceof Button ) {
 	        	for (OptionsPane optionsPane : listOfPanes) {
 	        		if (((Button) obj).getText().equals(optionsPane.getPaneName())) {
-	    	    		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
-	    	    		t.setNode(optionsPane.getPane());
-	    	    		t.setToX(-optionsPane.getWidth());
-	    	    		t.play();
+	        			new SlidingPane().slidePane(optionsPane, -optionsPane.getPrefWidth());
 	        		}
 	        	}
 	        }

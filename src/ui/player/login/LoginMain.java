@@ -196,7 +196,7 @@ public class LoginMain {
 				loginScreen.new Game("Asteroids", "asteroids.png", e -> {})));
 		GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
 		stage.setScene(select.getScene());
-		stage.setTitle("GameSelector");
+		stage.setTitle("Game Selector");
 		stage.show();
 	}
 
@@ -204,10 +204,8 @@ public class LoginMain {
 		gameController = new GameController();
 		gameController.start(stage);
 		setUpGameScreenReturn();
-		stage.setScene(gameController.getGameScreen().getScene());
-		stage.setWidth(Preferences.SCREEN_WIDTH);
-		stage.setHeight(Preferences.SCREEN_HEIGHT);
-		stage.setTitle("GameSelector");
+		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
+		stage.setTitle("Game Screen");
 	}
 	
 	private void setUpGameScreenReturn() {

@@ -3,8 +3,6 @@
  */
 package ui.general;
 
-import java.util.Observable;
-
 /**
  * @author harirajan
  *
@@ -77,6 +75,12 @@ public class ToggleSwitch {
 
 	public boolean switchOnProperty() {
 		return switchedOn.get();
+	}
+	
+	public void setListener(Runnable runnable)  {
+		switchedOn.addListener((a,b,c) -> {
+			runnable.run();
+		});
 	}
 
 	public String getName() {
