@@ -5,6 +5,7 @@ import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.layout.VBox;
@@ -19,12 +20,9 @@ import ui.general.ToggleSwitch;
  */
 public class SettingsPane extends SlidingPane{
 	private Hyperlink backToLogin;
-	private double paneWidth = 100.;
-	private MusicPlayer mp;
+	private double paneWidth = 150.;
 	
-	public MediaPlayer getMediaPlayer() {
-		return mp.getMediaPlayer();
-	}
+	
 
 	public void setBackToLoginAction(EventHandler<ActionEvent> value) {
 		backToLogin.setOnAction(value);
@@ -48,14 +46,19 @@ public class SettingsPane extends SlidingPane{
 	}
 
 	private void addHelp() {
-		ToggleSwitch musicToggle = new ToggleSwitch("Music");
+		//ToggleSwitch musicToggle = new ToggleSwitch("Music");
 		Hyperlink helpLink = new Hyperlink("Help");
 		backToLogin = new Hyperlink("Return to Main");
-		VBox helpBox = this.getVBox();
 		
-		helpBox.getChildren().addAll(backToLogin, helpLink, musicToggle.getNode());
-		this.getChildren().add(helpBox);
-		helpBox.setAlignment(Pos.CENTER_LEFT);
-		mp = new MusicPlayer(musicToggle, Optional.ofNullable(null));
+		getVBox().getChildren().addAll(backToLogin, helpLink);
+		this.getChildren().add(getVBox());
+		getVBox().setAlignment(Pos.CENTER_LEFT);
+		//mp = new MusicPlayer(musicToggle, Optional.ofNullable(null));
 	}
+	
+	public void addObject(Node object) {
+		getVBox().getChildren().add(object);
+	}
+
+	
 }
