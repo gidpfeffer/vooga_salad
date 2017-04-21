@@ -1,4 +1,4 @@
-package XML.xstream.tests;
+package XML.xmlmanager.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,8 +7,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import XML.xstream.classes.XStreamHelper;
-import XML.xstream.interfaces.VoogaSerializer;
+import XML.xmlmanager.classes.XStreamHelper;
+import XML.xmlmanager.exceptions.IllegalXStreamCastException;
+import XML.xmlmanager.interfaces.VoogaSerializer;
 import gamedata.GameData;
 import types.BasicActorType;
 
@@ -29,7 +30,11 @@ public class SerializationTest {
 	public void BasicWriteAndReadTest() {
 		setUp();
 		String myDataString = mySerializer.getXMLStringFromObject(myData);
-		myData = mySerializer.makeObjectFromXMLString(myDataString, GameData.class);
+		try{
+			myData = mySerializer.makeObjectFromXMLString(myDataString, GameData.class);
+		} catch(IllegalXStreamCastException ex){
+			Assert.fail("Test failed : " + ex.getCauseException().getMessage());
+		}
 		List<BasicActorType> types = myData.getTypes();
 		assertEquals(types.size(), 2);
 		Assert.assertTrue(types.contains(new BasicActorType("test1")));
@@ -41,15 +46,23 @@ public class SerializationTest {
 	public void InvalidCastTest() {
 		setUp();
 		String myDataString = mySerializer.getXMLStringFromObject(myData);
-		String invalidString = mySerializer.makeObjectFromXMLString(myDataString, String.class);
-		assertEquals(invalidString, null);
+		try{
+			mySerializer.makeObjectFromXMLString(myDataString, String.class);
+			Assert.fail("Test failed : no exception was thrown during illegal cast");
+		} catch(IllegalXStreamCastException ex){
+			
+		}
 	}
 	
     // sends an invalid String into the object generator
 	@Test
 	public void InvalidWrite() {
 		setUp();
-		myData = mySerializer.makeObjectFromXMLString("sdfasdf", GameData.class);
-		assertEquals(myData, null);
+		try{
+			myData = mySerializer.makeObjectFromXMLString("sdfasdf", GameData.class);
+			Assert.fail("Test failed : no exception was thrown during illegal cast");
+		} catch(IllegalXStreamCastException ex){
+
+		}
 	}
 }
