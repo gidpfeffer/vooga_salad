@@ -1,11 +1,14 @@
 package XML.xmlmanager.interfaces;
 
 import java.io.IOException;
+import java.util.Collection;
 
 public interface FileReader {
 
-	boolean directoryExists(String filepathToDir);
+	boolean fileExists(String fileName);
 	
-	String getFileContent(String filepathToDir, String filename) throws IOException;
+	String getFileContent(String filename) throws IOException;
+	
+	Collection<String> getAllNewFiles();
 	
 }
