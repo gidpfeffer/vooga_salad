@@ -34,6 +34,10 @@ public class LineageData {
 	public ActorData getCurrent(){
 		return generations.get(current);
 	}
+
+	public Map<Integer, ActorData> getMap(){
+		return this.generations;
+	}
 	
 	public void upgrade(){
 		if(generations.containsKey(current+1)){

@@ -146,7 +146,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupMapView() {
 		//this calculation assumes that height < width
-		myMapView = new MapEditorView(myGameData.getMyPaths());
+		myMapView = new MapEditorView(myGameData.getMyPaths(), myGameData.getLayers(), this);
 		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
@@ -156,8 +156,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupLevelView() {
-		Collection<ActorData> enemies = myLeftPane.getActors(new BasicActorType("Troop"));
-		myLevelView = new LevelEditorView(this, enemies);
+		//TODO
+		//Collection<ActorData> enemies = myLeftPane.getActors(new BasicActorType("Troop"));
+		myLevelView = new LevelEditorView(this, null);//TODO pass gamedata instead
 			
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);

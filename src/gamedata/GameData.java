@@ -56,7 +56,7 @@ public class GameData {
 	PathData myPaths;
 	
 	//Layer information
-	MapData myLayers; 
+	MapLayersData myLayers; 
 
 	//Categories available (e.g. Troop)
 	List<BasicActorType> types;
@@ -79,7 +79,7 @@ public class GameData {
 		pieces = new HashMap<Integer, LineageData>();
 		types = new ArrayList<BasicActorType>();
 		numOptions = 0;
-		myLayers = new MapData();
+		myLayers = new MapLayersData();
 	}
 	
 	/**
@@ -140,8 +140,10 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
-	public void add(ActorData data){
-		pieces.put(numOptions++, new LineageData(data));
+	public LineageData add(ActorData data){
+		LineageData lin = new LineageData(data);
+		pieces.put(numOptions++, lin);
+		return lin;
 	}
 	
 	public void addUpgrade(LineageData data, ActorData toAdd){
@@ -246,10 +248,10 @@ public class GameData {
 		this.preferences = preferences;
 	}
 	
-	public void setLayers(MapData layers){
+	public void setLayers(MapLayersData layers){
 		myLayers = layers;
 	}
-	public MapData getLayers(){
+	public MapLayersData getLayers(){
 		return myLayers;
 	}
 

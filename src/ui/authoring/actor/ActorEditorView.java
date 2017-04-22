@@ -14,6 +14,7 @@ import java.util.Set;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.GameData;
+import gamedata.LineageData;
 import gamedata.composition.LimitedHealthData;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -60,19 +61,18 @@ public class ActorEditorView extends AnchorPane {
 	
 	
 	private GameData myGameData; //NOTE: this is the legit thing don't fuck with it
-	private HashMap<StackPane, ActorData> myActors;
+	private HashMap<StackPane, LineageData> myActors;
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
 	private ActorInfoView myActorInfoView;
 	private BasicActorType myActorType;
 
-	// TODO get projectile data first
 	public ActorEditorView(PopViewDelegate delegate, BasicActorType type, GameData gameData) {
 		super();
 		myDelegate = delegate;
 		myActorType = type;
 		myGameData = gameData;
-		myActors = new HashMap<StackPane, ActorData>();
+		myActors = new HashMap<StackPane, LineageData>();
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
 
@@ -111,7 +111,7 @@ public class ActorEditorView extends AnchorPane {
 		ImageView imageView = new ImageView(new Image("add_icon_w.png"));
 		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
-		StackPane view = UIHelper.buttonStack(e -> addNewTower(), 
+		StackPane view = UIHelper.buttonStack(e -> addNewActor(), 
 				Optional.of(label), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
@@ -196,7 +196,8 @@ public class ActorEditorView extends AnchorPane {
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
-		myActors.put(view, new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
+		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
+		myActors.put(view, data);
 		myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
 	}
 
@@ -204,7 +205,7 @@ public class ActorEditorView extends AnchorPane {
 	 * the action when the plus button is pressed on the bottom of the screen
 	 * prompts user to select an image and adds a new tower with default values
 	 */
-	private void addNewTower() {
+	private void addNewActor() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Selectc Image File");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
@@ -216,14 +217,19 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	private void selectActor(StackPane stackButton){
-		myActorInfoView.setActorData(this.myActors.get(stackButton));
+		myActorInfoView.setLineageData(this.myActors.get(stackButton));
 	}
 	
 	private void updateTowerName(StackPane pane, String text){
-		this.myActors.get(pane).getBasic().setName(text);	
+		for(ActorData data : this.myActors.get(pane).getMap().values()){
+			data.getBasic().setName(text);
+		}
+		for(ActorData data : this.myActors.get(pane).getMap().values()){
+			System.out.print(data.getBasic().getName());
+		}
 	}
 	
-	public Collection<ActorData> getActorData() {
+	public Collection<LineageData> getActorData() {
 		return	myActors.values();
 	}
 
