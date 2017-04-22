@@ -19,7 +19,7 @@ public class WebImageCollectorTest {
 
     public WebImageCollectorTest() throws IOException
     {
-        BufferedImage img= WebImageCollector.findPng("bird");
+        BufferedImage img= WebImageCollector.findRandomIcon("bomb");
         ImageIcon icon=new ImageIcon(img);
         JFrame frame=new JFrame();
         frame.setLayout(new FlowLayout());
