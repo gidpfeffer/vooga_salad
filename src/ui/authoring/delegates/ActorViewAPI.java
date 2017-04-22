@@ -1,4 +1,4 @@
-package ui.authoring.map;
+package ui.authoring.delegates;
 
 public interface ActorViewAPI {
 	public abstract void updateLocationWithBackendData();

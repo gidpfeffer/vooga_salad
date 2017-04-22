@@ -2,36 +2,40 @@ package ui.authoring.map;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import gamedata.MapData;
+import gamedata.MapLayersData;
 import gamedata.PathData;
-import gameengine.grid.interfaces.Identifiers.Grid2D;
+import gamedata.map.LayerData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import ui.Preferences;
+import ui.authoring.PopupSize;
+import ui.authoring.delegates.LayerViewDelegate;
+import ui.authoring.delegates.PopViewDelegate;
+import ui.authoring.map.layer.Layer;
+import ui.authoring.map.layer.LayerPopupDelegate;
+import ui.authoring.map.layer.LayerPopupView;
+import ui.authoring.map.layer.PolygonLayerView;
+import ui.authoring.map.layer.PathLayerView;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
 import ui.general.UIHelper;
-import util.Location;
-import util.Tuple;
+
 
 /**
  * 
@@ -40,89 +44,42 @@ import util.Tuple;
  * @author TNK
  *
  */
-public class MapEditorView extends StackPane {
+public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate{
 
 	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
+	private static final Color[] LAYER_COLORS = {
+			CustomColors.AMBER,
+			CustomColors.BLUE_500,
+			CustomColors.GREEN,
+			CustomColors.INDIGO
+	};
 
-	private PathData myPathData;
-	private MapData myMapData;
-	private ArrayList<Line> myLines = new ArrayList<Line>();
 	private ImageViewPane myBackgroundView;
-	private Pane myPathLayer;
-	private List<Pane> myLayers = new ArrayList<>();
-	private HBox myLayersBox;
-	private boolean isFirstPoint = true;
+	private PathLayerView myPathLayer;
+	private MapLayersData myMapData;
+	private List<Layer> myLayers = new ArrayList<>();
+	private HBox myLayerPicker;
+	private PopViewDelegate myPopDelegate;
 
-	public MapEditorView(PathData pathData) { //TODO pass mapData
+	private Pane myLayerPopup;
+
+	public MapEditorView(PathData pathData , MapLayersData mapData, PopViewDelegate popDelegate) { 
 		super();
-		myPathData = pathData;
-		myMapData = new MapData();
+		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
+		myPathLayer = new PathLayerView(pathData, myBackgroundView.getImageInsets());
+		myMapData = mapData;
+		myPopDelegate = popDelegate;
 		setupViews();
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
 	}
 
 	private void setupMouseEvents() {
-		setMouseToPath();
-	}
-	private void setMouseToPath(){
-		this.myPathLayer.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> this.getScene().setCursor(Cursor.CROSSHAIR));
-		this.myPathLayer.addEventHandler(MouseEvent.MOUSE_EXITED, e -> this.getScene().setCursor(Cursor.DEFAULT));
-		this.myPathLayer.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> handleMouseClick(e));
-	}
-	private void setMouseToPolygonMakerForLayer(Pane layer){
-		
-	}
-
-	private void handleMouseClick(MouseEvent e) {
-		addPointToMap(e);
-	}
-	
-	//TODO refactor
-	private void addPointToMap(MouseEvent e) {
-
-		Tuple<Double, Double> size = new Tuple<Double, Double>(myBackgroundView.getWidth(),
-				myBackgroundView.getHeight());
-		Location loc = new Location(e.getX(), e.getY());
-		Tuple<Double, Double> insets = this.myBackgroundView.getImageInsets();
-		Point p = new Point(loc, size, insets);
-		System.out.println(e.getX() +"\t"+ e.getY());
-		if (p.isValid()) {
-
-			Line line = new Line(loc.getX(), loc.getY(), loc.getX(), loc.getY());
-			line.setStrokeWidth(3);
-			myPathLayer.setOnMouseMoved(event -> {
-				line.setEndX(event.getX());
-				line.setEndY(event.getY());
-			});
-			List<Grid2D> listOfPoints = myPathData.poll();
-			listOfPoints.add(p);
-			// determines if the point is exit, entry, or regular path
-			if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {// exit
-																				// path
-				isFirstPoint = true;
-				p.setPointType(PointType.EXIT);
-				myPathLayer.setOnMouseMoved(fdsa -> {
-				});
-				System.out.println(listOfPoints);
-				myPathData.addPath(new ArrayList<Grid2D>());
-			} else if (isFirstPoint) {
-				p.setPointType(PointType.ENTRY);
-				isFirstPoint = false;
-			} else {
-				p.setPointType(PointType.PATH);
-			}
-
-			this.myPathLayer.getChildren().add(line);
-			this.myPathLayer.getChildren().add(p);
-			this.myLines.add(line);
-
-		}
-
+		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> this.getScene().setCursor(Cursor.CROSSHAIR));
+		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_EXITED, e -> this.getScene().setCursor(Cursor.DEFAULT));	
 	}
 
 	private void setupViews() {
-		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
 		UIHelper.setBackgroundColor(myBackgroundView, CustomColors.GREEN);
 		StackPane.setAlignment(myBackgroundView, Pos.TOP_CENTER);
 		StackPane.setMargin(myBackgroundView, new Insets(8,8,72,8));
@@ -131,42 +88,82 @@ public class MapEditorView extends StackPane {
 		setupButtons();
 		setupLayerSelector();
 		
-		myPathLayer = new Pane();
-		addLayerToMap(myPathLayer, "Path");
+		addLayer(myPathLayer, "Path");
+		
+		setupMapData();
 	}
 	
-	private void addLayerToMap(Pane layer, String layerName){
+	/**
+	 * adds the already existing layers in the mapdata into this classes children nodes
+	 */
+	private void setupMapData() {
+		for(Entry<String, LayerData> entry :myMapData.getMyLayers().entrySet()){
+			addLayer(new PolygonLayerView(entry.getValue()),entry.getKey());
+		}
+		
+	}
+	
+	/**
+	 * This adds a layer that spans the size of the backgroundView.
+	 * It will able to switched to by clicking the button on the
+	 * HBox on the bottom of the MapEditor
+	 * @param layer
+	 * @param layerName the name that you can set to w.e you want
+	 */
+	private void addLayer(Layer layer, String layerName){
 		StackPane.setAlignment(layer, Pos.TOP_CENTER);
 		StackPane.setMargin(layer, new Insets(8,8,72,8));
-		this.getChildren().add(layer);
-		this.myLayers.add(layer);
-		//UIHelper.setBackgroundColor(layer, LAYER_COLORS[index/size]);
+		layer.setColor(LAYER_COLORS[myLayers.size()%LAYER_COLORS.length]);
 		Label layerNumber = new Label(layerName);
 		layerNumber.setFont(Preferences.FONT_MEDIUM_BOLD);
 		layerNumber.setTextFill(CustomColors.GREEN_900);
 		StackPane.setMargin(layerNumber, new Insets(8));
 		StackPane layerIcon = UIHelper.buttonStack(e -> switchToLayer(layer), Optional.of(layerNumber), Optional.ofNullable(null),Pos.CENTER, false);
 		HBox.setMargin(layerIcon, new Insets(8));
-		//layerIcon.setPrefWidth(48);
 		UIHelper.setBackgroundColor(layerIcon, CustomColors.GREEN_100);
-		myLayersBox.getChildren().add(myLayersBox.getChildren().size() - 1, layerIcon);
+		myLayerPicker.getChildren().add(myLayerPicker.getChildren().size() - 1, layerIcon);
+		layer.setOpacity(0.8);
+		this.getChildren().add(layer);
+		this.myLayers.add(layer);
+		switchToLayer(layer);
 	}
+	
+	/**
+	 * Switches off all of the layers that aren't visible
+	 * @param layer the layer that should be visible to the user
+	 */
+	private void switchToLayer(Layer layer){
+		
+		myLayers.forEach( l -> {
+			if(l == layer){
+				l.setOpacity(0.75);
+				l.activate();
+				getChildren().remove(layer);
+				getChildren().add(layer);
+				
+			}else{
+				l.setOpacity(0.15);
+				l.deactivate();
 
-	private void switchToLayer(Pane layer){
-		//TODO
+			}
+		});
+		
 	}
 
 	private void setupLayerSelector() {
 		//setup HBox
-		myLayersBox = new HBox();
+		myLayerPicker = new HBox();
 		//add button that switches path maker
-		StackPane.setAlignment(myLayersBox, Pos.BOTTOM_CENTER);
-		StackPane.setMargin(myLayersBox, new Insets(8,192,8,8));
-		myLayersBox.setMaxHeight(56);
-		UIHelper.setBackgroundColor(myLayersBox, CustomColors.GREEN);
+		StackPane.setAlignment(myLayerPicker, Pos.BOTTOM_CENTER);
+		StackPane.setMargin(myLayerPicker, new Insets(8,192,8,8));
+		myLayerPicker.setMaxHeight(56);
+		ScrollPane scroll = new ScrollPane();
+		scroll.setContent(myLayerPicker);
+		//TODO scrollpane
+		UIHelper.setBackgroundColor(myLayerPicker, CustomColors.GREEN);
 		//add new layer button
 		addNewLayerButton();
-		this.getChildren().add(myLayersBox);
+		this.getChildren().add(myLayerPicker);
 		
 	}
 	
@@ -174,27 +171,41 @@ public class MapEditorView extends StackPane {
 		ImageView img = new ImageView(new Image("add_icon_w.png"));
 		img.setFitHeight(32);
 		img.setPreserveRatio(true);
-		StackPane button = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), Optional.of(img),
+		StackPane button = UIHelper.buttonStack(e -> didClickNewLayerButton(), Optional.ofNullable(null), Optional.of(img),
 				Pos.CENTER, true);
 		UIHelper.setBackgroundColor(button, Color.TRANSPARENT);
-		this.myLayersBox.getChildren().add(button);
+		this.myLayerPicker.getChildren().add(button);
 	}
 
 	private void didClickNewLayerButton(){
-		//TODO
+		launchLayerPopup();
+	}
+
+	private void launchLayerPopup() {
+		this.myLayerPopup = new LayerPopupView(this);
+		this.myPopDelegate.openViewWithSize(myLayerPopup, PopupSize.SMALL);
 	}
 
 	private void setupButtons() {
 		List<StackPane> panes = new ArrayList<>();
 
 		ImageView backImage = makeImageFromString("undo_icon.png");
-		StackPane b = UIHelper.buttonStack(e -> undoAction(e), Optional.ofNullable(null), Optional.of(backImage),
+		StackPane b = UIHelper.buttonStack(
+				e -> myLayers.stream().filter(
+						layer -> layer.isActive()).findFirst().ifPresent(
+								layer -> layer.undo()), 
+				Optional.ofNullable(null), 
+				Optional.of(backImage),
 				Pos.CENTER, true);
 		StackPane.setMargin(b, new Insets(12));
 		panes.add(b);
 
 		ImageView clearImage = makeImageFromString("clear_icon.png");
-		StackPane c = UIHelper.buttonStack(e -> clearPointsAndLines(e), Optional.ofNullable(null),
+		StackPane c = UIHelper.buttonStack(
+				e -> myLayers.stream().filter(
+						layer -> layer.isActive()).findFirst().ifPresent(
+								layer -> layer.clear()), 
+				Optional.ofNullable(null),
 				Optional.of(clearImage), Pos.CENTER_RIGHT, true);
 		StackPane.setMargin(c, new Insets(0, 72, 12, 0));
 		panes.add(c);
@@ -231,24 +242,7 @@ public class MapEditorView extends StackPane {
 		}
 	}
 
-	private void undoAction(MouseEvent e) {
-		e.consume();
-		System.out.println("undo clicked");
-	}
 
-	private void clearPointsAndLines(MouseEvent e) {
-		e.consume();
-		for (Entry<Integer, List<Grid2D>> path : myPathData.getMyPaths().entrySet()) {
-			for (Grid2D p : path.getValue()) {
-				this.myPathLayer.getChildren().remove((Point) p);
-			}
-		}
-		myPathData.clear(); //TODO AF
-		for (Line l : myLines) {
-			this.myPathLayer.getChildren().remove(l);
-		}
-
-	}
 	
 	/**
 	 * This method updates the location of the points on the map
@@ -256,12 +250,40 @@ public class MapEditorView extends StackPane {
 	 * change as the user resizes the map
 	 */
 	private void sizeDidChange() {
-		
-		for (Entry<Integer, List<Grid2D>> path : myPathData.getMyPaths().entrySet())
-			for (Grid2D p : path.getValue())
-				((Point) p).updateSize(
-						new Tuple<Double, Double>(myBackgroundView.getWidth(), myBackgroundView.getHeight()),
-						myBackgroundView.getImageInsets());
+		for(Layer layer :myLayers){
+			layer.sizeDidChange(myBackgroundView);
+		}
+	}
+
+	
+	/*
+	 * LayerViewDelegate
+	 * @see ui.authoring.delegates.LayerViewDelegate#removeLayerView(ui.authoring.map.layer.Layer)
+	 */
+	@Override
+	public void removeLayerView(Layer layerView) {
+		// TODO Auto-generated method stub
+//		this.getChildren().remove(layerView);
+//		this.myLayers.remove(layerView);
+//		this.myLayerPicker.getChildren().removeIf(filter);
+	}
+
+	/*
+	 * LayerPopupDelegate
+	 * @see ui.authoring.map.LayerPopupDelegate#layerPopupDidPressConfirm(java.lang.String)
+	 */
+	@Override
+	public void layerPopupDidPressConfirm(String nameInput) {
+		LayerData data = new LayerData();
+		PolygonLayerView layer = new PolygonLayerView(data);
+		this.myMapData.addLayer(nameInput, data);
+		this.addLayer(layer, nameInput);
+		myPopDelegate.closeView(myLayerPopup);
+	}
+
+	@Override
+	public void layerPopupDidPressCancel() {
+		myPopDelegate.closeView(myLayerPopup);		
 	}
 
 }
