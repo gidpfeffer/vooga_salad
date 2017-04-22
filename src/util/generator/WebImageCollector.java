@@ -1,5 +1,6 @@
 package util.generator;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -10,8 +11,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+
+import javafx.scene.control.Alert;
+import sun.awt.image.ToolkitImage;
 
 /**
  * Class for collecting images (and other file types, if
@@ -42,33 +48,34 @@ public class WebImageCollector {
 	private final static String URL_END = "\",";
 	private final static String API_ADDRESS = "https://www.googleapis.com/customsearch/v1?";
 	
-	//TODO: Error classifications!
-	
-	public static void main (String [] args){
-		Image pup = findPng("Puppy");
-	}
-	
-	public static Image findPng(String qry){
+	public static BufferedImage findPng(String qry){
 		return findImage(qry, PNG);
 	}
 	
-	public static Image findImage(String qry, String fileType){
+	public static BufferedImage findImage(String qry, String fileType){
 		return findSearchItem(qry, fileType, IMAGE);
 	}
 	
-	public static Image findSearchItem(String qry, String fileType, String searchType){
-		Image toRet = null;
+	public static BufferedImage findSearchItem(String qry, String fileType, String searchType){
+		BufferedImage toRet = null;
+		qry = stringToSearch(qry);
 		try{
 			HttpURLConnection google = constructSearchUrl(qry, fileType, searchType);
 			String imagePath = popFilePath(google);
 			google.disconnect();
 			URL toRead = new URL(imagePath);
-			toRet = java.awt.Toolkit.getDefaultToolkit().createImage(toRead);
+			toRet = ImageIO.read(toRead);
 			
 		} catch(IOException e){
 			printExceptionMessage(e);
+			//toRet = ImageIO.read(new File('DEFAULT_PATH'));
+			// Replace null with default image
 		}
 		return toRet;
+	}
+	
+	private static String stringToSearch(String qry){
+		return qry.replaceAll(" ", "+");
 	}
 	
 	private static String popFilePath(HttpURLConnection conn) throws IOException {
@@ -106,6 +113,8 @@ public class WebImageCollector {
 	}
 	
 	private static void printExceptionMessage(Exception e){
-		System.out.println("Message: " + e.getMessage() + "\nCause: "+ e.getCause());
+		JOptionPane.showMessageDialog(null, "Message: " + e.getMessage() 
+			+ "\nCause: "+ e.getCause());
+		
 	}
 }
