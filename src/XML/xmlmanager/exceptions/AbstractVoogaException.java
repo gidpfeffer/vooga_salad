@@ -13,6 +13,7 @@ public abstract class AbstractVoogaException extends Exception{
 //	public AbstractVoogaException(String message, Throwable cause) { super(message, cause); }
 //	public AbstractVoogaException(Throwable cause) { super(cause); }
 	public AbstractVoogaException(Exception ex){ causeException = ex; }
+	
 		
 	public Exception getCauseException(){
 		return causeException;
