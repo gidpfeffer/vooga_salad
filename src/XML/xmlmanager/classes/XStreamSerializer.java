@@ -6,11 +6,11 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 
-public class ConcreteVoogaSerializer implements VoogaSerializer{
+public class XStreamSerializer implements VoogaSerializer{
 	
 	private XStream xstream;
 	
-	public ConcreteVoogaSerializer(){
+	public XStreamSerializer(){
 		xstream = new XStream(new DomDriver());
 	}
 
