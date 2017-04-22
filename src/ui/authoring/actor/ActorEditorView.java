@@ -85,7 +85,42 @@ public class ActorEditorView extends AnchorPane {
 		b.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> myDelegate.closeView(this));
 		this.getChildren().add(b);
 	}
+	
+	private void setupPlaceable(){
+		Label lbl = new Label("Placeable?");
+		lbl.setTextFill(CustomColors.GREEN_100);
+		lbl.setFont(Preferences.FONT_SMALL_BOLD);
+		ImageButton b = new ImageButton("place_icon.png", new Location(32., 32.));
+		AnchorPane.setTopAnchor(b, 4.0);
+		AnchorPane.setRightAnchor(b, 4.0);
+		AnchorPane.setTopAnchor(lbl, 16.0);
+		AnchorPane.setRightAnchor(lbl, 50.0);
+		b.addEventHandler(MouseEvent.MOUSE_CLICKED, p -> togglePlaceable(b));
+		this.getChildren().add(b);
+		this.getChildren().add(lbl);
+		UIHelper.setBackgroundColor(b, Color.TRANSPARENT);
+	}
 
+	private void togglePlaceable(ImageButton b){
+		Image place = new Image("place_icon.png");
+		Image noplace = new Image("no_place_icon.png");
+		
+		Image selected = place;
+		//Image unselected = noplace;
+		
+		if(myActorType.isPlaceable()){
+			selected = noplace;
+			//unselected = place;
+		}
+		//b.updateImages(selected, unselected, new Location(40., 40.));
+		
+		ImageView im = new ImageView(selected);
+		im.setFitWidth(32);
+		im.setFitHeight(32);
+		b.setGraphic(im);
+		myActorType.togglePlaceable();
+	}
+	
 	private void setupViews() {
 		ScrollPane leftSide = new ScrollPane();
 		ScrollPane rightSide = new ScrollPane();
@@ -94,6 +129,7 @@ public class ActorEditorView extends AnchorPane {
 		setupAddActorButton();
 		setupInfoView(rightSide);
 		setupBackButton();
+		setupPlaceable();
 		
 	}
 	
@@ -207,7 +243,7 @@ public class ActorEditorView extends AnchorPane {
 	 */
 	private void addNewActor() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Selectc Image File");
+		fileChooser.setTitle("Select Image File");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if(selectedFile!= null){
@@ -215,6 +251,7 @@ public class ActorEditorView extends AnchorPane {
 			addActor(s,s.substring(0, s.indexOf(".")) );
 		}
 	}
+
 	
 	private void selectActor(StackPane stackButton){
 		myActorInfoView.setLineageData(this.myActors.get(stackButton));

@@ -1,25 +1,20 @@
 package ui.authoring.level;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import gamedata.ActorData;
+import gamedata.GameData;
 import gamedata.LevelData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import ui.Preferences;
+import types.BasicActorType;
 import ui.authoring.PopupSize;
 import ui.authoring.delegates.PopViewDelegate;
-import ui.general.CustomColors;
 import ui.general.UIHelper;
 
 /**
@@ -36,17 +31,15 @@ public class LevelEditorView extends VBox{
 	//# of Enemies
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
-	private Map<Integer, LevelData> myInfo; //Essentially the model
 	private PopViewDelegate myDelegate;
-	private Collection<ActorData> enemies;
+	private GameData myData;
 	
-	public LevelEditorView(PopViewDelegate delegate, Collection<ActorData> enemies){
+	public LevelEditorView(PopViewDelegate delegate, GameData data){
 		super();
 		this.setAlignment(Pos.CENTER);
-		this.enemies=enemies;
+		this.myData = data;
 		myDelegate=delegate;
 		level=1;
-		myInfo = new HashMap<Integer, LevelData>();
 
 		//TODO:move text to resource file
 		StackPane levelOne = nextLevel();
@@ -67,7 +60,7 @@ public class LevelEditorView extends VBox{
 	
 	private StackPane nextLevel(){
 		LevelData newLevel = new LevelData();
-		myInfo.put(level, newLevel);
+		myData.getLevels().put(level, newLevel);
 		ImageView img = LevelUtil.imageForStackButton("pencil.png");
 		UIHelper.setDropShadow(img);
 		img.setFitWidth(32);
@@ -85,26 +78,17 @@ public class LevelEditorView extends VBox{
 		return nextLevel;
 	}
 	
-	public void update(Collection<ActorData> updated){
-		//TODO: Make more sophisticated -- removal
-		//TODO: CALL
-		enemies = new ArrayList<ActorData>(updated);
-	}
-	
 	private void launchLevelEditor(int localLevel){
-		LevelData current = myInfo.get(localLevel);
+		LevelData current = myData.getLevel(localLevel);
 		LevelEditorMenu lem  = new LevelEditorMenu(myDelegate, current, localLevel);
 		myDelegate.openViewWithSize(lem, PopupSize.SMALL);
 	}
 	
 	private void launchWaveChooser(int level){
-		LevelData current = myInfo.get(level);
+		LevelData current = myData.getLevel(level);
+		Collection<ActorData> enemies = (myData.getAllOfType(new BasicActorType("Troop"))).values();
 		WaveChooserMenu wcm  = new WaveChooserMenu(myDelegate, enemies, current);
 		myDelegate.openViewWithSize(wcm, PopupSize.MEDIUM);
-	}
-	
-	public Map<Integer, LevelData> getLevels(){
-		return myInfo;
 	}
 
 }
