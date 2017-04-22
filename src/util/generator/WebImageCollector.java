@@ -151,9 +151,9 @@ public class WebImageCollector {
 	    conn.setRequestProperty("Accept", "application/json");
 	}
 	
-	private static void printExceptionMessage(Exception e){
+/*	private static void printExceptionMessage(Exception e){
 		JOptionPane.showMessageDialog(null, "Message: " + e.getMessage() 
 			+ "\nCause: "+ e.getCause());
 		
-	}
+	}*/
 }

@@ -217,7 +217,7 @@ public class WaveChooserMenu extends AnchorPane {
 		double inset = 12.0;
 		LevelUtil.setVerticalAnchors(inset, bottomSide, topSide);
 		LevelUtil.setupBar(inset, 1.65, bottomSide, this, 3 / 2);
-		LevelUtil.setupBar(inset, 2.5, topSide, this, 3 / 2);
+		LevelUtil.setupBar(inset, 3, topSide, this, 3 / 2);
 		this.getChildren().addAll(bottomSide, topSide);
 	}
 }
