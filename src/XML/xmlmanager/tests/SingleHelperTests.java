@@ -96,11 +96,11 @@ public class SingleHelperTests {
 	public void getNewFilesTest() {
 		setUp(true, "src/XML/xmlmanager/tests", "foo");
 		fillDirWithFiles();
-		assertEquals(helper.getAllNewFiles().size(), 3);
-		assertEquals(helper.getAllNewFiles().contains(""), false);
-		assertEquals(helper.getAllNewFiles().contains("testing.txt"), true);
-		assertEquals(helper.getAllNewFiles().contains("testing2.txt"), true);
-		assertEquals(helper.getAllNewFiles().contains("abc.txt"), true);
+		assertEquals(helper.getAllNewFilenames().size(), 3);
+		assertEquals(helper.getAllNewFilenames().contains(""), false);
+		assertEquals(helper.getAllNewFilenames().contains("testing.txt"), true);
+		assertEquals(helper.getAllNewFilenames().contains("testing2.txt"), true);
+		assertEquals(helper.getAllNewFilenames().contains("abc.txt"), true);
 		cleanse();
 	}
 	

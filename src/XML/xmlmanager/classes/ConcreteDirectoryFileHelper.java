@@ -77,7 +77,7 @@ public class ConcreteDirectoryFileHelper implements DirectoryFileManager{
 	}
 
 	@Override
-	public Collection<String> getAllNewFiles() {
+	public Collection<String> getAllNewFilenames() {
 		return Collections.unmodifiableCollection(addedFiles);
 	}
 	
