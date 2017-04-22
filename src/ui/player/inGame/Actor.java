@@ -3,6 +3,7 @@ package ui.player.inGame;
 import java.util.Map;
 import java.util.Optional;
 
+import gamedata.ActorData;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -22,44 +23,34 @@ public class Actor{
 	UIHandler uihandler;
 	Map<Integer, Actor> mapOfActors;
 	Actor clazz = this;
-	String name;
+	ActorData actorData;
 	Pane actor;
 	Integer option;
 	double width;
 	double height;
 	Optional<Boolean> removeable;
 
-	public Integer getOption() {
-		return option;
-	}
-	
-	public Pane getActor() {
+	public Pane getPane() {
 		return actor;
 	}
 	
 	public void deleteActor() {
 		actor = null;
 	}
-
-	public String getName() {
-		return name;
-	}
 	
 	public Integer getID() {
 		return Integer.parseInt(actor.getId());
 	}
-
-	//change so that it doesn't take in entire UIHandler for two methods???
-	public Actor(ImageViewPane ivp, UIHandler uihandler, Map<Integer, Actor> mapOfActors, Integer option, String name,
-			String image) {
+	
+	public Actor(UIHandler uihandler, Integer option, ActorData actorData, ImageViewPane ivp, Map<Integer, Actor> mapOfActors) {
 		actor = UIHelper.buttonStack(e -> {
-		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(image, 30, 30, true, true))), Pos.CENTER,
+		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
 				true);
 		actor.setBackground(Background.EMPTY);
+		this.actorData = actorData;
 		this.option = option;
 		this.imp = ivp;
 		this.uihandler = uihandler;
-		this.name = name;
 		this.mapOfActors = mapOfActors;
 		this.removeable = Optional.of(true);
 		setup();
@@ -111,10 +102,9 @@ public class Actor{
 	
 	/**
 	 * Upon secondary mouse click, actor will be placed in the actor map
-	 * The new actor is mapped to it's original id (**OR?)
-	 * Event handler is then removed -> can only update the node
+	 * The new actor id is now the unique ID returned from the uihandler.
+	 * Event handler is then removed optionally.
 	 */
-	//Anh this is where it should throw an error first
 	EventHandler<MouseEvent> place = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
@@ -133,6 +123,7 @@ public class Actor{
 					e.printStackTrace();
 				}
 			}
+			
 		}
 	};
 

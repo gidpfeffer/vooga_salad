@@ -2,6 +2,7 @@ package ui.player.inGame;
 
 import ui.general.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ public class SidePanel {
 	private List<OptionsPane> listOfPanes;
 	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> options;
+	private ScreenHandler screenHandler;
 	
 	private static final String panel = "panel.css";
 	
@@ -44,7 +46,11 @@ public class SidePanel {
 		return sidePane;
 	}
 	
-	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> options, ImageViewPane ivp) {
+	public Collection<OptionsPane> getListOfPanes(){
+		return listOfPanes;
+	}
+	
+/*	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> options, ImageViewPane ivp) {
 		this.ivp = ivp;
 		this.options = options;
 		this.uihandler = uihandler;
@@ -54,6 +60,17 @@ public class SidePanel {
 		this.sidePane = new AnchorPane();
 		this.iconImages = new HashMap<>();
 		this.mainBox = new VBox(20);
+		addMainIcons();
+		setup();
+	}*/
+	
+	public SidePanel(ScreenHandler screenHandler, Map<Integer, ActorData> options) {
+		this.screenHandler = screenHandler;
+		this.options = options;
+		this.iconImages = new HashMap<>();
+		this.listOfPanes = new ArrayList<>();
+		this.mainBox = new VBox(20);
+		this.sidePane = new AnchorPane();
 		addMainIcons();
 		setup();
 	}
@@ -108,15 +125,16 @@ public class SidePanel {
 		AnchorPane.setTopAnchor(mainBox, 20.0);
 	}
 	
-	public void addInternalPanesToRoot() {
+/*	public void addInternalPanesToRoot() {
 		for (OptionsPane op : listOfPanes) {
 			root.getChildren().add(op);
 			AnchorPane.setRightAnchor(op, -op.getPrefWidth() - 10);
 		}
-	}
+	}*/
 	
 	private OptionsPane getPane (Map<Integer, ActorData> map, String name) {
-		OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name, ivp, 100);
+		//OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name, ivp, 100);
+		OptionsPane optionPane = new OptionsPane(screenHandler, map, name, 100);
 		optionPane.setPrefHeight(300);
 		return optionPane;
 	}

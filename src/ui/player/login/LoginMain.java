@@ -135,19 +135,16 @@ public class LoginMain {
 		{
 			User user = null;
 			for (User u : database.getDatabase()) {
-				System.out.println(u.getUsername());
-				System.out.println(loginScreen.getLoginGrid().getUsername().getText());
 				if (u.getUsername().equals(loginScreen.getLoginGrid().getUsername().getText())) {
 					user = u;
 					break;
 				}
 			}
-			showProfileCard(user);
+			//showProfileCard(user);
+			loginScreen.transitionToLoggedIn();
 			database.setActiveUser(user);
-			loginScreen.getActionTarget().setFill(Color.GREEN);
-			loginScreen.getActionTarget().setText(loginResource.getString("successfulLogin"));
 			loginScreen.getLoginGrid().getUsername().clear();
-			loginScreen.getRoot().getChildren().add(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
+			//loginScreen.getRoot().getChildren().add(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
 			//gotoGameSelector();
 		} else {
 			setBadActionTarget(loginScreen.getActionTarget(), Color.WHITE, 

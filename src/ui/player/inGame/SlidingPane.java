@@ -8,28 +8,34 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+/**
+ * Creates a simple sliding pane that includes a back button inside of a VBox to slide the pane back to it's original location
+ * @author anngelyque
+ */
 public class SlidingPane extends AnchorPane{
 	
-	private VBox vbox = new VBox(40);
+	private VBox vbox;
+	public static final String backIcon = "back_icon.png";
 	
 	public VBox getVBox() {
 		return vbox;
 	}
 	
 	public SlidingPane() {
-		
+		this(Optional.ofNullable(null), 0);
 	}
 	
-	public SlidingPane(Optional<String> backImage, double slideTo, Corner corner) {
-		addBackButton(backImage, slideTo, corner);
+	public SlidingPane(Optional<String> backImage, double slideTo) {
+		this(backImage, slideTo, 30);
 	}
 	
-	private void addBackButton(Optional<String> backImage, double slideTo, Corner corner) {
-		OptionButton back = new OptionButton(0, "", backImage.orElse("back_icon.png"), e -> slidePane(this, slideTo));
-		this.getChildren().add(back.getButton());
-		if (corner == Corner.TOPRIGHT) AnchorPane.setRightAnchor(back.getButton(), 10.0);
-		if (corner == Corner.TOPLEFT) AnchorPane.setLeftAnchor(back.getButton(), 10.0);
-		AnchorPane.setTopAnchor(back.getButton(), 10.0);
+	public SlidingPane(Optional<String> backImage, double slideTo, double spacing) {
+		vbox = new VBox(spacing);
+		addBackButton(backImage, slideTo);
+	}
+	
+	private void addBackButton(Optional<String> backImage, double slideTo) {
+		OptionButton back = new OptionButton(0, "", backImage.orElse(backIcon), e -> slidePane(this, slideTo));
 		vbox.getChildren().add(back.getButton());
 	}
 	
