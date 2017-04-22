@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.apache.commons.io.FileUtils;
+
+import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.GroupFileHelper;
 
@@ -31,7 +34,8 @@ public class FileHelperMain implements GroupFileHelper{
 		rootDir = baseDirectoryPath + "/" + newRootDirectoryName;
 		if(!directoryExists(baseDirectoryPath) 
 				|| newRootDirectoryName.contains("/")
-				|| directoryExists(rootDir)){
+				|| directoryExists(rootDir)
+				|| baseDirectoryPath.length() < 1){
 			throw new InvalidRootDirectoryException(new IllegalStateException("Invalid root"));
 		}
 		new File(rootDir).mkdirs();
@@ -43,12 +47,15 @@ public class FileHelperMain implements GroupFileHelper{
 	}
 	
 	@Override
-	public boolean fileExists(String filepathToFile){
-		return applyAndTest(filepathToFile, fp -> new File(fp), file -> file.exists() && !file.isDirectory());
+	public boolean fileExists(String filename){
+		return applyAndTest(rootDir + filename, fp -> new File(fp), file -> file.exists() && !file.isDirectory());
 	}
 
 	@Override
-	public boolean addStringFileToDirectory(String fileContent, String filename) throws IOException{
+	public boolean addStringFileToDirectory(String fileContent, String filename) throws IOException, IllegalFileException{
+		if(filename == null || filename.length() < 1 || filename.contains("/")){
+			throw new IllegalFileException(new IllegalStateException("Invalid filename syntax"));
+		}
 		String totalPath = rootDir + "/" + filename;
 		File file = new File(totalPath);
 		if(file.exists()) return false;
@@ -64,28 +71,9 @@ public class FileHelperMain implements GroupFileHelper{
 		return new String(Files.readAllBytes(Paths.get(rootDir + "/" + filename)));
 	}
 
-	private boolean deleteDirectory(String filepath) {
-	    File dir = new File(filepath);
-	    return deleteDirHelper(dir);
-	}
-	
-	// recursive solution found at http://stackoverflow.com/questions/3775694/deleting-folder-from-java
-	private boolean deleteDirHelper(File dir){
-	    if (dir.isDirectory()) {
-	        String[] children = dir.list();
-	        for (int i = 0; i < children.length; i++) {
-	            boolean success = deleteDirHelper(new File(dir, children[i]));
-	            if (!success) {
-	                return false;
-	            }
-	        }
-	    }
-	    return dir.delete();
-	}
-
 	@Override
-	public boolean cleanse() {
-		return deleteDirectory(rootDir);
+	public void cleanse() throws IOException {
+		FileUtils.deleteDirectory(new File(rootDir));
 	}
 
 	@Override
