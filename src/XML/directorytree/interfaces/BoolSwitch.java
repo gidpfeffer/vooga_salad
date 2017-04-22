@@ -1,4 +1,4 @@
-package XML.xmlmanager.interfaces;
+package XML.directorytree.interfaces;
 
 public interface BoolSwitch {
 

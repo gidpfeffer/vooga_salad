@@ -1,6 +1,6 @@
-package XML.xmlmanager.classes;
+package XML.directorytree.classes;
 
-import XML.xmlmanager.interfaces.Pair;
+import XML.directorytree.interfaces.Pair;
 
 public class ConcretePair <K, V> implements Pair<K, V>{
 	

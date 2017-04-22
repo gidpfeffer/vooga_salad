@@ -4,13 +4,13 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import XML.xmlmanager.exceptions.IllegalXStreamCastException;
-import XML.xmlmanager.interfaces.VoogaSerializer;
+import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 
-public class XStreamHelper implements VoogaSerializer{
+public class ConcreteVoogaSerializer implements VoogaSerializer{
 	
 	private XStream xstream;
 	
-	public XStreamHelper(){
+	public ConcreteVoogaSerializer(){
 		xstream = new XStream(new DomDriver());
 	}
 

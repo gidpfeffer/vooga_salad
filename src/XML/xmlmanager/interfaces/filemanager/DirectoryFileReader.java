@@ -1,9 +1,9 @@
-package XML.xmlmanager.interfaces;
+package XML.xmlmanager.interfaces.filemanager;
 
 import java.io.IOException;
 import java.util.Collection;
 
-public interface FileReader {
+public interface DirectoryFileReader {
 
 	boolean fileExists(String fileName);
 	

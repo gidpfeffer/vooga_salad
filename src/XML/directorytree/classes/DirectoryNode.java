@@ -1,12 +1,12 @@
-package XML.xmlmanager.classes;
+package XML.directorytree.classes;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import XML.xmlmanager.interfaces.BoolSwitch;
-import XML.xmlmanager.interfaces.Pair;
+import XML.directorytree.interfaces.BoolSwitch;
+import XML.directorytree.interfaces.Pair;
 
 public class DirectoryNode {
 

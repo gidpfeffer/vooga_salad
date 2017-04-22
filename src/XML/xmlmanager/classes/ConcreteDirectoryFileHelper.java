@@ -16,14 +16,14 @@ import org.apache.commons.io.FileUtils;
 
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
-import XML.xmlmanager.interfaces.GroupFileHelper;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 
-public class FileHelperMain implements GroupFileHelper{
+public class ConcreteDirectoryFileHelper implements DirectoryFileManager{
 	
 	private List<String> addedFiles;
 	private String rootDir;
 	
-	public FileHelperMain(String baseDirectoryPath, String newRootDirectoryName) throws InvalidRootDirectoryException, IOException{
+	public ConcreteDirectoryFileHelper(String baseDirectoryPath, String newRootDirectoryName) throws InvalidRootDirectoryException, IOException{
 		rootDir = baseDirectoryPath + "/" + newRootDirectoryName;
 		makeIfPossible(baseDirectoryPath, newRootDirectoryName);
 		addedFiles = new ArrayList<>();

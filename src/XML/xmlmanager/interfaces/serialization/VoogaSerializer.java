@@ -1,4 +1,4 @@
-package XML.xmlmanager.interfaces;
+package XML.xmlmanager.interfaces.serialization;
 
 import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 

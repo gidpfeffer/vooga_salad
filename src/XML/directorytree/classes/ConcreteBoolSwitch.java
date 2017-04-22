@@ -1,6 +1,6 @@
-package XML.xmlmanager.classes;
+package XML.directorytree.classes;
 
-import XML.xmlmanager.interfaces.BoolSwitch;
+import XML.directorytree.interfaces.BoolSwitch;
 
 public class ConcreteBoolSwitch implements BoolSwitch{
 

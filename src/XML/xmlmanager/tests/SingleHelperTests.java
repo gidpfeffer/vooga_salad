@@ -7,23 +7,23 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import XML.xmlmanager.classes.FileHelperMain;
+import XML.xmlmanager.classes.ConcreteDirectoryFileHelper;
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
-import XML.xmlmanager.interfaces.GroupFileHelper;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import gamedata.GameData;
 
 public class SingleHelperTests {
 	
 	private GameData myData;
-	private GroupFileHelper helper;
+	private DirectoryFileManager helper;
 	
     public void setUp (boolean test, String rootDir, String newDir) {
        myData = new GameData();
        myData.addType("test1");
        myData.addType("test2");
        try {
-    	   helper = new FileHelperMain(rootDir, newDir);
+    	   helper = new ConcreteDirectoryFileHelper(rootDir, newDir);
     	   assertEquals(test, true);
        } catch (InvalidRootDirectoryException | IOException e) {
     	   assertEquals(test, false);
