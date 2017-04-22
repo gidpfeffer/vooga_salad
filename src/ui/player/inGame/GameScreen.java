@@ -1,15 +1,15 @@
 package ui.player.inGame;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 
+import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
@@ -27,6 +27,19 @@ public class GameScreen extends GenericGameScreen
 	private SimpleHUD hud;
 	private Map<Integer, Actor> actorsMap;
 	private GameScreen gs = this;
+	private ScreenHandler screenHandler;
+	
+	private void initializeScreenHandler() {
+		screenHandler = new ScreenHandler(){
+			@Override
+			public void createActor(double x, double y, int option, ActorData actorData ) {
+				Actor actor = new Actor(uihandler,option,actorData,ivp, actorsMap);
+				actor.getPane().setLayoutX(getWidth() - x);
+				actor.getPane().setLayoutY(y);
+				getChildren().add(actor.getPane());
+			}
+		};
+	}
 	
 	@Override
 	public EventHandler<ActionEvent> getAction() {
@@ -46,6 +59,7 @@ public class GameScreen extends GenericGameScreen
 		this.uihandler = uihandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
+		initializeScreenHandler();
 		hud = uihandler.getSimpleHUD();
 		setup();
 		fadeTransition();
@@ -57,10 +71,19 @@ public class GameScreen extends GenericGameScreen
 	}
 	
 	private void setupPanels() {
-		SidePanel sidePanel = new SidePanel(uihandler, actorsMap, this, uihandler.getOptions(), ivp);
+		SidePanel sidePanel = new SidePanel(screenHandler, uihandler.getOptions());
 		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 10.0);
 		this.getChildren().add(sidePanel.getSidePane());
-		sidePanel.addInternalPanesToRoot();
+		addInternalPanesToRoot(sidePanel.getListOfPanes());
+	}
+	
+	public void addInternalPanesToRoot(Collection<OptionsPane> listOfPanes) {
+		listOfPanes.forEach(op -> {
+			this.getChildren().add(op);
+			AnchorPane.setRightAnchor(op, -op.getPrefWidth() - 10);
+			op.setStyle(("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
+					+ "-fx-background-radius: 10 0 0 10;"));
+		});
 	}
 	
 	private void setupHUD() {
@@ -82,7 +105,7 @@ public class GameScreen extends GenericGameScreen
 			if(arg.containsKey(id)) {
 				return false;
 			}
-			this.getChildren().remove(actorsMap.get(id).getActor());
+			this.getChildren().remove(actorsMap.get(id).getPane());
 			//actorsMap.get(id).deleteActor();
 			return true;
 		});
@@ -90,16 +113,15 @@ public class GameScreen extends GenericGameScreen
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
-				Actor newActor = new Actor(ivp, uihandler, actorsMap, actorOption, uihandler.getOptions().get(actorOption).getName(),
-						uihandler.getOptions().get(actorOption).getImagePath());
+				Actor newActor = new Actor(uihandler, actorOption, uihandler.getOptions().get(actorOption), ivp, actorsMap);
 				actorsMap.put(id, newActor);
-				this.getChildren().add(newActor.getActor());
+				this.getChildren().add(newActor.getPane());
 			}
 			Actor actor = actorsMap.get(id);
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
-			actor.getActor().setLayoutX(xCoor);
-			actor.getActor().setLayoutY(yCoor);
+			actor.getPane().setLayoutX(xCoor);
+			actor.getPane().setLayoutY(yCoor);
 			//System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);
 		});
 	}
