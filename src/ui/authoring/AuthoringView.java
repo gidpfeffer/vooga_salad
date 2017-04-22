@@ -271,12 +271,13 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	private void saveGameData() {
 		XStreamHelper x = new XStreamHelper();
 		String xml = x.getXMLStringFromObject(myGameData);
-		System.out.println(xml);
+		//System.out.println(xml);
 		FileHelperMain f = new FileHelperMain();
+		f.makeDirectory("/games", "filename");
 		try {
 			f.addStringFileToDirectory("/games", xml, "filename");
 		} catch (IOException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
