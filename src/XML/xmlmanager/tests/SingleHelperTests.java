@@ -13,7 +13,7 @@ import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.GroupFileHelper;
 import gamedata.GameData;
 
-public class SingleFileHelperTests {
+public class SingleHelperTests {
 	
 	private GameData myData;
 	private GroupFileHelper helper;
@@ -63,6 +63,20 @@ public class SingleFileHelperTests {
 		cleanse();
 	}
 	
+    // tests if file exist
+	@Test
+	public void fileExistsTest() {
+		setUp(true, "src/XML/xmlmanager/tests", "foo");
+		fillDirWithFiles();
+		assertEquals(helper.fileExists("testing.txt"), true);
+		assertEquals(helper.fileExists("testing2.txt"), true);
+		assertEquals(helper.fileExists("abc.txt"), true);
+		assertEquals(helper.fileExists("abccc.txt"), false);
+		assertEquals(helper.fileExists(""), false);
+		assertEquals(helper.fileExists("/"), false);
+		cleanse();
+	}
+	
     // tests reading files
 	@Test
 	public void fileContentTest() {
@@ -73,6 +87,20 @@ public class SingleFileHelperTests {
 		assertEquals(getFileContent("abc.txt"), "");
 		assertEquals(getFileContent("abccc.txt"), null);
 		assertEquals(getFileContent(""), null);
+		assertEquals(getFileContent("/"), null);
+		cleanse();
+	}
+	
+    // tests getting new files back
+	@Test
+	public void getNewFilesTest() {
+		setUp(true, "src/XML/xmlmanager/tests", "foo");
+		fillDirWithFiles();
+		assertEquals(helper.getAllNewFiles().size(), 3);
+		assertEquals(helper.getAllNewFiles().contains(""), false);
+		assertEquals(helper.getAllNewFiles().contains("testing.txt"), true);
+		assertEquals(helper.getAllNewFiles().contains("testing2.txt"), true);
+		assertEquals(helper.getAllNewFiles().contains("abc.txt"), true);
 		cleanse();
 	}
 	

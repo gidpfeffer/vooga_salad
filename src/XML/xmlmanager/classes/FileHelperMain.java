@@ -48,7 +48,7 @@ public class FileHelperMain implements GroupFileHelper{
 	
 	@Override
 	public boolean fileExists(String filename){
-		return applyAndTest(rootDir + filename, fp -> new File(fp), file -> file.exists() && !file.isDirectory());
+		return applyAndTest(rootDir + "/" + filename, fp -> new File(fp), file -> file.exists() && !file.isDirectory());
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class FileHelperMain implements GroupFileHelper{
 		FileWriter fileWriter = new FileWriter(file, false);
 		fileWriter.write(fileContent);
 		fileWriter.close();
-		addedFiles.add(totalPath);
+		addedFiles.add(filename);
 		return true;
 	}
 
