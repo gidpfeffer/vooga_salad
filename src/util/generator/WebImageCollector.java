@@ -1,17 +1,17 @@
 package util.generator;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  * Class for collecting images (and other file types, if
@@ -42,46 +42,69 @@ public class WebImageCollector {
 	private final static String URL_END = "\",";
 	private final static String API_ADDRESS = "https://www.googleapis.com/customsearch/v1?";
 	
-	//TODO: Error classifications!
-	
-	public static void main (String [] args){
-		Image pup = findPng("Puppy");
+	/**
+	 * For use in random Actor generation.
+	 * 
+	 * @param Random Object used to choose iteration for image
+	 * @param qry The String topic to search
+	 * @return BufferedImage found on the internet
+	 */
+	public static BufferedImage findRandomIcon(Random randy, String qry){
+		int index = randy.nextInt(20) + 1;
+		return findImage(qry+"+cartoon", PNG, index);
 	}
 	
-	public static Image findPng(String qry){
-		return findImage(qry, PNG);
+	/**
+	 * For use in random Actor generation.
+	 * @param qry String topic to search
+	 * @param iter How many layers of search to go through before choosing
+	 * the final image
+	 * @return BufferedImage found on the internet
+	 */
+	public static BufferedImage findIcon(String qry, int iter){
+		return findImage(qry+"+cartoon", PNG, iter);
 	}
 	
-	public static Image findImage(String qry, String fileType){
-		return findSearchItem(qry, fileType, IMAGE);
+	public static BufferedImage findImage(String qry, String fileType, int iter){
+		return findSearchItem(qry, fileType, IMAGE, iter);
 	}
 	
-	public static Image findSearchItem(String qry, String fileType, String searchType){
-		Image toRet = null;
+	public static BufferedImage findSearchItem(String qry, String fileType, String searchType, int iter){
+		BufferedImage toRet = null;
+		String search = stringToSearch(qry);
 		try{
-			HttpURLConnection google = constructSearchUrl(qry, fileType, searchType);
-			String imagePath = popFilePath(google);
+			HttpURLConnection google = constructSearchUrl(search, fileType, searchType);
+			String imagePath = popFilePath(google, iter);
 			google.disconnect();
 			URL toRead = new URL(imagePath);
-			toRet = java.awt.Toolkit.getDefaultToolkit().createImage(toRead);
+			toRet = ImageIO.read(toRead);
 			
 		} catch(IOException e){
-			printExceptionMessage(e);
+			//printExceptionMessage(e);
+			toRet = findSearchItem(qry, fileType, searchType, ++iter);
+			//toRet = ImageIO.read(new File('DEFAULT_PATH'));
+			// Replace null with default image
 		}
 		return toRet;
 	}
 	
-	private static String popFilePath(HttpURLConnection conn) throws IOException {
+	private static String stringToSearch(String qry){
+		return qry.replaceAll(" ", "+");
+	}
+	
+	private static String popFilePath(HttpURLConnection conn, int iter) throws IOException {
 		InputStream stream = conn.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader((stream)));
 		  
 		String output;
 		String toRet = "";
+		int counter = 0;
 		while ((output = br.readLine()) != null) {
 		     if(output.contains(URL_START)){                
 		         toRet = output.substring(output.indexOf(URL_START)+
 		              (URL_START).length(), output.indexOf(URL_END));
-		         break;
+		         if(counter++>=iter)
+		        	 break;
 		     }     
 		}
 		return toRet;
@@ -106,6 +129,8 @@ public class WebImageCollector {
 	}
 	
 	private static void printExceptionMessage(Exception e){
-		System.out.println("Message: " + e.getMessage() + "\nCause: "+ e.getCause());
+		JOptionPane.showMessageDialog(null, "Message: " + e.getMessage() 
+			+ "\nCause: "+ e.getCause());
+		
 	}
 }
