@@ -157,8 +157,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupLevelView() {
 		//TODO
-		//Collection<ActorData> enemies = myLeftPane.getActors(new BasicActorType("Troop"));
-		myLevelView = new LevelEditorView(this, null);//TODO pass gamedata instead
+		myLevelView = new LevelEditorView(this, myGameData);//TODO pass gamedata instead
 			
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);

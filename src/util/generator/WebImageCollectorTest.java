@@ -2,14 +2,20 @@ package util.generator;
 
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+/**
+ * Tester for WebImageCollector, displays
+ * search on JFrame.
+ * 
+ * @author maddiebriere
+ *
+ */
 
 public class WebImageCollectorTest {
 	

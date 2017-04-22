@@ -67,7 +67,6 @@ public class GameData {
 	//Actors available for entire game
 	private Map<Integer, LineageData> pieces;
 	
-	
 	private int numOptions;
 
 

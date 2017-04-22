@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
 /**
  * Class for collecting images (and other file types, if
