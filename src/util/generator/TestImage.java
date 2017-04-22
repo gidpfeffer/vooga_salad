@@ -38,7 +38,7 @@ public class TestImage {
 	public static void main (String [] args){
 		String key="AIzaSyA5cXZKmvGI_SSj0KDfOyVtNTCXNO5o_64";
 		String cx = "010345643380297177901:4s0abli8aki";
-		TestImage2 test = new TestImage2(key, "puppy", cx, "png", "image");
+		TestImage test = new TestImage(key, "puppy", cx, "png", "image");
 		try {
 			test.search();
 		} catch (URISyntaxException | IOException e) {
