@@ -36,6 +36,10 @@ public class BasicActorType implements Comparable {
 	public void setPlaceable(boolean placeable) {
 		this.placeable = placeable;
 	}
+	
+	public void togglePlaceable(){
+		placeable = !placeable;
+	}
 
 	@Override
 	public boolean equals(Object o){

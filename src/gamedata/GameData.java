@@ -46,6 +46,7 @@ import types.BasicActorType;
  */
 
 public class GameData {
+	String name;
 	//Level information (preferences, no & type of enemies)
 	Map<Integer,LevelData> levels;
 	
@@ -71,6 +72,11 @@ public class GameData {
 
 
 	public GameData(){
+		this("");
+	}
+	
+	public GameData(String name){
+		this.name = name;
 		levels=new HashMap<Integer,LevelData>();
 		myPaths = new PathData();
 		preferences = new PreferencesData();
@@ -254,7 +260,12 @@ public class GameData {
 		return myLayers;
 	}
 
-	
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }
