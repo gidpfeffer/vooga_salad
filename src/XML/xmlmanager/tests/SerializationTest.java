@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import XML.xmlmanager.classes.ConcreteVoogaSerializer;
+import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
@@ -20,7 +20,7 @@ public class SerializationTest {
 	
     public void setUp () {
        myData = new GameData();
-       mySerializer = new ConcreteVoogaSerializer();
+       mySerializer = new XStreamSerializer();
        myData.addType("test1");
        myData.addType("test2");
     }
