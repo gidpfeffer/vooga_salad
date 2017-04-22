@@ -1,9 +1,12 @@
 package ui.authoring;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import XML.xmlmanager.classes.FileHelperMain;
+import XML.xmlmanager.classes.XStreamHelper;
 import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -266,7 +269,15 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * @param gameData
 	 */
 	private void saveGameData() {
-		
+		XStreamHelper x = new XStreamHelper();
+		String xml = x.getXMLStringFromObject(myGameData);
+		System.out.println(xml);
+		FileHelperMain f = new FileHelperMain();
+		try {
+			f.addStringFileToDirectory("/games", xml, "filename");
+		} catch (IOException e) {
+			//e.printStackTrace();
+		}
 	}
 
 

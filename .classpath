@@ -8,6 +8,7 @@
 	<classpathentry kind="src" path="images"/>
 	<classpathentry kind="src" path="data/resource"/>
 	<classpathentry kind="src" path="data/css"/>
+	<classpathentry kind="src" path="games"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>

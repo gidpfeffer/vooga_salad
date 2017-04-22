@@ -16,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -76,7 +78,12 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 	private void setupMouseEvents() {
 		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> this.getScene().setCursor(Cursor.CROSSHAIR));
-		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_EXITED, e -> this.getScene().setCursor(Cursor.DEFAULT));	
+		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_EXITED, e -> this.getScene().setCursor(Cursor.DEFAULT));
+		this.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
+			if(e.getCode().equals(KeyCode.ENTER)){
+				printData();
+			}
+		});
 	}
 
 	private void setupViews() {
@@ -284,6 +291,14 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	@Override
 	public void layerPopupDidPressCancel() {
 		myPopDelegate.closeView(myLayerPopup);		
+	}
+	
+	
+	
+	
+	private void printData(){
+		System.out.println(this.myPathLayer.getMyPathData());
+		System.out.println(this.myMapData);
 	}
 
 }

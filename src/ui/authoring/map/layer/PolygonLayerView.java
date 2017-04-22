@@ -154,25 +154,32 @@ public class PolygonLayerView extends Layer {
 	 */
 	private void mouseSecondary(MouseEvent e) {
 		if(myCurrentPolygon != null){
-			this.myCurrentPolygon.getPoints().addAll(e.getX(),e.getY());
+			//this.myCurrentPolygon.getPoints().addAll(e.getX(),e.getY());
 			PolygonData data = makePolygonData(myCurrentPolygon);
 			this.myLayerData.getMyPolygons().add(data);
+			printData();
 			myCurrentPolygon = null;
 		}
 	}
 	
+	private void printData(){
+		System.out.println("\nPrint myLayerData");
+		for(PolygonData d: myLayerData.getMyPolygons())
+			System.out.println("\t"+d);
+	}
 	
-
 	
 	private PolygonData makePolygonData(Polygon polygon) {
-		PolygonData data = new PolygonData();
 		List<Double> list = polygon.getPoints();
+		List<Location> points = new ArrayList<>();
 		double normX = 1.0/this.getWidth();
 		double normY = 1.0/this.getHeight();
 		for(int i =0; i<list.size(); i+=2){
 			Location loc = new Location(list.get(i)*normX, list.get(i+1)*normY);
-			data.getMyPoints().add(loc);
+			points.add(loc);
 		}
+		PolygonData data = new PolygonData(points);
+
 		return data;
 	}
 
