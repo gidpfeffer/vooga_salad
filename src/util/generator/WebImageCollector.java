@@ -2,6 +2,7 @@ package util.generator;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,7 +12,6 @@ import java.net.URL;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
 /**
  * Class for collecting images (and other file types, if
@@ -41,6 +41,28 @@ public class WebImageCollector {
 	private final static String URL_START = "\"link\": \"";
 	private final static String URL_END = "\",";
 	private final static String API_ADDRESS = "https://www.googleapis.com/customsearch/v1?";
+	private final static String IMAGE_FOLDER = "images/internet/";
+	
+	public static BufferedImage findAndSaveRandomIcon(Random randy, String qry){
+		BufferedImage image = findRandomIcon(randy, qry);
+		String savePath = IMAGE_FOLDER + qry;
+		savePng(image, savePath);
+		return image;
+	}
+	
+	/**
+	 * Saved png to the internet images folder in the workspace
+	 * @param image Image to be saved
+	 * @param fileName Folder + name of file (e.g., images/button)
+	 */
+	private static void savePng(BufferedImage image, String fileName) {
+        try {
+            ImageIO.write(image, PNG,
+                    new File(fileName + "." + PNG));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	/**
 	 * For use in random Actor generation.
@@ -128,9 +150,9 @@ public class WebImageCollector {
 	    conn.setRequestProperty("Accept", "application/json");
 	}
 	
-	private static void printExceptionMessage(Exception e){
+/*	private static void printExceptionMessage(Exception e){
 		JOptionPane.showMessageDialog(null, "Message: " + e.getMessage() 
 			+ "\nCause: "+ e.getCause());
 		
-	}
+	}*/
 }

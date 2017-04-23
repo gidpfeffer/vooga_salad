@@ -18,21 +18,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import ui.Preferences;
 import ui.authoring.delegates.PopViewDelegate;
-import ui.general.CustomColors;
-import ui.general.ImageButton;
 import ui.general.UIHelper;
-import util.Location;
 
 /**
  * Wave chooser allows for setting the type and number of each enemy
@@ -114,6 +107,8 @@ public class WaveChooserMenu extends AnchorPane {
 			enemyBox.setSpacing(10);
 			enemyBox.setAlignment(Pos.CENTER);
 			ImageView image=new ImageView(new Image(enemy.getImagePath()));
+			image.setFitWidth(60);
+			image.setPreserveRatio(true);
 			Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
 					Optional.of(LevelUtil.labelForStackButton(enemy.getName())), 
 					Optional.of(image), Pos.CENTER, true);
@@ -217,7 +212,7 @@ public class WaveChooserMenu extends AnchorPane {
 		double inset = 12.0;
 		LevelUtil.setVerticalAnchors(inset, bottomSide, topSide);
 		LevelUtil.setupBar(inset, 1.65, bottomSide, this, 3 / 2);
-		LevelUtil.setupBar(inset, 2.5, topSide, this, 3 / 2);
+		LevelUtil.setupBar(inset, 3, topSide, this, 3 / 2);
 		this.getChildren().addAll(bottomSide, topSide);
 	}
 }
