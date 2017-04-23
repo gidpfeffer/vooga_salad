@@ -133,7 +133,7 @@ public class SingleHelperTests {
 	private String getFileContent(String filename){
 		try {
 			return helper.getFileContent(filename);
-		} catch (IOException e) {
+		} catch (IOException | IllegalFileException e) {
 			return null;
 		}
 	}

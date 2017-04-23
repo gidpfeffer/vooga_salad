@@ -67,7 +67,8 @@ public class ConcreteDirectoryFileHelper implements DirectoryFileManager{
 	}
 
 	@Override
-	public String getFileContent(String filename) throws IOException{
+	public String getFileContent(String filename) throws IOException, IllegalFileException{
+		if(filename.contains("/")) throw new IllegalFileException(new IllegalStateException("tried reading a file with a / in it"));
 		return new String(Files.readAllBytes(Paths.get(rootDir + "/" + filename)));
 	}
 
