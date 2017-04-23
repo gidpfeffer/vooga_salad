@@ -30,9 +30,9 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 		arg.forEach((k,v) -> display(k,v,rowIdx));
 	}
 	
-	private void display(String key, String val, int rowIdx) {
-		hud.add(new Text(key), 0, rowIdx);
-		hud.add(new Text(val), 1, rowIdx);
+	private void display(String key, String val, int row) {
+		hud.add(new Text(key), 0, row);
+		hud.add(new Text(val), 1, row);
 		rowIdx++;
 	}
 }

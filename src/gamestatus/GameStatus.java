@@ -4,6 +4,11 @@ import java.util.HashMap;
 
 import util.observerobservable.VoogaObservableMap;
 
+/**
+ * An Observable map of Game Status indicators
+ * @author sarahzhou
+ *
+ */
 public class GameStatus extends VoogaObservableMap<String,String>{
 
 	private final String EXPERIENCE = "Experience";

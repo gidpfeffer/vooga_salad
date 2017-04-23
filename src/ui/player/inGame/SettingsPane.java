@@ -1,40 +1,52 @@
 package ui.player.inGame;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gameengine.controllers.GameController;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import ui.handlers.UIHandler;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import ui.general.ToggleSwitch;
 import ui.player.login.Login;
 
-
 /**
- * Creates a pane for settings elements such as returning back to main, changing volume, etc
+ * Creates a pane for settings elements such as returning back to main, changing
+ * volume, etc
+ * 
  * @author anngelyque
  *
  */
 public class SettingsPane {
-
-	private Stage stage;
 	private Button button;
 	private AnchorPane settings;
+	private Hyperlink backToLogin;
 	private double paneWidth = 150.;
 	private List<String> helpPaneOptions = new ArrayList<>(Arrays.asList("Help", "Settings"));
 	private List<Hyperlink> helpLinks = new ArrayList<>();
 	private static final String panel = "panel.css";
-	private static final String loginCSS = "loginScreen.css";
-	private static final String loginBundle = "login";
+	static final String heroSong = "data/resource/hero_song.mp3";
+	private Media song;
+	private MediaPlayer mediaPlayer;
+	private SlidingPane sp;
 
 	public Button getHelpButton() {
 		return button;
@@ -43,9 +55,16 @@ public class SettingsPane {
 	public AnchorPane getHelpPane() {
 		return settings;
 	}
+	
+	public void setBackToLoginAction(EventHandler<ActionEvent> value) {
+		backToLogin.setOnAction(value);
+	}
 
-	public SettingsPane(Stage myStage) {
-		this.stage = myStage;
+
+	public SettingsPane() {
+		sp = new SlidingPane();
+		song = new Media(new File(heroSong).toURI().toString());
+		mediaPlayer = new MediaPlayer(song);
 		setup();
 	}
 
@@ -71,7 +90,7 @@ public class SettingsPane {
 	 * adds back button to the empty pane in the top-right corner
 	 */
 	private void addBackButton() {
-		OptionButton back = new OptionButton(0, "", "back_icon.png", closePane);
+		OptionButton back = new OptionButton(0, "", "back_icon.png", e -> sp.slidePane(settings, 0));
 		settings.getChildren().add(back.getButton());
 		AnchorPane.setTopAnchor(back.getButton(), 10.0);
 		AnchorPane.setRightAnchor(back.getButton(), 10.0);
@@ -81,7 +100,7 @@ public class SettingsPane {
 	 * Creates a help button that on click, slides out the help pane
 	 */
 	private void createHelpButton() {
-		OptionButton back = new OptionButton(0, "", "splash_icon.png", openPane);
+		OptionButton back = new OptionButton(0, "", "splash_icon.png", e -> sp.slidePane(settings, settings.getPrefWidth()));
 		back.getButton().getStylesheets().add(panel);
 		button = back.getButton();
 	}
@@ -90,25 +109,21 @@ public class SettingsPane {
 	 * Creates various hyperlinks needed in the pane including returning to main
 	 */
 	private void addHyperlinks() {
-		Hyperlink backToLogin = new Hyperlink("Return to Main");
-		backToLogin.setOnAction(e -> returnToMain());
-		helpPaneOptions.forEach(name -> helpLinks.add(new Hyperlink(name)));
+		ToggleSwitch musicToggle = new ToggleSwitch("Music");
+		Hyperlink helpLink = new Hyperlink("Help");
+		backToLogin = new Hyperlink("Return to Main");
 		VBox helpBox = new VBox(20);
-		//helpLinks.forEach(link -> link.setOnAction(value)); TODO: Enable return to main
-		helpLinks.forEach(link -> helpBox.getChildren().add(link));
-		helpBox.getChildren().add(backToLogin);
+		helpBox.getChildren().addAll(backToLogin, helpLink, musicToggle.getNode());
 		settings.getChildren().add(helpBox);
 		helpBox.setAlignment(Pos.CENTER_LEFT);
 	}
-
-	private void returnToMain() {
-		System.out.println("here");
-		Login login = new Login(stage, loginCSS, loginBundle);
-		stage.setScene(login.getScene());
-		stage.setTitle("Login");
+	
+	private void playMusic() {
+		mediaPlayer.setMute(!mediaPlayer.isMute());
 	}
+	
 
-	EventHandler<MouseEvent> closePane = new EventHandler<MouseEvent>() {
+/*	EventHandler<MouseEvent> closePane = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
 			Object obj = ME.getSource();
@@ -132,6 +147,6 @@ public class SettingsPane {
 				t.play();
 			}
 		}
-	};
+	};*/
 
 }

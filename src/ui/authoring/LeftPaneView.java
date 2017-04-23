@@ -12,11 +12,13 @@ import java.util.Optional;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import gamedata.ActorData;
+import gamedata.GameData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -78,6 +80,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	private PopViewDelegate myDelegate;
 	private VBox myVBox; //contains the buttons
 	private Map<BasicActorType, ActorEditorView> actorTypeToView = new HashMap<>();
+	private GameData myGameData;
 
 	/**
 	 * Constructs a panel with a list of button that
@@ -86,9 +89,10 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	 * 
 	 * @param delegate required so that this class can launch the ActorEditorView's
 	 */
-	public LeftPaneView(PopViewDelegate delegate){
+	public LeftPaneView(PopViewDelegate delegate, GameData gameData){
 		super();
 		myDelegate = delegate;
+		myGameData = gameData;
 		setupViews();
 	}
 	
@@ -148,7 +152,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	}
 
 	private void addActor(String actorType, String imagePath, Map<String,String> defaultActors){
-		ActorEditorView view = new ActorEditorView(myDelegate, new BasicActorType(actorType));
+		ActorEditorView view = new ActorEditorView(myDelegate, new BasicActorType(actorType), myGameData);
 		view.setupDefaultActors(defaultActors);
 		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
 		this.actorTypeToView.put(new BasicActorType(actorType), view);
@@ -160,6 +164,26 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		myVBox.getChildren().add(myVBox.getChildren().size() - 1, button);
 		
 	}
+	
+	
+	//TODO: Place button implement (toggle)
+	private StackPane placeableButton(String actorType){
+		ImageView img = new ImageView(new Image("place_icon.png"));
+		img.setFitHeight(16);
+		img.setFitWidth(16);
+		StackPane place = UIHelper.buttonStack(e -> togglePlaceButton(img), 
+				Optional.ofNullable(null), 
+				Optional.of(img), Pos.CENTER, true);
+		UIHelper.setBackgroundColor(place, Color.TRANSPARENT);
+		AnchorPane.setTopAnchor(place, -12.0);
+		AnchorPane.setRightAnchor(place, -12.0);
+		return place;
+	}
+	
+	private void togglePlaceButton(ImageView image){
+		//TODO: implement
+	}
+	
 	private void launchEditor(ActorEditorView view) {
 		view.setActorTypeOptions(this.actorTypeToView.keySet());
 		myDelegate.openView(view);

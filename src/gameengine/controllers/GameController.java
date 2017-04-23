@@ -1,14 +1,17 @@
 package gameengine.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import builders.ActorGenerator;
 import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.LevelData;
+import gamedata.map.LayerData;
+import gamedata.map.PolygonData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
+import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
@@ -20,6 +23,7 @@ import javafx.util.Duration;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
+import util.PathUtil;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 
@@ -68,10 +72,6 @@ public class GameController {
 		return myGameScreen;
 	}
 	
-	public SimpleHUD getSimpleHUD() {
-		return mySimpleHUD;
-	}
-	
 	private void setupGameStatus() {
 		mySimpleHUD = new SimpleHUD();
 		myGameStatus = new GameStatus();
@@ -79,7 +79,7 @@ public class GameController {
 	}
 	
 	public void start(Stage stage) {
-		myGameScreen = new GameScreen(stage,myUIHandler);
+		myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(1,() -> getNewActorGrid(myGameScreen));
 		intitializeTimeline();
@@ -126,18 +126,33 @@ public class GameController {
 				}
 				
 			}
+			/**
+			 * method to check if actor is being placed in the right layer
+			 * x, y is from 0 -1 
+			 * @return
+			 */
+			private boolean isPlaceable(LayerData layer, double x, double y){
+				
+				for (PolygonData poly: layer.getMyPolygons()){
+					if (!PathUtil.isWithinPolygon(poly.getMyPoints(), x,y)){
+						return false;
+					}
+				}
+				return true;
+			}
 
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option);
-				Actor actor = ActorGenerator.makeActor(option,actorData);
-				if (myGrid.isValidLoc(xRatio, yRatio)) {
+				//check for placeable here 
+				if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && myGrid.isValidLoc(xRatio, yRatio)){
+					Actor actor = ActorGenerator.makeActor(option,actorData);
 					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
-				} else {
+					return actor.getID();
+				}
+				else {
 					throw new VoogaException(VoogaException.INVALID_LOCATION);
 				}
-				
-				return actor.getID();
 			}
 
 			@Override
@@ -170,7 +185,10 @@ public class GameController {
 				myLevelController.changeLevel(myGameData, level);
 			}
 
-		
+			@Override	
+			public SimpleHUD getSimpleHUD() {
+				return mySimpleHUD;
+			}
 		};
 	}
 	

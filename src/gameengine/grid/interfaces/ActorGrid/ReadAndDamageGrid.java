@@ -24,7 +24,7 @@ public interface ReadAndDamageGrid extends ReadableGrid{
 	 * @param type the Type of Actor to filter the search on
 	 * @return A Collection of consumers to apply damage to the filtered actors (consumer.accept(double damageToDeal))
 	 */
-	Map<Double, Consumer<Double>>getActorDamagablesInRadius(double x, double y, 
+	Map<Consumer<Double>, Double>getActorDamagablesInRadius(double x, double y, 
 			double radius, BasicActorType type);
 	
 	/**
