@@ -69,8 +69,19 @@ public class SocialCenterView {
 	 */
 	private void reviewsButtonHandler() {
 		// TODO Auto-generated method stub
-		myRoot.setCenter(new RatingEntry());
+		RatingEntry re = new RatingEntry();
+		re.addSubmitEventHandler(e -> submit(re.getUser(),re.getRating(), re.getReview()));
+		myRoot.setCenter(re);
+		
 		System.out.println("CLICK");
+	}
+	
+	private void submit(String user, int rating, String review) {
+		System.out.println(user);
+		System.out.println(rating);
+		System.out.println(review);
+		//ADD TO XML
+		//DISPLAY UPDATED XML
 	}
 
 }

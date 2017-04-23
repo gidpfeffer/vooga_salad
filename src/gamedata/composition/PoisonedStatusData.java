@@ -1,4 +1,4 @@
-package gamedata.compositiongen;
+package gamedata.composition;
 
 import gamedata.compositiongen.StatusData;
 import gameengine.actors.status.StatusDuration;
@@ -12,8 +12,14 @@ public class PoisonedStatusData extends StatusData{
 	
 	double myDamage;
 	int myTimeBetweenDamage;
+	
+	public PoisonedStatusData(){
+		super();
+		myDamage=0;
+		myTimeBetweenDamage=0;
+	}
 
-	public PoisonedStatusData(BasicActorType type, StatusDuration statusDuration,double damage,int timeBetweenDamage) {
+	public PoisonedStatusData(double damage, int timeBetweenDamage, BasicActorType type, StatusDuration statusDuration) {
 		super(type, statusDuration);
 		myDamage = damage;
 		myTimeBetweenDamage = timeBetweenDamage;

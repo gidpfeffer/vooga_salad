@@ -81,7 +81,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private SettableActorLocator getActorFromID(int ID){
 		Collection<SettableActorLocator> foundIDs = filter(actors, a-> a.getActor().getID() == ID);
 		if(foundIDs.size() != 1) 
-			throw new IllegalStateException("found an invalid number of id's ~ lines 75 ActorGrid");
+			throw new IllegalStateException("found an invalid number of id's ~ lines 84 ActorGrid");
 		return foundIDs.iterator().next();
 	}
 
@@ -103,11 +103,11 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	}
 	
 	@Override
-	public Map<Double, Consumer<Double>> getActorDamagablesInRadius(double x,
+	public Map<Consumer<Double>, Double> getActorDamagablesInRadius(double x,
 			double y, double radius, BasicActorType type) {
 		return Collections.unmodifiableMap(getActorsInRadius(x, y, radius, type).stream()
 					.collect(Collectors.toMap(
-							e -> e.getActor().getRemainingHealth(), e -> e.getActor().applyDamage())));
+							e -> e.getActor().applyDamage(), e -> e.getActor().getRemainingHealth())));
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	
 	@Override
 	public void controllerSpawnActor(Actor actor, double startX, double startY){
-		addActor(actor, startX, startY);
+		actors.add(new ActorLocator(new Coordinates(startX, startY), actor));
 	}
 	
 	private void addActor(Actor newActor, double startX, double startY){

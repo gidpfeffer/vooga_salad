@@ -16,8 +16,6 @@ public class MoveFreelyToBaseProperty<G extends ReadAndMoveGrid> implements IAct
 	@Override
 	public void action(G grid, Integer actorID) {
 		// TODO Auto-generated method stub
-		
-		
 		//move randomly to myTarget 
 	}
 

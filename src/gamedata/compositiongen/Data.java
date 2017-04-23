@@ -2,5 +2,5 @@ package gamedata.compositiongen;
 
 public interface Data{
 	//define the classification of this data type
-	public String getCategory();
+	public boolean validate();
 }

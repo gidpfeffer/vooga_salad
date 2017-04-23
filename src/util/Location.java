@@ -1,17 +1,19 @@
 package util;
 
-public class Location {
+import gameengine.grid.interfaces.Identifiers.Grid2D;
+
+public class Location implements Grid2D{
 	private Tuple<Double,Double> loc;
 	
 	public Location(Double col, Double row){
 		setValue(col, row);
 	}
 
-	public Double getX() {
+	public double getX() {
 		return loc.x;
 	}
 	
-	public Double getY() {
+	public double getY() {
 		return loc.y;
 	}
 

@@ -43,11 +43,6 @@ public class ActorDamageableData implements Data {
 	public void setMyEnemyTypes(List<BasicActorType> myEnemyTypes) {
 		this.myEnemyTypes = myEnemyTypes;
 	}
-
-	@Override
-	public String getCategory() {
-		return "Able to be damaged";
-	}
 	
 	
 }

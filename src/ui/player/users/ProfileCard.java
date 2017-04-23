@@ -17,6 +17,11 @@ public class ProfileCard {
 	private ExperienceGrid expGrid;
 	private GameStatsGrid gsGrid;
 
+	
+	public User getUser() {
+		return user;
+	}
+	
 	public HBox getCard() {
 		return card;
 	}

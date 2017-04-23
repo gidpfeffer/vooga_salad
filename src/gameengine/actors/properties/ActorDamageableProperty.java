@@ -21,7 +21,7 @@ public class ActorDamageableProperty<G extends ReadAndDamageGrid> implements IAc
 	}
 	public void action(G grid, Integer actorID) {
 		myTypes.stream().forEach(type -> grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(),
-				grid.getLocationOf(actorID).getY(), hitBox, type).forEach((health, damage) -> {
+				grid.getLocationOf(actorID).getY(), hitBox, type).forEach((damage, health) -> {
 					grid.getMyDamageable(actorID).accept(health);
 					damage.accept(health);
 				}));

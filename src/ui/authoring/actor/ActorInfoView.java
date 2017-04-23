@@ -12,6 +12,7 @@ import builders.DataGenerator;
 import builders.OptionGenerator;
 import gamedata.ActorData;
 import gamedata.FieldData;
+import gamedata.LineageData;
 import gamedata.compositiongen.Data;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
@@ -39,11 +40,12 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private GridPane myGridPane;
 	private static final int GRID_X_DIM = 3;
 	private HBox myUpgradePickerView;
-	private ActorData myActorData;
+	private LineageData myLineageData;
 	private List<DataView> myDataViews = new ArrayList<DataView>();
 	private ImageView myActorImageView;
 	private DataSelectionView myOptionPickerView;
 	private Set<BasicActorType> myActorTypeOptions;
+	private ActorData myCurrentActorData;
 
 
 	
@@ -101,9 +103,13 @@ private void setupImageView(Image img) {
 		UIHelper.setDropShadow(myUpgradePickerView);
 		this.getChildren().addAll(myGridPane, myUpgradePickerView);
 	} 
-	public void setActorData(ActorData actorData){
+	public void setLineageData(LineageData lineageData){
+		setActorData(lineageData.getProgenitor());
+	}
+	
+	private void setActorData(ActorData actorData){
 		System.out.println("ActorInfoView.setActorData: "+actorData.getName() + " : size=" + actorData.getMyData().size());
-		myActorData = actorData;
+		myCurrentActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
 		if(myActorImageView == null)
@@ -163,7 +169,7 @@ private void setupImageView(Image img) {
 	
 	@Override
 	public void setData(Data newData) {
-		myActorData.addData(newData);
+		myCurrentActorData.addData(newData);
 	}
 
 	@Override
@@ -176,7 +182,7 @@ private void setupImageView(Image img) {
 		sc.play();
 		sc.setOnFinished(e -> {
 			this.myGridPane.getChildren().remove(dataView);
-			this.myActorData.removeData(dataView.getData());
+			this.myCurrentActorData.removeData(dataView.getData());
 			this.myDataViews.remove(dataView);
 			});
 	}
@@ -188,7 +194,7 @@ private void setupImageView(Image img) {
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
-		this.myActorData.addData(d);
+		this.myCurrentActorData.addData(d);
 		addDataView(d);
 	}
 

@@ -40,7 +40,6 @@ public class Point extends Circle implements Grid2D{
 		setRadius(7);
 	}
 
-	
 	private Tuple<Double, Double> getImageSize(Tuple<Double, Double> size, Tuple<Double, Double> insets){
 		return new Tuple<Double, Double>(size.x - 2*insets.x, size.y - 2*insets.y);
 	}
