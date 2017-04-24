@@ -50,13 +50,13 @@ public class GenericGameScreen extends AnchorPane{
 		this.songString = songString;
 		this.css = css;
 		this.backgroundImage = backgroundImage;
-		setup(1);
+		setup();
 	}
 	
-	private void setup(int level){
+	private void setup(){
 		setupBackground();
 		addSettings();
-		addStartLevelButton(level);
+		addStartLevelButton();
 		//addAnimationButtons();
 	}
 
@@ -78,10 +78,10 @@ public class GenericGameScreen extends AnchorPane{
 	}
 	
 	//what level?
-	private void addStartLevelButton(int level) {
+	private void addStartLevelButton() {
 		OptionButton startLevel = new OptionButton(0, "", "power_icon.png", e -> {
 			try {
-				uihandler.changeLevel(level);
+				uihandler.launchGame();
 			} catch (VoogaException e1) {
 				new VoogaException("Could not change levels ~ 105 GenericGame");
 			}
