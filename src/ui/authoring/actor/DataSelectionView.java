@@ -56,10 +56,9 @@ public class DataSelectionView extends GridPane{
 			widthProperty().addListener(e -> view.setPrefWidth(widthProperty().get()/3));
 			GridPane.setMargin(view, new Insets(12.0));
 			view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> didPickOption(view));
-			System.out.println( );
 			Tooltip.install(
 				    view,
-				    new Tooltip("hi")
+				    new Tooltip(OptionGenerator.getDescription(entry.getKey()))
 				);
 			this.add(view, col, row);
 			count++;
