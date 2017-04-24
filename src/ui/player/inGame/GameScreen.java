@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 import ui.general.ImageViewPane;
+import ui.handlers.LoginHandler;
 import ui.handlers.UIHandler;
 import ui.player.login.LoginElement;
 import util.observerobservable.VoogaObserver;
@@ -28,6 +29,7 @@ public class GameScreen extends GenericGameScreen
 	private Map<Integer, Actor> actorsMap;
 	private GameScreen gs = this;
 	private ScreenHandler screenHandler;
+	private LoginHandler loginhandler;
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
@@ -46,6 +48,7 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void handle(ActionEvent event) {
 				uihandler.stop();
+				loginhandler.returnToMain();
 			}
 		};
 		System.out.println(gs.getMediaPlayer().getStatus());
@@ -53,11 +56,12 @@ public class GameScreen extends GenericGameScreen
 		return backToLogin;
 	}
 	
-	public GameScreen(UIHandler uihandler) {
+	public GameScreen(UIHandler uihandler, LoginHandler loginhandler) {
 		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
 		this.uihandler = uihandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
+		this.loginhandler = loginhandler;
 		initializeScreenHandler();
 		hud = uihandler.getSimpleHUD().get();
 		setup();
