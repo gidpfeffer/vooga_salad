@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import XML.xmlmanager.classes.FileHelperMain;
-import XML.xmlmanager.classes.XStreamHelper;
+import XML.xmlmanager.classes.ConcreteDirectoryFileHelper;
+import XML.xmlmanager.classes.XStreamSerializer;
+import XML.xmlmanager.exceptions.IllegalFileException;
+import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -42,7 +45,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
-	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
+	private BasicActorView myLeftPane; //purpose of this pane is to flip animate 
 	private MenuView myMenuView;
 	private Pane myDimmerView;
 	private FadeTransition dimAnimator;
@@ -50,15 +53,20 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	public AuthoringView() {
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
-		myGameData = new GameData();
 		setupViews();
+		setGameData(new GameData());
+	}
+	
+	private void setGameData(GameData data){
+		myGameData = data;
+		myLeftPane.setGameData(data);
 	}
 
 	private void setupViews() {
 		setupTitle();
 		setupMapView();
 		setupLeftPane();
-		setupLevelView();
+		//setupLevelView();
 		
 		setupBottomPane();
 		setupMargins();
@@ -149,7 +157,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupMapView() {
 		//this calculation assumes that height < width
-		myMapView = new MapEditorView(myGameData.getMyPaths(), myGameData.getLayers(), this);
+		myMapView = new MapEditorView(this);
 		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
@@ -172,7 +180,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	} 
 	
 	private void setupLeftPane(){
-		myLeftPane = new LeftPaneView(this, myGameData);
+		myLeftPane = new BasicActorView(this);
 		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
 		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
@@ -256,7 +264,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * @param gameData The object that holds all the 
 	 */
 	private void loadGameData() {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -268,16 +275,15 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * @param gameData
 	 */
 	private void saveGameData() {
-		XStreamHelper x = new XStreamHelper();
+		XStreamSerializer x = new XStreamSerializer();
 		String xml = x.getXMLStringFromObject(myGameData);
-		//System.out.println(xml);
-		FileHelperMain f = new FileHelperMain();
-		f.makeDirectory("/games", "filename");
 		try {
-			f.addStringFileToDirectory("/games", xml, "filename");
-		} catch (IOException e) {
+			DirectoryFileManager manager = new ConcreteDirectoryFileHelper("games", "game1");
+			manager.addStringFileToDirectory(xml, "test.xml");
+		} catch (InvalidRootDirectoryException | IllegalFileException | IOException e) {
 			e.printStackTrace();
-		}
+		} 
+	
 	}
 
 

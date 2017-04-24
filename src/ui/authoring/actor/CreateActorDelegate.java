@@ -6,5 +6,5 @@ import util.Tuple;
 
 public interface CreateActorDelegate {
 	public abstract void closeSelfAndReturn(Pane pane, String actorTypeName, String imagePath);
-	public abstract void closeSelf(Pane pane);
+	public abstract void closeActorPopup(Pane popupView);
 }

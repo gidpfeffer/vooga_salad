@@ -44,6 +44,7 @@ import types.ActorType;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.PopViewDelegate;
+import ui.authoring.internal_api.IAuthoringComponent;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
 import ui.general.UIHelper;
@@ -56,9 +57,9 @@ import util.Location;
  * @author TNK
  *
  */
-public class ActorEditorView extends AnchorPane {
+public class ActorEditorView extends AnchorPane implements IAuthoringComponent {
 	private static final double BUTTON_HEIGHT = 72;
-	
+	private Map<String,String> DEFAULT_ACTOR_PRESETS;
 	
 	private GameData myGameData; //NOTE: this is the legit thing don't fuck with it
 	private HashMap<StackPane, LineageData> myActors;
@@ -195,10 +196,13 @@ public class ActorEditorView extends AnchorPane {
 		myActorsView.prefWidthProperty().bind(pane.widthProperty().add(-2));
 		pane.setContent(myActorsView);
 	}
-
-	public void setupDefaultActors(Map<String,String> mapOfNameToImagePath) {
+	
+	public void setDefaultActorPresets(Map<String,String> mapOfNameToImagePath){
+		this.DEFAULT_ACTOR_PRESETS = mapOfNameToImagePath;
+	}
+	private void setupDefaultActors(Map<String,String> mapOfNameToImagePath) {
 		for (Entry<String, String> entry : mapOfNameToImagePath.entrySet()) 
-			addActor(entry.getValue(), entry.getKey());
+			addActorAndCreateNewData(entry.getValue(), entry.getKey());
 	}
 
 	/**
@@ -209,13 +213,20 @@ public class ActorEditorView extends AnchorPane {
 	 * @param imgPath the String path of the image
 	 * @param name the name of the actor, can be changed later.
 	 */
-	private void addActor(String imgPath, String name){
-		Image img = new Image(imgPath);
+	private void addActorAndCreateNewData(String imgPath, String name){
+		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
+		addLineage(data);
+	}
+
+	
+	private void addLineage(LineageData data){
+		
+		Image img = new Image(data.getProgenitor().getImagePath());
 		ImageView imageView = new ImageView(img);
 		imageView.setFitWidth(40);
 		imageView.setPreserveRatio(true);
 		StackPane lblWrapper = new StackPane();
-		TextField field = new TextField(name);
+		TextField field = new TextField(data.getProgenitor().getName());
 		field.setFont(Preferences.FONT_MEDIUM);
 		field.setAlignment(Pos.CENTER);
 		field.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_200));
@@ -223,18 +234,16 @@ public class ActorEditorView extends AnchorPane {
 		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
 		StackPane.setMargin(field, new Insets(8,32,8,32));
 		lblWrapper.getChildren().add(field);
-		
-		StackPane view = UIHelper.buttonStack(e -> {}, 
+
+		StackPane button = UIHelper.buttonStack(e -> selectActor(data), 
 				Optional.of(field), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
-		view.setPrefHeight(BUTTON_HEIGHT);
-		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectActor(view));
-		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
-		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
-		VBox.setMargin(view, new Insets(8));
-		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
-		myActors.put(view, data);
-		myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
+		button.setPrefHeight(BUTTON_HEIGHT);
+		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(button, newText));
+		UIHelper.setBackgroundColor(button, CustomColors.BLUE_200);
+		VBox.setMargin(button, new Insets(8));
+		myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, button);		
+
 	}
 
 	/**
@@ -248,13 +257,13 @@ public class ActorEditorView extends AnchorPane {
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if(selectedFile!= null){
 			String s = selectedFile.getName();
-			addActor(s,s.substring(0, s.indexOf(".")) );
+			addActorAndCreateNewData(s,s.substring(0, s.indexOf(".")) );
 		}
 	}
 
 	
-	private void selectActor(StackPane stackButton){
-		myActorInfoView.setLineageData(this.myActors.get(stackButton));
+	private void selectActor(LineageData data){
+		myActorInfoView.setLineageData(data);
 	}
 	
 	private void updateTowerName(StackPane pane, String text){
@@ -272,6 +281,12 @@ public class ActorEditorView extends AnchorPane {
 
 	public void setActorTypeOptions(Set<BasicActorType> keySet) {
 		this.myActorInfoView.setActorTypeOptions(keySet);
+		
+	}
+
+	@Override
+	public void setGameData(GameData data) {
+		// TODO Auto-generated method stub
 		
 	}
 	

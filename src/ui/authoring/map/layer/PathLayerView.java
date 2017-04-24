@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import gamedata.GameData;
 import gamedata.PathData;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import ui.authoring.internal_api.IAuthoringComponent;
 import ui.authoring.map.Point;
 import ui.authoring.map.PointType;
 import ui.general.CustomColors;
@@ -30,9 +32,8 @@ public class PathLayerView extends Layer {
 	private Color myColor = CustomColors.BLACK_GRAY;
 	Tuple<Double, Double> myInsets; //
 
-	public PathLayerView(PathData data, Tuple<Double, Double> insets) {
+	public PathLayerView(Tuple<Double, Double> insets) {
 		super();
-		myPathData = data;
 		myInsets = insets;
 		addEventHandler(MouseEvent.MOUSE_RELEASED, e -> handleMouseRelease(e));
 	}
@@ -132,6 +133,10 @@ public class PathLayerView extends Layer {
 				((Point) p).updateSize(new Tuple<Double, Double>(imagepane.getWidth(), imagepane.getHeight()),
 						imagepane.getImageInsets());
 
+	}
+
+	public void setPathData(PathData data) {
+		myPathData = data;
 	}
 
 }

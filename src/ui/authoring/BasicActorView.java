@@ -1,25 +1,17 @@
 package ui.authoring;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
-import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.LineageData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -30,11 +22,31 @@ import ui.authoring.actor.ActorEditorView;
 import ui.authoring.actor.CreateActorDelegate;
 import ui.authoring.actor.CreateActorTypeView;
 import ui.authoring.delegates.PopViewDelegate;
+import ui.authoring.internal_api.IAuthoringComponent;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
-import util.Tuple;
 
-public class LeftPaneView extends StackPane implements CreateActorDelegate{
+/**
+ * Purpose of this class is to allow the user to select a 
+ * BasicActorType that maps to a list of Actors. Each button
+ * maps to a ActorEditorView that it launches.
+ * 
+ * Furthermore, the user also has the ability to add a 
+ * new BasicActorType. In other words, a new category to
+ * display a list of actors of the BasicActorType.
+ * 
+ * This class implements CreateActorDelegate in order
+ * to allow the ActorPopupView to transmit information 
+ * to this container class
+ * 
+ * @author TNK
+ *
+ */
+public class BasicActorView extends StackPane implements IAuthoringComponent, CreateActorDelegate{
+	
+	/*
+	 * Static variables 
+	 */
 	
 	private static final double ICON_WIDTH = 24;
 	private static final double BUTTON_HEIGHT = 56;
@@ -78,6 +90,10 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		DEFAULT_PROJECTILES = map;
 	}
 	
+	/*
+	 * instance variables
+	 */
+	
 	private PopViewDelegate myDelegate;
 	private VBox myVBox; //contains the buttons
 	private Map<BasicActorType, ActorEditorView> actorTypeToView = new HashMap<>();
@@ -90,10 +106,9 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	 * 
 	 * @param delegate required so that this class can launch the ActorEditorView's
 	 */
-	public LeftPaneView(PopViewDelegate delegate, GameData gameData){
+	public BasicActorView(PopViewDelegate delegate){
 		super();
 		myDelegate = delegate;
-		myGameData = gameData;
 		setupViews();
 	}
 	
@@ -101,7 +116,6 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		setupVBox();
 		setupTitle();
 		setupAddButton();
-		setupDefaultActors();
 
 	}
 	
@@ -149,12 +163,17 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
 		addActor("Troop","enemy_icon.png", DEFAULT_TROOPS);
 		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
-		
 	}
-
+	
+	/**
+	 * This is where the data is added to the \
+	 * @param actorType 
+	 * @param imagePath
+	 * @param defaultActors
+	 */
 	private void addActor(String actorType, String imagePath, Map<String,String> defaultActors){
 		ActorEditorView view = new ActorEditorView(myDelegate, new BasicActorType(actorType), myGameData);
-		view.setupDefaultActors(defaultActors);
+		view.setDefaultActorPresets(defaultActors);
 		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
 		this.actorTypeToView.put(new BasicActorType(actorType), view);
 		StackPane button = UIHelper.buttonStack(e -> launchEditor(view), 
@@ -198,12 +217,23 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	@Override
 	public void closeSelfAndReturn(Pane pane, String actorName, String imagePath) {
 		this.addActor(actorName, imagePath, new HashMap<String, String>());
-		closeSelf(pane);
+		closeActorPopup(pane);
 	}
 	
 	@Override
-	public void closeSelf(Pane pane){
+	public void closeActorPopup(Pane pane){
 		myDelegate.closeView(pane);
+	}
+
+	@Override
+	public void setGameData(GameData data) {
+		this.myGameData = data;
+		setupDefaultActors();
+
+		this.actorTypeToView.entrySet().forEach( entry -> {
+			entry.getValue().setGameData(data);
+		});
+		
 	}
 	
 }
