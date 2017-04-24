@@ -1,19 +1,14 @@
 package ui.player.login;
-
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -21,7 +16,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -29,95 +23,42 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ui.Preferences;
+import ui.handlers.LoginHandler;
 import ui.player.XStreamFileChooser;
-import ui.player.inGame.OptionButton;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
-
 public class Signup extends BorderedAnchorPane implements LoginElement {
 	//need to save image somehow and store as string to the location userImages/...
-	private boolean signedUpCorrectly = false;
 	private Scene scene;
-	private OptionButton back;
 	private StackPane profileImage;
 	private ResourceBundle resource;
 	private SignupGrid signupGrid;
-	private Button signupButton;
 	private UserDatabase database;
+	private LoginHandler loginhandler;
 	private String profilePicture = "profile_icon.png";
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
-
-	public boolean signedUpCorrectly() {
-		return signedUpCorrectly;
-	}
-	
 	@Override
 	public Scene getScene() {
 		return scene;
 	}
-
-	public void setSignupAction(EventHandler<ActionEvent> value) {
-		signupButton.addEventHandler(ActionEvent.ANY, value);
-	}
-	
-	@Override
-	public void setLoginReturn(EventHandler<ActionEvent> value) {
-		back.getButton().setOnAction(value);
-		signupButton.addEventHandler(ActionEvent.ANY, value);
-	}
-
-	public EventHandler<ActionEvent> getAction() {
-		
-		EventHandler<ActionEvent> signupUser = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				if (fieldsFilledIn() && (!checkExistingUser() && checkPasswords() && checkEmails())) {
-					XStream mySerializer = new XStream(new DomDriver());
-					XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-					database.getPasswords().signup(signupGrid.getUsername().getText(), signupGrid.getPassword().getText());
-					User newUser = new User(signupGrid.getUsername().getText(),
-							database.getPasswords().getUserPassword(signupGrid.getUsername().getText()),
-							generic_profile, signupGrid.getEmail().getText());
-					database.addUser(newUser);
-					String mySavedUsers = mySerializer.toXML(database);
-					System.out.println(mySavedUsers);
-					fileChooser.writeFile(mySavedUsers);
-					signedUpCorrectly = true;
-				} else {
-					showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
-				}
-			}
-		};
-		return signupUser;
-	}
-
-	public Signup(UserDatabase database, ResourceBundle resource, String css) {
+	public Signup(LoginHandler loginhandler, UserDatabase database, ResourceBundle resource, String css) {
 		this.resource = resource;
 		this.database = database;
+		this.loginhandler = loginhandler;
 		signupGrid = new SignupGrid(resource);
 		scene = new Scene(getRoot(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT);
 		scene.getStylesheets().add(css);
 		setup();
 	}
-
 	private void setup() {
 		setupLayout();
 		setupTop();
 		setupMiddle();
-		addBackButton();
 	}
-
-	private void addBackButton() {
-		back = new OptionButton(0, "", "back_icon.png", e -> {});
-		AnchorPane.setLeftAnchor(back.getButton(), 20.);
-		AnchorPane.setTopAnchor(back.getButton(), 20.);
-	}
-	
 	private void setupLayout() {
 		getRoot().setId("towerBackground");
 	}
-
 	private void setupTop() {
 		StackPane sp = stackedPanes("pane", new Insets(10., 150., 5., 150.));
 		Text signupTitle = new Text(resource.getString("newAccount"));
@@ -129,13 +70,13 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		getBorderPane().setTop(sp);
 		BorderPane.setAlignment(sp, Pos.CENTER);
 	}
-
 	private void setupMiddle() {
 		StackPane sp = stackedPanes("main-pane", new Insets(50., 150., 50., 150.));
 		GridPane middle = new GridPane();
 		middle.setHgap(25.);
 		middle.setVgap(25.);
-		signupButton = new Button(resource.getString("signup"));		
+		Button signupButton = new Button(resource.getString("signup"));	
+		signupButton.setOnAction(e -> signupUser());
 		setupProfileImage();
 		middle.add(profileImage, 0, 0);
 		middle.add(signupGrid.getGrid(), 1, 0);
@@ -145,7 +86,6 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		sp.getChildren().add(middle);
 		getBorderPane().setCenter(sp);
 	}
-
 	private StackPane stackedPanes(String id, Insets insets) {
 		StackPane top = new StackPane();
 		top.setId(id);
@@ -154,13 +94,11 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		sp.setBackground(Background.EMPTY);
 		return sp;
 	}
-
 	private void setupProfileImage() {
 		profileImage = new StackPane(new ImageView(new Image(profilePicture, 200, 200, true, true)));
 		profileImage.getStyleClass().add("button");
 		profileImage.addEventHandler(MouseEvent.MOUSE_CLICKED, loadPicture);
 	}
-
 	//http://java-buddy.blogspot.com/2013/01/use-javafx-filechooser-to-open-image.html
 	EventHandler<MouseEvent> loadPicture = new EventHandler<MouseEvent>(){
 		@Override
@@ -177,14 +115,34 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 			}
 		}
 	};
-
+	private void signupUser() {
+		if (fieldsFilledIn() && (!checkExistingUser() && checkPasswords() && checkEmails())) {
+			XStream mySerializer = new XStream(new DomDriver());
+			XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+			database.getPasswords().signup(signupGrid.getUsername().getText(), 
+					signupGrid.getPassword().getText());
+			
+			User newUser = new User(signupGrid.getUsername().getText(),
+					database.getPasswords().getUserPassword(signupGrid.getUsername().getText()),
+					generic_profile, signupGrid.getEmail().getText());
+			database.addUser(newUser);
+			
+			String mySavedUsers = mySerializer.toXML(database);
+			System.out.println(mySavedUsers);
+			fileChooser.writeFile(mySavedUsers);
+			
+			loginhandler.returnToMain();
+		} else {
+			showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
+		}
+	}
+	
 	private boolean checkExistingUser() {
 		if (database.getPasswords().existingUserCheck(signupGrid.getUsername().getText())) {
 			showAlert(AlertType.ERROR, resource.getString("incorrectSignUp"), resource.getString("pleaselogin"));
 		}
 		return database.getPasswords().existingUserCheck(signupGrid.getUsername().getText());
 	}
-
 	private boolean checkPasswords() {
 		if (!signupGrid.getPassword().getText().equals(signupGrid.getRePassword().getText())) {
 			showAlert(AlertType.ERROR, resource.getString("passwordError"),
@@ -195,7 +153,6 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		}
 		return true;
 	}
-
 	private boolean checkEmails() {
 		boolean valid = true;
 		if (!validEmail(signupGrid.getEmail().getText()) || !validEmail(signupGrid.getReEmail().getText())) {
@@ -212,7 +169,6 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		signupGrid.getReEmail().clear();
 		return valid;
 	}
-
 	private void showAlert(AlertType type, String heading, String content) {
 		Alert alert = new Alert(type);
 		alert.setTitle(resource.getString("errorTitle"));
@@ -220,16 +176,14 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		alert.setContentText(content);
 		alert.showAndWait();
 	}
-
 	// http://stackoverflow.com/questions/8204680/java-regex-email
 	private boolean validEmail(String email) {
 		Pattern ptr = Pattern.compile("(?:(?:\\r\\n)?[ \\t])*(?:(?:(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*\\<(?:(?:\\r\\n)?[ \\t])*(?:@(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*(?:,@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*)*:(?:(?:\\r\\n)?[ \\t])*)?(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*\\>(?:(?:\\r\\n)?[ \\t])*)|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*:(?:(?:\\r\\n)?[ \\t])*(?:(?:(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*\\<(?:(?:\\r\\n)?[ \\t])*(?:@(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*(?:,@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*)*:(?:(?:\\r\\n)?[ \\t])*)?(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*\\>(?:(?:\\r\\n)?[ \\t])*)(?:,\\s*(?:(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*\\<(?:(?:\\r\\n)?[ \\t])*(?:@(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*(?:,@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*)*:(?:(?:\\r\\n)?[ \\t])*)?(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*\\>(?:(?:\\r\\n)?[ \\t])*))*)?;\\s*)");
 		Matcher matcher = ptr.matcher(email);
 		return matcher.find();
 	}
-
 	private boolean fieldsFilledIn() {
-		//System.out.println(!signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty()));
+		System.out.println(!signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty()));
 		return !signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty());
 	}
 }

@@ -11,6 +11,10 @@ public class LimitedHealthProperty implements HealthProperty {
 	public LimitedHealthProperty(LimitedHealthData data) {
 		myHealth = startHealth = data.getStartHealth();
 	}
+	
+	public LimitedHealthProperty(Double startHealth) {
+		myHealth = this.startHealth = startHealth;
+	}
 
 	@Override
 	public void apply(double damage) {

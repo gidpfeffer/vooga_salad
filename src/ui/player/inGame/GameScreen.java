@@ -41,7 +41,6 @@ public class GameScreen extends GenericGameScreen
 		};
 	}
 	
-	@Override
 	public EventHandler<ActionEvent> getAction() {
 		EventHandler<ActionEvent> backToLogin = new EventHandler<ActionEvent>() {
 			@Override

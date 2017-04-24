@@ -35,7 +35,7 @@ import javafx.util.Duration;
 
 public class GameSelector extends BorderedAnchorPane implements LoginElement {
 
-	private Scene myScene;
+	private Scene scene;
 	private List<Game> gamesList; 
 	private OptionButton back;
 	private double height = Preferences.SCREEN_HEIGHT;
@@ -46,17 +46,14 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 	
 	@Override
 	public Scene getScene() {
-		return myScene;
+		return scene;
 	}
 	
-	@Override
 	public void setLoginReturn(EventHandler<ActionEvent> value) {
 		//TODO: Implement when back button is made
 		back.getButton().setOnAction(value);
 	}
 	
-
-	@Override
 	public EventHandler<ActionEvent> getAction() {
 		// TODO: Implement when back button is made
 		return null;
@@ -66,8 +63,8 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		this.loginhandler = loginhandler;
 		this.gamesList = gamesList2;
 		gameMenu = new ScrollPane();
-		myScene = new Scene(getRoot(), width, height);
-		myScene.getStylesheets().add(css);
+		scene = new Scene(getRoot(), width, height);
+		scene.getStylesheets().add(css);
 		resource = ResourceBundle.getBundle(lang);
 		setup();
 	}
