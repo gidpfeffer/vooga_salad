@@ -20,12 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -42,7 +36,6 @@ import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
 import util.FileSelector;
-import util.VoogaException;
 
 public class LoginMain {
 	private Stage stage;
