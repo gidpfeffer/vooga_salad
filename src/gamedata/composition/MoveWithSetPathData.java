@@ -4,6 +4,7 @@ package gamedata.composition;
 import java.util.ArrayList;
 import java.util.List;
 
+import gamedata.backend_generated_data.Path;
 import gamedata.compositiongen.MoveData;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 /**
@@ -13,10 +14,10 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
  */
 public class MoveWithSetPathData extends MoveData {
 
-	List<List<Grid2D>>myPaths;
+	List<Path>myPaths;
 	
 	public MoveWithSetPathData(){
-		this(new ArrayList<List<Grid2D>>(), 0.0);
+		this(new ArrayList<Path>(), 0.0);
 	}
 	
 	/**
@@ -28,17 +29,25 @@ public class MoveWithSetPathData extends MoveData {
 	 * @param speed
 	 */
 	
-	public MoveWithSetPathData(List<List<Grid2D>> myAssignedPaths, Double speed){
+	public MoveWithSetPathData(List<Path> myAssignedPaths, Double speed){
 		super(speed);
 		myPaths = myAssignedPaths;
 	}
 
 	public List<List<Grid2D>> getMyPaths() {
-		return myPaths;
+		List toRet = new ArrayList<List<Grid2D>>();
+		for(Path p: myPaths){
+			toRet.add(p.getPath());
+		}
+		return toRet;
 	}
 
 	public void setMyPaths(List<List<Grid2D>> myPaths) {
-		this.myPaths = myPaths;
+		List toRet = new ArrayList<Path>();
+		for(List<Grid2D> p: myPaths){
+			toRet.add(new Path(p));
+		}
+		myPaths = toRet;
 	}
 
 	
