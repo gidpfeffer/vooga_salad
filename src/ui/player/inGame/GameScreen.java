@@ -31,10 +31,6 @@ public class GameScreen extends GenericGameScreen
 	private GameScreen gs = this;
 	private ScreenHandler screenHandler;
 	
-	private final double MILLISECOND_DELAY=17;
-	
-	private Timeline animation;
-	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
 			@Override
@@ -66,18 +62,9 @@ public class GameScreen extends GenericGameScreen
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
 		initializeScreenHandler();
-		hud = uihandler.getSimpleHUD();
+		hud = uihandler.getSimpleHUD().get();
 		setup();
 		fadeTransition();
-		intitializeTimeline();
-	}
-	
-	private void intitializeTimeline() {
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-				d -> step());
-		animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
 	}
 	
 	private void setup() {
