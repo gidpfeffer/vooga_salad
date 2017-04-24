@@ -1,5 +1,8 @@
 package ui.player.login;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +11,8 @@ import java.util.ResourceBundle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import XML.xmlmanager.classes.XStreamSerializer;
+import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
 import javafx.animation.FadeTransition;
@@ -36,6 +41,7 @@ import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
+import util.FileSelector;
 import util.VoogaException;
 
 public class LoginMain {
@@ -47,6 +53,8 @@ public class LoginMain {
 	private Signup signupPage;
 	private LoginHandler loginhandler;
 	public static final String userDatabase = "userDatabase.xml";
+	
+	public static final String CONFIG_EXTENSION = "*.xml";
 
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
@@ -187,7 +195,7 @@ public class LoginMain {
 		stage.setTitle(loginResource.getString("signup"));
 	}
 	
-	private void gotoGameSelector() {
+	private void gotoGameSelector(){
 		//TODO: Replace with actual games list
 		List<Game> gamesList = new ArrayList<>(Arrays.asList(
 				loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> {}),
@@ -200,15 +208,19 @@ public class LoginMain {
 		stage.setTitle("Game Selector");
 		stage.show();
 	}
-	
-	private void promptUserToChooseGame() {
+
+	private void promptUserToChooseGame(){
 		try {
-		XStream mySerializer = new XStream(new DomDriver());
-		XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-		GameData gameData =  (GameData) mySerializer.fromXML(fileChooser.readInClass());
-		goToGameScreen(gameData);
+			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
+			File dataFile = mySelector.open(new Stage());
+			if(dataFile != null) {
+				String XML = new String(Files.readAllBytes(Paths.get(dataFile.getAbsolutePath())));
+				VoogaSerializer serializer = new XStreamSerializer();
+				GameData gameData = serializer.makeObjectFromXMLString(XML, GameData.class);
+				goToGameScreen(gameData);
+			}
 		} catch(Exception e){
-			//throw new VoogaException(VoogaException.INVALID_GAMEDATA);
+			System.out.println("Invalid GameData file chosen");
 		}
 	}
 
