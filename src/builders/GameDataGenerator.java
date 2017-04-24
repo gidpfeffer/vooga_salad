@@ -105,7 +105,7 @@ public class GameDataGenerator {
 		a1.addData(shoot); //tower has shooting capabilities
 		ActorData a2 = new ActorData(new BasicActorType("Projectile"), b2);//1
 		
-		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3, new LimitedHealthData(10.0),pathData,damage);//2
+		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3, new LimitedHealthData(10.0), pathData, damage);//2
 		//a3.addData(pathData);
 		//a3.addData(damage);
 		

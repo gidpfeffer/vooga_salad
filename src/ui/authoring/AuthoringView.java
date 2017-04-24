@@ -9,13 +9,16 @@ import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import types.BasicActorType;
@@ -61,6 +64,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		setupMargins();
 		setupBorderPane();
 		setupMenuView();
+		setupName();
 		setupDimmerView();
 	}
 
@@ -123,6 +127,41 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		AnchorPane.setBottomAnchor(myMenuView, 0.0);
 		this.getChildren().add(myMenuView);
 
+	}
+	
+	private void setupName() {
+		
+		TextField toAdd = addField("Untitled_Game");
+		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+               toAdd.clear();
+            }
+        });
+		
+		toAdd.textProperty().addListener((o,oldText,newText) -> 
+			updateName(newText));
+		AnchorPane.setRightAnchor(toAdd, 10.0);
+		AnchorPane.setTopAnchor(toAdd, 12.0);
+		UIHelper.setDropShadow(toAdd);
+		this.getChildren().add(toAdd);
+
+	}
+	
+	private void updateName(String newName){
+		myGameData.setName(newName);
+	}
+
+	public TextField addField(String value){
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(value);
+		field.setPrefWidth(200);
+		field.setFont(Preferences.FONT_MEDIUM);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(THEME_COLOR));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(THEME_COLOR) + ";");
+		lblWrapper.getChildren().add(field);
+		return field;
 	}
 
 	private void setupMargins(){
