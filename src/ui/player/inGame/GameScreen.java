@@ -8,6 +8,8 @@ import java.util.Optional;
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +30,10 @@ public class GameScreen extends GenericGameScreen
 	private Map<Integer, Actor> actorsMap;
 	private GameScreen gs = this;
 	private ScreenHandler screenHandler;
+	
+	private final double MILLISECOND_DELAY=17;
+	
+	private Timeline animation;
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
@@ -63,6 +69,15 @@ public class GameScreen extends GenericGameScreen
 		hud = uihandler.getSimpleHUD();
 		setup();
 		fadeTransition();
+		intitializeTimeline();
+	}
+	
+	private void intitializeTimeline() {
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+				d -> step());
+		animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
 	}
 	
 	private void setup() {
