@@ -8,6 +8,8 @@ import java.util.Optional;
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +22,7 @@ import util.observerobservable.VoogaObserver;
 
 
 public class GameScreen extends GenericGameScreen 
-	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement, iUpdatingScreen{
+	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement{
 	
 	private ImageViewPane ivp;
 	private UIHandler uihandler;
@@ -60,7 +62,7 @@ public class GameScreen extends GenericGameScreen
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
 		initializeScreenHandler();
-		hud = uihandler.getSimpleHUD();
+		hud = uihandler.getSimpleHUD().get();
 		setup();
 		fadeTransition();
 	}

@@ -21,6 +21,10 @@ public class PathLayerView extends Layer {
 
 	private boolean isActive = false;
 	private PathData myPathData;
+	public PathData getMyPathData() {
+		return myPathData;
+	}
+
 	private ArrayList<Line> myLines = new ArrayList<Line>();
 	private boolean isFirstPoint = true;
 	private Color myColor = CustomColors.BLACK_GRAY;

@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -20,6 +21,11 @@ import ui.Preferences;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
+/**
+ * Allows the user to pick 
+ * @author TNK
+ *
+ */
 public class DataSelectionView extends GridPane{
 	
 	private final int GRID_X_DIM = 3;
@@ -32,8 +38,8 @@ public class DataSelectionView extends GridPane{
 		myDelegate = delegate;
 		setupViews();
 	}
-	
-	
+
+
 	private void setupViews() {
 		UIHelper.setBackgroundColor(this, CustomColors.BLACK_GRAY);
 		setupOptions();
@@ -47,9 +53,13 @@ public class DataSelectionView extends GridPane{
 			int row = count - col;
 			OptionView view = new OptionView(entry.getKey());
 			view.setPrefHeight(56);
-			widthProperty().addListener(o -> view.setPrefWidth(widthProperty().get()/3));
+			widthProperty().addListener(e -> view.setPrefWidth(widthProperty().get()/3));
 			GridPane.setMargin(view, new Insets(12.0));
 			view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> didPickOption(view));
+			Tooltip.install(
+				    view,
+				    new Tooltip(OptionGenerator.getDescription(entry.getKey()))
+				);
 			this.add(view, col, row);
 			count++;
 		}

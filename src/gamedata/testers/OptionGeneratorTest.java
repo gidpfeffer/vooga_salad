@@ -95,6 +95,34 @@ public class OptionGeneratorTest {
 	public void testPropertyDescriptions(){
 		System.out.println(OptionGenerator.getDescription("BaseDamage"));
 		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shoot"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
 	}
 
 }

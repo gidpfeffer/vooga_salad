@@ -156,14 +156,6 @@ public class GameData {
 	}
 	
 	/**
-	 * Upgrade the given lineage data
-	 * @param LineageData data to update
-	 */
-	public void upgrade(Integer option){
-		pieces.get(option).upgrade();
-	}
-	
-	/**
 	 * Add another category type -- defined by user.
 	 * Example: addType("Monster")
 	 * @param newCategory New category
