@@ -21,7 +21,7 @@ public class LayerData {
 	 */
 	public LayerData(){
 		myPolygons = new ArrayList<PolygonData>();
-		myPolygons.add(new PolygonData());
+//		myPolygons.add(new PolygonData());
 	}
 	
 	public List<PolygonData> getMyPolygons(){

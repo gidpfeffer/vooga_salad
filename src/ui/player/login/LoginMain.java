@@ -1,5 +1,8 @@
 package ui.player.login;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,11 +11,14 @@ import java.util.ResourceBundle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import XML.xmlmanager.classes.XStreamSerializer;
+import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,11 +27,13 @@ import ui.Preferences;
 import ui.authoring.AuthoringView;
 import ui.handlers.LoginHandler;
 import ui.player.GameSelector;
+import ui.player.ProfileCornerPicture;
 import ui.player.XStreamFileChooser;
 import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
+import util.FileSelector;
 
 public class LoginMain {
 	private Stage stage;
@@ -36,6 +44,8 @@ public class LoginMain {
 	private Signup signupPage;
 	private LoginHandler loginhandler;
 	public static final String userDatabase = "userDatabase.xml";
+	
+	public static final String CONFIG_EXTENSION = "*.xml";
 
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
@@ -115,7 +125,15 @@ public class LoginMain {
 				stage.setTitle("Game Selector");
 				stage.show();
 			}
-		};		
+		
+			@Override
+			public void setCornerProfileCard(User user) {
+				ProfileCornerPicture cornerCard = new ProfileCornerPicture(user.getProfilePicture(), e -> showProfileCard(user));
+				loginScreen.getRoot().getChildren().add(cornerCard);
+				AnchorPane.setRightAnchor(cornerCard, 15.);
+				AnchorPane.setTopAnchor(cornerCard, 15.);
+			}
+		};
 	}
 	
 	private void setupDatabase() {
@@ -127,23 +145,25 @@ public class LoginMain {
 			database = new UserDatabase();
 		}
 	}
-	
-	//Action listeners -----------------------------------------------------------------------------
-	
+
 	private void showProfileCard(User user) {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
 		HBox hb = card.getCard();
 		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
 	}
-	
-	private void promptUserToChooseGame() {
+
+	private void promptUserToChooseGame(){
 		try {
-		XStream mySerializer = new XStream(new DomDriver());
-		XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-		GameData gameData =  (GameData) mySerializer.fromXML(fileChooser.readInClass());
-		goToGameScreen(gameData);
+			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
+			File dataFile = mySelector.open(new Stage());
+			if(dataFile != null) {
+				String XML = new String(Files.readAllBytes(Paths.get(dataFile.getAbsolutePath())));
+				VoogaSerializer serializer = new XStreamSerializer();
+				GameData gameData = serializer.makeObjectFromXMLString(XML, GameData.class);
+				goToGameScreen(gameData);
+			}
 		} catch(Exception e){
-			//throw new VoogaException(VoogaException.INVALID_GAMEDATA);
+			System.out.println("Invalid GameData file chosen");
 		}
 	}
 

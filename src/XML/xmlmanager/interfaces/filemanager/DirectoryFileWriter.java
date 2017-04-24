@@ -10,7 +10,7 @@ import XML.xmlmanager.exceptions.IllegalFileException;
  * This interface extends {@link  DirectoryFileReader} with the additional functionality of writing to files.
  * using the addStringFileToDirectory method, you can create a new file with specific content and name
  * and store that file in the directory of interest. A concrete implementation can be found in  
- * {@link  ConcreteDirectoryFileHelper} where the file is always added to the directory of instantiation.
+ * {@link  NewDirectoryCreator} where the file is always added to the directory of instantiation.
  * This interface could be extended to further implementation involving filewriting. 
  */
 public interface DirectoryFileWriter extends DirectoryFileReader{

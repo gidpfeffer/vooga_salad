@@ -8,7 +8,7 @@ import XML.xmlmanager.exceptions.IllegalFileException;
 /**
  * @author Gideon
  *
- * This interface should be used for rading file contents and checking the files that have been added.
+ * This interface should be used for reading file contents and checking the files that have been added.
  * A concrete example is {@link  DirectoryFileWriter}. In {@link  DirectoryFileWriter} it is expected that
  * you pass in a filename without the file path because the instantiation defines the root directory.
  * This interface could be extended to allow for file reading on any system where files added is meant to be trancked. 
@@ -35,5 +35,10 @@ public interface DirectoryFileReader {
 	 * @return a collection of filenames for all of the new files added
 	 */
 	Collection<String> getAllNewFilenames();
+	
+	/**
+	 * @return a collection of all of the files in the directory
+	 */
+	Collection<String> getAllFilesInDirectory();
 	
 }

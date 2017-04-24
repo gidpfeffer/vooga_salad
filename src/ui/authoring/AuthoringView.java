@@ -1,17 +1,33 @@
 package ui.authoring;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import XML.xmlmanager.classes.ConcreteDirectoryFileHelper;
+import XML.xmlmanager.classes.XStreamSerializer;
+import XML.xmlmanager.exceptions.IllegalFileException;
+import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
+import builders.GameDataGenerator;
+import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.delegates.*;
@@ -58,6 +74,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate, MenuDe
 		setupMargins();
 		setupBorderPane();
 		setupMenuView();
+		setupName();
 		setupDimmerView();
 	}
 
@@ -120,6 +137,41 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate, MenuDe
 		AnchorPane.setBottomAnchor(myMenuView, 0.0);
 		this.getChildren().add(myMenuView);
 
+	}
+	
+	private void setupName() {
+		
+		TextField toAdd = addField("Untitled_Game");
+		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+               toAdd.clear();
+            }
+        });
+		
+		toAdd.textProperty().addListener((o,oldText,newText) -> 
+			updateName(newText));
+		AnchorPane.setRightAnchor(toAdd, 10.0);
+		AnchorPane.setTopAnchor(toAdd, 12.0);
+		UIHelper.setDropShadow(toAdd);
+		this.getChildren().add(toAdd);
+
+	}
+	
+	private void updateName(String newName){
+		myGameData.setName(newName);
+	}
+
+	public TextField addField(String value){
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(value);
+		field.setPrefWidth(200);
+		field.setFont(Preferences.FONT_MEDIUM);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(THEME_COLOR));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(THEME_COLOR) + ";");
+		lblWrapper.getChildren().add(field);
+		return field;
 	}
 
 	private void setupMargins(){
@@ -249,9 +301,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate, MenuDe
 	 * purpose: to feed the GameData into all the subcomponents of authoring view
 	 * @param gameData The object that holds all the 
 	 */
-	private void loadGameData() {
-		// TODO Auto-generated method stub
-		
+	private void loadGameData(GameData data) {
+		getChildren().clear();
+		setupViews();
 	}
 	
 	
@@ -262,7 +314,14 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate, MenuDe
 	 * @param gameData
 	 */
 	private void saveGameData() {
-		
+		XStreamSerializer x = new XStreamSerializer();
+		String xml = x.getXMLStringFromObject(GameDataGenerator.getComplexSampleGame());
+		try {
+			DirectoryFileManager h = new ConcreteDirectoryFileHelper("games", "games1");
+				h.addStringFileToDirectory(xml, "testfile");
+		} catch (IllegalFileException | InvalidRootDirectoryException | IOException e) {
+			e.printStackTrace();
+		} 
 	}
 
 
@@ -297,7 +356,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate, MenuDe
 
 	@Override
 	public void didPressLoadButton() {
-		loadGameData();
+		FileChooser f = new FileChooser();
+		
+		
+		//loadGameData();
 		
 	}
 
