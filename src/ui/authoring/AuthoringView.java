@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import XML.xmlmanager.classes.ConcreteDirectoryFileHelper;
+import XML.xmlmanager.classes.ExistingDirectoryHelper;
 import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
@@ -16,6 +17,7 @@ import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -38,18 +40,27 @@ import util.Location;
 
 
 public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
-
-	private final double SIDE_PANE_WIDTH = 200;
-	private final double SIDE_PANE_WIDTH_MIN = 160;
+	
+	private final double SIDE_PANE_WIDTH = 240;
+	private final double SIDE_PANE_WIDTH_MIN = 144;
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
 	
 	private GameData myGameData;
+	
+	/*
+	 * General UI outline 
+	 */
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
 	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
 	private MenuView myMenuView;
+	
+	/*
+	 * 
+	 */
 	private Pane myDimmerView;
+	private EventHandler<MouseEvent> myDimmerEvent = e -> {};
 	private FadeTransition dimAnimator;
 
 
@@ -88,6 +99,15 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 	}
 	
+	/**
+	 * adds the DimmerView onto the display and sets its transparency to 1 
+	 * using animation
+	 * @param b determines if its going to fade in the dim or fade it out
+	 * 			b=true fade in
+	 * 			b=false fade out
+	 * @param d duration object
+	 * @param optionalEvent
+	 */
 	private void setDim(boolean b, Duration d){
 		if(b){
 			dimAnimator.setToValue(1.0);
@@ -97,6 +117,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		else{
 			dimAnimator.setToValue(0.0);
 			dimAnimator.setOnFinished(e -> this.getChildren().remove(myDimmerView));
+			myDimmerView.removeEventHandler(MouseEvent.MOUSE_CLICKED, this.myDimmerEvent);
 		}
 		dimAnimator.setDuration(d);
 		dimAnimator.play();
@@ -210,6 +231,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	private void openPaneWithAnimation(Pane pane, PopupSize size){
 		setDim(true, Duration.seconds(0.4));//dim background
+		this.myDimmerEvent = e -> closePaneWithAnimation(pane);
+		myDimmerView.addEventHandler(MouseEvent.MOUSE_CLICKED, this.myDimmerEvent);
 
 		Insets inset = insetForPopupSize(size);
 		System.out.println(inset);
@@ -276,8 +299,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		XStreamSerializer x = new XStreamSerializer();
 		String xml = x.getXMLStringFromObject(GameDataGenerator.getComplexSampleGame());
 		try {
-			DirectoryFileManager h = new ConcreteDirectoryFileHelper("games", "games1");
-				h.addStringFileToDirectory(xml, "testfile");
+			DirectoryFileManager h = new ExistingDirectoryHelper("games");
+				System.out.println("File is added? "+h.addStringFileToDirectory(xml, "file2"));
 		} catch (IllegalFileException | InvalidRootDirectoryException | IOException e) {
 			e.printStackTrace();
 		} 
