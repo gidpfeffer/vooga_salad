@@ -12,7 +12,9 @@ import util.Location;
  *
  */
 public class PolygonData {
+	
 	private List<Location> myPoints;
+	
 	public PolygonData(List<Location> points){
 		myPoints = points;
 	}
@@ -28,7 +30,15 @@ public class PolygonData {
 		myPoints.add(new Location(1.0,0.0));
 	}
 	
+	
 	public List<Location> getMyPoints(){
 		return myPoints;
+	}
+	
+	public String toString(){
+		String s = "";
+		for(Location l : myPoints)
+			s += l + ", ";
+		return s;
 	}
 }

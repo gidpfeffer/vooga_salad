@@ -14,7 +14,6 @@ import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.compositiongen.Data;
 import gamedata.reflections.Reflections;
-import util.FieldGenerator;
 import util.PropertyUtil;
 
 /**
@@ -68,8 +67,7 @@ public class OptionGenerator {
 		if(!(properties.length == 0)){
 			toRet = Arrays.asList(properties)
 					.stream()
-					.map(p -> p.getSimpleName())
-					.map(p -> p.replaceAll("Data",""))
+					.map(p -> getSimpleName(p))
 					.collect(Collectors.toList());
 		}
 		return toRet;
@@ -97,8 +95,7 @@ public class OptionGenerator {
 		if(!(properties.length == 0)){
 			Set<String> temp = Arrays.asList(properties)
 					.stream()
-					.map(p -> p.getSuperclass().getSimpleName())
-					.map(p -> p.replaceAll("Data",""))
+					.map(p -> getSimpleName(p.getSuperclass()))
 					.collect(Collectors.toSet());
 			toRet = new ArrayList<String>(temp);
 		}
@@ -135,8 +132,7 @@ public class OptionGenerator {
 		List<String> toRet =  Arrays.asList(properties)
 				.stream()
 				.filter(p -> p.getSuperclass().equals(toCompare)) //if has superclass as parent
-				.map(p -> p.getSimpleName())
-				.map(p -> p.replaceAll("Data", ""))
+				.map(p -> getSimpleName(p))
 				.collect(Collectors.toList());
 		return toRet;
 		
@@ -169,7 +165,14 @@ public class OptionGenerator {
 		for(int i=0; i<datas.size(); i++)
 		{
 			String property = datas.get(i)+"Data";
-			List<Field> fields = FieldGenerator.getFields(DATA_PATH + "." + property);
+			List<Field> fields = new ArrayList<Field>();
+			try {
+				fields = FieldGenerator.getFields
+						(DATA_PATH + "." + property);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			List<FieldData> fieldDatas = new ArrayList<FieldData>();
 			for(Field f : fields){
 				String name = f.getName();
@@ -183,6 +186,9 @@ public class OptionGenerator {
 		return toRet;
 	}
 	
+	private static String getSimpleName(Class clzz){
+		return clzz.getSimpleName().replace("Data", "");
+	}
 	
 	/**
 	 * Get the name (representing the type) of the current data object
@@ -232,12 +238,16 @@ public class OptionGenerator {
 	 */
 	public static String getDescription(String propertyName){
 		String toRet = PropertyUtil.getTerm("resources/property_descriptions", propertyName);
-		while(toRet.equals("")){
+		Class superclass = null;
+		int counter = 0; //to stop time-outs
+		while(toRet.equals("") && !Object.class.equals(superclass) && counter<5){
 			try{
+				counter++;
 				Class clzz = Class.forName(propertyName + "Data");
-				Class superclass = clzz.getSuperclass();
+				superclass = clzz.getSuperclass();
 				String name = superclass.getSimpleName().replace("Data", "");
 				toRet = PropertyUtil.getTerm("resources/property_descriptions", name);
+
 			}catch(Exception e){
 				//TODO: Error catching
 			}

@@ -2,12 +2,17 @@ package ui.player.users;
 
 import java.util.ResourceBundle;
 
+import javafx.animation.ScaleTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import ui.player.inGame.OptionButton;
 
 public class ProfileCard {
 
@@ -25,6 +30,7 @@ public class ProfileCard {
 	public HBox getCard() {
 		return card;
 	}
+	
 	public ProfileCard(String rb, User user, String css) {
 		card = new HBox(20);
 		card.setPadding(new Insets(20, 20, 20, 20));
@@ -38,6 +44,22 @@ public class ProfileCard {
 	private void setup() {
 		imageAndExperince();
 		gameStats();
+		exit();
+	}
+
+	private void exit() {
+		EventHandler<MouseEvent> close = new EventHandler<MouseEvent>()  {
+			@Override
+			public void handle(MouseEvent event) {
+				ScaleTransition st = new ScaleTransition(Duration.millis(1000), card);
+				st.setByX(-1f);
+				st.setByY(-1f);
+				st.play();	
+			}
+		};
+		OptionButton exit = new OptionButton(0, "", "x_icon.png", close);
+		exit.getButton().setStyle("-fx-background-color: transparent");
+		card.getChildren().add(exit.getButton());
 	}
 
 	private void imageAndExperince() {

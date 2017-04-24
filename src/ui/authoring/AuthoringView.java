@@ -1,24 +1,35 @@
 package ui.authoring;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import XML.xmlmanager.classes.ExistingDirectoryHelper;
+import XML.xmlmanager.classes.XStreamSerializer;
+import XML.xmlmanager.exceptions.IllegalFileException;
+import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
+import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.*;
 import ui.authoring.level.LevelEditorView;
@@ -26,26 +37,46 @@ import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
 import ui.general.UIHelper;
+import ui.handlers.LoginHandler;
 import util.Location;
+/**
+ * Main class for Authoring Environment, represents
+ * main GUI holding Actors, Map and Level Editor.
+ * 
+ * @author talhakoc
+ * @author maddiebriere
+ */
 
 
 public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
+	
+	private final double SIDE_PANE_WIDTH = 240;
+	private final double SIDE_PANE_WIDTH_MIN = 144;
 
-	private final double SIDE_PANE_WIDTH = 200;
-	private final double SIDE_PANE_WIDTH_MIN = 160;
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
 	
+	private LoginHandler loginhandler;
 	private GameData myGameData;
+	
+	/*
+	 * General UI outline 
+	 */
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
 	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
 	private MenuView myMenuView;
+	
+	/*
+	 * 
+	 */
 	private Pane myDimmerView;
+	private EventHandler<MouseEvent> myDimmerEvent = e -> {};
 	private FadeTransition dimAnimator;
 
 
-	public AuthoringView() {
+	public AuthoringView(LoginHandler loginhandler) {
+		this.loginhandler = loginhandler;
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
 		myGameData = new GameData();
 		setupViews();
@@ -61,6 +92,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		setupMargins();
 		setupBorderPane();
 		setupMenuView();
+		setupName();
 		setupDimmerView();
 	}
 
@@ -80,6 +112,15 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 	}
 	
+	/**
+	 * adds the DimmerView onto the display and sets its transparency to 1 
+	 * using animation
+	 * @param b determines if its going to fade in the dim or fade it out
+	 * 			b=true fade in
+	 * 			b=false fade out
+	 * @param d duration object
+	 * @param optionalEvent
+	 */
 	private void setDim(boolean b, Duration d){
 		if(b){
 			dimAnimator.setToValue(1.0);
@@ -89,6 +130,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		else{
 			dimAnimator.setToValue(0.0);
 			dimAnimator.setOnFinished(e -> this.getChildren().remove(myDimmerView));
+			myDimmerView.removeEventHandler(MouseEvent.MOUSE_CLICKED, this.myDimmerEvent);
 		}
 		dimAnimator.setDuration(d);
 		dimAnimator.play();
@@ -123,6 +165,40 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		AnchorPane.setBottomAnchor(myMenuView, 0.0);
 		this.getChildren().add(myMenuView);
 
+	}
+	
+	private void setupName() {
+		TextField toAdd = addField("Untitled_Game");
+		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+               toAdd.clear();
+            }
+        });
+		
+		toAdd.textProperty().addListener((o,oldText,newText) -> 
+			updateName(newText));
+		AnchorPane.setRightAnchor(toAdd, 10.0);
+		AnchorPane.setTopAnchor(toAdd, 12.0);
+		UIHelper.setDropShadow(toAdd);
+		this.getChildren().add(toAdd);
+
+	}
+	
+	private void updateName(String newName){
+		myGameData.setName(newName);
+	}
+
+	public TextField addField(String value){
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(value);
+		field.setPrefWidth(200);
+		field.setFont(Preferences.FONT_MEDIUM);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(THEME_COLOR));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(THEME_COLOR) + ";");
+		lblWrapper.getChildren().add(field);
+		return field;
 	}
 
 	private void setupMargins(){
@@ -202,6 +278,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	private void openPaneWithAnimation(Pane pane, PopupSize size){
 		setDim(true, Duration.seconds(0.4));//dim background
+		this.myDimmerEvent = e -> closePaneWithAnimation(pane);
+		myDimmerView.addEventHandler(MouseEvent.MOUSE_CLICKED, this.myDimmerEvent);
 
 		Insets inset = insetForPopupSize(size);
 		System.out.println(inset);
@@ -252,9 +330,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * purpose: to feed the GameData into all the subcomponents of authoring view
 	 * @param gameData The object that holds all the 
 	 */
-	private void loadGameData() {
-		// TODO Auto-generated method stub
-		
+	private void loadGameData(GameData data) {
+		getChildren().clear();
+		setupViews();
 	}
 	
 	
@@ -265,7 +343,14 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * @param gameData
 	 */
 	private void saveGameData() {
-		
+		XStreamSerializer x = new XStreamSerializer();
+		String xml = x.getXMLStringFromObject(GameDataGenerator.getComplexSampleGame());
+		try {
+			DirectoryFileManager h = new ExistingDirectoryHelper("games");
+				System.out.println("File is added? "+h.addStringFileToDirectory(xml, "file2"));
+		} catch (IllegalFileException | InvalidRootDirectoryException | IOException e) {
+			e.printStackTrace();
+		} 
 	}
 
 
@@ -300,7 +385,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	@Override
 	public void didPressLoadButton() {
-		loadGameData();
+		FileChooser f = new FileChooser();
+		
+		
+		//loadGameData();
 		
 	}
 

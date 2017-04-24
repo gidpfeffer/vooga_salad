@@ -1,17 +1,15 @@
 package gameengine.controllers;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Map;	
+import java.util.function.Supplier;
 
 import builders.ActorGenerator;
-import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.map.LayerData;
 import gamedata.map.PolygonData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
-import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
@@ -51,8 +49,8 @@ public class GameController {
 	
 	private final double MILLISECOND_DELAY=17;
 
-	public GameController() {
-		myGameData = GameDataGenerator.getComplexSampleGame();//new GameData();
+	public GameController(GameData gameData) {
+		myGameData = gameData;
 		initializeUIHandler();
 		setupGameStatus();
 	}
@@ -81,7 +79,7 @@ public class GameController {
 	public void start(Stage stage) {
 		myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(1,() -> getNewActorGrid(myGameScreen));
+		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen));
 		intitializeTimeline();
 	}
 	
@@ -143,8 +141,7 @@ public class GameController {
 
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
-				ActorData actorData = myGameData.getOption(option);
-				//check for placeable here 
+				ActorData actorData = myGameData.getOption(option); 
 				if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && myGrid.isValidLoc(xRatio, yRatio)){
 					Actor actor = ActorGenerator.makeActor(option,actorData);
 					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
@@ -163,6 +160,10 @@ public class GameController {
 			@Override
 			public void play() {
 				animation.play();
+			}
+			
+			public void launchGame() throws VoogaException {
+				myLevelController.changeLevel(myGameData, 1);
 			}
 
 			@Override
@@ -186,8 +187,8 @@ public class GameController {
 			}
 
 			@Override	
-			public SimpleHUD getSimpleHUD() {
-				return mySimpleHUD;
+			public Supplier<SimpleHUD> getSimpleHUD() {
+				return () -> mySimpleHUD;
 			}
 		};
 	}

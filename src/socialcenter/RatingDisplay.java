@@ -41,9 +41,9 @@ public class RatingDisplay extends VBox {
 	
 	public RatingDisplay(String fileName) {
 	
-		setPrefWidth(500);
-		setMinWidth(500);
-		setMaxWidth(500);
+		setPrefWidth(800);
+		setMinWidth(800);
+		setMaxWidth(800);
 		setSpacing(8);
 		
 		loadContents();

@@ -20,7 +20,7 @@ import util.observerobservable.VoogaObserver;
 
 
 public class GameScreen extends GenericGameScreen 
-	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement, iUpdatingScreen{
+	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement{
 	
 	private ImageViewPane ivp;
 	private UIHandler uihandler;
@@ -41,7 +41,6 @@ public class GameScreen extends GenericGameScreen
 		};
 	}
 	
-	@Override
 	public EventHandler<ActionEvent> getAction() {
 		EventHandler<ActionEvent> backToLogin = new EventHandler<ActionEvent>() {
 			@Override
@@ -60,7 +59,7 @@ public class GameScreen extends GenericGameScreen
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
 		initializeScreenHandler();
-		hud = uihandler.getSimpleHUD();
+		hud = uihandler.getSimpleHUD().get();
 		setup();
 		fadeTransition();
 	}
@@ -80,7 +79,7 @@ public class GameScreen extends GenericGameScreen
 	public void addInternalPanesToRoot(Collection<OptionsPane> listOfPanes) {
 		listOfPanes.forEach(op -> {
 			this.getChildren().add(op);
-			AnchorPane.setRightAnchor(op, -op.getPrefWidth() - 10);
+			AnchorPane.setRightAnchor(op, -op.getPrefWidth());
 			op.setStyle(("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
 					+ "-fx-background-radius: 10 0 0 10;"));
 		});
