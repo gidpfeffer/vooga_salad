@@ -3,21 +3,19 @@
  */
 package socialcenter;
 
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import ui.Preferences;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import ui.Preferences;
 
 /**
  * @author harirajan
@@ -41,7 +39,8 @@ public class RatingStars extends HBox {
 		fillStars(myRating - 1);
 		if (editable) {
 			Label lbl = new Label("Your Rating: ");
-			lbl.setFont(Preferences.FONT_MEDIUM);
+			lbl.setFont(Preferences.FONT_MEDIUM_BOLD);
+			lbl.setTextFill(Color.WHITE);
 			getChildren().add(lbl);
 		}
 		getChildren().addAll(myStars);
