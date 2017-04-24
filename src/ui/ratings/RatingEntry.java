@@ -1,10 +1,8 @@
 /**
  * 
  */
-package socialcenter;
+package ui.ratings;
 
-
-import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,7 +16,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import ui.Preferences;
@@ -48,7 +45,7 @@ public class RatingEntry extends VBox {
 		
 		myRatingStars = new RatingStars(0, true);
 		myReviewText = new TextArea();
-
+		myReviewText.setPrefHeight(200);
 		HBox myUsernameEntry = new HBox();
 		myUserNameText = new TextField();
 		myUserNameText.prefWidth(100);
@@ -56,10 +53,12 @@ public class RatingEntry extends VBox {
 		usernameLabel.setFont(Preferences.FONT_MEDIUM_BOLD);
 		usernameLabel.setTextFill(Color.WHITE);
 		myUsernameEntry.getChildren().addAll(usernameLabel, myUserNameText);
-		mySubmitButton = new Button("Submittt");
-		mySubmitButton.maxWidth(200);
-		mySubmitButton.minWidth(200);
-		mySubmitButton.prefWidth(200);
+		mySubmitButton = new Button("Submit");
+		mySubmitButton.setPrefSize(800, 50);
+		mySubmitButton.setTextFill(Color.WHITE);
+		mySubmitButton.setFont(Preferences.FONT_SMALL_BOLD);
+		mySubmitButton.setBackground(new Background(new BackgroundFill(CustomColors.INDIGO, null, null)));
+		UIHelper.addClickAnimation(mySubmitButton);
 		getChildren().addAll(myRatingStars, myUsernameEntry, myReviewText, mySubmitButton);
 	}
 	

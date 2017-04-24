@@ -1,7 +1,7 @@
 /**
  * 
  */
-package socialcenter;
+package ui.ratings;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,16 +31,15 @@ import javafx.stage.Stage;
  */
 public class RatingView extends ScrollPane {
 	
-	Stage myStage;
 	
 	public RatingView(Stage s) {
 		
 		setContent(new RatingDisplay("reviews.xml"));
 				
-		myStage = s;
-		myStage.setScene(new Scene(this));
-		myStage.setWidth(800);
-		myStage.setHeight(800);
-		myStage.show();
+		s.setScene(new Scene(this));
+		s.setWidth(800);
+		s.setHeight(800);
+		s.setResizable(false);
+		s.show();
 	}
 }

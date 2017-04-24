@@ -1,7 +1,7 @@
 /**
  * 
  */
-package socialcenter;
+package ui.ratings;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  * @author harirajan
  *
  */
-public class SocialCenterMain extends Application {
+public class RatingMain extends Application {
 
 	/* (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)

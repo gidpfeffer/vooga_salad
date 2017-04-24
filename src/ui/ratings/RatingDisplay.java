@@ -1,7 +1,7 @@
 /**
  * 
  */
-package socialcenter;
+package ui.ratings;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -50,6 +50,9 @@ public class RatingDisplay extends VBox {
 	}
 	
 	private void loadContents() {
+		getChildren().clear();
+		setPrefWidth(800);
+		
 		RatingEntry re = new RatingEntry();
 		re.addSubmitEventHandler(e -> submit(re.getUser(), re.getRating(), re.getReview()));
 		
