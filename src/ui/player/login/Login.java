@@ -83,17 +83,18 @@ public class Login extends BorderedAnchorPane {
 		gridPane.setVgap(20);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.getStyleClass().add("grid");
-		root.getStyleClass().add("anchor-pane");
-		root.setId("towerBackground");
-		scene = new Scene(root);
+		getRoot().getStyleClass().add("anchor-pane");
+		getRoot().setId("towerBackground");
+		scene = new Scene(getRoot());
 		scene.getStylesheets().add(css);
+		getRoot().getChildren().remove(getBackButton().getButton());
 	}
 
 	private void setupTitle() {
 		Label towerDefenseTitle = new Label(loginResource.getString("towerDefense"));
 		towerDefenseTitle.setPadding(new Insets(10., 0., 0., 0.));
 		towerDefenseTitle.setId("title");
-		borderPane.setTop(towerDefenseTitle);
+		getBorderPane().setTop(towerDefenseTitle);
 		BorderPane.setAlignment(towerDefenseTitle, Pos.CENTER);
 	}
 
@@ -125,7 +126,7 @@ public class Login extends BorderedAnchorPane {
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
 		bottomHBox = new HBox(100, auth, selector);
-		borderPane.setBottom(bottomHBox);
+		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
 	}
@@ -136,7 +137,7 @@ public class Login extends BorderedAnchorPane {
 		StackPane.setMargin(top, new Insets(0., 300., 30., 300.));
 		StackPane sp = new StackPane(top);
 		sp.getChildren().add(node);
-		borderPane.setCenter(sp);
+		getBorderPane().setCenter(sp);
 	}
 	
 	
@@ -151,15 +152,15 @@ public class Login extends BorderedAnchorPane {
 	}
 
 	private void createNewScreen() {
-		borderPane.setBottom(null);
+		getBorderPane().setBottom(null);
 		bottomHBox.getChildren().clear();
 		VBox vbox = new VBox(40, auth, selector);
 		vbox.setAlignment(Pos.CENTER);
-		borderPane.setCenter(vbox);
+		getBorderPane().setCenter(vbox);
 		Label us = new Label("'I Heart Singletons' - Duvall, probably");
 		us.setStyle("-fx-font-size: 15");
 		us.setPadding(new Insets(50, 0, 20, 0));
-		borderPane.setBottom(us);
+		getBorderPane().setBottom(us);
 		setupCenter(vbox);
 		BorderPane.setAlignment(us, Pos.CENTER);
 		/*	     vbox.setScaleX(0);

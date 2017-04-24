@@ -20,12 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -44,7 +38,6 @@ import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
 import util.FileSelector;
-import util.VoogaException;
 
 public class LoginMain {
 	private Stage stage;
@@ -133,10 +126,16 @@ public class LoginMain {
 			@Override
 			public void handle(ActionEvent e) {
 				signupPage.getAction().handle(e);
-				stage.setScene(loginScreen.getScene());
 			}
 		};
-		signupPage.setLoginReturn(signupAction);
+		signupPage.setSignupAction(signupAction);
+		EventHandler<ActionEvent> returnToLogin = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				if (signupPage.signedUpCorrectly()) stage.setScene(loginScreen.getScene());
+			}
+		};
+		signupPage.setLoginReturn(returnToLogin);
 	}
 	
 	
@@ -152,10 +151,8 @@ public class LoginMain {
 					break;
 				}
 			}
-			//showProfileCard(user);
 			loginScreen.transitionToLoggedIn();
 			setCornerProfileCard(user);
-			//addCornerImage(user);
 			database.setActiveUser(user);
 			loginScreen.getLoginGrid().getUsername().clear();
 			//gotoGameSelector();
@@ -164,13 +161,6 @@ public class LoginMain {
 					loginResource.getString("incorrectLogin"));
 		}
 		loginScreen.getLoginGrid().getPassword().clear();
-	}
-	
-	private void addCornerImage(User user) {
-		ImageView cornerCard = new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true));
-		loginScreen.root.getChildren().add(cornerCard);
-		AnchorPane.setRightAnchor(cornerCard, 15.);
-		AnchorPane.setTopAnchor(cornerCard, 15.);
 	}
 
 	private void setCornerProfileCard(User user) {
@@ -184,6 +174,8 @@ public class LoginMain {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
 		HBox hb = card.getCard();
 		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
+		AnchorPane.setLeftAnchor(hb, 25.);
+		AnchorPane.setBottomAnchor(hb, 25.);
 	}
 
 	private void setBadActionTarget(Text node, Color color, String error){

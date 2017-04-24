@@ -8,8 +8,6 @@ import java.util.Optional;
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
@@ -82,7 +80,7 @@ public class GameScreen extends GenericGameScreen
 	public void addInternalPanesToRoot(Collection<OptionsPane> listOfPanes) {
 		listOfPanes.forEach(op -> {
 			this.getChildren().add(op);
-			AnchorPane.setRightAnchor(op, -op.getPrefWidth() - 10);
+			AnchorPane.setRightAnchor(op, -op.getPrefWidth());
 			op.setStyle(("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
 					+ "-fx-background-radius: 10 0 0 10;"));
 		});

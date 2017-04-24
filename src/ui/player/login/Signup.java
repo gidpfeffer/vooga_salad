@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -20,6 +21,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -28,12 +30,15 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ui.Preferences;
 import ui.player.XStreamFileChooser;
+import ui.player.inGame.OptionButton;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
 
 public class Signup extends BorderedAnchorPane implements LoginElement {
 	//need to save image somehow and store as string to the location userImages/...
+	private boolean signedUpCorrectly = false;
 	private Scene scene;
+	private OptionButton back;
 	private StackPane profileImage;
 	private ResourceBundle resource;
 	private SignupGrid signupGrid;
@@ -43,14 +48,23 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
 
+	public boolean signedUpCorrectly() {
+		return signedUpCorrectly;
+	}
+	
 	@Override
 	public Scene getScene() {
 		return scene;
 	}
 
+	public void setSignupAction(EventHandler<ActionEvent> value) {
+		signupButton.addEventHandler(ActionEvent.ANY, value);
+	}
+	
 	@Override
 	public void setLoginReturn(EventHandler<ActionEvent> value) {
-		signupButton.setOnAction(value);
+		back.getButton().setOnAction(value);
+		signupButton.addEventHandler(ActionEvent.ANY, value);
 	}
 
 	public EventHandler<ActionEvent> getAction() {
@@ -69,6 +83,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 					String mySavedUsers = mySerializer.toXML(database);
 					System.out.println(mySavedUsers);
 					fileChooser.writeFile(mySavedUsers);
+					signedUpCorrectly = true;
 				} else {
 					showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
 				}
@@ -81,7 +96,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		this.resource = resource;
 		this.database = database;
 		signupGrid = new SignupGrid(resource);
-		scene = new Scene(root, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT);
+		scene = new Scene(getRoot(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT);
 		scene.getStylesheets().add(css);
 		setup();
 	}
@@ -90,10 +105,17 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		setupLayout();
 		setupTop();
 		setupMiddle();
+		addBackButton();
 	}
 
+	private void addBackButton() {
+		back = new OptionButton(0, "", "back_icon.png", e -> {});
+		AnchorPane.setLeftAnchor(back.getButton(), 20.);
+		AnchorPane.setTopAnchor(back.getButton(), 20.);
+	}
+	
 	private void setupLayout() {
-		root.setId("towerBackground");
+		getRoot().setId("towerBackground");
 	}
 
 	private void setupTop() {
@@ -104,7 +126,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		BorderPane.setAlignment(signupTitle, Pos.CENTER);
 		BorderPane.setMargin(signupTitle, new Insets(40, 20, 30, 20));
 		sp.getChildren().add(signupTitle);
-		borderPane.setTop(sp);
+		getBorderPane().setTop(sp);
 		BorderPane.setAlignment(sp, Pos.CENTER);
 	}
 
@@ -121,7 +143,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		middle.setAlignment(Pos.CENTER);
 		GridPane.setHalignment(signupButton, HPos.RIGHT);
 		sp.getChildren().add(middle);
-		borderPane.setCenter(sp);
+		getBorderPane().setCenter(sp);
 	}
 
 	private StackPane stackedPanes(String id, Insets insets) {
@@ -207,7 +229,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	}
 
 	private boolean fieldsFilledIn() {
-		System.out.println(!signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty()));
+		//System.out.println(!signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty()));
 		return !signupGrid.getEntryMap().keySet().parallelStream().anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty());
 	}
 }
