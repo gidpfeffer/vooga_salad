@@ -25,7 +25,7 @@ public class RatingEntry extends VBox {
 	private RatingStars myRatingStars;
 	
 	public RatingEntry() {
-		myRatingStars = new RatingStars();
+		myRatingStars = new RatingStars(0, true);
 		myReviewText = new TextArea();
 		myReviewText.prefHeight(100);
 		myReviewText.maxWidth(200);
@@ -38,7 +38,14 @@ public class RatingEntry extends VBox {
 	}
 	
 	public void addSubmitEventHandler(EventHandler<ActionEvent> e) {
-		mySubmitButton.addEventFilter(ActionEvent.ACTION, e);
+		mySubmitButton.addEventHandler(ActionEvent.ACTION, e);
+		mySubmitButton.addEventHandler(ActionEvent.ACTION, event -> clear());
+	}
+	
+	private void clear() {
+		myRatingStars.clear();
+		myUserNameText.clear();
+		myReviewText.clear();
 	}
 	
 	public String getUser() {

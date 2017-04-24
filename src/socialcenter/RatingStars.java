@@ -28,29 +28,34 @@ public class RatingStars extends HBox {
 	private List<ImageView> myStars;
 	private int myRating;
 
-	public RatingStars() {
+	public RatingStars(int rating, boolean editable) {
 		super();
-		myRating = 0;
+		myRating = rating;
 		Image img = new Image(getClass().getClassLoader().getResourceAsStream("empty_star.png"));
 		myStars = new ArrayList<>(Arrays.asList(new ImageView(img),
 												new ImageView(img),
 												new ImageView(img),
 												new ImageView(img),
 												new ImageView(img)));
-		setUpStars();
-		Label lbl = new Label("Your Rating: ");
-		lbl.setFont(Preferences.FONT_MEDIUM);
-		getChildren().add(lbl);
+		setUpStars(editable);
+		fillStars(myRating - 1);
+		if (editable) {
+			Label lbl = new Label("Your Rating: ");
+			lbl.setFont(Preferences.FONT_MEDIUM);
+			getChildren().add(lbl);
+		}
 		getChildren().addAll(myStars);
 	}
 
-	private void setUpStars() {
+	private void setUpStars(boolean editable) {
 		for (int i = 0; i < myStars.size(); i++) {
 			myStars.get(i).setFitHeight(20);
 			myStars.get(i).setFitWidth(20);
-			myStars.get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, new StarMouseHoverHandler(i));
-			myStars.get(i).addEventHandler(MouseEvent.MOUSE_CLICKED, new StarMouseClickHandler(i));
-			myStars.get(i).addEventHandler(MouseEvent.MOUSE_EXITED, new StarMouseExitHandler(i));
+			if (editable) {
+				myStars.get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, new StarMouseHoverHandler(i));
+				myStars.get(i).addEventHandler(MouseEvent.MOUSE_CLICKED, new StarMouseClickHandler(i));
+				myStars.get(i).addEventHandler(MouseEvent.MOUSE_EXITED, new StarMouseExitHandler(i));
+			}
 		}
 	}
 	
@@ -65,6 +70,11 @@ public class RatingStars extends HBox {
 		}
 	}
 	
+	public void clear() {
+		myRating = 0;
+		fillStars(-1);
+	}
+	
 	private void restoreRating() {
 		fillStars(myRating - 1);
 	}
@@ -72,6 +82,8 @@ public class RatingStars extends HBox {
 	public int getRating() {
 		return myRating;
 	}
+	
+	
 	
 	private abstract class StarMouseEventHandler implements EventHandler<MouseEvent> {
 		
@@ -134,5 +146,6 @@ public class RatingStars extends HBox {
 			restoreRating();
 		}
 	}
+	
 
 }
