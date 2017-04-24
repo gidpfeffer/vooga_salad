@@ -174,6 +174,7 @@ public class Login extends BorderedAnchorPane {
 		
 	}
 
+	//temp
 	public class Game{
 		String name;
 		String imagePath;

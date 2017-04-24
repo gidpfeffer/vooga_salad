@@ -144,8 +144,8 @@ public class LoginMain {
 			}
 			//showProfileCard(user);
 			loginScreen.transitionToLoggedIn();
-			//setCornerProfileCard(user);
-			addCornerImage(user);
+			setCornerProfileCard(user);
+			//addCornerImage(user);
 			database.setActiveUser(user);
 			loginScreen.getLoginGrid().getUsername().clear();
 			//gotoGameSelector();
@@ -164,7 +164,7 @@ public class LoginMain {
 	}
 
 	private void setCornerProfileCard(User user) {
-		ProfileCornerPicture cornerCard = new ProfileCornerPicture(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
+		ProfileCornerPicture cornerCard = new ProfileCornerPicture(user.getProfilePicture(), e -> showProfileCard(user));
 		loginScreen.getRoot().getChildren().add(cornerCard);
 		AnchorPane.setRightAnchor(cornerCard, 15.);
 		AnchorPane.setTopAnchor(cornerCard, 15.);
