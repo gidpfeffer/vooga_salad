@@ -58,6 +58,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	}
 	private void setupLayout() {
 		getRoot().setId("towerBackground");
+		getBackButton().getButton().setOnAction(e -> loginhandler.returnToMain());
 	}
 	private void setupTop() {
 		StackPane sp = stackedPanes("pane", new Insets(10., 150., 5., 150.));

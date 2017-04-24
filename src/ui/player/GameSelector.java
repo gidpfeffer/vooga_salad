@@ -49,16 +49,6 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		return scene;
 	}
 	
-	public void setLoginReturn(EventHandler<ActionEvent> value) {
-		//TODO: Implement when back button is made
-		back.getButton().setOnAction(value);
-	}
-	
-	public EventHandler<ActionEvent> getAction() {
-		// TODO: Implement when back button is made
-		return null;
-	}
-	
 	public GameSelector(LoginHandler loginhandler, String lang, String css, List<Game> gamesList2){
 		this.loginhandler = loginhandler;
 		this.gamesList = gamesList2;
@@ -76,6 +66,7 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		setupSideArrows();
 		setupBottom();
 		addBackButton();
+		getBackButton().getButton().setOnAction(e -> loginhandler.returnToMain());
 	}
 
 	private void addBackButton() {

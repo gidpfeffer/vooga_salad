@@ -77,7 +77,6 @@ public class GenericGameScreen extends AnchorPane{
 		settingsPane.setLayoutX(-settingsPane.getPrefWidth());
 	}
 	
-	//what level?
 	private void addStartLevelButton() {
 		OptionButton startLevel = new OptionButton(0, "", "power_icon.png", e -> {
 			try {
