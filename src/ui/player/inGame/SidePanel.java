@@ -70,13 +70,12 @@ public class SidePanel {
 		types.forEach(type -> {
 			Map<Integer, ActorData> map = new HashMap<>();
 			options.keySet().forEach(option -> {
-				if (options.get(option).getType().toString().equals(type)) {
+				if (options.get(option).getType().toString().equals(type) && options.get(option).getType().isPlaceable()) {
 					map.put(option, options.get(option));
 					if (!iconImages.containsKey(type)) iconImages.put(type, options.get(option).getImagePath());
 				}
 			});
-			OptionsPane actors = getPane(map, type);
-			listOfPanes.add(actors);
+			listOfPanes.add(getPane(map, type));
 		});
 	}
 	
