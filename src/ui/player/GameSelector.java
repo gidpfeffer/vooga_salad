@@ -6,12 +6,14 @@ import java.util.ResourceBundle;
 import ui.Preferences;
 import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
+import ui.player.inGame.OptionButton;
 import ui.player.login.BorderedAnchorPane;
 import ui.player.login.Login.Game;
 import ui.player.login.LoginElement;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,6 +24,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -34,6 +37,7 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 
 	private Scene scene;
 	private List<Game> gamesList; 
+	private OptionButton back;
 	private double height = Preferences.SCREEN_HEIGHT;
 	private double width = Preferences.SCREEN_WIDTH;
 	private ResourceBundle resource;
@@ -45,11 +49,21 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		return scene;
 	}
 	
+	public void setLoginReturn(EventHandler<ActionEvent> value) {
+		//TODO: Implement when back button is made
+		back.getButton().setOnAction(value);
+	}
+	
+	public EventHandler<ActionEvent> getAction() {
+		// TODO: Implement when back button is made
+		return null;
+	}
+	
 	public GameSelector(LoginHandler loginhandler, String lang, String css, List<Game> gamesList2){
 		this.loginhandler = loginhandler;
 		this.gamesList = gamesList2;
 		gameMenu = new ScrollPane();
-		scene = new Scene(root, width, height);
+		scene = new Scene(getRoot(), width, height);
 		scene.getStylesheets().add(css);
 		resource = ResourceBundle.getBundle(lang);
 		setup();
@@ -61,18 +75,25 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		setupScrollPane();
 		setupSideArrows();
 		setupBottom();
+		addBackButton();
+	}
+
+	private void addBackButton() {
+		back = new OptionButton(0, "", "back_icon.png", e -> {});
+		AnchorPane.setLeftAnchor(back.getButton(), 20.);
+		AnchorPane.setTopAnchor(back.getButton(), 20.);
 	}
 
 	private void setupLayout(){
 		gameMenu.getStyleClass().add("scroll-pane");
-		root.getStyleClass().add("anchor-pane");
+		getRoot().getStyleClass().add("anchor-pane");
 	}
 	
 	private void setupTitle() {
 		Label title = new Label(resource.getString("gameselector"));
 		title.setId("title");
 		BorderPane.setAlignment(title, Pos.CENTER);
-		borderPane.setTop(title);
+		getBorderPane().setTop(title);
 	}
 
 	private void setupScrollPane(){
@@ -96,15 +117,15 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		gameMenu.setVbarPolicy(ScrollBarPolicy.NEVER);
 		gameMenu.setBackground(Background.EMPTY);
 		gameMenu.setPadding(new Insets(15, 12, 15, 12));
-		borderPane.setCenter(gameMenu);
+		getBorderPane().setCenter(gameMenu);
 		BorderPane.setAlignment(gamesHBox, Pos.CENTER);
 	}
 	
 	private void setupSideArrows(){
          ImageView left = new ImageView(new Image("left_arrow.png", 50, 50, true, true));
          ImageView right = new ImageView(new Image("right_arrow.png", 50, 50, true, true));
-         borderPane.setLeft(left);
-         borderPane.setRight(right);
+         getBorderPane().setLeft(left);
+         getBorderPane().setRight(right);
          right.setOnMousePressed(event -> moveScrollPane(.1));
          left.setOnMousePressed(event -> moveScrollPane(-.1));
          BorderPane.setAlignment(left, Pos.CENTER);
@@ -126,7 +147,7 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		hbox.setPadding(new Insets(15, 12, 15, 12));
 		hbox.getChildren().addAll(profile, help);
 		hbox.setAlignment(Pos.CENTER);
-		borderPane.setBottom(hbox);
+		getBorderPane().setBottom(hbox);
 	}
 	
 	private void profileClicked() {

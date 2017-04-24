@@ -23,7 +23,18 @@
       <last></last>
     </ui.player.users.User>
     <ui.player.users.User>
-      <username>jieshen</username>
+      <username>honey</username>
+      <password>7f482b1efe6a764d7dafc1b32a662a81f1704a6e</password>
+      <score>0</score>
+      <avatar>profile_icon.png</avatar>
+      <email>a@d.edu</email>
+      <level>1</level>
+      <experience>0.0</experience>
+      <rank>Novice</rank>
+      <last></last>
+    </ui.player.users.User>
+    <ui.player.users.User>
+   <username>jieshen</username>
       <password>9789fd1b31da544ae96d5fcb55488f56c7d5d044</password>
       <score>0</score>
       <avatar>profile_icon.png</avatar>
@@ -34,6 +45,17 @@
       <last></last>
     </ui.player.users.User>
     <ui.player.users.User>
+      <username>juju</username>
+      <password>fa914f4dbd71df8b5c377bbb9af724cbf296f0a3</password>
+      <score>0</score>
+      <avatar>profile_icon.png</avatar>
+      <email>juju@juju.com</email>
+      <level>1</level>
+      <experience>0.0</experience>
+      <rank>Novice</rank>
+      <last></last>
+    </ui.player.users.User>
+        <ui.player.users.User>
       <username>bilva</username>
       <password>4e48297149c501cf4077858931278ea204117a0b</password>
       <score>0</score>
@@ -52,6 +74,14 @@
         <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>
       </entry>
       <entry>
+        <string>honey</string>
+        <string>7f482b1efe6a764d7dafc1b32a662a81f1704a6e</string>
+      </entry>
+      <entry>
+        <string>juju</string>
+        <string>fa914f4dbd71df8b5c377bbb9af724cbf296f0a3</string>
+      </entry>
+	<entry>
         <string>jieshen</string>
         <string>9789fd1b31da544ae96d5fcb55488f56c7d5d044</string>
       </entry>

@@ -1,5 +1,4 @@
 package ui.player.login;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-
 import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
@@ -34,7 +31,6 @@ import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
 import util.FileSelector;
-
 public class LoginMain {
 	private Stage stage;
 	private GameController gameController;
@@ -46,7 +42,6 @@ public class LoginMain {
 	public static final String userDatabase = "userDatabase.xml";
 	
 	public static final String CONFIG_EXTENSION = "*.xml";
-
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
 		setupDatabase();
@@ -145,13 +140,13 @@ public class LoginMain {
 			database = new UserDatabase();
 		}
 	}
-
 	private void showProfileCard(User user) {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
 		HBox hb = card.getCard();
 		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
+		AnchorPane.setBottomAnchor(hb, 25.);
+		AnchorPane.setLeftAnchor(hb, 25.);
 	}
-
 	private void promptUserToChooseGame(){
 		try {
 			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
@@ -166,7 +161,6 @@ public class LoginMain {
 			System.out.println("Invalid GameData file chosen");
 		}
 	}
-
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData);
 		gameController.start(stage);
