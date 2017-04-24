@@ -66,7 +66,7 @@ public class LevelController {
 	 * @param grid Grid to modify (add actors)
 	 */
 	private void addPieces(GameData gameData, LevelData curr,PreferencesData preferences){
-		curr.getMyWaves().forEach(e -> processWave(e,gameData.getMyPaths(),preferences));
+		curr.getMyWaves().forEach(wave -> processWave(wave,gameData.getMyPaths(),preferences));
 	}
 	
 	private void processWave(WaveData waveData,PathData pathData,PreferencesData preferences) {
