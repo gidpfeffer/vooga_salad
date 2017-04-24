@@ -10,6 +10,7 @@ import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
+import builders.GameDataGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -273,7 +274,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 */
 	private void saveGameData() {
 		XStreamSerializer x = new XStreamSerializer();
-		String xml = x.getXMLStringFromObject(myGameData);
+		String xml = x.getXMLStringFromObject(GameDataGenerator.getComplexSampleGame());
 		try {
 			DirectoryFileManager h = new ConcreteDirectoryFileHelper("games", "games1");
 				h.addStringFileToDirectory(xml, "testfile");
