@@ -242,6 +242,9 @@ public class OptionGenerator {
 			try{
 				Class clzz = Class.forName(propertyName + "Data");
 				Class superclass = clzz.getSuperclass();
+				if(superclass.equals(Object.class)){
+					break;
+				}
 				String name = superclass.getSimpleName().replace("Data", "");
 				toRet = PropertyUtil.getTerm("resources/property_descriptions", name);
 			}catch(Exception e){
