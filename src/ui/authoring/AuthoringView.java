@@ -1,10 +1,5 @@
 package ui.authoring;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -18,7 +13,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.*;
 import ui.authoring.level.LevelEditorView;
@@ -26,15 +20,17 @@ import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
 import ui.general.UIHelper;
+import ui.handlers.LoginHandler;
 import util.Location;
 
 
-public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
+public class AuthoringView extends AnchorPane implements PopViewDelegate, MenuDelegate {
 
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 160;
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
 	
+	private LoginHandler loginhandler;
 	private GameData myGameData;
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
@@ -45,7 +41,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	private FadeTransition dimAnimator;
 
 
-	public AuthoringView() {
+	public AuthoringView(LoginHandler loginhandler) {
+		this.loginhandler = loginhandler;
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
 		myGameData = new GameData();
 		setupViews();
