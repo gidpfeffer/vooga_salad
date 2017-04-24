@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import XML.xmlmanager.classes.FileHelperMain;
-import XML.xmlmanager.classes.XStreamHelper;
+import XML.xmlmanager.classes.ConcreteDirectoryFileHelper;
+import XML.xmlmanager.classes.XStreamSerializer;
+import XML.xmlmanager.exceptions.IllegalFileException;
+import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -20,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import types.BasicActorType;
 import ui.Preferences;
@@ -255,9 +259,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * purpose: to feed the GameData into all the subcomponents of authoring view
 	 * @param gameData The object that holds all the 
 	 */
-	private void loadGameData() {
-		// TODO Auto-generated method stub
-		
+	private void loadGameData(GameData data) {
+		getChildren().clear();
+		setupViews();
 	}
 	
 	
@@ -268,16 +272,14 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 * @param gameData
 	 */
 	private void saveGameData() {
-		XStreamHelper x = new XStreamHelper();
+		XStreamSerializer x = new XStreamSerializer();
 		String xml = x.getXMLStringFromObject(myGameData);
-		//System.out.println(xml);
-		FileHelperMain f = new FileHelperMain();
-		f.makeDirectory("/games", "filename");
 		try {
-			f.addStringFileToDirectory("/games", xml, "filename");
-		} catch (IOException e) {
+			DirectoryFileManager h = new ConcreteDirectoryFileHelper("games", "games1");
+				h.addStringFileToDirectory(xml, "testfile");
+		} catch (IllegalFileException | InvalidRootDirectoryException | IOException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
 
@@ -312,7 +314,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	@Override
 	public void didPressLoadButton() {
-		loadGameData();
+		FileChooser f = new FileChooser();
+		
+		
+		//loadGameData();
 		
 	}
 
