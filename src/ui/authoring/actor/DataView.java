@@ -234,7 +234,7 @@ public class DataView extends AnchorPane {
 		this.myFields.put(nameKey, 
 				list
  				);
-		Data d = DataGenerator.makeData(myDataClassName, myFields.get(nameKey));
+		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
  		printMyData();
  		setMyData(d); 
  		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");

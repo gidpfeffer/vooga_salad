@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -27,6 +26,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import ui.Preferences;
+import ui.handlers.LoginHandler;
 import ui.player.XStreamFileChooser;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
@@ -37,8 +37,8 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	private StackPane profileImage;
 	private ResourceBundle resource;
 	private SignupGrid signupGrid;
-	private Button signupButton;
 	private UserDatabase database;
+	private LoginHandler loginhandler;
 	private String profilePicture = "profile_icon.png";
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
@@ -48,38 +48,10 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		return scene;
 	}
 
-	@Override
-	public void setLoginReturn(EventHandler<ActionEvent> value) {
-		signupButton.setOnAction(value);
-	}
-
-	public EventHandler<ActionEvent> getAction() {
-		
-		EventHandler<ActionEvent> signupUser = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				if (fieldsFilledIn() && (!checkExistingUser() && checkPasswords() && checkEmails())) {
-					XStream mySerializer = new XStream(new DomDriver());
-					XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-					database.getPasswords().signup(signupGrid.getUsername().getText(), signupGrid.getPassword().getText());
-					User newUser = new User(signupGrid.getUsername().getText(),
-							database.getPasswords().getUserPassword(signupGrid.getUsername().getText()),
-							generic_profile, signupGrid.getEmail().getText());
-					database.addUser(newUser);
-					String mySavedUsers = mySerializer.toXML(database);
-					System.out.println(mySavedUsers);
-					fileChooser.writeFile(mySavedUsers);
-				} else {
-					showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
-				}
-			}
-		};
-		return signupUser;
-	}
-
-	public Signup(UserDatabase database, ResourceBundle resource, String css) {
+	public Signup(LoginHandler loginhandler, UserDatabase database, ResourceBundle resource, String css) {
 		this.resource = resource;
 		this.database = database;
+		this.loginhandler = loginhandler;
 		signupGrid = new SignupGrid(resource);
 		scene = new Scene(root, Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT);
 		scene.getStylesheets().add(css);
@@ -113,7 +85,8 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		GridPane middle = new GridPane();
 		middle.setHgap(25.);
 		middle.setVgap(25.);
-		signupButton = new Button(resource.getString("signup"));		
+		Button signupButton = new Button(resource.getString("signup"));	
+		signupButton.setOnAction(e -> signupUser());
 		setupProfileImage();
 		middle.add(profileImage, 0, 0);
 		middle.add(signupGrid.getGrid(), 1, 0);
@@ -156,6 +129,28 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		}
 	};
 
+	private void signupUser() {
+		if (fieldsFilledIn() && (!checkExistingUser() && checkPasswords() && checkEmails())) {
+			XStream mySerializer = new XStream(new DomDriver());
+			XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+			database.getPasswords().signup(signupGrid.getUsername().getText(), 
+					signupGrid.getPassword().getText());
+			
+			User newUser = new User(signupGrid.getUsername().getText(),
+					database.getPasswords().getUserPassword(signupGrid.getUsername().getText()),
+					generic_profile, signupGrid.getEmail().getText());
+			database.addUser(newUser);
+			
+			String mySavedUsers = mySerializer.toXML(database);
+			System.out.println(mySavedUsers);
+			fileChooser.writeFile(mySavedUsers);
+			
+			loginhandler.returnToMain();
+		} else {
+			showAlert(AlertType.ERROR, resource.getString("noField"), resource.getString("noFieldCorrection"));
+		}
+	}
+	
 	private boolean checkExistingUser() {
 		if (database.getPasswords().existingUserCheck(signupGrid.getUsername().getText())) {
 			showAlert(AlertType.ERROR, resource.getString("incorrectSignUp"), resource.getString("pleaselogin"));
