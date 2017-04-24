@@ -146,16 +146,25 @@ public class Login extends BorderedAnchorPane {
 	     //st.setCycleCount((int) 4f);
 	    //st.setAutoReverse(true);
 	     st.play();
+	     st.setOnFinished(e -> createNewScreen());
+	}
+
+	private void createNewScreen() {
 	     borderPane.setBottom(null);
 	     bottomHBox.getChildren().clear();
-	     VBox hbox = new VBox(40, auth, selector);
-	     hbox.setAlignment(Pos.CENTER);
-	     borderPane.setCenter(hbox);
+	     VBox vbox = new VBox(40, auth, selector);
+	     vbox.setAlignment(Pos.CENTER);
+	     borderPane.setCenter(vbox);
 	     Label us = new Label("'I Heart Singletons' - Duvall, probably");
 	     us.setStyle("-fx-font-size: 15");
 	     us.setPadding(new Insets(50, 0, 20, 0));
 	     borderPane.setBottom(us);
 	     BorderPane.setAlignment(us, Pos.CENTER);
+/*	     vbox.setScaleX(0);
+	     vbox.setScaleY(0);*/
+	     ScaleTransition st = new ScaleTransition(Duration.millis(1000), vbox);
+	     st.setByX(2f);
+	     st.setByY(2f);
 	}
 
 	public class Game{
