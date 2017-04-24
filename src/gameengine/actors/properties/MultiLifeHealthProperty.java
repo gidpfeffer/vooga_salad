@@ -7,8 +7,8 @@ public class MultiLifeHealthProperty extends LimitedHealthProperty{
 	private Integer myLives;
 
 	public MultiLifeHealthProperty(MultiLifeHealthData data) {
-		super(data);
-		myLives = MultiLifeHealthData.getLives();
+		super(data.getStartHealth());
+		myLives = data.getLives();
 	}
 	
 	@Override

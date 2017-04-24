@@ -39,7 +39,13 @@ import ui.general.ImageButton;
 import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
 import util.Location;
-
+/**
+ * Main class for Authoring Environment, represents
+ * main GUI holding Actors, Map and Level Editor.
+ * 
+ * @author talhakoc
+ * @author maddiebriere
+ */
 
 
 public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
@@ -162,7 +168,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	
 	private void setupName() {
-		
 		TextField toAdd = addField("Untitled_Game");
 		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
