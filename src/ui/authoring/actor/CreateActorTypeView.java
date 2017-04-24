@@ -93,7 +93,7 @@ public class CreateActorTypeView extends VBox {
 		UIHelper.setBackgroundColor(myHBox, Color.TRANSPARENT);
 		
 
-		StackPane cancel =  buttonForName("Cancel", CustomColors.BLUE_50, e -> myDelegate.closeActorPopup(this));
+		StackPane cancel =  buttonForName("Cancel", CustomColors.BLUE_50, e -> myDelegate.closeSelf(this));
 		StackPane add = buttonForName("Confirm", CustomColors.BLUE_50, e -> {
 			if(check())
 				myDelegate.closeSelfAndReturn(this, this.myTextField.getText(), myImagePath);;

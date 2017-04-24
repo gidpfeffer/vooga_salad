@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import gamedata.GameData;
 import gamedata.MapLayersData;
 import gamedata.PathData;
 import gamedata.map.LayerData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -31,7 +29,6 @@ import ui.Preferences;
 import ui.authoring.PopupSize;
 import ui.authoring.delegates.LayerViewDelegate;
 import ui.authoring.delegates.PopViewDelegate;
-import ui.authoring.internal_api.IAuthoringComponent;
 import ui.authoring.map.layer.Layer;
 import ui.authoring.map.layer.LayerPopupDelegate;
 import ui.authoring.map.layer.LayerPopupView;
@@ -49,7 +46,7 @@ import ui.general.UIHelper;
  * @author TNK
  *
  */
-public class MapEditorView extends StackPane implements IAuthoringComponent, LayerViewDelegate, LayerPopupDelegate{
+public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate{
 
 	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
 	private static final Color[] LAYER_COLORS = {
@@ -65,16 +62,15 @@ public class MapEditorView extends StackPane implements IAuthoringComponent, Lay
 	private List<Layer> myLayers = new ArrayList<>();
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
-	private GameData myGameData;
 
 	private Pane myLayerPopup;
 
-	public MapEditorView(PopViewDelegate popDelegate) { 
+	public MapEditorView(PathData pathData , MapLayersData mapData, PopViewDelegate popDelegate) { 
 		super();
 		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
-		myPathLayer = new PathLayerView(myBackgroundView.getImageInsets());
+		myPathLayer = new PathLayerView(pathData, myBackgroundView.getImageInsets());
+		myMapData = mapData;
 		myPopDelegate = popDelegate;
-		
 		setupViews();
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
@@ -101,8 +97,18 @@ public class MapEditorView extends StackPane implements IAuthoringComponent, Lay
 		
 		addLayer(myPathLayer, "Path");
 		
+		setupMapData();
 	}
 	
+	/**
+	 * adds the already existing layers in the mapdata into this classes children nodes
+	 */
+	private void setupMapData() {
+		for(Entry<String, LayerData> entry :myMapData.getMyLayers().entrySet()){
+			addLayer(new PolygonLayerView(entry.getValue()),entry.getKey());
+		}
+		
+	}
 	
 	/**
 	 * This adds a layer that spans the size of the backgroundView.
@@ -139,7 +145,8 @@ public class MapEditorView extends StackPane implements IAuthoringComponent, Lay
 			if(l == layer){
 				l.setOpacity(0.75);
 				l.activate();
-				moveNodeToTop(layer);				
+				getChildren().remove(layer);
+				getChildren().add(layer);
 				
 			}else{
 				l.setOpacity(0.15);
@@ -148,11 +155,6 @@ public class MapEditorView extends StackPane implements IAuthoringComponent, Lay
 			}
 		});
 		
-	}
-	
-	private void moveNodeToTop(Node node){
-		getChildren().remove(node);
-		getChildren().add(node);
 	}
 
 	private void setupLayerSelector() {
@@ -297,18 +299,6 @@ public class MapEditorView extends StackPane implements IAuthoringComponent, Lay
 	private void printData(){
 		System.out.println(this.myPathLayer.getMyPathData());
 		System.out.println(this.myMapData);
-	}
-
-	/**
-	 * adds the already existing layers in the mapdata into this classes children nodes
-	 */
-	@Override
-	public void setGameData(GameData data) {
-		myPathLayer.setPathData(data.getMyPaths());;
-		data.getLayers().getMyLayers().forEach((key,value) -> {
-			this.addLayer(new PolygonLayerView(value), key);
-		});
-		
 	}
 
 }
