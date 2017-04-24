@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -74,7 +75,7 @@ public class Login extends BorderedAnchorPane {
 		setupLoginGrid();
 		setupButtons();
 		setupAltButtons();
-		setupCenter();
+		setupCenter(gridPane);
 	}
 
 	private void setupLayout() {
@@ -129,12 +130,12 @@ public class Login extends BorderedAnchorPane {
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
 	}
 
-	private void setupCenter() {
+	private void setupCenter(Node node) {
 		StackPane top = new StackPane();
 		top.getStyleClass().add("stack-pane");
 		StackPane.setMargin(top, new Insets(0., 300., 30., 300.));
 		StackPane sp = new StackPane(top);
-		sp.getChildren().add(gridPane);
+		sp.getChildren().add(node);
 		borderPane.setCenter(sp);
 	}
 	
@@ -150,21 +151,27 @@ public class Login extends BorderedAnchorPane {
 	}
 
 	private void createNewScreen() {
-	     borderPane.setBottom(null);
-	     bottomHBox.getChildren().clear();
-	     VBox vbox = new VBox(40, auth, selector);
-	     vbox.setAlignment(Pos.CENTER);
-	     borderPane.setCenter(vbox);
-	     Label us = new Label("'I Heart Singletons' - Duvall, probably");
-	     us.setStyle("-fx-font-size: 15");
-	     us.setPadding(new Insets(50, 0, 20, 0));
-	     borderPane.setBottom(us);
-	     BorderPane.setAlignment(us, Pos.CENTER);
-/*	     vbox.setScaleX(0);
+		borderPane.setBottom(null);
+		bottomHBox.getChildren().clear();
+		VBox vbox = new VBox(40, auth, selector);
+		vbox.setAlignment(Pos.CENTER);
+		borderPane.setCenter(vbox);
+		Label us = new Label("'I Heart Singletons' - Duvall, probably");
+		us.setStyle("-fx-font-size: 15");
+		us.setPadding(new Insets(50, 0, 20, 0));
+		borderPane.setBottom(us);
+		setupCenter(vbox);
+		BorderPane.setAlignment(us, Pos.CENTER);
+		/*	     vbox.setScaleX(0);
 	     vbox.setScaleY(0);*/
-	     ScaleTransition st = new ScaleTransition(Duration.millis(1000), vbox);
-	     st.setByX(2f);
-	     st.setByY(2f);
+		ScaleTransition st = new ScaleTransition(Duration.millis(1000), vbox);
+		st.setByX(2f);
+		st.setByY(2f);
+		addProfileImage();
+	}
+
+	private void addProfileImage() {
+		
 	}
 
 	public class Game{

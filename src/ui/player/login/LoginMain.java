@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -30,6 +31,7 @@ import ui.Preferences;
 import ui.authoring.AuthoringView;
 import ui.handlers.LoginHandler;
 import ui.player.GameSelector;
+import ui.player.ProfileCornerPicture;
 import ui.player.XStreamFileChooser;
 import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
@@ -142,9 +144,10 @@ public class LoginMain {
 			}
 			//showProfileCard(user);
 			loginScreen.transitionToLoggedIn();
+			//setCornerProfileCard(user);
+			addCornerImage(user);
 			database.setActiveUser(user);
 			loginScreen.getLoginGrid().getUsername().clear();
-			//loginScreen.getRoot().getChildren().add(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
 			//gotoGameSelector();
 		} else {
 			setBadActionTarget(loginScreen.getActionTarget(), Color.WHITE, 
@@ -153,6 +156,20 @@ public class LoginMain {
 		loginScreen.getLoginGrid().getPassword().clear();
 	}
 	
+	private void addCornerImage(User user) {
+		ImageView cornerCard = new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true));
+		loginScreen.root.getChildren().add(cornerCard);
+		AnchorPane.setRightAnchor(cornerCard, 15.);
+		AnchorPane.setTopAnchor(cornerCard, 15.);
+	}
+
+	private void setCornerProfileCard(User user) {
+		ProfileCornerPicture cornerCard = new ProfileCornerPicture(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
+		loginScreen.getRoot().getChildren().add(cornerCard);
+		AnchorPane.setRightAnchor(cornerCard, 15.);
+		AnchorPane.setTopAnchor(cornerCard, 15.);
+	}
+
 	private void showProfileCard(User user) {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
 		HBox hb = card.getCard();

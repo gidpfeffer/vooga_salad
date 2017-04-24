@@ -20,7 +20,7 @@ import util.observerobservable.VoogaObserver;
 
 
 public class GameScreen extends GenericGameScreen 
-	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement, iUpdatingScreen{
+	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement{
 	
 	private ImageViewPane ivp;
 	private UIHandler uihandler;

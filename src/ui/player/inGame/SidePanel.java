@@ -90,7 +90,7 @@ public class SidePanel {
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
 			OptionButton optionButton = new OptionButton(0, "", entry.getValue(), openPane);
 			mapOfOptionButtons.put(optionButton, entry.getKey());
-			listOfPanes.stream().filter(pane -> pane.getPaneName().equals(entry.getKey())).forEach(pane -> GUIBindingUtil.bindVisisble(optionButton.getButton(), pane.getMap().keySet()));;
+			listOfPanes.stream().filter(pane -> pane.getPaneName().equals(entry.getKey())).forEach(pane -> GUIBindingUtil.bindVisisble(optionButton.getButton(), pane.getMap().keySet()));
 			mainBox.getChildren().add(optionButton.getButton());
 		}
 		sidePane.getChildren().add(mainBox);
@@ -110,24 +110,16 @@ public class SidePanel {
 	EventHandler<MouseEvent> openPane = new EventHandler<MouseEvent>()  {
 	    @Override
 	    public void handle( final MouseEvent ME ) {
-	        Object obj = ME.getSource();
-	        if ( obj instanceof Button ) {
-	        	for (OptionsPane optionsPane : listOfPanes) {
-	        		for (Map.Entry<OptionButton, String> entry : mapOfOptionButtons.entrySet()) {
-	        			if (entry.getKey().getButton().equals(((Button) obj))){
-	        				if (entry.getValue().equals(optionsPane.getPaneName())) {
-	        					System.out.println(entry.getKey());
-	        					System.out.print("counting");
-	        					new SlidingPane().slidePane(optionsPane, -optionsPane.getPrefWidth());
-	        				}
-	        			}
-
-	        		}
-/*	        		if (((Button) obj).getText().equals(optionsPane.getPaneName())) {
-	        			new SlidingPane().slidePane(optionsPane, -optionsPane.getPrefWidth());
-	        		}*/
-	        	}
-	        }
+	    	Object obj = ME.getSource();
+	    	if ( obj instanceof Button ) {
+	    		for (OptionsPane optionsPane : listOfPanes) {
+	    			for (Map.Entry<OptionButton, String> entry : mapOfOptionButtons.entrySet()) {
+	    				if (entry.getKey().getButton().equals(((Button) obj)) && entry.getValue().equals(optionsPane.getPaneName())){
+	    					new SlidingPane().slidePane(optionsPane, -optionsPane.getPrefWidth());
+	    				}
+	    			}
+	    		}
+	    	}
 	    }
 	};
 }
