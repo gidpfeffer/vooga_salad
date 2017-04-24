@@ -4,7 +4,7 @@ import gamedata.compositiongen.Data;
 
 public class OnExitGIFData implements Data{
 
-	public OnExitGifData(){
+	public OnExitGIFData(){
 		//TODO: complete
 	}
 }

@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import gamedata.GameData;
 import gameengine.controllers.GameController;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -35,6 +36,7 @@ import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
+import util.VoogaException;
 
 public class LoginMain {
 	private Stage stage;
@@ -188,17 +190,30 @@ public class LoginMain {
 	private void gotoGameSelector() {
 		//TODO: Replace with actual games list
 		List<Game> gamesList = new ArrayList<>(Arrays.asList(
-				loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> gotoGameScreen()),
+				loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> {}),
 				loginScreen.new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {}), 
-				loginScreen.new Game("Asteroids", "asteroids.png", e -> {})));
+				loginScreen.new Game("Asteroids", "asteroids.png", e -> {}),
+				//file path
+				loginScreen.new Game("Load Custom Game","black.jpg",e -> promptUserToChooseGame())));
 		GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
 		stage.setScene(select.getScene());
 		stage.setTitle("Game Selector");
 		stage.show();
 	}
+	
+	private void promptUserToChooseGame() {
+		try {
+		XStream mySerializer = new XStream(new DomDriver());
+		XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+		GameData gameData =  (GameData) mySerializer.fromXML(fileChooser.readInClass());
+		goToGameScreen(gameData);
+		} catch(Exception e){
+			//throw new VoogaException(VoogaException.INVALID_GAMEDATA);
+		}
+	}
 
-	private void gotoGameScreen() {
-		gameController = new GameController();
+	private void goToGameScreen(GameData gameData) {
+		gameController = new GameController(gameData);
 		gameController.start(stage);
 		setUpGameScreenReturn();
 		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));

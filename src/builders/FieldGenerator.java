@@ -1,9 +1,12 @@
-package util;
+package builders;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Return information about the fields from
@@ -14,15 +17,9 @@ import java.util.List;
  */
 public class FieldGenerator {
 
-	public static List<Field> getFields(String className){
-		Class propertyClass = null;
-		try {
-			propertyClass = Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return getFields(propertyClass);
+	public static List<Field> getFields(String className)
+			throws ClassNotFoundException {
+		return getFields(Class.forName(className));
 	}
 	
 	public static List<Field> getFields(Class clzz){
