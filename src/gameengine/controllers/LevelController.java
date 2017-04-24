@@ -1,11 +1,14 @@
 package gameengine.controllers;
 
+import java.util.List;
 import java.util.function.Supplier;	
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LevelData;
+import gamedata.PathData;
 import gamedata.PreferencesData;
+import gamedata.WaveData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
@@ -17,7 +20,7 @@ import util.VoogaException;
 /**
  * Controls information about/behavior of a single level
  * 
- * @author maddiebriere, sarahzhou
+ * @author sarahzhou
  * 
  */
 
@@ -25,42 +28,34 @@ public class LevelController {
 	private ControllableGrid myGrid;
 	private Supplier<ActorGrid> getActorGrid;
 	
+	private Delay delay;
+	
+	private final int DELAY_CONSTANT = 2;
+	
 	private int level;
-
-	public ControllableGrid getMyGrid() {
-		return myGrid;
-	}
-	public Supplier<ActorGrid> getGetActorGrid() {
-		return getActorGrid;
-	}
-	public int getLevel() {
-		return level;
-	}
+	
 	public LevelController(int level, Supplier<ActorGrid> getActorGrid) {
 		this.getActorGrid = getActorGrid;
 		myGrid = getActorGrid.get();
 		this.level = level;
+		delay = new Delay(DELAY_CONSTANT);
 	}
-	public ControllableGrid getMyMap() {
-		return myGrid;
+	
+	public int getLevel() {
+		return level;
 	}
-	public void setMyMap(ControllableGrid myMap) {
-		this.myGrid = myMap;
-	}
-
+	
 	public void changeLevel(GameData gameData, int level) throws VoogaException{
 		this.level = level;
+		PreferencesData preferences = gameData.getPreferences();
 		LevelData levelData = gameData.getLevel(level);
-		if (levelData!=null) {
-			PreferencesData preferences = levelData.getMyPreferences();
-			if(preferences.cleanLevel()){ 
-				//get clean actor grid if preferences indicate clean level
-				myGrid = getActorGrid.get();
-			} 
-			addPieces(gameData,levelData,preferences);
-		} else {
-			throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
-		}
+		if (levelData!=null) loadLevel(preferences,levelData,gameData);
+		else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
+	}
+	
+	private void loadLevel(PreferencesData preferences, LevelData levelData, GameData gameData) {
+		if(preferences.cleanLevel()) myGrid = getActorGrid.get();
+		addPieces(gameData,levelData,preferences);
 	}
 	
 	/**
@@ -71,22 +66,29 @@ public class LevelController {
 	 * @param grid Grid to modify (add actors)
 	 */
 	private void addPieces(GameData gameData, LevelData curr,PreferencesData preferences){
-		Delay delay = new Delay(2);
-		for (EnemyInWaveData data: curr.getTroops()) {
-			for (int i = 0;i<data.getMyNumber();i++) {
-				ActorData actorData = data.getMyData();
-				Actor actor = builders.ActorGenerator.makeActor(IDGenerator.getNewID(), actorData);
-				int numPaths = data.getMyPaths().size();
-				int rand = (int) Math.random()*numPaths;
-				Grid2D firstPathCoor = gameData.getPathOptions().get(rand).get(0);
-				myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
-			}
-			if (preferences.getPauseBetweenWaves().get()) {
-				delay.delayAction();
-			}
-			
-		}
-		
+		curr.getMyWaves().forEach(e -> processWave(e,gameData.getMyPaths(),preferences));
+	}
+	
+	private void processWave(WaveData waveData,PathData pathData,PreferencesData preferences) {
+		processEnemyWaves(waveData.getWaveEnemies(),pathData);
+		if (preferences.getPauseBetweenWaves().get()) delay.delayAction();
+	}
+	
+	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
+		ActorData actorData = enemyData.getMyActor();
+		Actor actor = builders.ActorGenerator.makeActor(IDGenerator.getNewID(), actorData);
+		Grid2D firstPathCoor = getFirstPathCoor(pathData);
+		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
+	}
+	
+	private Grid2D getFirstPathCoor(PathData pathData) {
+		int numPaths = pathData.getMyPaths().size();
+		int rand = (int) Math.random()*numPaths;
+		return pathData.getPathByIndex(rand).get(0);
+	}
+	
+	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,PathData pathData) {
+		enemyInWaveDatas.forEach(e -> spawnEnemy(e,pathData));
 	}
 	
 	
