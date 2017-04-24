@@ -3,9 +3,11 @@ package ui.player.users;
 import java.util.ResourceBundle;
 
 import javafx.animation.ScaleTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,7 +23,7 @@ public class ProfileCard {
 	private ResourceBundle profileRB;
 	private ExperienceGrid expGrid;
 	private GameStatsGrid gsGrid;
-
+	private Hyperlink logout;
 	
 	public User getUser() {
 		return user;
@@ -29,6 +31,11 @@ public class ProfileCard {
 	
 	public HBox getCard() {
 		return card;
+	}
+	
+	public void setLogoutAction(EventHandler<ActionEvent> e) {
+		System.out.println("returning");
+		logout.setOnAction(e);
 	}
 	
 	public ProfileCard(String rb, User user, String css) {
@@ -48,6 +55,7 @@ public class ProfileCard {
 	}
 
 	private void exit() {
+		VBox exiting = new VBox(20);
 		EventHandler<MouseEvent> close = new EventHandler<MouseEvent>()  {
 			@Override
 			public void handle(MouseEvent event) {
@@ -59,7 +67,9 @@ public class ProfileCard {
 		};
 		OptionButton exit = new OptionButton(0, "", "x_icon.png", close);
 		exit.getButton().setStyle("-fx-background-color: transparent");
-		card.getChildren().add(exit.getButton());
+		logout = new Hyperlink("Logout");
+		exiting.getChildren().addAll(exit.getButton(), logout);
+		card.getChildren().add(exiting);
 	}
 
 	private void imageAndExperince() {

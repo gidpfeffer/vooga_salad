@@ -13,8 +13,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
@@ -91,8 +94,10 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 
 	private void setupButtons(){
 		loginEnter = new Button(loginResource.getString("login"));
-		loginEnter.setOnAction(e -> loginClicked());
-		
+		loginEnter.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> loginClicked());
+		getRoot().setOnKeyPressed(e -> {
+			if(e.getCode() == KeyCode.ENTER) loginClicked();
+		});
 		Hyperlink signupEnter = new Hyperlink(loginResource.getString("signup"));
 		signupEnter.setOnAction(e -> loginhandler.gotoSignupPage());
 		
@@ -100,6 +105,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		gridPane.add(signupEnter, 0, 4);
 		GridPane.setHalignment(loginEnter, HPos.CENTER);
 		GridPane.setHalignment(signupEnter, HPos.CENTER);
+		GridPane.setHalignment(actiontarget, HPos.CENTER);
 		gridPane.add(actiontarget, 0, 5);
 	}
 
@@ -128,7 +134,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	}
 	
 	private FadeTransition createFader(Node node) {
-        FadeTransition fade = new FadeTransition(Duration.millis(2000), node);
+        FadeTransition fade = new FadeTransition(Duration.millis(3000), node);
         fade.setFromValue(1);
         fade.setToValue(0);
         return fade;
