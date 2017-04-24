@@ -84,7 +84,7 @@ public class Actor{
 	/**
 	 * if location is appropriate, actor will update to a new location when released from drag 
 	 */
-	//TODO: Anh - does it check off grid here too?
+	//TODO: how is off grid checked?
 	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {

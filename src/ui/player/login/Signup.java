@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
@@ -78,6 +79,9 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 		middle.setVgap(25.);
 		Button signupButton = new Button(resource.getString("signup"));	
 		signupButton.setOnAction(e -> signupUser());
+		getRoot().setOnKeyPressed(e -> {
+			if(e.getCode() == KeyCode.ENTER) signupUser();
+		});
 		setupProfileImage();
 		middle.add(profileImage, 0, 0);
 		middle.add(signupGrid.getGrid(), 1, 0);
