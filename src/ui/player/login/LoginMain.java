@@ -31,6 +31,7 @@ import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
 import util.FileSelector;
+import voogasalad_ilovesingletons.Main;
 public class LoginMain {
 	private Stage stage;
 	private GameController gameController;
@@ -142,6 +143,14 @@ public class LoginMain {
 	}
 	private void showProfileCard(User user) {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
+		card.setLogoutAction(e -> {
+			Main m = new Main();
+			try {
+				m.start(stage);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		});
 		HBox hb = card.getCard();
 		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
 		AnchorPane.setBottomAnchor(hb, 25.);
