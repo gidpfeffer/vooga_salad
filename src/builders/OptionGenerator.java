@@ -238,15 +238,16 @@ public class OptionGenerator {
 	 */
 	public static String getDescription(String propertyName){
 		String toRet = PropertyUtil.getTerm("resources/property_descriptions", propertyName);
-		while(toRet.equals("")){
+		Class superclass = null;
+		int counter = 0; //to stop time-outs
+		while(toRet.equals("") && !Object.class.equals(superclass) && counter<5){
 			try{
+				counter++;
 				Class clzz = Class.forName(propertyName + "Data");
-				Class superclass = clzz.getSuperclass();
-				if(superclass.equals(Object.class)){
-					break;
-				}
+				superclass = clzz.getSuperclass();
 				String name = superclass.getSimpleName().replace("Data", "");
 				toRet = PropertyUtil.getTerm("resources/property_descriptions", name);
+
 			}catch(Exception e){
 				//TODO: Error catching
 			}
