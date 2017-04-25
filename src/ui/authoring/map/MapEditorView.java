@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import gamedata.MapLayersData;
 import gamedata.PathData;
-import gamedata.map.LayerData;
+import gamedata.composition.LayerData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;

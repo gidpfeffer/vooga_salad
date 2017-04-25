@@ -49,6 +49,7 @@ public class GameController {
 		initializeUIHandler();
 		initializeAnimationHandler();
 		setupGameStatus();
+		myGameScreen = new GameScreen(myUIHandler);
 	}
 
 	/**
