@@ -3,7 +3,7 @@ package gamedata;
 import java.util.HashMap;
 import java.util.Map;
 
-import gamedata.map.LayerData;
+import gamedata.composition.LayerData;
 
 /**
  * MapData holds information about layers of specific polygons on which actors
