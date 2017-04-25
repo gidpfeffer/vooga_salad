@@ -1,5 +1,9 @@
 package ui.authoring;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +13,7 @@ import java.util.Optional;
 import XML.xmlmanager.classes.ExistingDirectoryHelper;
 import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.exceptions.IllegalFileException;
+import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import builders.GameDataGenerator;
@@ -22,6 +27,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -29,6 +35,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.delegates.*;
@@ -282,17 +289,19 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		AnchorPane.setTopAnchor(pane, inset.getTop());
 		AnchorPane.setLeftAnchor(pane, inset.getLeft());
 		AnchorPane.setRightAnchor(pane, inset.getRight());
-		pane.setScaleX(0);
-		pane.setScaleY(0);
+		pane.setScaleX(0.0);
+		pane.setScaleY(0.0);
 		this.getChildren().add(pane);
 		
-		Duration dur = Duration.seconds(0.5);
+		Duration dur = Duration.seconds(0.75);
 		ScaleTransition st = new ScaleTransition(dur);
 		st.setNode(pane);
-		st.setToX(1);
-		st.setToY(1);
+		st.setToX(1.0);
+		st.setToY(1.0);
 		st.play();
 	}
+	
+	
 	private Insets insetForPopupSize(PopupSize size) {
 		
 		switch(size){
@@ -380,8 +389,23 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	@Override
 	public void didPressLoadButton() {
-		FileChooser f = new FileChooser();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select Image File");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("XML Files", "*.xml"));
+		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
+		if (selectedFile != null) {
+			try {
+				FileReader fr = new FileReader(selectedFile);
+				BufferedReader br=new BufferedReader(fr);
+				XStreamSerializer x = new XStreamSerializer();
+				GameData data = x.makeObjectFromXMLString(br.toString(), GameData.class);
+				loadGameData(data);
+				br.close();
+			} catch (IllegalXStreamCastException | IOException e) {
+				e.printStackTrace();
+			}
 		
+		}
 		
 		//loadGameData();
 		

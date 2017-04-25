@@ -241,7 +241,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private void toggleBackground(MouseEvent e) {
 		e.consume();
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Selectc Image File");
+		fileChooser.setTitle("Select Image File");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
