@@ -16,7 +16,6 @@ import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import gamestatus.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
@@ -77,7 +76,7 @@ public class GameController {
 		myGameStatus.addObserver(mySimpleHUD);
 	}
 	
-	public void start(Stage stage) {
+	public void start() {
 		//myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen));
