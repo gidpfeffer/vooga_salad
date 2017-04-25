@@ -101,7 +101,7 @@ public class DataView extends AnchorPane {
 		}else if(clazz == BasicActorType.class){
 			addActorTypeField(nameKey, (BasicActorType) value);
 		}else if(clazz == List.class || clazz == ArrayList.class){
-			addActorTypeList(nameKey,  (List<BasicActorType>) value);
+			addActorTypeList(nameKey);
 		}
 		else{
 			
@@ -109,10 +109,7 @@ public class DataView extends AnchorPane {
 		
 	}
 
-	
-	private void addActorTypeList(String nameKey, List<BasicActorType> value) {
-		AnchorPane content = new AnchorPane();
-
+	private void addLabel(AnchorPane content, String nameKey){
 		Label fieldName = new Label(nameKey);
 		fieldName.setTextFill(CustomColors.BLUE_800);
 		fieldName.setAlignment(Pos.CENTER);
@@ -121,23 +118,36 @@ public class DataView extends AnchorPane {
 		AnchorPane.setRightAnchor(fieldName, 4.0);
 		fieldName.setPrefHeight(28);
 		content.getChildren().add(fieldName);
-		
-		ActorTypeListSelectionView input = new ActorTypeListSelectionView(this.myActorTypes);
+	}
+	
+	private void addSelectionView(AnchorPane content, ListSelectionView<?> input){
 		AnchorPane.setTopAnchor(input, 28.0);
 		AnchorPane.setLeftAnchor(input, 4.0);
 		AnchorPane.setBottomAnchor(input, 4.0);
 		AnchorPane.setRightAnchor(input, 4.0);
 		content.getChildren().add(input);
-		input.getBasicActorTypeList().addListener(e -> {
-			System.out.println("toggled basic actor field input thing");
-			didEditBasicActorTypeList(input.getBasicActorTypeList().get(),nameKey);
-			
-		});
-		
+	}
+	
+	private void format(AnchorPane content){
 		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
 		VBox.setMargin(content, new Insets(8.0));
 		vbox.getChildren().add(content);
+	}
+	
+	private void addActorTypeList(String nameKey) {
+		AnchorPane content = new AnchorPane();
+		addLabel(content, nameKey);
 		
+		ListSelectionView<BasicActorType> input = 
+				new ListSelectionView<BasicActorType>(this.myActorTypes);
+		addSelectionView(content, input);
+		input.getBasicActorTypeList().addListener(e -> {
+			System.out.println("toggled basic actor field input thing");
+			didEditBasicActorTypeList(input.getBasicActorTypeList().get(), nameKey);
+			
+		});
+		
+		format(content);
 	}
 
 
@@ -238,7 +248,6 @@ public class DataView extends AnchorPane {
  		printMyData();
  		setMyData(d); 
  		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
-		
 	}
 	
 	private void printMyData(){
