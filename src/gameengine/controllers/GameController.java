@@ -1,8 +1,5 @@
 package gameengine.controllers;
-
 import java.util.Map;	
-import java.util.function.Supplier;
-
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
@@ -24,7 +21,6 @@ import ui.player.inGame.SimpleHUD;
 import util.PathUtil;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
-
 /**
  * GameController is the controller layer between the front end display and the back end game engine
  * Implements UIHandler and initializes all necessary back end and front end components of game engine
@@ -49,15 +45,13 @@ public class GameController {
 	private final int MAX_Y = 1;
 	
 	private final double MILLISECOND_DELAY=17;
-
 	public GameController(GameData gameData) {
 		myGameData = gameData;
 		initializeUIHandler();
 		initializeAnimationHandler();
 		setupGameStatus();
-		myGameScreen = new GameScreen(myUIHandler);
+		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 	}
-
 	/**
 	 * @param UIObserver
 	 * @return a new clean instance of ActorGrid
@@ -80,7 +74,6 @@ public class GameController {
 	}
 	
 	public void start() {
-		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen),() -> displayWinAlert());
 		intitializeTimeline();
@@ -108,32 +101,26 @@ public class GameController {
 			public void pause() {
 				animation.pause();
 			}
-
 			@Override
 			public void play() {
 				animation.play();
 			}
-
 			@Override
 			public void stop() {
 				animation.stop();
 			}
-
 			@Override
 			public void exit() {
 				System.exit(0);
 			}
 		};
 	}
-
 	private void initializeUIHandler() {
 		myUIHandler = new UIHandler() {
-
 			@Override
 			public void deleteGameObject(int id) {
 				myGrid.removeActor(id);
 			}
-
 			@Override
 			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
 				if (myGameData.getOption(currentOption).getType().equals(myGameData.getOption(newOption).getType())) {
@@ -145,7 +132,6 @@ public class GameController {
 				}
 				
 			}
-
 			@Override
 			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
 				if (myGrid.isValidLoc(xRatio, yRatio)) {
@@ -169,7 +155,6 @@ public class GameController {
 				}
 				return true;
 			}
-
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
 				ActorData actorData = myGameData.getOption(option); 
@@ -182,12 +167,10 @@ public class GameController {
 					throw new VoogaException(VoogaException.INVALID_LOCATION);
 				}
 			}
-
 			@Override
 			public Map<Integer, ActorData> getOptions() {
 				return myGameData.getOptions();
 			}
-
 			@Override
 			public void changeLevel(int level) throws VoogaException {
 				myLevelController.changeLevel(myGameData, level);
