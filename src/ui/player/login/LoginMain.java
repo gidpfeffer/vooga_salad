@@ -175,6 +175,7 @@ public class LoginMain {
 	
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData);
+		gameController.getGameScreen().setLoginHandler(loginhandler);
 		gameController.start(stage);
 		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
 		stage.setTitle("Game Screen");

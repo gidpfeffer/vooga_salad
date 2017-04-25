@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -73,13 +75,17 @@ public class ProfileCard {
 	}
 
 	private void imageAndExperince() {
-		VBox vb = new VBox(20);
-		ImageView profilePicture = new ImageView(new Image(user.getProfilePicture(), 150, 150, false, true));
-		expGrid = new ExperienceGrid(profileRB);
-		setupExpGridValues();
-		vb.getChildren().addAll(profilePicture, expGrid.getGrid());
-		vb.setAlignment(Pos.CENTER);
-		card.getChildren().add(vb);
+		if(user != null) {
+			VBox vb = new VBox(20);
+			ImageView profilePicture = new ImageView(new Image(user.getProfilePicture(), 150, 150, false, true));
+			expGrid = new ExperienceGrid(profileRB);
+			setupExpGridValues();
+			vb.getChildren().addAll(profilePicture, expGrid.getGrid());
+			vb.setAlignment(Pos.CENTER);
+			card.getChildren().add(vb);
+		} else {
+			new Alert(AlertType.ERROR, profileRB.getString("nouser")).showAndWait();
+		}
 	}
 
 	private void setupExpGridValues() {
