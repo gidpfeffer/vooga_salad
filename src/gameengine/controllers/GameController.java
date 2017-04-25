@@ -47,7 +47,6 @@ public class GameController {
 		myGameData = gameData;
 		initializeUIHandler();
 		initializeAnimationHandler();
-		initializeWriteableGameStatus();
 		setupGameStatus();
 		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGameScreen.setAnimationHandler(myAnimationHandler);
@@ -145,26 +144,6 @@ public class GameController {
 			
 			public void launchGame() throws VoogaException {
 				myLevelController.changeLevel(myGameData, 1);
-			}
-		};
-	}
-	
-	private void initializeWriteableGameStatus() {
-		myWriteableGameStatus = new WriteableGameStatus() {
-
-			@Override
-			public void addExperience(double exp) {
-				myGameStatus.addExperience(exp);
-			}
-
-			@Override
-			public void addMoney(double mon) {
-				myGameStatus.addMoney(mon);
-			}
-
-			@Override
-			public void spendMoney(double mon) {
-				myGameStatus.spendMoney(mon);
 			}
 		};
 	}
