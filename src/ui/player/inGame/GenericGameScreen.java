@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import javafx.animation.ScaleTransition;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -14,17 +13,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import ui.general.ImageViewPane;
-import ui.handlers.LoginHandler;
 import ui.handlers.UIHandler;
 import util.VoogaException;
 
 public class GenericGameScreen extends AnchorPane{
 
 	private UIHandler uihandler;
-	private LoginHandler loginhandler;
 	private Optional<String> songString;
 	private Optional<String> css;
 	private Optional<String> backgroundImage;
@@ -35,14 +32,21 @@ public class GenericGameScreen extends AnchorPane{
 	public static final String backgroundImagePath = "default_map_background_0.jpg";
 	private MusicPlayer musicPlayer; 
 	
-	public ImageViewPane getIVP() {
+	protected ImageViewPane getIVP() {
 		return ivp;
 	}
 	
+	protected MediaPlayer getMediaPlayer() {
+		return musicPlayer.getMediaPlayer();
+	}
+	
+	protected SettingsPane getSettingsPane() {
+		return settingsPane;
+	}
+	
 	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css, 
-			Optional<String> backgroundImage, LoginHandler loginhandler) {
+			Optional<String> backgroundImage) {
 		this.uihandler = uihandler;
-		this.loginhandler = loginhandler;
 		this.songString = songString;
 		this.css = css;
 		this.backgroundImage = backgroundImage;
@@ -53,22 +57,7 @@ public class GenericGameScreen extends AnchorPane{
 		setupBackground();
 		addSettings();
 		addStartLevelButton();
-		settingsPane.setBackToLoginAction(returnToMain());
 		//addAnimationButtons();
-	}
-
-	private EventHandler<ActionEvent> returnToMain() {
-		return new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				uihandler.stop();
-				loginhandler.returnToMain();
-				System.out.println(musicPlayer.getMediaPlayer().getStatus());
-				if(musicPlayer.getMediaPlayer().getStatus().equals(Status.PLAYING)) {
-					musicPlayer.getMediaPlayer().stop();
-				}
-			}
-		};
 	}
 	
 	private void setupBackground() {
