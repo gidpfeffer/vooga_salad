@@ -1,16 +1,10 @@
 package gameengine.controllers;
 
 import java.util.Map;	
-import java.util.function.Supplier;
-
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.composition.LayerData;
-import gamedata.map.PolygonData;
-import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
-import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import gamestatus.GameStatus;
@@ -21,7 +15,7 @@ import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
-import util.PathUtil;
+import util.GameObjectUtil;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 
@@ -125,62 +119,30 @@ public class GameController {
 			}
 		};
 	}
-
+	
+	
+	
 	private void initializeUIHandler() {
 		myUIHandler = new UIHandler() {
 
 			@Override
 			public void deleteGameObject(int id) {
-				myGrid.removeActor(id);
+				GameObjectUtil.deleteGameObject(id, myGrid);
 			}
 
 			@Override
 			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
-				if (myGameData.getOption(currentOption).getType().equals(myGameData.getOption(newOption).getType())) {
-					Grid2D location = myGrid.getLocationOf(id);
-					addGameObject(newOption,location.getX(),location.getY());
-					deleteGameObject(id);
-				} else {
-					throw new VoogaException(VoogaException.ILLEGAL_UPDATE);
-				}
-				
+				GameObjectUtil.updateGameObjectType(id, currentOption, newOption, myGrid, myGameData);
 			}
 
 			@Override
 			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
-				if (myGrid.isValidLoc(xRatio, yRatio)) {
-					myGrid.move(id,xRatio, yRatio);
-				} else {
-					throw new VoogaException(VoogaException.INVALID_LOCATION);
-				}
-				
-			}
-			/**
-			 * method to check if actor is being placed in the right layer
-			 * x, y is from 0 -1 
-			 * @return
-			 */
-			private boolean isPlaceable(LayerData layer, double x, double y){
-				
-				for (PolygonData poly: layer.getMyPolygons()){
-					if (!PathUtil.isWithinPolygon(poly.getMyPoints(), x,y)){
-						return false;
-					}
-				}
-				return true;
+				GameObjectUtil.updateGameObjectLocation(id, xRatio, yRatio, myGrid);
 			}
 
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
-				ActorData actorData = myGameData.getOption(option); 
-				if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && myGrid.isValidLoc(xRatio, yRatio)){
-					Actor actor = ActorGenerator.makeActor(option,actorData);
-					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
-					return actor.getID();
-				}
-				else {
-					throw new VoogaException(VoogaException.INVALID_LOCATION);
-				}
+				return GameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGrid);
 			}
 
 			@Override
@@ -198,5 +160,7 @@ public class GameController {
 			}
 		};
 	}
+	
+	
 	
 }
