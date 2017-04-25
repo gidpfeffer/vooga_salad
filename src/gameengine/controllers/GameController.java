@@ -53,6 +53,7 @@ public class GameController {
 		myGameData = gameData;
 		initializeUIHandler();
 		setupGameStatus();
+		myGameScreen = new GameScreen(myUIHandler);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class GameController {
 	}
 	
 	public void start(Stage stage) {
-		myGameScreen = new GameScreen(myUIHandler);
+		//myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen));
 		intitializeTimeline();
