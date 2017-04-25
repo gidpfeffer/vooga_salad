@@ -43,11 +43,13 @@ public class WebImageCollector {
 	private final static String API_ADDRESS = "https://www.googleapis.com/customsearch/v1?";
 	private final static String IMAGE_FOLDER = "images/internet/";
 	
-	public static BufferedImage findAndSaveRandomIcon(Random randy, String qry){
+	public static ImageInfo findAndSaveRandomIcon(Random randy, String qry){
 		BufferedImage image = findRandomIcon(randy, qry);
 		String savePath = IMAGE_FOLDER + qry;
-		savePng(image, savePath);
-		return image;
+		String s = savePng(image, savePath);
+		return new ImageInfo(image, s);
+		
+		
 	}
 	
 	/**
@@ -55,14 +57,20 @@ public class WebImageCollector {
 	 * @param image Image to be saved
 	 * @param fileName Folder + name of file (e.g., images/button)
 	 */
-	private static void savePng(BufferedImage image, String fileName) {
+	private static String savePng(BufferedImage image, String fileName) {
+		String toRet = "";
         try {
+        	toRet = fileName + "." + PNG;
             ImageIO.write(image, PNG,
-                    new File(fileName + "." + PNG));
+                    new File(toRet));
         } catch (IOException e) {
+        	//TODO
             e.printStackTrace();
         }
+        return toRet;
     }
+	
+	
 	
 	/**
 	 * For use in random Actor generation.
@@ -104,6 +112,9 @@ public class WebImageCollector {
 		} catch(IOException e){
 			//printExceptionMessage(e);
 			toRet = findSearchItem(qry, fileType, searchType, ++iter);
+			if(toRet == null && iter-1>0){
+				toRet = findSearchItem(qry, fileType, searchType, --iter);
+			}
 			//toRet = ImageIO.read(new File('DEFAULT_PATH'));
 			// Replace null with default image
 		}
