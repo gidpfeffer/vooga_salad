@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -62,17 +63,18 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		gridPane.setVgap(20);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.getStyleClass().add("grid");
-		root.getStyleClass().add("anchor-pane");
-		root.setId("towerBackground");
-		scene = new Scene(root);
+		getRoot().getStyleClass().add("anchor-pane");
+		getRoot().setId("towerBackground");
+		scene = new Scene(getRoot());
 		scene.getStylesheets().add(css);
+		getRoot().getChildren().remove(getBackButton().getButton());
 	}
 
 	private void setupTitle() {
 		Label towerDefenseTitle = new Label(loginResource.getString("towerDefense"));
 		towerDefenseTitle.setPadding(new Insets(10., 0., 0., 0.));
 		towerDefenseTitle.setId("title");
-		borderPane.setTop(towerDefenseTitle);
+		getBorderPane().setTop(towerDefenseTitle);
 		BorderPane.setAlignment(towerDefenseTitle, Pos.CENTER);
 	}
 
@@ -90,8 +92,10 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 
 	private void setupButtons(){
 		loginEnter = new Button(loginResource.getString("login"));
-		loginEnter.setOnAction(e -> loginClicked());
-		
+		loginEnter.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> loginClicked());
+		getRoot().setOnKeyPressed(e -> {
+			if(e.getCode() == KeyCode.ENTER) loginClicked();
+		});
 		Hyperlink signupEnter = new Hyperlink(loginResource.getString("signup"));
 		signupEnter.setOnAction(e -> loginhandler.gotoSignupPage());
 		
@@ -99,6 +103,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		gridPane.add(signupEnter, 0, 4);
 		GridPane.setHalignment(loginEnter, HPos.CENTER);
 		GridPane.setHalignment(signupEnter, HPos.CENTER);
+		GridPane.setHalignment(actiontarget, HPos.CENTER);
 		gridPane.add(actiontarget, 0, 5);
 	}
 
@@ -127,7 +132,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	}
 	
 	private FadeTransition createFader(Node node) {
-        FadeTransition fade = new FadeTransition(Duration.millis(2000), node);
+        FadeTransition fade = new FadeTransition(Duration.millis(3000), node);
         fade.setFromValue(1);
         fade.setToValue(0);
         return fade;
@@ -143,7 +148,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
 		bottomHBox = new HBox(100, auth, selector);
-		borderPane.setBottom(bottomHBox);
+		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
 	}
@@ -154,7 +159,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		StackPane.setMargin(top, new Insets(0., 300., 30., 300.));
 		StackPane sp = new StackPane(top);
 		sp.getChildren().add(node);
-		borderPane.setCenter(sp);
+		getBorderPane().setCenter(sp);
 	}
 	
 	
@@ -169,15 +174,15 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	}
 
 	private void createNewScreen() {
-		borderPane.setBottom(null);
+		getBorderPane().setBottom(null);
 		bottomHBox.getChildren().clear();
 		VBox vbox = new VBox(40, auth, selector);
 		vbox.setAlignment(Pos.CENTER);
-		borderPane.setCenter(vbox);
+		getBorderPane().setCenter(vbox);
 		Label us = new Label("'I Heart Singletons' - Duvall, probably");
 		us.setStyle("-fx-font-size: 15");
 		us.setPadding(new Insets(50, 0, 20, 0));
-		borderPane.setBottom(us);
+		getBorderPane().setBottom(us);
 		setupCenter(vbox);
 		BorderPane.setAlignment(us, Pos.CENTER);
 		/*	     vbox.setScaleX(0);

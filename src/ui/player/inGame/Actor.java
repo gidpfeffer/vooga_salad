@@ -21,6 +21,7 @@ public class Actor{
 
 	ImageViewPane imp;
 	UIHandler uihandler;
+	ScreenHandler screenhandler;
 	Map<Integer, Actor> mapOfActors;
 	Actor clazz = this;
 	ActorData actorData;
@@ -42,11 +43,12 @@ public class Actor{
 		return Integer.parseInt(actor.getId());
 	}
 	
-	public Actor(UIHandler uihandler, Integer option, ActorData actorData, ImageViewPane ivp, Map<Integer, Actor> mapOfActors) {
+	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp, Map<Integer, Actor> mapOfActors) {
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
 				true);
 		actor.setBackground(Background.EMPTY);
+		this.screenhandler = screenhandler;
 		this.actorData = actorData;
 		this.option = option;
 		this.imp = ivp;
@@ -82,15 +84,16 @@ public class Actor{
 	/**
 	 * if location is appropriate, actor will update to a new location when released from drag 
 	 */
+	//TODO: how is off grid checked?
 	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
 			if (actor.getId() != null && (mapOfActors.get(Integer.parseInt(actor.getId())) != null)) {
-				System.out.println("W: " + actor.getLayoutX() / width + " " + actor.getLayoutY() / height + " "+ actor.getId() + " " + mapOfActors);
 				try {
 					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
 							actor.getLayoutY() / height);
 				} catch (NumberFormatException | VoogaException e) {
+					screenhandler.showError("You cannot place an item there!");
 					System.out.println("Unable to add game object -- Actor ~ 103");
 					//System.out.println("**********Unable to update location********** Actor(~80)");
 					//e.printStackTrace();
@@ -119,8 +122,9 @@ public class Actor{
 						actor.setId(actorID.toString());
 					}
 				} catch (NumberFormatException | VoogaException e) {
+					screenhandler.showError("You cannot place an item there!");
 					System.out.println("Unable to add game object -- Actor ~ 132");
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 			

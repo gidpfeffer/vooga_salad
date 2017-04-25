@@ -1,10 +1,6 @@
 package ui.authoring;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 import XML.xmlmanager.classes.ExistingDirectoryHelper;
 import XML.xmlmanager.classes.XStreamSerializer;
@@ -12,7 +8,6 @@ import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import builders.GameDataGenerator;
-import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -156,7 +151,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.getChildren().add(menuButton);
 		
 		double width = 300;
-		myMenuView = new MenuView(this);
+		myMenuView = new MenuView(this, loginhandler);
 		myMenuView.setLayoutX(-width - 5);
 		myMenuView.setPrefWidth(width);
 		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);

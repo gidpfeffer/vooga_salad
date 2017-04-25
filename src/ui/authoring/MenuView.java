@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Optional;
 
 import gamedata.PreferencesData;
@@ -20,18 +18,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import ui.Preferences;
 import ui.authoring.delegates.MenuDelegate;
-import ui.general.CustomColors;
 import ui.general.StackButton;
 import ui.general.ToggleSwitch;
 import ui.general.UIHelper;
+import ui.handlers.LoginHandler;
 
 public class MenuView extends AnchorPane {
 
@@ -46,17 +42,18 @@ public class MenuView extends AnchorPane {
 	private MenuDelegate myDelegate;
 	private PreferencesData myData;
 	private VBox myVBox;
-	
+	private LoginHandler loginhandler;
 	private Collection<String> mySwitchTitles;
 	
 	private Map<String, ToggleSwitch> myPreferences;
 
-	public MenuView(MenuDelegate delegate) {
-		this(delegate, new PreferencesData());
+	public MenuView(MenuDelegate delegate, LoginHandler loginhandler) {
+		this(delegate, new PreferencesData(), loginhandler);
 	}
 	
-	public MenuView(MenuDelegate delegate, PreferencesData data){
+	public MenuView(MenuDelegate delegate, PreferencesData data, LoginHandler loginhandler){
 		super();
+		this.loginhandler = loginhandler;
 		myDelegate = delegate;
 		myData = data;
 		myPreferences = new HashMap<>();
@@ -76,15 +73,18 @@ public class MenuView extends AnchorPane {
 				Optional.ofNullable(null), Pos.CENTER, false); //TODO remove
 		StackPane load = UIHelper.buttonStack(e-> loadButtonClicked(), Optional.of(getPlainLabel("Load")),
 				Optional.ofNullable(null), Pos.CENTER, false);
+		StackPane returnMain = UIHelper.buttonStack(e-> loginhandler.returnToMain(), 
+				Optional.of(getPlainLabel("Return to Main")), Optional.ofNullable(null), Pos.CENTER, false);
 		save.setPrefHeight(40);
 		load.setPrefHeight(40);
+		returnMain.setPrefHeight(40);
 		UIHelper.setBackgroundColor(load, Color.TRANSPARENT);
 		UIHelper.setBackgroundColor(save, Color.TRANSPARENT);
+		UIHelper.setBackgroundColor(returnMain, Color.TRANSPARENT);
 		
 		Pane spacing = new Pane();
 		spacing.setPrefHeight(40);
-		myVBox.getChildren().addAll(spacing,load,save);
-		
+		myVBox.getChildren().addAll(spacing,load,save,returnMain);
 	}
 	private Label getPlainLabel(String s){
 		Label label = new Label(s);
