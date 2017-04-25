@@ -89,7 +89,7 @@ public class GameController {
 	}
 	
 	private void displayWinAlert() {
-		//display win
+		myGameScreen.notifyWin();
 	}
 	
 	private void initializeAnimationHandler() {
