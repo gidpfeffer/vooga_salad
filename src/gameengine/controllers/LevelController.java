@@ -28,27 +28,30 @@ public class LevelController {
 	private ControllableGrid myGrid;
 	private Supplier<ActorGrid> getActorGrid;
 	
+	private Runnable win;
+	
 	private Delay delay;
 	
 	private final int DELAY_CONSTANT = 2;
 	
 	private int level;
 	
-	public LevelController(Supplier<ActorGrid> getActorGrid) {
+	public LevelController(Supplier<ActorGrid> getActorGrid, Runnable win) {
 		this.getActorGrid = getActorGrid;
 		myGrid = getActorGrid.get();
 		delay = new Delay(DELAY_CONSTANT);
+		this.win = win;
 	}
 	
 	public int getLevel() {
 		return level;
 	}
 	
-	public void levelUp (GameData gameData) {
+	public void levelUp (GameData gameData) throws VoogaException {
 		if (!(gameData.getLevels().get(level+1)==null)) {
-			
+			changeLevel(gameData,level+1);
 		} else {
-			//user has won
+			win.run();
 		}
 	}
 	
