@@ -1,5 +1,6 @@
 package gamedata.composition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,9 +11,15 @@ import java.util.Random;
 public class MoveFreelyToBaseData extends MoveData {
 
 	private List<Grid2D> allBaseLocations;
+	
+	public MoveFreelyToBaseData(){
+		super(0.0);
+		allBaseLocations= new ArrayList<Grid2D>();
+		
+	}
+	
 	public MoveFreelyToBaseData(List<Grid2D> allBases, double mySpeed) {
 		super(mySpeed);
-		// TODO Auto-generated constructor stub
 		allBaseLocations = allBases; 
 	}
 	

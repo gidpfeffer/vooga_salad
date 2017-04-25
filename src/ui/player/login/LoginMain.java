@@ -14,6 +14,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -129,18 +135,17 @@ public class LoginMain {
 		{
 			User user = null;
 			for (User u : database.getDatabase()) {
-				System.out.println(u.getUsername());
-				System.out.println(loginScreen.getLoginGrid().getUsername().getText());
 				if (u.getUsername().equals(loginScreen.getLoginGrid().getUsername().getText())) {
 					user = u;
 					break;
 				}
 			}
-			showProfileCard(user);
+			//showProfileCard(user);
+			loginScreen.transitionToLoggedIn();
 			database.setActiveUser(user);
-			loginScreen.getActionTarget().setFill(Color.GREEN);
-			loginScreen.getActionTarget().setText(loginResource.getString("successfulLogin"));
 			loginScreen.getLoginGrid().getUsername().clear();
+			//loginScreen.getRoot().getChildren().add(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
+			//gotoGameSelector();
 		} else {
 			setBadActionTarget(loginScreen.getActionTarget(), Color.WHITE, 
 					loginResource.getString("incorrectLogin"));
@@ -188,7 +193,7 @@ public class LoginMain {
 				loginScreen.new Game("Asteroids", "asteroids.png", e -> {})));
 		GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
 		stage.setScene(select.getScene());
-		stage.setTitle("GameSelector");
+		stage.setTitle("Game Selector");
 		stage.show();
 	}
 
@@ -196,10 +201,8 @@ public class LoginMain {
 		gameController = new GameController();
 		gameController.start(stage);
 		setUpGameScreenReturn();
-		stage.setScene(gameController.getGameScreen().getScene());
-		stage.setWidth(Preferences.SCREEN_WIDTH);
-		stage.setHeight(Preferences.SCREEN_HEIGHT);
-		stage.setTitle("GameSelector");
+		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
+		stage.setTitle("Game Screen");
 	}
 	
 	private void setUpGameScreenReturn() {

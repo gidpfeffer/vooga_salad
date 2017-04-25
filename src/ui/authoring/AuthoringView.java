@@ -39,6 +39,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
+	private DisplayView myDisplayView;
 	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
 	private MenuView myMenuView;
 	private Pane myDimmerView;
@@ -114,9 +115,29 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.getChildren().add(menuButton);
 		
 		double width = 300;
+		
+		//alex test
+		ImageButton displayButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
+		displayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> slideDisplayIn());
+		AnchorPane.setLeftAnchor(displayButton, 150.0);
+		AnchorPane.setTopAnchor(displayButton, 150.0);
+		UIHelper.setDropShadow(displayButton);
+		this.getChildren().add(displayButton);
+		myDisplayView=new DisplayView(this);
+		myDisplayView.setLayoutX(-width-5);
+		myDisplayView.setPrefWidth(width);
+		UIHelper.setBackgroundColor(myDisplayView, CustomColors.GREEN);
+		UIHelper.setDropShadow(myDisplayView);
+		AnchorPane.setTopAnchor(myDisplayView, 0.0);
+		AnchorPane.setBottomAnchor(myDisplayView, 0.0);
+		this.getChildren().add(myDisplayView);
+		
+		//end test
+		
 		myMenuView = new MenuView(this);
 		myMenuView.setLayoutX(-width - 5);
 		myMenuView.setPrefWidth(width);
+		
 		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
 		UIHelper.setDropShadow(myMenuView);
 		AnchorPane.setTopAnchor(myMenuView, 0.0);
@@ -146,7 +167,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupMapView() {
 		//this calculation assumes that height < width
-		myMapView = new MapEditorView(myGameData.getMyPaths());
+		myMapView = new MapEditorView(myGameData.getMyPaths(), myGameData.getLayers(), this);
 		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
@@ -156,8 +177,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupLevelView() {
-		Collection<ActorData> enemies = myLeftPane.getActors(new BasicActorType("Troop"));
-		myLevelView = new LevelEditorView(this, enemies);
+		//TODO
+		myLevelView = new LevelEditorView(this, myGameData);//TODO pass gamedata instead
 			
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
@@ -194,6 +215,15 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		t.setByX(myMenuView.widthProperty().doubleValue());
 		t.play();
 	}
+	//alex test
+	private void slideDisplayIn(){
+		System.out.println("menu pressed");
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		t.setNode(myDisplayView);
+		t.setByX(myDisplayView.widthProperty().doubleValue());
+		t.play();
+	}
+	//end alex test
 	private void slideMenuOut(){
 		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
 		t.setNode(myMenuView);

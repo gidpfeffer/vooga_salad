@@ -46,6 +46,7 @@ import types.BasicActorType;
  */
 
 public class GameData {
+	String name;
 	//Level information (preferences, no & type of enemies)
 	Map<Integer,LevelData> levels;
 	
@@ -56,7 +57,7 @@ public class GameData {
 	PathData myPaths;
 	
 	//Layer information
-	MapData myLayers; 
+	MapLayersData myLayers; 
 
 	//Categories available (e.g. Troop)
 	List<BasicActorType> types;
@@ -67,11 +68,15 @@ public class GameData {
 	//Actors available for entire game
 	private Map<Integer, LineageData> pieces;
 	
-	
 	private int numOptions;
 
 
 	public GameData(){
+		this("");
+	}
+	
+	public GameData(String name){
+		this.name = name;
 		levels=new HashMap<Integer,LevelData>();
 		myPaths = new PathData();
 		preferences = new PreferencesData();
@@ -79,7 +84,7 @@ public class GameData {
 		pieces = new HashMap<Integer, LineageData>();
 		types = new ArrayList<BasicActorType>();
 		numOptions = 0;
-		myLayers = new MapData();
+		myLayers = new MapLayersData();
 	}
 	
 	/**
@@ -140,8 +145,10 @@ public class GameData {
 	 * create and ActorData object
 	 * 
 	 */
-	public void add(ActorData data){
-		pieces.put(numOptions++, new LineageData(data));
+	public LineageData add(ActorData data){
+		LineageData lin = new LineageData(data);
+		pieces.put(numOptions++, lin);
+		return lin;
 	}
 	
 	public void addUpgrade(LineageData data, ActorData toAdd){
@@ -246,14 +253,19 @@ public class GameData {
 		this.preferences = preferences;
 	}
 	
-	public void setLayers(MapData layers){
+	public void setLayers(MapLayersData layers){
 		myLayers = layers;
 	}
-	public MapData getLayers(){
+	public MapLayersData getLayers(){
 		return myLayers;
 	}
 
-	
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -12,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import ui.general.UIHelper;
 
 public class Login extends BorderedAnchorPane {
@@ -22,6 +24,7 @@ public class Login extends BorderedAnchorPane {
 	private Button auth;
 	private Button selector;
 	private final Text actiontarget;
+	private HBox bottomHBox;
 
 	private String css;
 	private GridPane gridPane;
@@ -120,10 +123,10 @@ public class Login extends BorderedAnchorPane {
 		selector = new Button(loginResource.getString("gotoSelector"));
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
-		HBox hbox = new HBox(100, auth, selector);
-		borderPane.setBottom(hbox);
-		hbox.setAlignment(Pos.CENTER);
-		hbox.setPadding(new Insets(0., 0., 30., 0.));
+		bottomHBox = new HBox(100, auth, selector);
+		borderPane.setBottom(bottomHBox);
+		bottomHBox.setAlignment(Pos.CENTER);
+		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
 	}
 
 	private void setupCenter() {
@@ -133,6 +136,26 @@ public class Login extends BorderedAnchorPane {
 		StackPane sp = new StackPane(top);
 		sp.getChildren().add(gridPane);
 		borderPane.setCenter(sp);
+	}
+	
+	
+	public void transitionToLoggedIn() {
+	     ScaleTransition st = new ScaleTransition(Duration.millis(1000), gridPane);
+	     st.setByX(-1f);
+	     st.setByY(-1f);
+	     //st.setCycleCount((int) 4f);
+	    //st.setAutoReverse(true);
+	     st.play();
+	     borderPane.setBottom(null);
+	     bottomHBox.getChildren().clear();
+	     VBox hbox = new VBox(40, auth, selector);
+	     hbox.setAlignment(Pos.CENTER);
+	     borderPane.setCenter(hbox);
+	     Label us = new Label("'I Heart Singletons' - Duvall, probably");
+	     us.setStyle("-fx-font-size: 15");
+	     us.setPadding(new Insets(50, 0, 20, 0));
+	     borderPane.setBottom(us);
+	     BorderPane.setAlignment(us, Pos.CENTER);
 	}
 
 	public class Game{

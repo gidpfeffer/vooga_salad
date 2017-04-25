@@ -77,7 +77,6 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 	}
 
 	private void setupLayout(){
-		//root.setId("towerBackground");
 		gameMenu.getStyleClass().add("scroll-pane");
 		root.getStyleClass().add("anchor-pane");
 	}
@@ -92,7 +91,6 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 	private void setupScrollPane(){
 		HBox gamesHBox = new HBox(50);
 		gamesHBox.setPadding(new Insets(0., 50., 0., 50.));
-		//gamesHBox.setStyle("-fx-background-color: blue;");
 		gamesList.forEach(game -> {
 			VBox vbox = new VBox(40);
 			StackPane g = new StackPane();
@@ -110,7 +108,6 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		gameMenu.setHbarPolicy(ScrollBarPolicy.NEVER);
 		gameMenu.setVbarPolicy(ScrollBarPolicy.NEVER);
 		gameMenu.setBackground(Background.EMPTY);
-		//gameMenu.setStyle("-fx-background-color: green");
 		gameMenu.setPadding(new Insets(15, 12, 15, 12));
 		borderPane.setCenter(gameMenu);
 		BorderPane.setAlignment(gamesHBox, Pos.CENTER);

@@ -13,6 +13,7 @@ import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import gamedata.ActorData;
 import gamedata.GameData;
+import gamedata.LineageData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -165,24 +166,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		
 	}
 	
-	
-	//TODO: Place button implement (toggle)
-	private StackPane placeableButton(String actorType){
-		ImageView img = new ImageView(new Image("place_icon.png"));
-		img.setFitHeight(16);
-		img.setFitWidth(16);
-		StackPane place = UIHelper.buttonStack(e -> togglePlaceButton(img), 
-				Optional.ofNullable(null), 
-				Optional.of(img), Pos.CENTER, true);
-		UIHelper.setBackgroundColor(place, Color.TRANSPARENT);
-		AnchorPane.setTopAnchor(place, -12.0);
-		AnchorPane.setRightAnchor(place, -12.0);
-		return place;
-	}
-	
-	private void togglePlaceButton(ImageView image){
-		//TODO: implement
-	}
+
 	
 	private void launchEditor(ActorEditorView view) {
 		view.setActorTypeOptions(this.actorTypeToView.keySet());
@@ -209,24 +193,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	
 
 	
-	public Map<BasicActorType, Collection<ActorData>> getActors(){
-		Map<BasicActorType, Collection<ActorData>> map = new HashMap<BasicActorType, Collection<ActorData>>();
-		for(Entry<BasicActorType, ActorEditorView> entry : this.actorTypeToView.entrySet()){
-			map.put(entry.getKey(), entry.getValue().getActorData());
-		}
-		return map;
-	}
-	
-	public Collection<ActorData> getActors(BasicActorType type){
-		Collection<ActorData> toRet = new ArrayList<ActorData>();
-		for(Entry<BasicActorType, ActorEditorView> entry : this.actorTypeToView.entrySet()){
-			if(entry.getKey().equals(type)){
-				toRet.addAll(entry.getValue().getActorData());
-			}
-			
-		}
-		return toRet;
-	}
+
 
 	@Override
 	public void closeSelfAndReturn(Pane pane, String actorName, String imagePath) {

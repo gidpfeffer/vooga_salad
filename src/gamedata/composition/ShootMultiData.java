@@ -1,6 +1,7 @@
 package gamedata.composition;
 
 import gamedata.compositiongen.ShootData;
+import gamedata.compositiongen.ShootTargetLineData;
 import types.BasicActorType;
 
 /**
@@ -11,12 +12,17 @@ import types.BasicActorType;
  *
  */
 
-public class ShootMultiData extends ShootData {
+public class ShootMultiData extends ShootTargetLineData {
 
 	private Integer numShots;
 	
-	public ShootMultiData(Double range, Integer rate, BasicActorType type, 
-			Integer projectile, Double speed, Integer quantity){
+	public ShootMultiData(){
+		super();
+		this.numShots = 0; //double shot is default
+	}
+	
+	public ShootMultiData(Integer quantity, Double range, Integer rate, 
+			BasicActorType type, Integer projectile, Double speed){
 		super(range,rate,type,projectile,speed);
 		this.numShots = quantity;
 	}
