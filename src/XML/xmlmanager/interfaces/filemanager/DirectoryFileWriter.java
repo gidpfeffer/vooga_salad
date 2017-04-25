@@ -16,7 +16,7 @@ import XML.xmlmanager.exceptions.IllegalFileException;
 public interface DirectoryFileWriter extends DirectoryFileReader{
 	
 	/**
-	 * 
+	 * Writes a file to a directory only if valid and the file doesn't exist
 	 * @param fileContent the text to save in the file
 	 * @param filename the name of the file you would like to save the content in 
 	 * @return true when the file was added, false if the file already existed
@@ -25,5 +25,5 @@ public interface DirectoryFileWriter extends DirectoryFileReader{
 	 * but you don't have access to writing it based on class implementation
 	 */
 	boolean addStringFileToDirectory(String fileContent, String filename) throws IOException, IllegalFileException;
-
+	
 }

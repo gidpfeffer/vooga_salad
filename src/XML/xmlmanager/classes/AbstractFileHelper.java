@@ -12,8 +12,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileUtils;
-
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 
@@ -23,13 +21,17 @@ public abstract class AbstractFileHelper implements DirectoryFileManager{
 		
 	}
 	
-	protected boolean addFileToDirectory(String fileContent, String filepath) throws IOException{
+	private boolean addFileToDirectory(String fileContent, String filepath) throws IOException{
 		File file = new File(filepath);
 		if(file.exists()) return false;
+		writeFile(file, fileContent);
+		return true;
+	}
+	
+	private void writeFile(File file, String fileContent) throws IOException{
 		FileWriter fileWriter = new FileWriter(file, false);
 		fileWriter.write(fileContent);
 		fileWriter.close();
-		return true;
 	}
 	
 	protected boolean directoryExists(String filepath) {
@@ -44,15 +46,15 @@ public abstract class AbstractFileHelper implements DirectoryFileManager{
 		return pred.test(funct.apply(input));
 	}
 	
-	protected String getFileContentHelper(String filepath) throws IOException, IllegalFileException{
+	private String getFileContentHelper(String filepath) throws IOException, IllegalFileException{
 		return new String(Files.readAllBytes(Paths.get(filepath)));
 	}
 	
-	protected void deleteDirectory(String rootDirPath) throws IOException{
-		FileUtils.deleteDirectory(new File(rootDirPath));
-	}
+//	private void deleteDirectory(String rootDirPath) throws IOException{
+//		FileUtils.deleteDirectory(new File(rootDirPath));
+//	}
 	
-	protected void deleteFiles(List<String> filepaths){
+	private void deleteFiles(List<String> filepaths){
 		for(String filepath: filepaths){
 			deleteFile(filepath);
 		}
@@ -62,7 +64,7 @@ public abstract class AbstractFileHelper implements DirectoryFileManager{
 		return !(filename == null || filename.length() < 1 || filename.contains("/"));
 	}
 	
-	protected void deleteFile(String filepath){
+	private void deleteFile(String filepath){
 		File file = new File(filepath);
 		file.delete();
 	}
@@ -108,8 +110,12 @@ public abstract class AbstractFileHelper implements DirectoryFileManager{
 				.collect(Collectors.toList()));		
 	}
 	
-	protected boolean generateFile(String fileContent, String filename, String dirPath) throws IOException, IllegalFileException{
+	private void checkCleanliness(String filename) throws IllegalFileException{
 		if(!fileIsClean(filename)) throw new IllegalFileException(new IllegalStateException("Invalid filename syntax"));
+	}
+	
+	private boolean generateFile(String fileContent, String filename, String dirPath) throws IOException, IllegalFileException{
+		checkCleanliness(filename);
 		String totalPath = dirPath + "/" + filename;
 		return addFileToDirectory(fileContent, totalPath);
 	}
