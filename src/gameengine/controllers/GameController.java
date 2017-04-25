@@ -17,6 +17,7 @@ import gamestatus.GameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
@@ -37,6 +38,7 @@ public class GameController {
 	private GameStatus myGameStatus;
 	
 	private UIHandler myUIHandler;
+	private AnimationHandler myAnimationHandler;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
 	
@@ -51,6 +53,7 @@ public class GameController {
 	public GameController(GameData gameData) {
 		myGameData = gameData;
 		initializeUIHandler();
+		initializeAnimationHandler();
 		setupGameStatus();
 		myGameScreen = new GameScreen(myUIHandler);
 	}
@@ -77,7 +80,7 @@ public class GameController {
 	}
 	
 	public void start() {
-		//myGameScreen = new GameScreen(myUIHandler);
+		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen),() -> displayWinAlert());
 		intitializeTimeline();
@@ -97,6 +100,30 @@ public class GameController {
 	
 	private void displayWinAlert() {
 		//display win
+	}
+	
+	private void initializeAnimationHandler() {
+		myAnimationHandler = new AnimationHandler() {
+			@Override
+			public void pause() {
+				animation.pause();
+			}
+
+			@Override
+			public void play() {
+				animation.play();
+			}
+
+			@Override
+			public void stop() {
+				animation.stop();
+			}
+
+			@Override
+			public void exit() {
+				System.exit(0);
+			}
+		};
 	}
 
 	private void initializeUIHandler() {
@@ -157,30 +184,6 @@ public class GameController {
 			}
 
 			@Override
-			public void pause() {
-				animation.pause();
-			}
-
-			@Override
-			public void play() {
-				animation.play();
-			}
-			
-			public void launchGame() throws VoogaException {
-				myLevelController.changeLevel(myGameData, 1);
-			}
-
-			@Override
-			public void stop() {
-				animation.stop();
-			}
-
-			@Override
-			public void exit() {
-				System.exit(0);
-			}
-
-			@Override
 			public Map<Integer, ActorData> getOptions() {
 				return myGameData.getOptions();
 			}
@@ -189,10 +192,9 @@ public class GameController {
 			public void changeLevel(int level) throws VoogaException {
 				myLevelController.changeLevel(myGameData, level);
 			}
-
-			@Override	
-			public Supplier<SimpleHUD> getSimpleHUD() {
-				return () -> mySimpleHUD;
+			
+			public void launchGame() throws VoogaException {
+				myLevelController.changeLevel(myGameData, 1);
 			}
 		};
 	}

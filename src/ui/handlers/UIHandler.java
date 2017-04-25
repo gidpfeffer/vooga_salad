@@ -20,10 +20,5 @@ public interface UIHandler {
 	int addGameObject(Integer option, double x, double y) throws VoogaException;
 	Map<Integer,ActorData> getOptions();
 	void launchGame() throws VoogaException;
-	void pause();
-	void play();
-	void stop();
-	void exit();
 	void changeLevel(int level) throws VoogaException;
-	Supplier<SimpleHUD> getSimpleHUD();
 }
