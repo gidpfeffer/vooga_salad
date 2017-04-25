@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.map.LayerData;
+import gamedata.composition.LayerData;
 import gamedata.map.PolygonData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;

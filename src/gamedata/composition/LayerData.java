@@ -1,14 +1,17 @@
-package gamedata.map;
+package gamedata.composition;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import gamedata.compositiongen.Data;
+import gamedata.map.PolygonData;
 
 /**
  * @author TNK
  * @author Anh
  *
  */
-public class LayerData {
+public class LayerData implements Data{
 	
 	private List<PolygonData> myPolygons;
 	
