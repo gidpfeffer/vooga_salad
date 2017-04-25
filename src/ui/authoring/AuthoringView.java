@@ -1,8 +1,6 @@
 package ui.authoring;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import XML.xmlmanager.classes.ExistingDirectoryHelper;
@@ -20,6 +18,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -100,6 +99,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupDimmerView() {
 		myDimmerView = new Pane();
+		myDimmerView.setCache(true);
+		myDimmerView.setCacheShape(true);
+		myDimmerView.setCacheHint(CacheHint.SPEED);
+		
 		UIHelper.setBackgroundColor(myDimmerView, Color.rgb(0, 0, 0, 0.75));
 		AnchorPane.setBottomAnchor(myDimmerView, 0.0);
 		AnchorPane.setTopAnchor(myDimmerView, 0.0);
@@ -222,9 +225,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupMapView() {
-		//this calculation assumes that height < width
 		myMapView = new MapEditorView(myGameData.getMyPaths(), myGameData.getLayers(), this);
-		//myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
@@ -234,14 +235,11 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupLevelView() {
 		myLevelView = new LevelEditorView(this, myGameData);
-			
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLevelView.setPrefWidth(SIDE_PANE_WIDTH);
-		
 		this.myBorderPane.setRight(myLevelView);
-		
 	} 
 	
 	private void setupLeftPane(){
@@ -265,19 +263,22 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	
 	private void slideMenuIn(){
 		System.out.println("menu pressed");
-		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 		t.setNode(myMenuView);
 		t.setByX(myMenuView.widthProperty().doubleValue());
 		t.play();
 	}
 	private void slideMenuOut(){
-		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 		t.setNode(myMenuView);
 		t.setToX(0);
 		t.play();
 	}
 	private void openPaneWithAnimation(Pane pane, PopupSize size){
-		setDim(true, Duration.seconds(0.4));//dim background
+		pane.setCache(true);
+		pane.setCacheShape(true);
+		pane.setCacheHint(CacheHint.SPEED);
+		setDim(true, Duration.seconds(0.5));//dim background
 		this.myDimmerEvent = e -> closePaneWithAnimation(pane);
 		myDimmerView.addEventHandler(MouseEvent.MOUSE_CLICKED, this.myDimmerEvent);
 
@@ -291,7 +292,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		pane.setScaleY(0.0);
 		this.getChildren().add(pane);
 		
-		Duration dur = Duration.seconds(0.75);
+		Duration dur = Duration.seconds(0.5);
 		ScaleTransition st = new ScaleTransition(dur);
 		st.setNode(pane);
 		st.setToX(1.0);
@@ -318,7 +319,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void closePaneWithAnimation(Pane pane){
-		setDim(false, Duration.seconds(0.4));
+		setDim(false, Duration.seconds(0.5));
 		ScaleTransition s = new ScaleTransition(Duration.seconds(0.5));
 		s.setNode(pane);
 		s.setToX(0);

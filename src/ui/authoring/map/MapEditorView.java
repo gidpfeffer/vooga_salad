@@ -108,7 +108,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 */
 	private void setupMapData() {
 		for(Entry<String, LayerData> entry :myMapData.getMyLayers().entrySet()){
-			addLayer(new PolygonLayerView(entry.getValue()),entry.getKey());
+			addLayer(new PolygonLayerView(entry.getValue(),myBackgroundView.getImageInsets()),entry.getKey());
 		}
 		
 	}
@@ -291,7 +291,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	@Override
 	public void layerPopupDidPressConfirm(String nameInput) {
 		LayerData data = new LayerData();
-		PolygonLayerView layer = new PolygonLayerView(data);
+		PolygonLayerView layer = new PolygonLayerView(data,myBackgroundView.getImageInsets());
 		this.myMapData.addLayer(nameInput, data);
 		this.addLayer(layer, nameInput);
 		myPopDelegate.closeView(myLayerPopup);

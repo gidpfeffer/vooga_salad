@@ -130,7 +130,6 @@ public class PathLayerView extends Layer {
 			for (Grid2D p : path.getValue())
 				((Point) p).updateSize(new Tuple<Double, Double>(imagepane.getWidth(), imagepane.getHeight()),
 						imagepane.getImageInsets());
-
 	}
 
 }
