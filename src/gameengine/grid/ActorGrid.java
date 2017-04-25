@@ -20,6 +20,7 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
+import gamestatus.WriteableGameStatus;
 import types.BasicActorType;
 import util.observerobservable.VoogaObservableMap;
 
@@ -30,7 +31,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private Function<Integer, Actor> actorMaker;
 	private Stack<SettableActorLocator> newActors;
 	
-	public ActorGrid(double maxX, double maxY, Function<Integer, Actor> actorMaker){
+	public ActorGrid(double maxX, double maxY, WriteableGameStatus myWriteableGameStatus,Function<Integer, Actor> actorMaker){
 		super();
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
