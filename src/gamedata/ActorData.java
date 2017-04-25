@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import builders.OptionGenerator;
+import gamedata.composition.LayerData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 import gamedata.compositiongen.HealthData;
-import gamedata.map.LayerData;
 import gamedata.map.PolygonData;
 import types.BasicActorType;
 

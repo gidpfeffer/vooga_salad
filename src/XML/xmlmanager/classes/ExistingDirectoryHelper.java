@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
@@ -53,5 +52,4 @@ public class ExistingDirectoryHelper extends AbstractFileHelper{
 	public Collection<String> getAllFilesInDirectory() {
 		return Collections.unmodifiableCollection(getFilesInDir(directoryPath));
 	}
-
 }

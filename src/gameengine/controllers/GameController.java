@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.map.LayerData;
+import gamedata.composition.LayerData;
 import gamedata.map.PolygonData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
@@ -53,6 +53,7 @@ public class GameController {
 		myGameData = gameData;
 		initializeUIHandler();
 		setupGameStatus();
+		myGameScreen = new GameScreen(myUIHandler);
 	}
 
 	/**
@@ -77,9 +78,9 @@ public class GameController {
 	}
 	
 	public void start(Stage stage) {
-		myGameScreen = new GameScreen(myUIHandler);
+		//myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen));
+		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen),() -> displayWinAlert());
 		intitializeTimeline();
 	}
 	
@@ -93,6 +94,10 @@ public class GameController {
 	
 	private void step() {
 		myGrid.step();
+	}
+	
+	private void displayWinAlert() {
+		//display win
 	}
 
 	private void initializeUIHandler() {
