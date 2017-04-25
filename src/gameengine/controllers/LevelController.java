@@ -58,6 +58,7 @@ public class LevelController {
 	public void changeLevel(GameData gameData, int level) throws VoogaException{
 		this.level = level;
 		PreferencesData preferences = gameData.getPreferences();
+		System.out.println(preferences);
 		LevelData levelData = gameData.getLevel(level);
 		if (levelData!=null) loadLevel(preferences,levelData,gameData);
 		else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
@@ -84,7 +85,7 @@ public class LevelController {
 		System.out.println("processing enemy waves");
 		processEnemyWaves(waveData.getWaveEnemies(),pathData);
 		System.out.println("processed enemy waves");
-		if (preferences.getPauseBetweenWaves().get()) delay.delayAction();
+		if (preferences.pauseBetweenWaves()) delay.delayAction();
 	}
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
