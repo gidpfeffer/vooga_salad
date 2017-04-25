@@ -47,6 +47,7 @@ public class GameController {
 		initializeAnimationHandler();
 		setupGameStatus();
 		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
+		myGameScreen.setAnimationHandler(myAnimationHandler);
 	}
 	/**
 	 * @param UIObserver
