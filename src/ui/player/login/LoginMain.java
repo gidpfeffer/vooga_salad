@@ -169,6 +169,7 @@ public class LoginMain {
 				goToGameScreen(gameData);
 			}
 		} catch(Exception e){
+			e.printStackTrace();
 			System.out.println("Invalid GameData file chosen");
 		}
 	}
