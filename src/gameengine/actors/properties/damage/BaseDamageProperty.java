@@ -1,4 +1,4 @@
-package gameengine.actors.properties;
+package gameengine.actors.properties.damage;
 
 import java.util.Collection;
 

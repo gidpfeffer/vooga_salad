@@ -1,4 +1,4 @@
-package gameengine.actors.properties;
+package gameengine.actors.properties.move;
 
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;

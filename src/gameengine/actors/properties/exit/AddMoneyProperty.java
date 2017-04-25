@@ -1,4 +1,4 @@
-package gameengine.actors.properties;
+package gameengine.actors.properties.exit;
 
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
