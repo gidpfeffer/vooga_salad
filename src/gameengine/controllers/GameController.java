@@ -49,7 +49,7 @@ public class GameController {
 		initializeUIHandler();
 		initializeAnimationHandler();
 		setupGameStatus();
-		myGameScreen = new GameScreen(myUIHandler);
+		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 	}
 
 	/**
