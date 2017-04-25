@@ -12,8 +12,6 @@ import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -32,7 +30,9 @@ import ui.player.users.User;
 import ui.player.users.UserDatabase;
 import util.FileSelector;
 import voogasalad_ilovesingletons.Main;
+
 public class LoginMain {
+	
 	private Stage stage;
 	private GameController gameController;
 	private UserDatabase database;
@@ -41,8 +41,8 @@ public class LoginMain {
 	private Signup signupPage;
 	private LoginHandler loginhandler;
 	public static final String userDatabase = "userDatabase.xml";
-	
 	public static final String CONFIG_EXTENSION = "*.xml";
+	
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
 		setupDatabase();
@@ -141,6 +141,7 @@ public class LoginMain {
 			database = new UserDatabase();
 		}
 	}
+	
 	private void showProfileCard(User user) {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
 		card.setLogoutAction(e -> {
@@ -156,6 +157,7 @@ public class LoginMain {
 		AnchorPane.setBottomAnchor(hb, 25.);
 		AnchorPane.setLeftAnchor(hb, 25.);
 	}
+	
 	private void promptUserToChooseGame(){
 		try {
 			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
@@ -170,25 +172,11 @@ public class LoginMain {
 			System.out.println("Invalid GameData file chosen");
 		}
 	}
+	
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData);
 		gameController.start(stage);
-		setUpGameScreenReturn();
 		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
 		stage.setTitle("Game Screen");
-	}
-	
-	private void setUpGameScreenReturn() {
-		EventHandler<ActionEvent> gameScreenHandler = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				gameController.getGameScreen().getAction();
-				stage.setScene(loginScreen.getScene());
-				stage.setTitle("Login");
-				stage.setWidth(Preferences.SCREEN_WIDTH);
-				stage.setHeight(Preferences.SCREEN_HEIGHT);
-			}
-		};
-		gameController.getGameScreen().setLoginReturn(gameScreenHandler);
 	}
 }

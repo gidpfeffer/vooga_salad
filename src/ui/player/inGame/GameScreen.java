@@ -9,13 +9,10 @@ import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ui.general.ImageViewPane;
@@ -32,9 +29,7 @@ public class GameScreen extends GenericGameScreen
 	private UIHandler uihandler;
 	private SimpleHUD hud;
 	private Map<Integer, Actor> actorsMap;
-	private GameScreen gs = this;
 	private ScreenHandler screenHandler;
-	private LoginHandler loginhandler;
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
@@ -62,25 +57,11 @@ public class GameScreen extends GenericGameScreen
 		};
 	}
 	
-	public EventHandler<ActionEvent> getAction() {
-		EventHandler<ActionEvent> backToLogin = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				uihandler.stop();
-				loginhandler.returnToMain();
-			}
-		};
-		System.out.println(gs.getMediaPlayer().getStatus());
-		if(gs.getMediaPlayer().getStatus().equals(Status.PLAYING)) gs.getMediaPlayer().stop();
-		return backToLogin;
-	}
-	
 	public GameScreen(UIHandler uihandler, LoginHandler loginhandler) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null), loginhandler);
 		this.uihandler = uihandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
-		this.loginhandler = loginhandler;
 		initializeScreenHandler();
 		hud = uihandler.getSimpleHUD().get();
 		setup();

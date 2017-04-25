@@ -9,7 +9,6 @@ import gamedata.ActorData;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 
 /**
  * Creates a sliding pane of like actors i.e. Towers, Troops, ... given a map of options to actorData.
