@@ -1,6 +1,5 @@
 package gameengine.actors.properties;
 
-import gamedata.compositiongen.ShootData;
 import gamedata.compositiongen.ShootTargetLineData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.ShootTargetProperty;
