@@ -80,7 +80,7 @@ public class GameController {
 	public void start(Stage stage) {
 		//myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen));
+		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen),() -> displayWinAlert());
 		intitializeTimeline();
 	}
 	
@@ -94,6 +94,10 @@ public class GameController {
 	
 	private void step() {
 		myGrid.step();
+	}
+	
+	private void displayWinAlert() {
+		//display win
 	}
 
 	private void initializeUIHandler() {
