@@ -1,10 +1,8 @@
 package ui.handlers;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 import gamedata.ActorData; 
-import ui.player.inGame.SimpleHUD;
 import util.VoogaException;
 
 /**
