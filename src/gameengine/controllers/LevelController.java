@@ -34,15 +34,22 @@ public class LevelController {
 	
 	private int level;
 	
-	public LevelController(int level, Supplier<ActorGrid> getActorGrid) {
+	public LevelController(Supplier<ActorGrid> getActorGrid) {
 		this.getActorGrid = getActorGrid;
 		myGrid = getActorGrid.get();
-		this.level = level;
 		delay = new Delay(DELAY_CONSTANT);
 	}
 	
 	public int getLevel() {
 		return level;
+	}
+	
+	public void levelUp (GameData gameData) {
+		if (!(gameData.getLevels().get(level+1)==null)) {
+			
+		} else {
+			//user has won
+		}
 	}
 	
 	public void changeLevel(GameData gameData, int level) throws VoogaException{
@@ -66,19 +73,24 @@ public class LevelController {
 	 * @param grid Grid to modify (add actors)
 	 */
 	private void addPieces(GameData gameData, LevelData curr,PreferencesData preferences){
+		System.out.println("adding pieces");
 		curr.getMyWaves().forEach(wave -> processWave(wave,gameData.getMyPaths(),preferences));
 	}
 	
 	private void processWave(WaveData waveData,PathData pathData,PreferencesData preferences) {
+		System.out.println("processing enemy waves");
 		processEnemyWaves(waveData.getWaveEnemies(),pathData);
+		System.out.println("processed enemy waves");
 		if (preferences.getPauseBetweenWaves().get()) delay.delayAction();
 	}
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
 		Actor actor = builders.ActorGenerator.makeActor(IDGenerator.getNewID(), actorData);
+		System.out.println("spawning enemy"+ IDGenerator.getNewID());
 		Grid2D firstPathCoor = getFirstPathCoor(pathData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
+		System.out.println("enemy spawned"+ IDGenerator.getNewID());
 	}
 	
 	private Grid2D getFirstPathCoor(PathData pathData) {

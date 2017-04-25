@@ -1,6 +1,6 @@
 package gameengine.controllers;
 
-import java.util.Map;
+import java.util.Map;	
 import java.util.function.Supplier;
 
 import builders.ActorGenerator;
@@ -79,7 +79,7 @@ public class GameController {
 	public void start(Stage stage) {
 		myGameScreen = new GameScreen(myUIHandler);
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(1,() -> getNewActorGrid(myGameScreen));
+		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen));
 		intitializeTimeline();
 	}
 	
@@ -160,6 +160,10 @@ public class GameController {
 			@Override
 			public void play() {
 				animation.play();
+			}
+			
+			public void launchGame() throws VoogaException {
+				myLevelController.changeLevel(myGameData, 1);
 			}
 
 			@Override
