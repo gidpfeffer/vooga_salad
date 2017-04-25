@@ -1,6 +1,9 @@
 package ui.authoring.actor;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -47,11 +50,13 @@ public class CreateActorTypeView extends VBox {
 	private HBox myHBox;
 	private CreateActorDelegate myDelegate;
 	private Random randy;
+	private List<String>hits;
 	
 	public CreateActorTypeView(CreateActorDelegate delegate){
 		super();
 		myDelegate = delegate;
 		randy = new Random();
+		hits = new ArrayList<String>();
 		setupViews();
 		
 	}
@@ -81,7 +86,7 @@ public class CreateActorTypeView extends VBox {
 		StackPane add = buttonForName("Randomize Image", CustomColors.BLUE_50, e -> {
 			String qry =  myTextField.textProperty().getValue();
 			ImageInfo im = WebImageCollector.
-					findAndSaveRandomIcon(randy, qry);
+					findAndSaveRandomIcon(randy, qry, hits);
 			myImagePath = im.getMyName();
 			Image image = SwingFXUtils.toFXImage(im.getMyImage(), null);
 			myImageView.setImage(image);

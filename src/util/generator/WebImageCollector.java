@@ -1,6 +1,14 @@
 package util.generator;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +17,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -43,13 +53,57 @@ public class WebImageCollector {
 	private final static String API_ADDRESS = "https://www.googleapis.com/customsearch/v1?";
 	private final static String IMAGE_FOLDER = "images/internet/";
 	
-	public static ImageInfo findAndSaveRandomIcon(Random randy, String qry){
-		BufferedImage image = findRandomIcon(randy, qry);
+	public static ImageInfo findAndSaveRandomIcon(Random randy, String qry, List<String> hits){
+		BufferedImage image = findRandomIcon(randy, qry, hits);
+		BufferedImage transparent = transparent(image, Color.WHITE, Color.LIGHT_GRAY);
 		String savePath = IMAGE_FOLDER + qry;
 		String s = savePng(image, savePath);
-		return new ImageInfo(image, s);
-		
-		
+		return new ImageInfo(transparent, s);
+	}
+	
+	//TODO: Debug this
+	private static BufferedImage transparent(BufferedImage image, Color c1, Color c2)
+	  {
+	    // Primitive test, just an example
+	    final int r1 = c1.getRed();
+	    final int g1 = c1.getGreen();
+	    final int b1 = c1.getBlue();
+	    final int r2 = c2.getRed();
+	    final int g2 = c2.getGreen();
+	    final int b2 = c2.getBlue();
+	    RGBImageFilter filter = new RGBImageFilter()
+	    {
+	      public final int filterRGB(int x, int y, int rgb)
+	      {
+	        int r = (rgb & 0xFF0000) >> 16;
+	        int g = (rgb & 0xFF00) >> 8;
+	        int b = rgb & 0xFF;
+	        if (r >= r1 && r <= r2 &&
+	            g >= g1 && g <= g2 &&
+	            b >= b1 && b <= b2)
+	        {
+	          // Set fully transparent but keep color
+	          return rgb & 0xFFFFFF;
+	        }
+	        return rgb;
+	      }
+	    };
+
+	    ImageProducer ip = new FilteredImageSource(image.getSource(), filter);
+	    Image im = Toolkit.getDefaultToolkit().createImage(ip);
+	    BufferedImage toRet = convertToBufferedImage(im);
+	    return toRet;
+	  }
+	
+	public static BufferedImage convertToBufferedImage(Image image)
+	{
+	    BufferedImage newImage = new BufferedImage(
+	        image.getWidth(null), image.getHeight(null),
+	        BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D g = newImage.createGraphics();
+	    g.drawImage(image, 0, 0, null);
+	    g.dispose();
+	    return newImage;
 	}
 	
 	/**
@@ -71,7 +125,6 @@ public class WebImageCollector {
     }
 	
 	
-	
 	/**
 	 * For use in random Actor generation.
 	 * 
@@ -79,9 +132,9 @@ public class WebImageCollector {
 	 * @param qry The String topic to search
 	 * @return BufferedImage found on the internet
 	 */
-	public static BufferedImage findRandomIcon(Random randy, String qry){
+	public static BufferedImage findRandomIcon(Random randy, String qry, List<String> hits){
 		int index = randy.nextInt(20) + 1;
-		return findImage(qry+"+cartoon", PNG, index);
+		return findImage(qry+"+cartoon", PNG, index, hits);
 	}
 	
 	/**
@@ -91,32 +144,34 @@ public class WebImageCollector {
 	 * the final image
 	 * @return BufferedImage found on the internet
 	 */
-	public static BufferedImage findIcon(String qry, int iter){
-		return findImage(qry+"+cartoon", PNG, iter);
+	public static BufferedImage findIcon(String qry, int iter, List<String> hits){
+		return findImage(qry+"+cartoon", PNG, iter, hits);
 	}
 	
-	public static BufferedImage findImage(String qry, String fileType, int iter){
-		return findSearchItem(qry, fileType, IMAGE, iter);
+	public static BufferedImage findImage(String qry, String fileType, int iter, List<String> hits){
+		return findSearchItem(qry, fileType, IMAGE, iter, hits);
 	}
 	
-	public static BufferedImage findSearchItem(String qry, String fileType, String searchType, int iter){
+	public static BufferedImage findSearchItem(String qry, String fileType, 
+			String searchType, int iter, List<String> hit){
 		BufferedImage toRet = null;
 		String search = stringToSearch(qry);
 		try{
 			HttpURLConnection google = constructSearchUrl(search, fileType, searchType);
 			String imagePath = popFilePath(google, iter);
-			google.disconnect();
-			URL toRead = new URL(imagePath);
-			toRet = ImageIO.read(toRead);
-			
-		} catch(IOException e){
-			//printExceptionMessage(e);
-			toRet = findSearchItem(qry, fileType, searchType, ++iter);
-			if(toRet == null && iter-1>0){
-				toRet = findSearchItem(qry, fileType, searchType, --iter);
+			if(!hit.contains(imagePath)){
+				google.disconnect();
+				URL toRead = new URL(imagePath);
+				toRet = ImageIO.read(toRead);
+				hit.add(imagePath);
 			}
-			//toRet = ImageIO.read(new File('DEFAULT_PATH'));
-			// Replace null with default image
+		} catch(IOException e){
+			//TODO
+		}
+		if(toRet == null && iter-1>0){
+			toRet = findSearchItem(qry, fileType, searchType, --iter, hit);
+		} else if (toRet == null){
+			toRet = findSearchItem(qry, fileType, searchType, ++iter, hit);
 		}
 		return toRet;
 	}
