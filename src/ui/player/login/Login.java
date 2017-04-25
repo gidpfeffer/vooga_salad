@@ -28,6 +28,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	private Scene scene;
 	private Button auth;
 	private Button selector;
+	private Button reviews;
 	private Button loginEnter;
 	private final Text actiontarget;
 	private HBox bottomHBox;
@@ -147,9 +148,13 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		selector = new Button(loginResource.getString("gotoSelector"));
 		selector.setOnAction(e -> loginhandler.gotoGameSelector());
 		
+		reviews = new Button("Ratings and Reviews");
+		reviews.setOnAction(e -> loginhandler.gotoReviews());
+		
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
-		bottomHBox = new HBox(100, auth, selector);
+		UIHelper.setDropShadow(reviews);
+		bottomHBox = new HBox(100, auth, selector, reviews);
 		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));

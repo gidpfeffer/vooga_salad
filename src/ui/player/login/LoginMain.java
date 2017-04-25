@@ -30,6 +30,7 @@ import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
+import ui.ratings.RatingView;
 import util.FileSelector;
 import voogasalad_ilovesingletons.Main;
 public class LoginMain {
@@ -128,6 +129,17 @@ public class LoginMain {
 				loginScreen.getRoot().getChildren().add(cornerCard);
 				AnchorPane.setRightAnchor(cornerCard, 15.);
 				AnchorPane.setTopAnchor(cornerCard, 15.);
+			}
+
+			@Override
+			public void gotoReviews() {
+				// TODO Auto-generated method stub
+				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
+				stage.setWidth(800);
+				stage.setHeight(800);
+				stage.setResizable(false);
+				stage.show();
+				
 			}
 		};
 	}
