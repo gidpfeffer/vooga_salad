@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import ui.Preferences;
 import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
 import ui.player.users.User;
@@ -65,7 +66,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		gridPane.getStyleClass().add("grid");
 		getRoot().getStyleClass().add("anchor-pane");
 		getRoot().setId("towerBackground");
-		scene = new Scene(getRoot());
+		scene = new Scene(getRoot(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT);
 		scene.getStylesheets().add(css);
 		getRoot().getChildren().remove(getBackButton().getButton());
 	}
