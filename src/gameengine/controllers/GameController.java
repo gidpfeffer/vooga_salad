@@ -7,6 +7,7 @@ import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import gamestatus.GameStatus;
+import gamestatus.WriteableGameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -31,6 +32,7 @@ public class GameController {
 	
 	private UIHandler myUIHandler;
 	private AnimationHandler myAnimationHandler;
+	private WriteableGameStatus myWriteableGameStatus;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
 	
@@ -45,6 +47,7 @@ public class GameController {
 		myGameData = gameData;
 		initializeUIHandler();
 		initializeAnimationHandler();
+		initializeWriteableGameStatus();
 		setupGameStatus();
 		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGameScreen.setAnimationHandler(myAnimationHandler);
@@ -54,7 +57,7 @@ public class GameController {
 	 * @return a new clean instance of ActorGrid
 	 */
 	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
-		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
+		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myWriteableGameStatus,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
@@ -142,6 +145,26 @@ public class GameController {
 			
 			public void launchGame() throws VoogaException {
 				myLevelController.changeLevel(myGameData, 1);
+			}
+		};
+	}
+	
+	private void initializeWriteableGameStatus() {
+		myWriteableGameStatus = new WriteableGameStatus() {
+
+			@Override
+			public void addExperience(double exp) {
+				myGameStatus.addExperience(exp);
+			}
+
+			@Override
+			public void addMoney(double mon) {
+				myGameStatus.addMoney(mon);
+			}
+
+			@Override
+			public void spendMoney(double mon) {
+				myGameStatus.spendMoney(mon);
 			}
 		};
 	}
