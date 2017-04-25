@@ -9,10 +9,13 @@ import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ui.general.ImageViewPane;
@@ -30,6 +33,7 @@ public class GameScreen extends GenericGameScreen
 	private SimpleHUD hud;
 	private Map<Integer, Actor> actorsMap;
 	private ScreenHandler screenHandler;
+	private LoginHandler loginhandler;
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
@@ -57,8 +61,12 @@ public class GameScreen extends GenericGameScreen
 		};
 	}
 	
-	public GameScreen(UIHandler uihandler, LoginHandler loginhandler) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null), loginhandler);
+	public void setLoginHandler(LoginHandler loginhandler) {
+		this.loginhandler = loginhandler;
+	}
+	
+	public GameScreen(UIHandler uihandler) {
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
 		this.uihandler = uihandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
@@ -71,6 +79,7 @@ public class GameScreen extends GenericGameScreen
 	private void setup() {
 		setupPanels();
 		setupHUD();
+		getSettingsPane().setReturnToMain(returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -103,6 +112,20 @@ public class GameScreen extends GenericGameScreen
 		return ft;
 	}
 
+	private EventHandler<ActionEvent> returnToMain() {
+		return new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				uihandler.stop();
+				loginhandler.returnToMain();
+				System.out.println(getMediaPlayer().getStatus());
+				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
+					getMediaPlayer().stop();
+				}
+			}
+		};
+	}
+	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
 		actorsMap.keySet().removeIf(id -> {
