@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer.Status;
@@ -34,6 +36,25 @@ public class GameScreen extends GenericGameScreen
 	private Map<Integer, Actor> actorsMap;
 	private ScreenHandler screenHandler;
 	private LoginHandler loginhandler;
+	
+	public GameScreen(UIHandler uihandler) {
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+		this.uihandler = uihandler;
+		this.actorsMap = new HashMap<Integer, Actor>();
+		this.ivp = this.getIVP();
+		initializeScreenHandler();
+		hud = uihandler.getSimpleHUD().get();
+		setup();
+		fadeTransition(this, .0, 1.);
+	}
+	
+	public void setLoginHandler(LoginHandler loginhandler) {
+		this.loginhandler = loginhandler;
+	}
+	
+	public void notifyWin() {
+		new Alert(AlertType.INFORMATION, "You win!").showAndWait();
+	}
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
@@ -59,21 +80,6 @@ public class GameScreen extends GenericGameScreen
 				AnchorPane.setBottomAnchor(holder, 20.);
 			}
 		};
-	}
-	
-	public void setLoginHandler(LoginHandler loginhandler) {
-		this.loginhandler = loginhandler;
-	}
-	
-	public GameScreen(UIHandler uihandler) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
-		this.uihandler = uihandler;
-		this.actorsMap = new HashMap<Integer, Actor>();
-		this.ivp = this.getIVP();
-		initializeScreenHandler();
-		hud = uihandler.getSimpleHUD().get();
-		setup();
-		fadeTransition(this, .0, 1.);
 	}
 	
 	private void setup() {
