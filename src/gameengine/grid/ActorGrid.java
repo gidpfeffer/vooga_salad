@@ -30,6 +30,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private Collection<SettableActorLocator> actors;
 	private Function<Integer, Actor> actorMaker;
 	private Stack<SettableActorLocator> newActors;
+	private WriteableGameStatus myWriteableGameStatus;
 	
 	public ActorGrid(double maxX, double maxY, WriteableGameStatus myWriteableGameStatus,Function<Integer, Actor> actorMaker){
 		super();
@@ -37,18 +38,25 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 		actors = new ArrayList<>();
 		newActors = new Stack<>();
 		this.actorMaker = actorMaker;
+		this.myWriteableGameStatus = myWriteableGameStatus;
 	}
 
 	@Override
 	public void step() {
 		actors.forEach(a -> a.getActor().act(this));
 		addNewActors();
+		updateActors();
 		actors = filter(actors, a -> a.getActor().isActive());
 		myMap = Collections.unmodifiableMap(actors.stream()
 				.collect(Collectors.toMap(a -> a.getActor().getID(), 
 						a -> new DisplayInfo(a.getLocation(), 
 								a.getActor().getPercentHealth(), a.getActor().getMyOption()))));
 		notifyObservers();
+	}
+	
+	private void updateActors(){
+		filter(actors, a -> !a.getActor().isActive()).stream().forEach(a -> a.getActor().exit(this));
+		actors = filter(actors, a -> a.getActor().isActive());
 	}
 	
 	private void addNewActors(){
@@ -161,6 +169,11 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	@Override
 	public Consumer<Double> getMyDamageable(int actorID) {
 		return getActorFromID(actorID).getActor().applyDamage();
+	}
+
+	@Override
+	public WriteableGameStatus getWriteableGameStatus() {
+		return myWriteableGameStatus;
 	}
 
 }
