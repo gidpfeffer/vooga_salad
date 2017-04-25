@@ -51,14 +51,15 @@ public class WebImageCollector {
 	private final static String URL_START = "\"link\": \"";
 	private final static String URL_END = "\",";
 	private final static String API_ADDRESS = "https://www.googleapis.com/customsearch/v1?";
-	private final static String IMAGE_FOLDER = "images/internet/";
+	private final static String IMAGE_FOLDER = "images/";
 	
 	public static ImageInfo findAndSaveRandomIcon(Random randy, String qry, List<String> hits){
 		BufferedImage image = findRandomIcon(randy, qry, hits);
 		BufferedImage transparent = transparent(image, Color.WHITE, Color.LIGHT_GRAY);
-		String savePath = IMAGE_FOLDER + qry;
+		String name = qry + "_random";
+		String savePath = IMAGE_FOLDER + name;
 		String s = savePng(image, savePath);
-		return new ImageInfo(transparent, s);
+		return new ImageInfo(transparent, s, name + PNG);
 	}
 	
 	//TODO: Debug this
@@ -149,11 +150,29 @@ public class WebImageCollector {
 	}
 	
 	public static BufferedImage findImage(String qry, String fileType, int iter, List<String> hits){
-		return findSearchItem(qry, fileType, IMAGE, iter, hits);
+		return findSearchItem(qry, fileType, IMAGE, iter, hits, 0);
 	}
 	
+	/**
+	 * 
+	 * @param qry String search
+	 * @param fileType Type of file
+	 * @param searchType Type of search
+	 * @param iter The number of iterations/ how "deep" to look
+	 * @param hit List of already accessed URLs
+	 * @param searchIter How many times the method has tried to access an image
+	 * @return
+	 */
 	public static BufferedImage findSearchItem(String qry, String fileType, 
-			String searchType, int iter, List<String> hit){
+			String searchType, int iter, List<String> hit, int searchIter){
+		if(searchIter>20){
+			try {
+				return ImageIO.read(new File(IMAGE_FOLDER + "profile_icon.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
 		BufferedImage toRet = null;
 		String search = stringToSearch(qry);
 		try{
@@ -169,9 +188,9 @@ public class WebImageCollector {
 			//TODO
 		}
 		if(toRet == null && iter-1>0){
-			toRet = findSearchItem(qry, fileType, searchType, --iter, hit);
+			toRet = findSearchItem(qry, fileType, searchType, --iter, hit, ++searchIter);
 		} else if (toRet == null){
-			toRet = findSearchItem(qry, fileType, searchType, ++iter, hit);
+			toRet = findSearchItem(qry, fileType, searchType, ++iter, hit, ++searchIter);
 		}
 		return toRet;
 	}
