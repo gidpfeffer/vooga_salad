@@ -11,8 +11,9 @@ public interface FileHelper {
 	
 	boolean deleteFile(File file);
 	
-	boolean deleteDir(File directory);
+	boolean deleteDir(File directory) throws IOException;
 	
 	String readFile(File file) throws IOException;
 	
+	void moveFile(String startDirPath, String endDirPath, String filename) throws IllegalFileException, IOException;	
 }
