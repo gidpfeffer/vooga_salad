@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.apache.commons.io.FileUtils;
+
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.interfaces.filemanager.FileHelper;
 
@@ -21,7 +23,7 @@ public class ConcreteFileHelper implements FileHelper{
 	public boolean overwriteStringFile(String filepath, String fileContent) throws IllegalFileException, IOException{
 		File file = new File(filepath);
 		checkForValidity(file, f -> f.isDirectory(), "filepath passed mapped to a directory");
-		boolean test = checkAndConsume(file, f -> file.exists(), f -> f.delete());
+		boolean test = checkAndConsume(file, f -> f.exists(), f -> f.delete());
 		writeFile(file, fileContent);
 		return test;
 	}
@@ -38,8 +40,14 @@ public class ConcreteFileHelper implements FileHelper{
 	}
 
 	@Override
-	public boolean deleteDir(File directory) {
-		return checkAndConsume(directory, f -> f.isDirectory(), f-> f.delete());
+	public boolean deleteDir(File directory) throws IOException{
+		boolean test = directory.isDirectory();
+		if(test) deleteDirectory(directory);
+		return test;
+	}
+	
+	private void deleteDirectory(File file) throws IOException{
+		FileUtils.deleteDirectory(file);
 	}
 
 	@Override
@@ -53,7 +61,7 @@ public class ConcreteFileHelper implements FileHelper{
 		}
 	}
 	
-	private <F> boolean checkAndConsume(F f, Predicate<F> pred, Consumer<F> consumer){
+	private <F> boolean checkAndConsume(F f, Predicate<F> pred, Consumer<F> consumer) {
 		boolean test = pred.test(f);
 		if(test){
 			consumer.accept(f);
@@ -61,4 +69,12 @@ public class ConcreteFileHelper implements FileHelper{
 		return test;
 	}
 
+	@Override
+	public void moveFile(String startDirPath, String endDirPath, String filename) throws IllegalFileException, IOException{
+		String oldDirPath = startDirPath + "/" + filename;
+		String newDirPath = endDirPath + "/" + filename;
+		checkForValidity(new File(oldDirPath), f -> !f.exists() || !f.isFile(), "Invalid file to read the file from");
+		checkForValidity(new File(newDirPath), f -> f.exists(), "New file transfer location already existed");
+		Files.move(Paths.get(oldDirPath), Paths.get(newDirPath));
+	}
 }
