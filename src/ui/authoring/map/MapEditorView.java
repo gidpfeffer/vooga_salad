@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import XML.xmlmanager.classes.ExistingDirectoryHelper;
+import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import gamedata.MapLayersData;
 import gamedata.PathData;
 import gamedata.map.LayerData;
@@ -245,6 +248,12 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
+			 try {
+				 ExistingDirectoryHelper manager = new ExistingDirectoryHelper("images");
+				 //TODO implement the copying image to resource directory thing
+			} catch (InvalidRootDirectoryException e1) {
+				e1.printStackTrace();
+			}
 			myBackgroundView.getImageView().setImage(new Image(selectedFile.getName()));
 		}
 	}
@@ -292,7 +301,6 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	public void layerPopupDidPressCancel() {
 		myPopDelegate.closeView(myLayerPopup);		
 	}
-	
 	
 	
 	

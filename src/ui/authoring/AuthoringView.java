@@ -2,7 +2,6 @@ package ui.authoring;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -12,6 +11,7 @@ import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
 import builders.GameDataGenerator;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -22,7 +22,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -52,7 +51,7 @@ import util.Location;
 
 public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
 	
-	private final double SIDE_PANE_WIDTH = 240;
+	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 144;
 
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
@@ -158,7 +157,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.getChildren().add(menuButton);
 		
 		double width = 300;
-		myMenuView = new MenuView(this, loginhandler);
+		myMenuView = new MenuView(this);
 		myMenuView.setLayoutX(-width - 5);
 		myMenuView.setPrefWidth(width);
 		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
@@ -225,7 +224,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	private void setupMapView() {
 		//this calculation assumes that height < width
 		myMapView = new MapEditorView(myGameData.getMyPaths(), myGameData.getLayers(), this);
-		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
+		//myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
@@ -234,8 +233,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupLevelView() {
-		//TODO
-		myLevelView = new LevelEditorView(this, myGameData);//TODO pass gamedata instead
+		myLevelView = new LevelEditorView(this, myGameData);
 			
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
@@ -395,29 +393,26 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
 			try {
-				FileReader fr = new FileReader(selectedFile);
-				BufferedReader br=new BufferedReader(fr);
+				DirectoryFileReader reader = new ExistingDirectoryHelper("games");
 				XStreamSerializer x = new XStreamSerializer();
-				GameData data = x.makeObjectFromXMLString(br.toString(), GameData.class);
+				GameData data = x.makeObjectFromXMLString(reader.getFileContent(selectedFile.getName()), GameData.class);
 				loadGameData(data);
-				br.close();
-			} catch (IllegalXStreamCastException | IOException e) {
+			} catch (IllegalXStreamCastException | IOException | InvalidRootDirectoryException | IllegalFileException e) {
 				e.printStackTrace();
 			}
 		
-		}
-		
-		//loadGameData();
-		
-	}
-
-	private GameData getGameData() {
-		return myGameData;
+		}		
 	}
 
 	@Override
 	public void didPressSaveButton() {
 		saveGameData();
+		
+	}
+
+	@Override
+	public void didPressReturnMain() {
+		this.loginhandler.returnToMain();
 		
 	}
 
