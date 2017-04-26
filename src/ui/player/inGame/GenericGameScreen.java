@@ -44,7 +44,7 @@ public class GenericGameScreen extends AnchorPane{
 	}
 	
 	public void setReturnToMain(EventHandler<ActionEvent> value) {
-		settingsPane.setBackToLoginAction(value);
+		settingsPane.setReturnToMain(value);
 	}
 	
 	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css, 
