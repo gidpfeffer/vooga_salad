@@ -50,6 +50,7 @@ public class GameController {
 		setupGameStatus();
 		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGameScreen.setAnimationHandler(myAnimationHandler);
+		myGameScreen.setSong(myGameData.getPreferences().getMusicFilePath()); //set music for game
 	}
 	/**
 	 * @param UIObserver
