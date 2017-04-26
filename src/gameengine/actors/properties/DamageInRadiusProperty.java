@@ -1,4 +1,4 @@
-package gameengine.actors.properties.damage;
+package gameengine.actors.properties;
 
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;

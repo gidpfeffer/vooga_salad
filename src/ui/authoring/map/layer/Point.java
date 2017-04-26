@@ -1,4 +1,4 @@
-package ui.authoring.map;
+package ui.authoring.map.layer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import ui.authoring.map.PointType;
 import ui.general.CustomColors;
 import util.Location;
 import util.Tuple;
