@@ -47,7 +47,7 @@ public class WaveData {
 		int toRet = 0;
 		for(EnemyInWaveData enemy: waveEnemies){
 			if(enemy.getMyActor().equals(actor)){
-				toRet = enemy.getMyNumber();
+				toRet = enemy.getOption();
 			}
 		}
 		return toRet;

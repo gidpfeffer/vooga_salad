@@ -62,6 +62,10 @@ public class GameController {
 		return actorGrid;
 	}
 	
+	public ControllableGrid getMyGrid() {
+		return myGrid;
+	}
+	
 	public GameScreen getGameScreen() {
 		return myGameScreen;
 	}
@@ -74,7 +78,7 @@ public class GameController {
 	
 	public void start() {
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen),() -> displayWinAlert());
+		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert());
 		intitializeTimeline();
 	}
 	

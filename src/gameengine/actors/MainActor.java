@@ -36,6 +36,7 @@ public class MainActor implements Actor {
 		this(type, option, id, health);
 		for (IActProperty<MasterGrid> p : properties) {
 			myProperties.add(p);
+			System.out.println(p.toString());
 		}
 	}
 
