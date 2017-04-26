@@ -26,6 +26,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ui.Preferences;
@@ -122,8 +124,6 @@ public class MenuView extends AnchorPane {
 		FileSelector selector = new FileSelector("*.mp3");
 		File data = selector.open(new Stage());
 		myData.setMusicFilePath(data.toURI().toString());
-	
-		
 	}
 
 	private void setupVBox() {

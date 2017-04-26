@@ -1,5 +1,6 @@
 package gamedata;
 
+import java.io.File;
 import java.util.Optional;
 
 /**
@@ -29,7 +30,7 @@ public class PreferencesData{
 	private Optional<Boolean> expByLevel;
 	private Optional<Boolean> pauseBetweenWaves;
 	private Optional<Boolean> cleanLevel;
-	private String musicFilePath;
+	private String musicFilePath = new File("data/resource/hero_song.mp3").toURI().toString(); // default for now
 	
 	public PreferencesData(){
 		this(Optional.of(0), Optional.of(false), Optional.of(false), Optional.of(false),

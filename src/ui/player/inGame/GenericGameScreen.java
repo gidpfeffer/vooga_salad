@@ -136,4 +136,8 @@ public class GenericGameScreen extends AnchorPane{
 		AnchorPane.setLeftAnchor(node, 0.0);
 		AnchorPane.setRightAnchor(node, 0.0);
 	}
+	public void setSong(String song){
+		musicPlayer.setSong(song);
+		musicPlayer.getMediaPlayer().play();
+	}
 }
