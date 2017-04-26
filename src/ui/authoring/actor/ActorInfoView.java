@@ -13,6 +13,7 @@ import builders.OptionGenerator;
 import gamedata.ActorData;
 import gamedata.FieldData;
 import gamedata.LineageData;
+import gamedata.PathData;
 import gamedata.compositiongen.Data;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
@@ -46,7 +47,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private DataSelectionView myOptionPickerView;
 	private Set<BasicActorType> myActorTypeOptions;
 	private ActorData myCurrentActorData;
-
+	private PathData myPathData;
 
 	
 	public ActorInfoView(){
@@ -119,8 +120,10 @@ private void setupImageView(Image img) {
 			addDataView(d);
 		}
 	}
+	
 	private void addDataView(Data data){
-		DataView view = new DataView(data, this, Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
+		DataView view = new DataView(myPathData, data, this, 
+				Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
 		myDataViews.add(view);
@@ -205,6 +208,10 @@ private void setupImageView(Image img) {
 
 	public void setActorTypeOptions(Set<BasicActorType> keySet) {
 		this.myActorTypeOptions = keySet;
+	}
+	
+	public void setPathData(PathData data){
+		myPathData = data;
 	}
 
 }

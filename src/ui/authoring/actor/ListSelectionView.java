@@ -76,7 +76,7 @@ public class ListSelectionView<A> extends StackPane{
 	private void setLabelUnselected(Label label){
 		label.setFont(Preferences.FONT_SMALL);
 	}
-	public ObjectProperty<List<A>> getBasicActorTypeList() {
+	public ObjectProperty<List<A>> getTypeList() {
 		return this.mySelectedTypes;
 	}
 	
