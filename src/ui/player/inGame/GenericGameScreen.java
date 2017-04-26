@@ -3,6 +3,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import javafx.animation.ScaleTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -38,12 +39,12 @@ public class GenericGameScreen extends AnchorPane{
 		return musicPlayer.getMediaPlayer();
 	}
 	
-	protected SettingsPane getSettingsPane() {
-		return settingsPane;
-	}
-	
 	public void setAnimationHandler(AnimationHandler animationhandler) {
 		this.animationhandler = animationhandler;
+	}
+	
+	public void setReturnToMain(EventHandler<ActionEvent> value) {
+		settingsPane.setBackToLoginAction(value);
 	}
 	
 	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css, 
