@@ -1,10 +1,6 @@
 package ui.authoring;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 import XML.xmlmanager.classes.ExistingDirectoryHelper;
 import XML.xmlmanager.classes.XStreamSerializer;
@@ -12,7 +8,6 @@ import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import builders.GameDataGenerator;
-import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -156,7 +151,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.getChildren().add(menuButton);
 		
 		double width = 300;
-		myMenuView = new MenuView(this);
+		myMenuView = new MenuView(this, loginhandler);
 		myMenuView.setLayoutX(-width - 5);
 		myMenuView.setPrefWidth(width);
 		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
@@ -168,7 +163,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	
 	private void setupName() {
-		TextField toAdd = addField("Untitled_Game");
+		TextField toAdd = addField("Untitled");
 		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                toAdd.clear();
@@ -191,8 +186,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	public TextField addField(String value){
 		StackPane lblWrapper = new StackPane();
 		TextField field = new TextField(value);
-		field.setPrefWidth(200);
-		field.setFont(Preferences.FONT_MEDIUM);
+		field.setPrefWidth(240);
+		field.setPrefHeight(20);
+		field.setFont(Preferences.FONT_SMALL);
 		field.setAlignment(Pos.CENTER);
 		field.setBackground(UIHelper.backgroundForColor(THEME_COLOR));
 		field.setStyle("-fx-text-fill-color: #FFFFFF");

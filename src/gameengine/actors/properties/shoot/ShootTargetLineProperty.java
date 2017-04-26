@@ -1,7 +1,7 @@
-package gameengine.actors.properties;
+package gameengine.actors.properties.shoot;
 
-import gamedata.compositiongen.ShootData;
 import gamedata.compositiongen.ShootTargetLineData;
+import gameengine.actors.properties.move.MoveAlongAngleProperty;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;

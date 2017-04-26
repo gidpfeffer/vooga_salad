@@ -1,5 +1,6 @@
 package gamedata.composition;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,14 +13,22 @@ public class BaseDamageData implements Data {
 	private List<BasicActorType> myTargets;
 
 	public BaseDamageData(){
-		this(0.0, new BasicActorType("Troop"));
+		this(0.0, new BasicActorType[0]);
 	}
 	
 	public BaseDamageData(Double radius, BasicActorType... types) {
-		myRadius = radius;
-		myTargets = Arrays.asList(types);
+		this(radius, Arrays.asList(types));
 	}
-
+	
+	public BaseDamageData(Double radius, List<BasicActorType> types) {
+		myRadius = radius;
+		myTargets = types;
+		this.myTargets = new ArrayList<>();
+		for (BasicActorType e: types) {
+			this.myTargets.add(e);
+		}
+	}
+	
 	public double getMyRadius() {
 		return myRadius;
 	}

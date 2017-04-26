@@ -1,30 +1,23 @@
 package gameengine.controllers;
-
 import java.util.Map;	
-import java.util.function.Supplier;
-
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.map.LayerData;
-import gamedata.map.PolygonData;
-import gameengine.actors.management.Actor;
 import gameengine.grid.ActorGrid;
-import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import gamestatus.GameStatus;
+import gamestatus.WriteableGameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.stage.Stage;
 import javafx.util.Duration;
+import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
-import util.PathUtil;
+import util.GameObjectUtil;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
-
 /**
  * GameController is the controller layer between the front end display and the back end game engine
  * Implements UIHandler and initializes all necessary back end and front end components of game engine
@@ -38,6 +31,8 @@ public class GameController {
 	private GameStatus myGameStatus;
 	
 	private UIHandler myUIHandler;
+	private AnimationHandler myAnimationHandler;
+	private WriteableGameStatus myWriteableGameStatus;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
 	
@@ -48,19 +43,20 @@ public class GameController {
 	private final int MAX_Y = 1;
 	
 	private final double MILLISECOND_DELAY=17;
-
 	public GameController(GameData gameData) {
 		myGameData = gameData;
 		initializeUIHandler();
+		initializeAnimationHandler();
 		setupGameStatus();
+		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
+		myGameScreen.setAnimationHandler(myAnimationHandler);
 	}
-
 	/**
 	 * @param UIObserver
 	 * @return a new clean instance of ActorGrid
 	 */
 	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
-		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,
+		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myWriteableGameStatus,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
@@ -76,10 +72,9 @@ public class GameController {
 		myGameStatus.addObserver(mySimpleHUD);
 	}
 	
-	public void start(Stage stage) {
-		myGameScreen = new GameScreen(myUIHandler);
+	public void start() {
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen));
+		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen),() -> displayWinAlert());
 		intitializeTimeline();
 	}
 	
@@ -94,103 +89,65 @@ public class GameController {
 	private void step() {
 		myGrid.step();
 	}
-
-	private void initializeUIHandler() {
-		myUIHandler = new UIHandler() {
-
-			@Override
-			public void deleteGameObject(int id) {
-				myGrid.removeActor(id);
-			}
-
-			@Override
-			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
-				if (myGameData.getOption(currentOption).getType().equals(myGameData.getOption(newOption).getType())) {
-					Grid2D location = myGrid.getLocationOf(id);
-					addGameObject(newOption,location.getX(),location.getY());
-					deleteGameObject(id);
-				} else {
-					throw new VoogaException(VoogaException.ILLEGAL_UPDATE);
-				}
-				
-			}
-
-			@Override
-			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
-				if (myGrid.isValidLoc(xRatio, yRatio)) {
-					myGrid.move(id,xRatio, yRatio);
-				} else {
-					throw new VoogaException(VoogaException.INVALID_LOCATION);
-				}
-				
-			}
-			/**
-			 * method to check if actor is being placed in the right layer
-			 * x, y is from 0 -1 
-			 * @return
-			 */
-			private boolean isPlaceable(LayerData layer, double x, double y){
-				
-				for (PolygonData poly: layer.getMyPolygons()){
-					if (!PathUtil.isWithinPolygon(poly.getMyPoints(), x,y)){
-						return false;
-					}
-				}
-				return true;
-			}
-
-			@Override
-			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
-				ActorData actorData = myGameData.getOption(option); 
-				if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && myGrid.isValidLoc(xRatio, yRatio)){
-					Actor actor = ActorGenerator.makeActor(option,actorData);
-					myGrid.controllerSpawnActor(actor, xRatio, yRatio);
-					return actor.getID();
-				}
-				else {
-					throw new VoogaException(VoogaException.INVALID_LOCATION);
-				}
-			}
-
+	
+	private void displayWinAlert() {
+		myGameScreen.notifyWin();
+	}
+	
+	private void initializeAnimationHandler() {
+		myAnimationHandler = new AnimationHandler() {
 			@Override
 			public void pause() {
 				animation.pause();
 			}
-
 			@Override
 			public void play() {
 				animation.play();
+			}
+			@Override
+			public void stop() {
+				animation.stop();
+			}
+			@Override
+			public void exit() {
+				System.exit(0);
+			}
+		};
+	}
+
+	private void initializeUIHandler() {
+		myUIHandler = new UIHandler() {
+			@Override
+			public void deleteGameObject(int id) {
+				GameObjectUtil.deleteGameObject(id, myGrid);
+			}
+			@Override
+			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
+				GameObjectUtil.updateGameObjectType(id, currentOption, newOption, myGrid, myGameData);
+			}
+			@Override
+			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
+				GameObjectUtil.updateGameObjectLocation(id, xRatio, yRatio, myGrid);
+			}
+			@Override
+			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
+				return GameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGrid);
+			}
+			@Override
+			public Map<Integer, ActorData> getOptions() {
+				return myGameData.getOptions();
+			}
+			@Override
+			public void changeLevel(int level) throws VoogaException {
+				myLevelController.changeLevel(myGameData, level);
 			}
 			
 			public void launchGame() throws VoogaException {
 				myLevelController.changeLevel(myGameData, 1);
 			}
-
-			@Override
-			public void stop() {
-				animation.stop();
-			}
-
-			@Override
-			public void exit() {
-				System.exit(0);
-			}
-
-			@Override
-			public Map<Integer, ActorData> getOptions() {
-				return myGameData.getOptions();
-			}
-
-			@Override
-			public void changeLevel(int level) throws VoogaException {
-				myLevelController.changeLevel(myGameData, level);
-			}
-
-			@Override	
-			public Supplier<SimpleHUD> getSimpleHUD() {
-				return () -> mySimpleHUD;
-			}
 		};
 	}
+	
+	
 	
 }

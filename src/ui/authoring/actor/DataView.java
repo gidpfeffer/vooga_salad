@@ -143,6 +143,7 @@ public class DataView extends AnchorPane {
 	}
 	
 	private <T extends Object> void addList(List<T> list, String nameKey) {
+		System.out.println("HERE BOI" );
 		AnchorPane content = new AnchorPane();
 		addLabel(content, nameKey);
 		

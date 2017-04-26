@@ -29,7 +29,6 @@ public class MusicPlayer {
 	private HBox component1; 
 	private Media song;
 	private MediaPlayer mediaPlayer;
-	private ToggleSwitch mySwitch;
 	private Slider volumeSlider;
 	static final String heroSong = "data/resource/hero_song.mp3";
 	
@@ -41,7 +40,6 @@ public class MusicPlayer {
 		layout = new VBox();
 		component1 = new HBox();
 		
-		mySwitch = new ToggleSwitch("Music");
 		song = new Media(new File(audioString.orElse(heroSong)).toURI().toString());
 		mediaPlayer = new MediaPlayer(song);
 		mediaPlayer.play();
@@ -49,9 +47,6 @@ public class MusicPlayer {
 		
 		checkbox = new CheckBox("Mute");
 		checkbox.setOnAction(e -> mediaPlayer.setMute(!mediaPlayer.isMute()));
-		
-		setupAudio(mySwitch);
-		
 		
 		Label volumeLabel = new Label("Vol: ");
 		volumeSlider = new Slider();
@@ -94,19 +89,6 @@ public class MusicPlayer {
 		
 	}
 
-	private void setupAudio(ToggleSwitch musicToggle) {
-		mediaPlayer.setMute(true);
-		mediaPlayer.play();
-		Runnable repeat = () -> {
-			mediaPlayer.play();
-		};
-		mediaPlayer.setOnRepeat(repeat);
-		if (musicToggle.switchOnProperty()) playMusic();
-		Runnable music = () -> {
-			playMusic();
-		};
-		musicToggle.setListener(music);
-	}
 	
 	private void playMusic() {
 		mediaPlayer.setMute(!mediaPlayer.isMute());

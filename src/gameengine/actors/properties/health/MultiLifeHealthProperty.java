@@ -1,6 +1,6 @@
-package gameengine.actors.properties;
+package gameengine.actors.properties.health;
 
-import gamedata.composition.LimitedHealthData;
+import gameengine.actors.properties.MultiLifeHealthData;
 
 public class MultiLifeHealthProperty extends LimitedHealthProperty{
 	
