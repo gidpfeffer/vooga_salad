@@ -71,6 +71,7 @@ public class PathData {
 		if(myPaths.isEmpty()){
 			addPath(new ArrayList<Grid2D>());
 		}
+		this.numOptions--;
 		return myPaths.remove(myPaths.size() - 1);
 	}
 
