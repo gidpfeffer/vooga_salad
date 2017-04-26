@@ -38,6 +38,15 @@ import ui.general.ImageButton;
 import ui.general.UIHelper;
 import util.Location;
 
+/**
+ * 
+ * Data view for data box in actor creation
+ * 
+ * @author talhakoc
+ * @author maddiebriere
+ *
+ */
+
 public class DataView extends AnchorPane {
 	
 	private PathData myPaths;

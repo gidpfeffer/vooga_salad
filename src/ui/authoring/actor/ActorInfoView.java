@@ -18,6 +18,8 @@ import gamedata.compositiongen.Data;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -26,8 +28,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import types.BasicActorType;
+import ui.Preferences;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
@@ -60,17 +64,81 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		this.setupAddNewClassButton();
 	}
 
-	
-private void setupImageView(Image img) {
-		myActorImageView = new ImageView(img);
-		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight() - 32);
-		myActorImageView.setPreserveRatio(true);
-		StackPane button = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), Optional.of(myActorImageView), Pos.CENTER, true);
-		button.heightProperty().addListener(e -> {
-		});
-		HBox.setMargin(button, new Insets(8));
-		this.myUpgradePickerView.getChildren().add(button);
+	private void addLabel(String label, AnchorPane toAdd){
+		Label fieldName = new Label(label);
+		fieldName.setTextFill(CustomColors.BLUE_800);
+		fieldName.setTextAlignment(TextAlignment.CENTER);
+		AnchorPane.setLeftAnchor(fieldName, 4.0);
+		AnchorPane.setTopAnchor(fieldName, 4.0);
+		AnchorPane.setBottomAnchor(fieldName, 4.0);
+		fieldName.setMaxWidth(80);
+		toAdd.getChildren().add(fieldName);
 	}
+	
+	public TextField addField(String value, double width){
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(value);
+		field.setPrefWidth(width);
+		field.setPrefHeight(20);
+		field.setFont(Preferences.FONT_SMALL);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_50));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
+		lblWrapper.getChildren().add(field);
+		return field;
+	}
+	
+	private void setupImageView(Image img) {
+		double width = 50;
+		VBox root = new VBox();
+		root.setSpacing(5);
+		root.setAlignment(Pos.CENTER);
+		
+		myActorImageView = new ImageView(img);
+		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight()*(2/3));
+		myActorImageView.setPreserveRatio(true);
+		StackPane button = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), 
+				Optional.of(myActorImageView), Pos.CENTER, true);
+		button.heightProperty().addListener(e -> {
+			//TODO?
+		});
+		root.getChildren().add(button);
+		
+		AnchorPane content = new AnchorPane();
+		addLabel("Cost:", content);
+		TextField field = addField("", width);
+		
+		ActorData actor = myCurrentActorData; //set to current image when this added
+		field.textProperty().addListener((o,oldText,newText) -> {
+			updateCost(actor, (String)newText);
+		});
+		AnchorPane.setRightAnchor(field, 4.0);
+		AnchorPane.setTopAnchor(field, 4.0);
+		AnchorPane.setBottomAnchor(field, 4.0);
+		AnchorPane.setLeftAnchor(field, width);
+		
+		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
+		content.getChildren().add(field);
+		VBox.setMargin(content, new Insets(8.0));
+		root.getChildren().add(content);
+	
+		HBox.setMargin(root, new Insets(8));
+		this.myUpgradePickerView.getChildren().add(root);
+	}
+	
+	private void updateCost(ActorData actor, String newText){
+		double newCost = 0.0;
+		try{
+			newCost = Double.parseDouble(newText);
+			actor.setCost(newCost);
+		}catch(Exception e){
+			//TODO: Error handling
+		}
+		System.out.println(newCost);
+	}
+	
+	
 
 //	private void setupGridPane() {
 //		int count = 0;
@@ -91,7 +159,8 @@ private void setupImageView(Image img) {
 		AnchorPane.setLeftAnchor(myUpgradePickerView, inset);
 		AnchorPane.setRightAnchor(myUpgradePickerView, inset + 2);
 		AnchorPane.setTopAnchor(myUpgradePickerView, inset);
-		myUpgradePickerView.setPrefHeight(80);
+		
+		myUpgradePickerView.setPrefHeight(150);
 		AnchorPane.setLeftAnchor(myGridPane, inset);
 		AnchorPane.setRightAnchor(myGridPane, inset + 2);
 		AnchorPane.setBottomAnchor(myGridPane, inset);
