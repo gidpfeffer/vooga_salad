@@ -114,11 +114,12 @@ public class LoginMain {
 			public void gotoGameSelector() {
 				//TODO: Replace with actual games list
 				List<Game> gamesList = new ArrayList<>(Arrays.asList(
+						//file path
+						loginScreen.new Game("Load Custom Game","black.jpg",e -> promptUserToChooseGame()),
 						loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> {}),
 						loginScreen.new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {}), 
-						loginScreen.new Game("Asteroids", "asteroids.png", e -> {}),
-						//file path
-						loginScreen.new Game("Load Custom Game","black.jpg",e -> promptUserToChooseGame())));
+						loginScreen.new Game("Asteroids", "asteroids.png", e -> {}))
+						);
 				GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
 				stage.setScene(select.getScene());
 				stage.setTitle("Game Selector");
