@@ -1,4 +1,4 @@
-package gameengine.actors.properties.move;
+package gameengine.actors.properties;
 
 import gamedata.composition.MoveFreelyToBaseData;
 import gameengine.actors.propertygen.IActProperty;
