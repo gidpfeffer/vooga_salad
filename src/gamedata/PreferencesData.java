@@ -29,6 +29,7 @@ public class PreferencesData{
 	private Optional<Boolean> expByLevel;
 	private Optional<Boolean> pauseBetweenWaves;
 	private Optional<Boolean> cleanLevel;
+	private String musicFilePath;
 	
 	public PreferencesData(){
 		this(Optional.of(0), Optional.of(false), Optional.of(false), Optional.of(false),
@@ -128,6 +129,14 @@ public class PreferencesData{
 
 	public Optional<Boolean> getPauseBetweenWaves() {
 		return pauseBetweenWaves;
+	}
+
+	public String getMusicFilePath() {
+		return musicFilePath;
+	}
+
+	public void setMusicFilePath(String musicFilePath) {
+		this.musicFilePath = musicFilePath;
 	}
 	
 	
