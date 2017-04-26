@@ -13,6 +13,8 @@ import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -146,16 +148,20 @@ public class LoginMain {
 	}
 	
 	private void showProfileCard(User user) {
-		ProfileCard card = new ProfileCard("profile", user, "profile.css");
-		card.setLogoutAction(e -> {
-			loginhandler.setActiveUser(null);
-			loginScreen = new Login(loginhandler, css, resource);
-			loginhandler.returnToMain();
-		});
-		HBox hb = card.getCard();
-		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
-		AnchorPane.setBottomAnchor(hb, 25.);
-		AnchorPane.setLeftAnchor(hb, 25.);
+		if(user != null) {
+			ProfileCard card = new ProfileCard("profile", user, "profile.css");
+			card.setLogoutAction(e -> {
+				loginhandler.setActiveUser(null);
+				loginScreen = new Login(loginhandler, css, resource);
+				loginhandler.returnToMain();
+			});
+			HBox hb = card.getCard();
+			((Pane) stage.getScene().getRoot()).getChildren().add(hb);
+			AnchorPane.setBottomAnchor(hb, 25.);
+			AnchorPane.setLeftAnchor(hb, 25.);
+		} else {
+			new Alert(AlertType.ERROR, loginResource.getString("pleaselogin")).showAndWait();
+		}
 	}
 	
 	private void promptUserToChooseGame(){
