@@ -86,6 +86,7 @@ public class GameScreen extends GenericGameScreen
 		setupPanels();
 		setupHUD();
 		setReturnToMain(e -> loginhandler.returnToMain());
+		
 	}
 	
 	private void setupPanels() {

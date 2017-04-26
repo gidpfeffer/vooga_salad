@@ -1,4 +1,4 @@
-package gameengine.actors.properties.move;
+package gameengine.actors.properties;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

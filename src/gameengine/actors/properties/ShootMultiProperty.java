@@ -1,4 +1,4 @@
-package gameengine.actors.properties.shoot;
+package gameengine.actors.properties;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,11 +1,10 @@
-package gameengine.actors.properties.shoot;
+package gameengine.actors.properties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 import gamedata.composition.ShootHeatSeekingData;
-import gameengine.actors.properties.move.MoveWithHeatSeekProperty;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;

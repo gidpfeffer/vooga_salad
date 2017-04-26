@@ -26,6 +26,7 @@ public class MainActor implements Actor {
 		myID = id;
 		myHealth = health;
 		myProperties = new ArrayList<>();
+		myExits = new ArrayList<>();
 		myOption = option;
 	}
 	
