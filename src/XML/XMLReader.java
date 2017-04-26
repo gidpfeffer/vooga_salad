@@ -38,36 +38,24 @@ import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
-public class XMLReader {
+public class XMLReader extends XMLParser {
+	
 	private GameData myGameData;
 	private Map<Integer, List<Grid2D>> pathData;
-	private File dataFile;
 	private List<ActorData> myActors;
 	private static final DocumentBuilder DOCUMENT_BUILDER = getDocumentBuilder();
 
 	public XMLReader(File data) {
-		dataFile = data;
+		super(data);
 		myGameData = new GameData();
 		generateData();
 	}
 
 	public XMLReader(String fileName) {
-		dataFile = new File(fileName);
-		myGameData = new GameData();
-		generateData();
-
+		this(new File(fileName));
 	}
 
-	private String getTextValue(Element e, String tagName) {
-		NodeList nodeList = e.getElementsByTagName(tagName);
-		if (nodeList != null && nodeList.getLength() > 0) {
-			return nodeList.item(0).getTextContent();
-		} else {
-			// FIXME: empty string or null, is it an error to not find the text
-			// value?
-			return "";
-		}
-	}
+  
 
 	private void generateData() {
 		getPathData();
@@ -226,27 +214,6 @@ public class XMLReader {
 		}
 	}
 
-	private Element getRootElement(File file) {
-		try {
-			DOCUMENT_BUILDER.reset();
-			Document xmlDocument = DOCUMENT_BUILDER.parse(file);
-			return xmlDocument.getDocumentElement();
-		} catch (SAXException | IOException e) {
-			throw new XMLException(e);
-		}
-	}
-
-	private String getAttribute(Element e, String attributeName) {
-		return e.getAttribute(attributeName);
-	}
-
-	private static DocumentBuilder getDocumentBuilder() {
-		try {
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new XMLException(e);
-		}
-	}
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		XMLReader x = new XMLReader("data/voogatest.xml");

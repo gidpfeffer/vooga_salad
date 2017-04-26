@@ -1,6 +1,5 @@
 package ui.player.inGame;
 
-import ui.general.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import ui.handlers.UIHandler;
 import util.GUIBindingUtil;
 
 /**
@@ -29,16 +27,14 @@ import util.GUIBindingUtil;
  */
 public class SidePanel {
 
-	private ImageViewPane ivp;
-	private UIHandler uihandler;
-	private Map<String, String> iconImages;
 	private Pane sidePane;
-	private Pane root;
 	private VBox mainBox;
+	private Map<String, String> iconImages;
 	private List<OptionsPane> listOfPanes;
-	private Map<Integer, Actor> actorsMap;
 	private Map<Integer, ActorData> options;
 	private ScreenHandler screenHandler;
+	private Set<String> types;
+	private Map<OptionButton, String> mapOfOptionButtons;
 	
 	private static final String panel = "panel.css";
 	
@@ -50,36 +46,15 @@ public class SidePanel {
 		return listOfPanes;
 	}
 	
-/*	public SidePanel(UIHandler uihandler, Map<Integer, Actor> actorsMap, AnchorPane root, Map<Integer, ActorData> options, ImageViewPane ivp) {
-		this.ivp = ivp;
-		this.options = options;
-		this.uihandler = uihandler;
-		this.root = root;
-		this.actorsMap = actorsMap;
-		this.listOfPanes = new ArrayList<>();
-		this.sidePane = new AnchorPane();
-		this.iconImages = new HashMap<>();
-		this.mainBox = new VBox(20);
-		addMainIcons();
-		setup();
-	}*/
-	
 	public SidePanel(ScreenHandler screenHandler, Map<Integer, ActorData> options) {
 		this.screenHandler = screenHandler;
 		this.options = options;
 		this.iconImages = new HashMap<>();
+		this.mapOfOptionButtons = new HashMap<>();
 		this.listOfPanes = new ArrayList<>();
 		this.mainBox = new VBox(20);
 		this.sidePane = new AnchorPane();
-		addMainIcons();
 		setup();
-	}
-	
-	private void addMainIcons() {
-		iconImages.put("Tower", "tower_icon.png");
-		iconImages.put("Base", "base_icon.png");
-		iconImages.put("Troop", "enemy_icon.png");
-		iconImages.put("Shot", "projectile_icon.png");
 	}
 	
 	public void setup() {
@@ -91,17 +66,16 @@ public class SidePanel {
 	 * Creates the panes to link to their respective main buttons.
 	 */
 	private void createInternalPanes() {
-		Set<String> types = options.keySet().stream().map(option -> options.get(option).getType().toString()).collect(Collectors.toSet());
+		types = options.keySet().stream().map(option -> options.get(option).getType().toString()).collect(Collectors.toSet());
 		types.forEach(type -> {
 			Map<Integer, ActorData> map = new HashMap<>();
 			options.keySet().forEach(option -> {
-				if (options.get(option).getType().toString().equals(type)) {
+				if (options.get(option).getType().toString().equals(type) && options.get(option).getType().isPlaceable()) {
 					map.put(option, options.get(option));
+					if (!iconImages.containsKey(type)) iconImages.put(type, options.get(option).getImagePath());
 				}
-				
 			});
-			OptionsPane actors = getPane(map, type);
-			listOfPanes.add(actors);
+			listOfPanes.add(getPane(map, type));
 		});
 	}
 	
@@ -113,8 +87,9 @@ public class SidePanel {
 	private void linkMainPaneToInternalPanes() {
 		mainBox.getStylesheets().add(panel);
 		for (Map.Entry<String, String> entry : iconImages.entrySet()) {
-			OptionButton optionButton = new OptionButton(0, entry.getKey(), entry.getValue(), openPane);
-			listOfPanes.stream().filter(pane -> pane.getPaneName().equals(entry.getKey())).forEach(pane -> GUIBindingUtil.bindVisisble(optionButton.getButton(), pane.getMap().keySet()));;
+			OptionButton optionButton = new OptionButton(0, "", entry.getValue(), openPane);
+			mapOfOptionButtons.put(optionButton, entry.getKey());
+			listOfPanes.stream().filter(pane -> pane.getPaneName().equals(entry.getKey())).forEach(pane -> GUIBindingUtil.bindVisisble(optionButton.getButton(), pane.getMap().keySet()));
 			mainBox.getChildren().add(optionButton.getButton());
 		}
 		sidePane.getChildren().add(mainBox);
@@ -125,15 +100,7 @@ public class SidePanel {
 		AnchorPane.setTopAnchor(mainBox, 20.0);
 	}
 	
-/*	public void addInternalPanesToRoot() {
-		for (OptionsPane op : listOfPanes) {
-			root.getChildren().add(op);
-			AnchorPane.setRightAnchor(op, -op.getPrefWidth() - 10);
-		}
-	}*/
-	
 	private OptionsPane getPane (Map<Integer, ActorData> map, String name) {
-		//OptionsPane optionPane = new OptionsPane(uihandler, root, actorsMap, map, name, ivp, 100);
 		OptionsPane optionPane = new OptionsPane(screenHandler, map, name, 100);
 		optionPane.setPrefHeight(300);
 		return optionPane;
@@ -142,14 +109,16 @@ public class SidePanel {
 	EventHandler<MouseEvent> openPane = new EventHandler<MouseEvent>()  {
 	    @Override
 	    public void handle( final MouseEvent ME ) {
-	        Object obj = ME.getSource();
-	        if ( obj instanceof Button ) {
-	        	for (OptionsPane optionsPane : listOfPanes) {
-	        		if (((Button) obj).getText().equals(optionsPane.getPaneName())) {
-	        			new SlidingPane().slidePane(optionsPane, -optionsPane.getPrefWidth());
-	        		}
-	        	}
-	        }
+	    	Object obj = ME.getSource();
+	    	if ( obj instanceof Button ) {
+	    		for (OptionsPane optionsPane : listOfPanes) {
+	    			for (Map.Entry<OptionButton, String> entry : mapOfOptionButtons.entrySet()) {
+	    				if (entry.getKey().getButton().equals(((Button) obj)) && entry.getValue().equals(optionsPane.getPaneName())){
+	    					new SlidingPane().slidePane(optionsPane, -optionsPane.getPrefWidth());
+	    				}
+	    			}
+	    		}
+	    	}
 	    }
 	};
 }

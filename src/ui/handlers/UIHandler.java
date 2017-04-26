@@ -1,6 +1,7 @@
 package ui.handlers;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import gamedata.ActorData; 
 import ui.player.inGame.SimpleHUD;
@@ -18,10 +19,11 @@ public interface UIHandler {
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
 	int addGameObject(Integer option, double x, double y) throws VoogaException;
 	Map<Integer,ActorData> getOptions();
+	void launchGame() throws VoogaException;
 	void pause();
 	void play();
 	void stop();
 	void exit();
 	void changeLevel(int level) throws VoogaException;
-	SimpleHUD getSimpleHUD();
+	Supplier<SimpleHUD> getSimpleHUD();
 }

@@ -3,64 +3,45 @@ package ui.player.login;
 import java.util.ResourceBundle;
 
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.control.*;
+import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ui.general.UIHelper;
+import ui.handlers.LoginHandler;
+import ui.player.users.User;
 
-public class Login extends BorderedAnchorPane {
+public class Login extends BorderedAnchorPane implements LoginElement {
 	// how to be "logged in"
 	private Scene scene;
-	private Button loginEnter;
-	private Hyperlink signupEnter;
 	private Button auth;
 	private Button selector;
+	private Button loginEnter;
 	private final Text actiontarget;
 	private HBox bottomHBox;
-
+	private LoginHandler loginhandler;
 	private String css;
 	private GridPane gridPane;
-	private LoginGrid login;
+	private LoginGrid loginGrid;
 	private ResourceBundle loginResource;
 
 	public Scene getScene() {
 		return scene;
 	}
 	
-	public void setLoginAction(EventHandler<ActionEvent> value) {
-		loginEnter.setOnAction(value);
-	}
-	
-	public void setSignupAction(EventHandler<ActionEvent> value) {
-		signupEnter.setOnAction(value);
-	}
-	
-	public void setAuthAction(EventHandler<ActionEvent> value) {
-		auth.setOnAction(value);
-	}
-	
-	public void setSelectorAction(EventHandler<ActionEvent> value) {
-		selector.setOnAction(value);
-	}
-	
-	public Text getActionTarget() {
-		return actiontarget;
-	}
-	
-	public LoginGrid getLoginGrid() {
-		return login;
-	}
-	
-	public Login(String css, String resource) {
+	public Login(LoginHandler loginhandler, String css, String resource) {
 		this.css = css;
+		this.loginhandler = loginhandler;
 		actiontarget = new Text();
 		loginResource = ResourceBundle.getBundle(resource);
 		gridPane = new GridPane();
@@ -74,7 +55,7 @@ public class Login extends BorderedAnchorPane {
 		setupLoginGrid();
 		setupButtons();
 		setupAltButtons();
-		setupCenter();
+		setupCenter(gridPane);
 	}
 
 	private void setupLayout() {
@@ -82,17 +63,18 @@ public class Login extends BorderedAnchorPane {
 		gridPane.setVgap(20);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.getStyleClass().add("grid");
-		root.getStyleClass().add("anchor-pane");
-		root.setId("towerBackground");
-		scene = new Scene(root);
+		getRoot().getStyleClass().add("anchor-pane");
+		getRoot().setId("towerBackground");
+		scene = new Scene(getRoot());
 		scene.getStylesheets().add(css);
+		getRoot().getChildren().remove(getBackButton().getButton());
 	}
 
 	private void setupTitle() {
 		Label towerDefenseTitle = new Label(loginResource.getString("towerDefense"));
 		towerDefenseTitle.setPadding(new Insets(10., 0., 0., 0.));
 		towerDefenseTitle.setId("title");
-		borderPane.setTop(towerDefenseTitle);
+		getBorderPane().setTop(towerDefenseTitle);
 		BorderPane.setAlignment(towerDefenseTitle, Pos.CENTER);
 	}
 
@@ -103,39 +85,81 @@ public class Login extends BorderedAnchorPane {
 	}
 
 	private void setupLoginGrid() {
-		login = new LoginGrid(loginResource);
-		login.getGrid().getStyleClass().add("grid");
-		gridPane.add(login.getGrid(), 0, 2);
+		loginGrid = new LoginGrid(loginResource);
+		loginGrid.getGrid().getStyleClass().add("grid");
+		gridPane.add(loginGrid.getGrid(), 0, 2);
 	}
 
 	private void setupButtons(){
 		loginEnter = new Button(loginResource.getString("login"));
-		signupEnter = new Hyperlink(loginResource.getString("signup"));
+		loginEnter.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> loginClicked());
+		getRoot().setOnKeyPressed(e -> {
+			if(e.getCode() == KeyCode.ENTER) loginClicked();
+		});
+		Hyperlink signupEnter = new Hyperlink(loginResource.getString("signup"));
+		signupEnter.setOnAction(e -> loginhandler.gotoSignupPage());
+		
 		gridPane.add(loginEnter, 0, 3);
 		gridPane.add(signupEnter, 0, 4);
 		GridPane.setHalignment(loginEnter, HPos.CENTER);
 		GridPane.setHalignment(signupEnter, HPos.CENTER);
+		GridPane.setHalignment(actiontarget, HPos.CENTER);
 		gridPane.add(actiontarget, 0, 5);
 	}
 
+	private void loginClicked(){
+		if (loginhandler.login(loginGrid.getUsername().getText(), loginGrid.getPassword().getText())) {
+			User user = loginhandler.findUser(loginGrid.getUsername().getText());
+			//showProfileCard(user);
+			transitionToLoggedIn();
+			loginhandler.setActiveUser(user);
+			loginGrid.getUsername().clear();
+			loginhandler.setCornerProfileCard(loginhandler.getActiveUser());
+			//loginScreen.getRoot().getChildren().add(new ImageView(new Image(user.getProfilePicture(), 50, 50, false, true)));
+			//gotoGameSelector();
+		} else {
+			setBadActionTarget(actiontarget, Color.WHITE, 
+					loginResource.getString("incorrectLogin"));
+		}
+		loginGrid.getPassword().clear();
+	}
+	
+	private void setBadActionTarget(Text node, Color color, String error){
+		node.setFill(color);
+		node.setText(error);
+		FadeTransition fade = createFader(node);
+		fade.play();
+	}
+	
+	private FadeTransition createFader(Node node) {
+        FadeTransition fade = new FadeTransition(Duration.millis(3000), node);
+        fade.setFromValue(1);
+        fade.setToValue(0);
+        return fade;
+    }
+	
 	private void setupAltButtons(){
 		auth = new Button(loginResource.getString("gotoAuth"));
+		auth.setOnAction(e -> loginhandler.gotoAuth());
+		
 		selector = new Button(loginResource.getString("gotoSelector"));
+		selector.setOnAction(e -> loginhandler.gotoGameSelector());
+		
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
 		bottomHBox = new HBox(100, auth, selector);
-		borderPane.setBottom(bottomHBox);
+		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
 	}
-
-	private void setupCenter() {
+	
+	private void setupCenter(Node node) {
 		StackPane top = new StackPane();
 		top.getStyleClass().add("stack-pane");
 		StackPane.setMargin(top, new Insets(0., 300., 30., 300.));
 		StackPane sp = new StackPane(top);
-		sp.getChildren().add(gridPane);
-		borderPane.setCenter(sp);
+		sp.getChildren().add(node);
+		getBorderPane().setCenter(sp);
 	}
 	
 	
@@ -146,18 +170,34 @@ public class Login extends BorderedAnchorPane {
 	     //st.setCycleCount((int) 4f);
 	    //st.setAutoReverse(true);
 	     st.play();
-	     borderPane.setBottom(null);
-	     bottomHBox.getChildren().clear();
-	     VBox hbox = new VBox(40, auth, selector);
-	     hbox.setAlignment(Pos.CENTER);
-	     borderPane.setCenter(hbox);
-	     Label us = new Label("'I Heart Singletons' - Duvall, probably");
-	     us.setStyle("-fx-font-size: 15");
-	     us.setPadding(new Insets(50, 0, 20, 0));
-	     borderPane.setBottom(us);
-	     BorderPane.setAlignment(us, Pos.CENTER);
+	     st.setOnFinished(e -> createNewScreen());
 	}
 
+	private void createNewScreen() {
+		getBorderPane().setBottom(null);
+		bottomHBox.getChildren().clear();
+		VBox vbox = new VBox(40, auth, selector);
+		vbox.setAlignment(Pos.CENTER);
+		getBorderPane().setCenter(vbox);
+		Label us = new Label("'I Heart Singletons' - Duvall, probably");
+		us.setStyle("-fx-font-size: 15");
+		us.setPadding(new Insets(50, 0, 20, 0));
+		getBorderPane().setBottom(us);
+		setupCenter(vbox);
+		BorderPane.setAlignment(us, Pos.CENTER);
+		/*	     vbox.setScaleX(0);
+	     vbox.setScaleY(0);*/
+		ScaleTransition st = new ScaleTransition(Duration.millis(1000), vbox);
+		st.setByX(2f);
+		st.setByY(2f);
+		addProfileImage();
+	}
+
+	private void addProfileImage() {
+		
+	}
+
+	//temp
 	public class Game{
 		String name;
 		String imagePath;

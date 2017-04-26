@@ -16,7 +16,7 @@ public class Main extends Application{
 
 		s.getIcons().add(new Image("tower_icon.png"));
 		new LoginMain(s, "loginScreen.css", "login");
-
+		
 		s.setTitle("Login");
 		s.setResizable(true);
 		s.show();

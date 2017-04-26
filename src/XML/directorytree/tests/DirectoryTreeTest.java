@@ -1,13 +1,10 @@
 package XML.directorytree.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 import XML.directorytree.classes.DirectoryNode;
-import XML.xmlmanager.classes.ConcreteDirectoryFileHelper;
-import gamedata.GameData;
 
 public class DirectoryTreeTest {
 

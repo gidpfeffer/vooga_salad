@@ -5,9 +5,12 @@ import java.util.List;
 
 import gamedata.ActorData;
 import gamedata.BasicData;
+import gamedata.EnemyInWaveData;
 import gamedata.GameData;
+import gamedata.LevelData;
 import gamedata.ProjectileData;
 import gamedata.ProjectileType;
+import gamedata.WaveData;
 import gamedata.composition.ActorDamageableData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.composition.MoveWithSetPathData;
@@ -94,7 +97,7 @@ public class GameDataGenerator {
 		
 		BasicData b3 = new BasicData("Bob", "enemy_icon.png");
 		BasicData b4 = new BasicData("Jiggly", "Pokemon Icons/jigglypuff.png");
-		BasicData b5 = new BasicData("Pika", "Pokemon Icons/pikachu.png");
+		BasicData b5 = new BasicData("Pikac", "Pokemon Icons/pikachu.png");
 		
 		BasicData b6 = new BasicData("Grass", "grass.png");
 		
@@ -103,7 +106,7 @@ public class GameDataGenerator {
 		a1.addData(shoot); //tower has shooting capabilities
 		ActorData a2 = new ActorData(new BasicActorType("Projectile"), b2);//1
 		
-		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3, new LimitedHealthData(10.0),pathData,damage);//2
+		ActorData a3 = new ActorData(new BasicActorType("Troop"), b3, new LimitedHealthData(10.0), pathData, damage);//2
 		//a3.addData(pathData);
 		//a3.addData(damage);
 		
@@ -114,6 +117,12 @@ public class GameDataGenerator {
 		a4.addData(pathData);
 		
 		ActorData a6 = new ActorData(base, b6);//5
+		
+		LevelData level1 = new LevelData();
+		WaveData wave1 = new WaveData();
+		wave1.addWaveEnemy(new EnemyInWaveData(a3, 50));
+		level1.addWave(wave1);
+		game.addLevel(level1, 1);
 		
 		game.add(a1);
 		game.add(a2);
