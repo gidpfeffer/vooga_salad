@@ -65,8 +65,6 @@ public class PathLayerView extends Layer {
 				line.setEndY(event.getY());
 			});
 			List<Grid2D> listOfPoints = myPathData.poll();
-			System.out.println(myPathData.getMyPaths().keySet());
-			listOfPoints.add(p);
 			// determines if the point is exit, entry, or regular path
 			if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {// exit
 																				// path
@@ -74,9 +72,11 @@ public class PathLayerView extends Layer {
 				p.setPointType(PointType.EXIT);
 				setOnMouseMoved(irrelevantName -> {});
 				setOnMouseDragged(irrelevantName -> {});
-				System.out.println(listOfPoints);
-//				myPathData.addPath(new ArrayList<Grid2D>());
+				
+				System.out.println(myPathData.getMyPaths().values());
 			} else if (isFirstPoint) {
+				myPathData.addPath(new ArrayList<>());
+				listOfPoints = myPathData.poll();
 				p.setPointType(PointType.ENTRY);
 				isFirstPoint = false;
 				this.myLines.put(myLines.size(), new ArrayList<>());
@@ -84,7 +84,8 @@ public class PathLayerView extends Layer {
 			} else {
 				p.setPointType(PointType.PATH);
 			}
-
+			
+			listOfPoints.add(p);
 			this.getChildren().add(line);
 			this.getChildren().add(p);
 			myLines.get(myLines.size() - 1).add(line);

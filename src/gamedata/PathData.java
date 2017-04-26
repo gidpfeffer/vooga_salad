@@ -62,14 +62,14 @@ public class PathData {
 	
 	public List<Grid2D> poll(){
 		if(myPaths.isEmpty()){
-			addPath(new ArrayList<Grid2D>());
+			return null;
 		}
 		return myPaths.get(myPaths.size() - 1);
 	}
 	
 	public List<Grid2D> pop(){
 		if(myPaths.isEmpty()){
-			addPath(new ArrayList<Grid2D>());
+			return null;
 		}
 		this.numOptions--;
 		return myPaths.remove(myPaths.size() - 1);

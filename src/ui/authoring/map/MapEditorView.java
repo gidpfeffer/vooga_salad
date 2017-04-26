@@ -97,10 +97,8 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 		setupButtons();
 		setupLayerSelector();
-
-		addLayer(myPathLayer, "Path");
-
 		setupMapData();
+		addLayer(myPathLayer, "Path");
 	}
 
 	/**
@@ -275,8 +273,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private void sizeDidChange() {
 		for (Layer layer : myLayers) {
 			layer.sizeDidChange(myBackgroundView);
-		}
-		for (Layer layer : myLayers) {
+			//TODO manually resize each layer
 
 		}
 	}
