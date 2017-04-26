@@ -1,4 +1,6 @@
-package gameengine.actors.properties;
+package gameengine.actors.properties.damage;
+
+import java.util.Collection;
 
 import gamedata.composition.BaseDamageData;
 import gameengine.actors.propertygen.IActProperty;
@@ -15,19 +17,19 @@ import types.BasicActorType;
 public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProperty<G> {
 
 	private double myRadius;
-	private BasicActorType myTarget;
+	private Collection<BasicActorType> myTargets;
 
 	public BaseDamageProperty(BaseDamageData data) {
 		myRadius = data.getMyRadius();
-		myTarget = data.getMyTarget();
+		myTargets = data.getMyTarget();
 	}
 
 	@Override
 	public void action(G grid, Integer actorID) {
-		grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRadius, myTarget).forEach((damage,remaining) -> {
+		myTargets.stream().forEach(target -> grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRadius, target).forEach((damage,remaining) -> {
 			damage.accept(remaining);
 			grid.getMyDamageable(actorID).accept(remaining);
-				});
+				}));
 	}
 
 	@Override

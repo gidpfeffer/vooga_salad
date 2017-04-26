@@ -9,7 +9,7 @@ import util.observerobservable.VoogaObservableMap;
  * @author sarahzhou
  *
  */
-public class GameStatus extends VoogaObservableMap<String,String>{
+public class GameStatus extends VoogaObservableMap<String,String> implements WriteableGameStatus{
 
 	private final String EXPERIENCE = "Experience";
 	private final String MONEY = "Money";

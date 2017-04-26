@@ -29,7 +29,6 @@ import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
 import util.FileSelector;
-import voogasalad_ilovesingletons.Main;
 
 public class LoginMain {
 	
@@ -40,11 +39,15 @@ public class LoginMain {
 	private Login loginScreen;
 	private Signup signupPage;
 	private LoginHandler loginhandler;
+	private String css;
+	private String resource;
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
 	
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
+		this.css = css;
+		this.resource = resource;
 		setupDatabase();
 		setupLoginHandler();
 		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
@@ -145,12 +148,9 @@ public class LoginMain {
 	private void showProfileCard(User user) {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
 		card.setLogoutAction(e -> {
-			Main m = new Main();
-			try {
-				m.start(stage);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			loginhandler.setActiveUser(null);
+			loginScreen = new Login(loginhandler, css, resource);
+			loginhandler.returnToMain();
 		});
 		HBox hb = card.getCard();
 		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
@@ -177,7 +177,7 @@ public class LoginMain {
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData);
 		gameController.getGameScreen().setLoginHandler(loginhandler);
-		gameController.start(stage);
+		gameController.start();
 		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
 		stage.setTitle("Game Screen");
 	}

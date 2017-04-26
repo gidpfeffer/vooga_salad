@@ -1,10 +1,9 @@
 package ui.player.inGame;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
+import java.util.function.Supplier;
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
@@ -13,18 +12,19 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import ui.general.ImageViewPane;
+import ui.handlers.AnimationHandler;
 import ui.handlers.LoginHandler;
 import ui.handlers.UIHandler;
 import ui.player.login.LoginElement;
 import util.observerobservable.VoogaObserver;
-
-
 public class GameScreen extends GenericGameScreen 
 	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement{
 	
@@ -34,6 +34,27 @@ public class GameScreen extends GenericGameScreen
 	private Map<Integer, Actor> actorsMap;
 	private ScreenHandler screenHandler;
 	private LoginHandler loginhandler;
+	private AnimationHandler animationhandler;
+	
+	public GameScreen(UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+		this.uihandler = uihandler;
+		this.animationhandler = animationHandler;
+		this.actorsMap = new HashMap<Integer, Actor>();
+		this.ivp = this.getIVP();
+		hud = simpleHUD.get();
+		initializeScreenHandler();
+		setup();
+		fadeTransition(this, .0, 1.);
+	}
+	
+	public void setLoginHandler(LoginHandler loginhandler) {
+		this.loginhandler = loginhandler;
+	}
+	
+	public void notifyWin() {
+		new Alert(AlertType.INFORMATION, "You win!").showAndWait();
+	}
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
@@ -61,25 +82,10 @@ public class GameScreen extends GenericGameScreen
 		};
 	}
 	
-	public void setLoginHandler(LoginHandler loginhandler) {
-		this.loginhandler = loginhandler;
-	}
-	
-	public GameScreen(UIHandler uihandler) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
-		this.uihandler = uihandler;
-		this.actorsMap = new HashMap<Integer, Actor>();
-		this.ivp = this.getIVP();
-		initializeScreenHandler();
-		hud = uihandler.getSimpleHUD().get();
-		setup();
-		fadeTransition(this, .0, 1.);
-	}
-	
 	private void setup() {
 		setupPanels();
 		setupHUD();
-		getSettingsPane().setReturnToMain(returnToMain());
+		setReturnToMain(e -> loginhandler.returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -111,12 +117,11 @@ public class GameScreen extends GenericGameScreen
 		ft.play();
 		return ft;
 	}
-
 	private EventHandler<ActionEvent> returnToMain() {
 		return new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				uihandler.stop();
+				animationhandler.stop();
 				loginhandler.returnToMain();
 				System.out.println(getMediaPlayer().getStatus());
 				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
