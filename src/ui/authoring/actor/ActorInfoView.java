@@ -3,18 +3,15 @@ package ui.authoring.actor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import builders.DataGenerator;
 import gamedata.ActorData;
+import gamedata.BasicData;
 import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.LineageData;
-import gamedata.MapLayersData;
-import gamedata.PathData;
 import gamedata.compositiongen.Data;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
@@ -38,10 +35,8 @@ import ui.general.CustomColors;
 import ui.general.UIHelper;
 
 /**
- * 
  * @author TNK
  * @author maddiebriere
- *
  */
 public class ActorInfoView extends AnchorPane implements DataViewDelegate, OptionPickerDelegate{
 	
@@ -70,14 +65,19 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	
 	private void setupAddGenButton(){
 		ImageView add = imageForStackButton("add_icon_w.png");
-		StackPane addButton = UIHelper.buttonStack(e -> {
-			setupImageView(new Image(myCurrentActorData.getImagePath()));}, Optional.ofNullable(null), 
+		StackPane addButton = UIHelper.buttonStack(e -> {addUpgrade();}, Optional.ofNullable(null), 
 				Optional.of(add), Pos.CENTER, true);
 		HBox.setMargin(addButton, new Insets( 38.0, 12.0, 38.0, 12.0));
 		this.myUpgradePickerView.getChildren().add(addButton);
 	}
 	
-	public static ImageView imageForStackButton(String imagePath){
+	private void addUpgrade(){
+		setupImageView(new Image(myCurrentActorData.getImagePath()));
+		myLineageData.addGeneration(new ActorData(myCurrentActorData.getType(), 
+				new BasicData(myCurrentActorData.getName(), myCurrentActorData.getImagePath())));
+	}
+	
+	private ImageView imageForStackButton(String imagePath){
 		Image img = new Image(imagePath);
 		ImageView imageView = new ImageView(img);
 		imageView.setFitWidth(40);
@@ -201,19 +201,25 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		UIHelper.setDropShadow(myUpgradePickerView);
 		this.getChildren().addAll(myGridPane, myUpgradePickerView);
 	} 
+	
 	public void setLineageData(LineageData lineageData){
-		setActorData(lineageData.getProgenitor());
+		myLineageData = lineageData;
+		setActorData(lineageData);
 	}
 	
-	private void setActorData(ActorData actorData){
-		System.out.println("ActorInfoView.setActorData: "+actorData.getName() + " : size=" + actorData.getMyData().size());
-		myCurrentActorData = actorData;
+	private void setActorData(LineageData lineageData){
+		ActorData first = lineageData.getProgenitor();
+		System.out.println("ActorInfoView.setActorData: "+ first.getName() + " : size=" + first.getMyData().size());
+		myCurrentActorData = lineageData.getProgenitor();
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
-		if(myActorImageView == null)
-			setupImageView(new Image(actorData.getImagePath()));
-		myActorImageView.setImage(new Image(actorData.getImagePath()));
-		for(Data d: actorData.getMyData()){
+		myUpgradePickerView.getChildren().clear(); 
+		setupAddGenButton();
+		for(ActorData actors: lineageData.getMap().values()){
+			setupImageView(new Image(actors.getImagePath()));
+		}
+		myActorImageView.setImage(new Image(first.getImagePath()));
+		for(Data d: first.getMyData()){
 			addDataView(d);
 		}
 	}
