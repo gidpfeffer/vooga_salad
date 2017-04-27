@@ -5,17 +5,16 @@ import java.util.Set;
 
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import javafx.scene.input.KeyCode;
 
 /**
  * Data structure class wrapping mouse position and key stroke history into 
  * @author Moses Wayne
  *
  */
-public class ListenQueue {
+public class ListenEventQueue<E> {
 
 	private Grid2D myPointer;
-	private Set<KeyCode> myEvents;
+	private Set<E> myEvents;
 	
 	public ListenQueue(double xLoc, double yLoc) {
 		myPointer = new Coordinates(xLoc,yLoc);
@@ -26,16 +25,16 @@ public class ListenQueue {
 		return myPointer;
 	}
 	
-	public void addEvent(KeyCode code) {
+	public void addEvent(E code) {
 		myEvents.add(code);
 	}
 	
-	public boolean queryKey(KeyCode key) {
+	public boolean queryKey(E key) {
 		return myEvents.contains(key);
 	}
 	
 	@Override
-	public ListenQueue clone() {
+	public ListenQueue<E> clone() {
 		return this.clone();
 	}
 }
