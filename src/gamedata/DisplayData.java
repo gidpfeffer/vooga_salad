@@ -8,40 +8,48 @@ package gamedata;
  */
 
 public class DisplayData {
-	private static final String DEFAULT_IMAGE = "images/enemy_icon.png";
-	
-	private String splashScreenImage;
-	private String thumbnailImage;
-	private Integer colorTheme;
+	private static final String DEFAULT_POSITION= "Left";
+	private static final int DEFAULT_WIDTH=80;
+	private static final int DEFAULT_HEIGHT=400;
+	private int width;
+	private int height;
+	private String location;
 	
 	public DisplayData(){
-		this(DEFAULT_IMAGE, DEFAULT_IMAGE, 0);
+		this(DEFAULT_WIDTH,DEFAULT_HEIGHT,DEFAULT_POSITION);
 	}
 	
-	public DisplayData(String splashScreenImage, String thumbnailImage, Integer colorTheme) {
+	public DisplayData(int width, int height, String loc) {
 		super();
-		this.splashScreenImage = splashScreenImage;
-		this.thumbnailImage = thumbnailImage;
-		this.colorTheme = colorTheme;
+		this.width=width;
+		this.height=height;
+		this.location=loc;
 	}
-	public String getSplashScreenImage() {
-		return splashScreenImage;
+
+	public int getWidth() {
+		return width;
 	}
-	public void setSplashScreenImage(String splashScreenImage) {
-		this.splashScreenImage = splashScreenImage;
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
-	public String getThumbnailImage() {
-		return thumbnailImage;
+
+	public int getHeight() {
+		return height;
 	}
-	public void setThumbnailImage(String thumbnailImage) {
-		this.thumbnailImage = thumbnailImage;
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
-	public Integer getColorTheme() {
-		return colorTheme;
+
+	public String getLocation() {
+		return location;
 	}
-	public void setColorTheme(Integer colorTheme) {
-		this.colorTheme = colorTheme;
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
+
 	
 	
 }

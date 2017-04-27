@@ -11,6 +11,7 @@ import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
 import builders.GameDataGenerator;
+import gamedata.DisplayData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -32,6 +33,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.delegates.*;
+import ui.authoring.display.DisplayMenu;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
@@ -48,7 +50,7 @@ import util.Location;
  */
 
 
-public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
+public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate,DisplayDelegate{
 	
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 144;
@@ -64,6 +66,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	private BorderPane myBorderPane = new BorderPane();
 	private LevelEditorView myLevelView;
 	private MapEditorView myMapView;
+	private DisplayView myDisplayView;
 	private LeftPaneView myLeftPane; //purpose of this pane is to flip animate 
 	private MenuView myMenuView;
 	
@@ -160,9 +163,32 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.getChildren().add(menuButton);
 		
 		double width = 300;
+
+
+		
+		//alex test
+		ImageButton displayButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
+		displayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> launchDisplayView());
+		AnchorPane.setLeftAnchor(displayButton, 150.0);
+		AnchorPane.setTopAnchor(displayButton, 150.0);
+		UIHelper.setDropShadow(displayButton);
+		this.getChildren().add(displayButton);
+		myDisplayView=new DisplayView(this,this,myGameData);
+		UIHelper.setBackgroundColor(myDisplayView, CustomColors.GREEN);
+	
+		//this.getChildren().add(myDisplayView);
+		
+		
+		//end test
+		
+
 		myMenuView = new MenuView(this);
+
+
+		
 		myMenuView.setLayoutX(-width - 5);
 		myMenuView.setPrefWidth(width);
+		
 		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
 		UIHelper.setDropShadow(myMenuView);
 		AnchorPane.setTopAnchor(myMenuView, 0.0);
@@ -269,12 +295,30 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		t.setByX(myMenuView.widthProperty().doubleValue());
 		t.play();
 	}
+	//alex test
+	public void slideDisplayIn(){
+	
+	}
+	private void launchDisplayView(){
+		
+		this.openView(myDisplayView);
+		myDisplayView.updateDisplayMenu();
+		
+	}
+	public void slideDisplayOut(){
+	TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+	t.setNode(myDisplayView);
+	t.setToX(0);
+	t.play();
+	}
+	//end alex test
 	private void slideMenuOut(){
 		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 		t.setNode(myMenuView);
 		t.setToX(0);
 		t.play();
 	}
+	
 	private void openPaneWithAnimation(Pane pane, PopupSize size){
 		pane.setCache(true);
 		pane.setCacheShape(true);
@@ -384,7 +428,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 */
 	@Override
 	public void didPressBackButton() {
-		slideMenuOut();		
+		slideMenuOut();	
 	}
 
 	@Override

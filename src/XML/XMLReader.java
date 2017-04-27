@@ -65,7 +65,7 @@ public class XMLReader extends XMLParser {
 			throw new XMLException(e);
 		}
 		getLevelData();
-		getProjectileData();
+		//getProjectileData();
 
 	}
 	public GameData getData(){
@@ -105,7 +105,7 @@ public class XMLReader extends XMLParser {
 		for (int i = 0; i < actors.getLength(); i++) {
 			Element actor = (Element) actors.item(i);
 			String type = getTextValue(actor, "type");
-			BasicActorType basicType = BasicActorType.valueOf(type);
+			BasicActorType basicType = new BasicActorType(type);
 			String imagePath = getTextValue(actor, "imagePath");
 			String name = getTextValue(actor, "name");
 			BasicData basicData = new BasicData(name, imagePath);
@@ -117,8 +117,13 @@ public class XMLReader extends XMLParser {
 				Optional<String> fieldData = Optional.ofNullable(getTextValue(actor, field));
 				if (fieldData.isPresent() && fieldData.get().length() > 0) {
 					String[] fields = fieldData.get().split(" ");
-
-					Constructor<?> constr = c.getConstructors()[0];
+					Constructor<?>constr=null;
+					Constructor<?>[] constructors = c.getConstructors();
+					for(Constructor<?>current:constructors){
+						if(current.getParameterTypes().length==fields.length){
+							constr=current;
+						}
+					}
 					Class[] neededFields = constr.getParameterTypes();
 
 					Object[] convertedFields = new Object[neededFields.length];
@@ -126,12 +131,14 @@ public class XMLReader extends XMLParser {
 						convertedFields[j] = StringToFieldFactory.getObject(fields[j], neededFields[j]);
 						
 					}
-
-					Object o = DataGenerator.makeData(field.substring(0, field.length() - 4), convertedFields);
+				
+					Object o = DataGenerator.makeData(field.substring(0, field.length() ), convertedFields);
 					if (o instanceof HealthData) {
 						healthData = (HealthData) o;
+					
 					} else {
 						data.add((Data) o);
+						
 					}
 
 				}
@@ -155,11 +162,7 @@ public class XMLReader extends XMLParser {
 		Optional<Double> speedMultiplier = getOptionalDouble(getTextValue(allWaves, "SpeedMultiplier"));
 		Optional<Double> attackMultiplier = getOptionalDouble(getTextValue(allWaves, "AttackMultiplier"));
 		LevelData levelData = new LevelData(duration);
-		levelData.setDifficulty(difficulty);
-		levelData.setHealthMultiplier(healthMultiplier);
-		levelData.setSpeedMultiplier(speedMultiplier);
-		levelData.setAttackMultiplier(attackMultiplier);
-		NodeList waves = allWaves.getElementsByTagName("Wave");
+				NodeList waves = allWaves.getElementsByTagName("Wave");
 		for (int i = 0; i < waves.getLength(); i++) {
 			Element wave = (Element) waves.item(i);
 			NodeList enemies = wave.getElementsByTagName("Enemy");
@@ -168,39 +171,35 @@ public class XMLReader extends XMLParser {
 				Element enemy = (Element) enemies.item(j);
 				Integer actorID = Integer.parseInt(getTextValue(enemy, "ActorID"));
 				Integer number = Integer.parseInt(getTextValue(enemy, "Number"));
-				String[] pathsUnprocessed = getTextValue(enemy, "Paths").split(" ");
-				List<Integer> pathIDs = new ArrayList<Integer>();
-				for (String s : pathsUnprocessed) {
-					pathIDs.add(Integer.parseInt(s));
-				}
-				EnemyInWaveData waveEnemy = new EnemyInWaveData(myActors.get(actorID), number, pathIDs);
-				// waveData.addWaveEnemy(waveEnemy);
-				levelData.addWaveEnemy(myActors.get(actorID), number, pathIDs);
+				
+				EnemyInWaveData waveEnemy = new EnemyInWaveData(myActors.get(actorID), number);
+				 waveData.addWaveEnemy(waveEnemy);
+				
 			}
-			// levelData.addWave(waveData)
+			 levelData.addWave(waveData);
 			// when multiple waves get implemented
 		}
 		myGameData.addLevel(levelData, 0);
 	}
 
-	private void getProjectileData() {
-		Element root = getRootElement(dataFile);
-		Element allProjectiles = (Element) root.getElementsByTagName("ProjectileData").item(0);
-		NodeList projectiles = allProjectiles.getElementsByTagName("Projectile");
-		ProjectileData projectileData=new ProjectileData(new HashMap<Integer,ProjectileType>());
-		for(int i=0;i<projectiles.getLength();i++){
-			Element projectile=(Element)projectiles.item(i);
-			String image=getTextValue(projectile,"Image");
-			Double damage=Double.parseDouble(getTextValue(projectile,"Damage"));
-		
-			Boolean explosive=Boolean.valueOf(getTextValue(projectile,"Explosive"));
-			Boolean restrictive=Boolean.valueOf(getTextValue(projectile,"Restrictive"));
-			ProjectileType newProjectile=new ProjectileType(image,damage,explosive,restrictive);
-		projectileData.addProjectile(newProjectile);
-		System.out.println(newProjectile.getDamage());
-		}
-		myGameData.setProjectileOptions(projectileData);
-	}
+//	private void getProjectileData() {
+//		Element root = getRootElement(dataFile);
+//		Element allProjectiles = (Element) root.getElementsByTagName("ProjectileData").item(0);
+//		NodeList projectiles = allProjectiles.getElementsByTagName("Projectile");
+//		ProjectileData projectileData=new ProjectileData(new HashMap<Integer,ProjectileType>());
+//		for(int i=0;i<projectiles.getLength();i++){
+//			Element projectile=(Element)projectiles.item(i);
+//			String image=getTextValue(projectile,"Image");
+//			Double damage=Double.parseDouble(getTextValue(projectile,"Damage"));
+//		
+//			Boolean explosive=Boolean.valueOf(getTextValue(projectile,"Explosive"));
+//			Boolean restrictive=Boolean.valueOf(getTextValue(projectile,"Restrictive"));
+//			ProjectileType newProjectile=new ProjectileType(image,damage,explosive,restrictive);
+//		projectileData.addProjectile(newProjectile);
+//		System.out.println(newProjectile.getDamage());
+//		}
+//		myGameData.add(data);
+//	}
 
 	private Optional<Double> getOptionalDouble(String s) {
 		try {
@@ -213,8 +212,15 @@ public class XMLReader extends XMLParser {
 
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		XMLReader x = new XMLReader("data/voogatest.xml");
-		System.out.println(x.myGameData);
+	ArrayList<String>sd=new ArrayList<String>();
+	sd.add("dsad");
+	sd.add("ds");
+	ArrayList<String>ds=new ArrayList<String>();
+	ds.addAll(sd);
+	sd.add("dasdasdsa");
+	System.out.println(sd);
+	System.out.println(ds);
+		
 
 	}
 }
