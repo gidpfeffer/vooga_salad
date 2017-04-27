@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.Optional;
 
 import builders.DataGenerator;
-import builders.OptionGenerator;
+import builders.AuthorInfoGenerator;
 import gamedata.FieldData;
 import gamedata.PathData;
 import gamedata.StringToFieldFactory;
@@ -63,7 +63,7 @@ public class DataView extends AnchorPane {
 		myActorTypes = actorTypes;
 		myData = data;
 		myDataClassName = data.getClass().getSimpleName();
-		myFields = OptionGenerator.getFields(data);
+		myFields = AuthorInfoGenerator.getFields(data);
 		myDelegate = delegate;
 		myPaths = paths;
 		setupViews();
@@ -195,10 +195,11 @@ public class DataView extends AnchorPane {
 		fieldName.setMaxWidth(80);
 		content.getChildren().add(fieldName);
 		
-		BasicActorPicker input = new BasicActorPicker(value, myActorTypes);
-		input.getBasicActorTypeProperty().addListener(e -> {
+		BasicPicker <BasicActorType> input = 
+				new BasicPicker<BasicActorType>(value, myActorTypes);
+		input.getTypeProperty().addListener(e -> {
 			System.out.println("toggled basic actor field input thing");
-			didEditBasicActorType(input.getBasicActorTypeProperty().get(),nameKey);
+			didEditBasicActorType(input.getTypeProperty().get(),nameKey);
 			
 		});
 		AnchorPane.setRightAnchor(input, 4.0);

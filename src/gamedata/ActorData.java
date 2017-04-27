@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import builders.OptionGenerator;
+import builders.AuthorInfoGenerator;
 import gamedata.LayerData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
@@ -100,7 +100,7 @@ public class ActorData {
 	 * @param property Data object to add to the ActorData's list
 	 */
 	public void addData(Data property){
-		String name = OptionGenerator.getName(property);
+		String name = AuthorInfoGenerator.getName(property);
 		if(myData.containsKey(name)){
 			myData.remove(name);
 		}
@@ -109,7 +109,7 @@ public class ActorData {
 	
 	
 	public void removeData(Data property){
-		String name = OptionGenerator.getName(property);
+		String name = AuthorInfoGenerator.getName(property);
 		if(myData.containsKey(name)){
 			myData.remove(name);
 		}

@@ -9,10 +9,11 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import builders.DataGenerator;
-import builders.OptionGenerator;
 import gamedata.ActorData;
 import gamedata.FieldData;
+import gamedata.GameData;
 import gamedata.LineageData;
+import gamedata.MapLayersData;
 import gamedata.PathData;
 import gamedata.compositiongen.Data;
 import javafx.animation.ScaleTransition;
@@ -22,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -51,7 +53,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private DataSelectionView myOptionPickerView;
 	private Set<BasicActorType> myActorTypeOptions;
 	private ActorData myCurrentActorData;
-	private PathData myPathData;
+	private GameData gameData;
 
 	
 	public ActorInfoView(){
@@ -62,14 +64,31 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private void setupViews(){
 		setupLayout();
 		this.setupAddNewClassButton();
+		setupAddGenButton();
+	}
+	
+	private void setupAddGenButton(){
+		ImageView add = imageForStackButton("add_icon_w.png");
+		StackPane addButton = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), 
+				Optional.of(add), Pos.CENTER, true);
+		HBox.setMargin(addButton, new Insets( 38.0, 12.0, 38.0, 12.0));
+		this.myUpgradePickerView.getChildren().add(addButton);
+	}
+	
+	public static ImageView imageForStackButton(String imagePath){
+		Image img = new Image(imagePath);
+		ImageView imageView = new ImageView(img);
+		imageView.setFitWidth(40);
+		imageView.setPreserveRatio(true);
+		return imageView;
 	}
 
-	private void addLabel(String label, AnchorPane toAdd){
+	private void addLabel(String label, AnchorPane toAdd, double offset){
 		Label fieldName = new Label(label);
 		fieldName.setTextFill(CustomColors.BLUE_800);
 		fieldName.setTextAlignment(TextAlignment.CENTER);
 		AnchorPane.setLeftAnchor(fieldName, 4.0);
-		AnchorPane.setTopAnchor(fieldName, 4.0);
+		AnchorPane.setTopAnchor(fieldName, 4.0 + offset);
 		AnchorPane.setBottomAnchor(fieldName, 4.0);
 		fieldName.setMaxWidth(80);
 		toAdd.getChildren().add(fieldName);
@@ -96,7 +115,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		root.setAlignment(Pos.CENTER);
 		
 		myActorImageView = new ImageView(img);
-		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight()*(2/3));
+		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight()*(1/8));
 		myActorImageView.setPreserveRatio(true);
 		StackPane button = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), 
 				Optional.of(myActorImageView), Pos.CENTER, true);
@@ -106,25 +125,42 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		root.getChildren().add(button);
 		
 		AnchorPane content = new AnchorPane();
-		addLabel("Cost:", content);
-		TextField field = addField("", width);
+		VBox box = new VBox();
+		box.setSpacing(10);
+		box.setAlignment(Pos.CENTER);
 		
+		addLabel("Cost:", content, -20);
+		TextField field = addField("", width);
 		ActorData actor = myCurrentActorData; //set to current image when this added
 		field.textProperty().addListener((o,oldText,newText) -> {
 			updateCost(actor, (String)newText);
 		});
-		AnchorPane.setRightAnchor(field, 4.0);
-		AnchorPane.setTopAnchor(field, 4.0);
-		AnchorPane.setBottomAnchor(field, 4.0);
-		AnchorPane.setLeftAnchor(field, width);
+		
+		addLabel("Layer:", content, 40);
+		BasicPicker<String> layers = 
+				new BasicPicker<String>("", new ArrayList<>(gameData.getLayers().getMyLayers().keySet()));
+		layers.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_50));
+		layers.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> {updateLayer(actor, layers.getTypeProperty().get());});
+		
+		AnchorPane.setRightAnchor(box, 4.0);
+		AnchorPane.setTopAnchor(box, 4.0);
+		AnchorPane.setBottomAnchor(box, 4.0);
+		AnchorPane.setLeftAnchor(box, width);
 		
 		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
-		content.getChildren().add(field);
+		box.getChildren().addAll(field, layers);
+		content.getChildren().add(box);
+		
 		VBox.setMargin(content, new Insets(8.0));
 		root.getChildren().add(content);
-	
 		HBox.setMargin(root, new Insets(8));
 		this.myUpgradePickerView.getChildren().add(root);
+	}
+	
+	private void updateLayer(ActorData actor, String newLayer){
+		if(!newLayer.equals("")){
+			actor.setLayer(gameData.getLayers().getMyLayers().get(newLayer));
+		}
 	}
 	
 	private void updateCost(ActorData actor, String newText){
@@ -138,33 +174,23 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		System.out.println(newCost);
 	}
 	
-	
-
-//	private void setupGridPane() {
-//		int count = 0;
-//		for(Entry<String, List<FieldData>> e: OPTIONS.entrySet()){
-//			
-//		}
-//		
-//	}
-
-	private void setupOptions() {
-		// TODO Auto-generated method stub
-		
-	}
 	private void setupLayout() {
 		myGridPane = new GridPane();
 		myUpgradePickerView = new HBox(8.0);
 		double inset = 10.0;
+		double prefHeight = 150;
+		
 		AnchorPane.setLeftAnchor(myUpgradePickerView, inset);
 		AnchorPane.setRightAnchor(myUpgradePickerView, inset + 2);
 		AnchorPane.setTopAnchor(myUpgradePickerView, inset);
+		AnchorPane.setBottomAnchor(myUpgradePickerView, prefHeight*1.85);
 		
-		myUpgradePickerView.setPrefHeight(150);
+		myUpgradePickerView.setPrefHeight(prefHeight);
 		AnchorPane.setLeftAnchor(myGridPane, inset);
 		AnchorPane.setRightAnchor(myGridPane, inset + 2);
 		AnchorPane.setBottomAnchor(myGridPane, inset);
-		AnchorPane.setTopAnchor(myGridPane, (myUpgradePickerView.getPrefHeight() + 2*inset));
+		AnchorPane.setTopAnchor(myGridPane, 
+				(myUpgradePickerView.getPrefHeight()*1.25 + 2*inset));
 		//myGridPane.prefHeightProperty().bind(this.heightProperty().add();
 		
 		UIHelper.setBackgroundColor(myGridPane, CustomColors.BLUE_200);
@@ -191,7 +217,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataView(Data data){
-		DataView view = new DataView(myPathData, data, this, 
+		DataView view = new DataView(gameData.getMyPaths(), data, this, 
 				Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
@@ -279,8 +305,9 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		this.myActorTypeOptions = keySet;
 	}
 	
-	public void setPathData(PathData data){
-		myPathData = data;
+	public void setGameData(GameData data){
+		gameData = data;
 	}
+	
 
 }

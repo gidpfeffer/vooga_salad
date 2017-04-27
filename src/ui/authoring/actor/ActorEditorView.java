@@ -253,7 +253,7 @@ public class ActorEditorView extends AnchorPane {
 	}
 
 	private void selectActor(StackPane stackButton){
-		myActorInfoView.setPathData(myGameData.getMyPaths());
+		myActorInfoView.setGameData(myGameData);
 		myActorInfoView.setLineageData(this.myActors.get(stackButton));
 	}
 	
