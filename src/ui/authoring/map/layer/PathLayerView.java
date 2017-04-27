@@ -84,7 +84,7 @@ public class PathLayerView extends Layer {
 				p.setPointType(PointType.PATH);
 			}
 			
-			listOfPoints.add(p);
+			listOfPoints.add(p.getCoordinates());
 			this.getChildren().add(line);
 			this.getChildren().add(p);
 			myLines.get(myLines.size() - 1).add(line);

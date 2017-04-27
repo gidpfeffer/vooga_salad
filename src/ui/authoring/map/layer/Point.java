@@ -3,6 +3,7 @@ package ui.authoring.map.layer;
 import java.util.HashMap;
 import java.util.Map;
 
+import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -11,7 +12,7 @@ import ui.general.CustomColors;
 import util.Location;
 import util.Tuple;
 
-public class Point extends Circle implements Grid2D{
+public class Point extends Circle {
 	
 	@SuppressWarnings("serial")
 	Map<PointType, Color> pointTypeToColor = new HashMap<PointType, Color>() {{
@@ -22,7 +23,7 @@ public class Point extends Circle implements Grid2D{
         //etc
     }};
     
-    private Location myCompressedLocation;
+    private Coordinates myCompressedLocation;
     private Color myColor = CustomColors.GREEN_900;
     private boolean isValid=false;
     
@@ -35,6 +36,7 @@ public class Point extends Circle implements Grid2D{
 	public Point(Location gridLocation,  Tuple<Double, Double> size, Tuple<Double, Double> insets){
 		super();
 		myCompressedLocation = compressLocation(gridLocation, insets,getImageSize(size, insets));
+		System.out.println(myCompressedLocation);
 		isBetweenOneAndZero(myCompressedLocation);
 		updateLocation(getImageSize(size, insets), insets);
 		setColor(myColor);
@@ -49,8 +51,8 @@ public class Point extends Circle implements Grid2D{
 		this.setCenterX(myCompressedLocation.getX()*imageSize.x + insets.x);
 		this.setCenterY(myCompressedLocation.getY()*imageSize.y + + insets.y);
 	}
-	private Location compressLocation(Location location,Tuple<Double, Double> insets, Tuple<Double, Double> imageSize){
-		 return new Location((location.getX() - insets.x)/imageSize.x, (location.getY() - insets.y)/imageSize.y);
+	private Coordinates compressLocation(Location location,Tuple<Double, Double> insets, Tuple<Double, Double> imageSize){
+		 return new Coordinates((location.getX() - insets.x)/imageSize.x, (location.getY() - insets.y)/imageSize.y);
 	}
 	
 	public void updateSize(Tuple<Double,Double> size, Tuple<Double,Double> insets){
@@ -59,24 +61,8 @@ public class Point extends Circle implements Grid2D{
 	
 
 	
-	private void isBetweenOneAndZero(Location l){
+	private void isBetweenOneAndZero(Coordinates l){
 		isValid =  !(l.getX()>1 || l.getY() > 1 || l.getX() < 0 || l.getY() < 0);
-	}
-
-
-	@Override
-	public double getX() {
-		return myCompressedLocation.getX();
-	}
-
-	@Override
-	public double getY() {
-		return myCompressedLocation.getY();
-	}
-
-	@Override
-	public String toString() {
-		return getX() + " : " + getY();
 	}
 	
 	public boolean isValid(){
@@ -90,6 +76,10 @@ public class Point extends Circle implements Grid2D{
 	public void setColor(Color c){
 		myColor = c;
 		setFill(c);
+	}
+	
+	public Coordinates getCoordinates(){
+		return this.myCompressedLocation;
 	}
 
 
