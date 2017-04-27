@@ -26,7 +26,8 @@ import util.VoogaException;
 
 public class LevelController {
 	private ControllableGrid myGrid;
-	private Supplier<ActorGrid> getActorGrid;
+	
+	private Runnable win;
 	
 	private Delay delay;
 	
@@ -34,34 +35,35 @@ public class LevelController {
 	
 	private int level;
 	
-	public LevelController(Supplier<ActorGrid> getActorGrid) {
-		this.getActorGrid = getActorGrid;
-		myGrid = getActorGrid.get();
+	public LevelController(Supplier<ControllableGrid> getControllableGrid, Runnable win) {
+		myGrid = getControllableGrid.get();
 		delay = new Delay(DELAY_CONSTANT);
+		this.win = win;
 	}
 	
 	public int getLevel() {
 		return level;
 	}
 	
-	public void levelUp (GameData gameData) {
+	public void levelUp (GameData gameData) throws VoogaException {
 		if (!(gameData.getLevels().get(level+1)==null)) {
-			
+			changeLevel(gameData,level+1);
 		} else {
-			//user has won
+			win.run();
 		}
 	}
 	
 	public void changeLevel(GameData gameData, int level) throws VoogaException{
 		this.level = level;
 		PreferencesData preferences = gameData.getPreferences();
+		System.out.println(preferences);
 		LevelData levelData = gameData.getLevel(level);
 		if (levelData!=null) loadLevel(preferences,levelData,gameData);
 		else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
 	}
 	
 	private void loadLevel(PreferencesData preferences, LevelData levelData, GameData gameData) {
-		if(preferences.cleanLevel()) myGrid = getActorGrid.get();
+		//if(preferences.cleanLevel()) ;
 		addPieces(gameData,levelData,preferences);
 	}
 	
@@ -81,16 +83,17 @@ public class LevelController {
 		System.out.println("processing enemy waves");
 		processEnemyWaves(waveData.getWaveEnemies(),pathData);
 		System.out.println("processed enemy waves");
-		if (preferences.getPauseBetweenWaves().get()) delay.delayAction();
+		if (preferences.pauseBetweenWaves()) delay.delayAction();
 	}
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
-		Actor actor = builders.ActorGenerator.makeActor(IDGenerator.getNewID(), actorData);
-		System.out.println("spawning enemy"+ IDGenerator.getNewID());
+		Actor actor = builders.ActorGenerator.makeActor(enemyData.getOption(), actorData);
+		System.out.println(actor.getType().toString()+" "+actor.getID());
 		Grid2D firstPathCoor = getFirstPathCoor(pathData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
-		System.out.println("enemy spawned"+ IDGenerator.getNewID());
+		
+		System.out.println("enemy spawned");
 	}
 	
 	private Grid2D getFirstPathCoor(PathData pathData) {

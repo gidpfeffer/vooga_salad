@@ -1,5 +1,6 @@
 package gameengine.actors.management;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
 import gameengine.actors.propertygen.IActProperty;
@@ -27,6 +28,10 @@ public interface Actor {
 	 *            composition elements of the Actor class are called
 	 */
 	public void act(MasterGrid grid);
+	
+	public void exit(MasterGrid grid);
+	
+	public void changeExit(Consumer<Collection<IActProperty<MasterGrid>>> action);
 
 	/**
 	 * Method to specify if an actor is still active in the game

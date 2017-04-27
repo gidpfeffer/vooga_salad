@@ -12,8 +12,6 @@ import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -32,8 +30,9 @@ import ui.player.users.User;
 import ui.player.users.UserDatabase;
 import ui.ratings.RatingView;
 import util.FileSelector;
-import voogasalad_ilovesingletons.Main;
+
 public class LoginMain {
+	
 	private Stage stage;
 	private GameController gameController;
 	private UserDatabase database;
@@ -41,11 +40,15 @@ public class LoginMain {
 	private Login loginScreen;
 	private Signup signupPage;
 	private LoginHandler loginhandler;
+	private String css;
+	private String resource;
 	public static final String userDatabase = "userDatabase.xml";
-	
 	public static final String CONFIG_EXTENSION = "*.xml";
+	
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
+		this.css = css;
+		this.resource = resource;
 		setupDatabase();
 		setupLoginHandler();
 		stage.setMinHeight(Preferences.SCREEN_HEIGHT);
@@ -112,11 +115,12 @@ public class LoginMain {
 			public void gotoGameSelector() {
 				//TODO: Replace with actual games list
 				List<Game> gamesList = new ArrayList<>(Arrays.asList(
+						//file path
+						loginScreen.new Game("Load Custom Game","black.jpg",e -> promptUserToChooseGame()),
 						loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> {}),
 						loginScreen.new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {}), 
-						loginScreen.new Game("Asteroids", "asteroids.png", e -> {}),
-						//file path
-						loginScreen.new Game("Load Custom Game","black.jpg",e -> promptUserToChooseGame())));
+						loginScreen.new Game("Asteroids", "asteroids.png", e -> {}))
+						);
 				GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
 				stage.setScene(select.getScene());
 				stage.setTitle("Game Selector");
@@ -153,21 +157,20 @@ public class LoginMain {
 			database = new UserDatabase();
 		}
 	}
+	
 	private void showProfileCard(User user) {
 		ProfileCard card = new ProfileCard("profile", user, "profile.css");
 		card.setLogoutAction(e -> {
-			Main m = new Main();
-			try {
-				m.start(stage);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			loginhandler.setActiveUser(null);
+			loginScreen = new Login(loginhandler, css, resource);
+			loginhandler.returnToMain();
 		});
 		HBox hb = card.getCard();
 		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
 		AnchorPane.setBottomAnchor(hb, 25.);
 		AnchorPane.setLeftAnchor(hb, 25.);
 	}
+	
 	private void promptUserToChooseGame(){
 		try {
 			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
@@ -179,28 +182,16 @@ public class LoginMain {
 				goToGameScreen(gameData);
 			}
 		} catch(Exception e){
+			e.printStackTrace();
 			System.out.println("Invalid GameData file chosen");
 		}
 	}
+	
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData);
-		gameController.start(stage);
-		setUpGameScreenReturn();
+		gameController.getGameScreen().setLoginHandler(loginhandler);
+		gameController.start();
 		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
 		stage.setTitle("Game Screen");
-	}
-	
-	private void setUpGameScreenReturn() {
-		EventHandler<ActionEvent> gameScreenHandler = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				gameController.getGameScreen().getAction();
-				stage.setScene(loginScreen.getScene());
-				stage.setTitle("Login");
-				stage.setWidth(Preferences.SCREEN_WIDTH);
-				stage.setHeight(Preferences.SCREEN_HEIGHT);
-			}
-		};
-		gameController.getGameScreen().setLoginReturn(gameScreenHandler);
 	}
 }

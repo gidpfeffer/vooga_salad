@@ -1,13 +1,15 @@
 package ui.authoring;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Optional;
+
+import com.google.common.io.Files;
 
 import gamedata.PreferencesData;
 import javafx.beans.value.ChangeListener;
@@ -15,23 +17,26 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import ui.Preferences;
 import ui.authoring.delegates.MenuDelegate;
-import ui.general.CustomColors;
 import ui.general.StackButton;
 import ui.general.ToggleSwitch;
 import ui.general.UIHelper;
+import ui.handlers.LoginHandler;
+import util.FileSelector;
 
 public class MenuView extends AnchorPane {
 
@@ -42,12 +47,15 @@ public class MenuView extends AnchorPane {
 	private static final String EXP_BY_LEVEL_LABEL = "Level Experience";
 	private static final String PAUSE_BETWEEN_WAVES_LABEL = "Buffer Waves";
 	private static final String CLEAN_LEVEL_LABEL = "Clean Level";
+	private static final String LOAD_MUSIC_LABEL = "Load Music";
 	
 	private MenuDelegate myDelegate;
 	private PreferencesData myData;
 	private VBox myVBox;
-	
+	private LoginHandler loginhandler;
 	private Collection<String> mySwitchTitles;
+
+	
 	
 	private Map<String, ToggleSwitch> myPreferences;
 
@@ -63,6 +71,8 @@ public class MenuView extends AnchorPane {
 		mySwitchTitles = new ArrayList<>(Arrays.asList(ENEMY_LOOP_LABEL, TOWERS_ATTACKABLE_LABEL, WANT_MONEY_LABEL, EXP_BY_LEVEL_LABEL,
 				PAUSE_BETWEEN_WAVES_LABEL, CLEAN_LEVEL_LABEL)); 
 		setupViews();
+		
+		
 	}
 
 	private void setupViews() {
@@ -76,15 +86,24 @@ public class MenuView extends AnchorPane {
 				Optional.ofNullable(null), Pos.CENTER, false); //TODO remove
 		StackPane load = UIHelper.buttonStack(e-> loadButtonClicked(), Optional.of(getPlainLabel("Load")),
 				Optional.ofNullable(null), Pos.CENTER, false);
+		StackPane returnMain = UIHelper.buttonStack(e-> this.myDelegate.didPressReturnMain(), 
+				Optional.of(getPlainLabel("Return to Main")), Optional.ofNullable(null), Pos.CENTER, false);
+		
+		StackPane loadMusic = UIHelper.buttonStack(e-> loadMusicButtonClicked(), 
+				Optional.of(getPlainLabel(LOAD_MUSIC_LABEL)), Optional.ofNullable(null), Pos.CENTER, false);
 		save.setPrefHeight(40);
 		load.setPrefHeight(40);
+		returnMain.setPrefHeight(40);
+		loadMusic.setPrefHeight(40);
+		
 		UIHelper.setBackgroundColor(load, Color.TRANSPARENT);
 		UIHelper.setBackgroundColor(save, Color.TRANSPARENT);
+		UIHelper.setBackgroundColor(returnMain, Color.TRANSPARENT);
+		UIHelper.setBackgroundColor(loadMusic, Color.TRANSPARENT);
 		
 		Pane spacing = new Pane();
 		spacing.setPrefHeight(40);
-		myVBox.getChildren().addAll(spacing,load,save);
-		
+		myVBox.getChildren().addAll(spacing,loadMusic,load,save,returnMain);
 	}
 	private Label getPlainLabel(String s){
 		Label label = new Label(s);
@@ -99,6 +118,12 @@ public class MenuView extends AnchorPane {
 	private void loadButtonClicked(){
 		myDelegate.didPressLoadButton();
 		myDelegate.didPressBackButton();
+	}
+	
+	private void loadMusicButtonClicked(){
+		FileSelector selector = new FileSelector("*.mp3");
+		File data = selector.open(new Stage());
+		myData.setMusicFilePath(data.toURI().toString());
 	}
 
 	private void setupVBox() {

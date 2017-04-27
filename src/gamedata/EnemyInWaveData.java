@@ -25,7 +25,7 @@ public class EnemyInWaveData {
 	}
 
 
-	public int getMyNumber() {
+	public int getOption() {
 		return myNumber;
 	}
 	public void setMyNumber(int myNumber) {

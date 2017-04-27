@@ -1,5 +1,6 @@
 package gamedata;
 
+import java.io.File;
 import java.util.Optional;
 
 /**
@@ -29,7 +30,26 @@ public class PreferencesData{
 	private Optional<Boolean> expByLevel;
 	private Optional<Boolean> pauseBetweenWaves;
 	private Optional<Boolean> cleanLevel;
+	private String musicFilePath = new File("data/resource/hero_song.mp3").toURI().toString(); // default for now
 	
+	public PreferencesData(){
+		this(Optional.of(0), Optional.of(false), Optional.of(false), Optional.of(false),
+				Optional.of(false), Optional.of(false), Optional.of(false));
+	}
+	
+	public PreferencesData(Optional<Integer> numLives, Optional<Boolean> enemyLoop, Optional<Boolean> towersAttackable,
+			Optional<Boolean> wantMoney, Optional<Boolean> expByLevel, Optional<Boolean> pauseBetweenWaves,
+			Optional<Boolean> cleanLevel) {
+		super();
+		this.numLives = numLives;
+		this.enemyLoop = enemyLoop;
+		this.towersAttackable = towersAttackable;
+		this.wantMoney = wantMoney;
+		this.expByLevel = expByLevel;
+		this.pauseBetweenWaves = pauseBetweenWaves;
+		this.cleanLevel = cleanLevel;
+	}
+
 	public int getNumLives(){
 		return numLives.orElse(NUM_LIVES);
 	}
@@ -51,11 +71,13 @@ public class PreferencesData{
 	}
 	
 	public boolean pauseBetweenWaves(){
-		return pauseBetweenWaves.orElse(DEFAULT);
+		//return pauseBetweenWaves.orElse(DEFAULT);
+		return false;
 	}
 	
 	public boolean cleanLevel(){
-		return cleanLevel.orElse(DEFAULT);
+		//return cleanLevel.orElse(DEFAULT);
+		return false;
 	}
 
 	public void setNumLives(Optional<Integer> numLives) {
@@ -108,6 +130,14 @@ public class PreferencesData{
 
 	public Optional<Boolean> getPauseBetweenWaves() {
 		return pauseBetweenWaves;
+	}
+
+	public String getMusicFilePath() {
+		return musicFilePath;
+	}
+
+	public void setMusicFilePath(String musicFilePath) {
+		this.musicFilePath = musicFilePath;
 	}
 	
 	

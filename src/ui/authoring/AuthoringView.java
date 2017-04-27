@@ -1,18 +1,16 @@
 package ui.authoring;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 import XML.xmlmanager.classes.ExistingDirectoryHelper;
 import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.exceptions.IllegalFileException;
+import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
 import builders.GameDataGenerator;
-import gamedata.ActorData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -20,6 +18,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ui.Preferences;
 import ui.authoring.delegates.*;
@@ -50,7 +50,7 @@ import util.Location;
 
 public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate{
 	
-	private final double SIDE_PANE_WIDTH = 240;
+	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 144;
 
 	private final Color THEME_COLOR = CustomColors.GREEN_200;
@@ -99,6 +99,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	private void setupDimmerView() {
 		myDimmerView = new Pane();
+		myDimmerView.setCache(true);
+		myDimmerView.setCacheShape(true);
+		myDimmerView.setCacheHint(CacheHint.SPEED);
+		
 		UIHelper.setBackgroundColor(myDimmerView, Color.rgb(0, 0, 0, 0.75));
 		AnchorPane.setBottomAnchor(myDimmerView, 0.0);
 		AnchorPane.setTopAnchor(myDimmerView, 0.0);
@@ -168,7 +172,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	
 	private void setupName() {
-		TextField toAdd = addField("Untitled_Game");
+		TextField toAdd = addField("Untitled");
 		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                toAdd.clear();
@@ -191,8 +195,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	public TextField addField(String value){
 		StackPane lblWrapper = new StackPane();
 		TextField field = new TextField(value);
-		field.setPrefWidth(200);
-		field.setFont(Preferences.FONT_MEDIUM);
+		field.setPrefWidth(240);
+		field.setPrefHeight(20);
+		field.setFont(Preferences.FONT_SMALL);
 		field.setAlignment(Pos.CENTER);
 		field.setBackground(UIHelper.backgroundForColor(THEME_COLOR));
 		field.setStyle("-fx-text-fill-color: #FFFFFF");
@@ -221,9 +226,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupMapView() {
-		//this calculation assumes that height < width
 		myMapView = new MapEditorView(myGameData.getMyPaths(), myGameData.getLayers(), this);
-		myMapView.setMaxWidth(Preferences.SCREEN_WIDTH - 2*SIDE_PANE_WIDTH_MIN);
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
@@ -232,16 +235,12 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupLevelView() {
-		//TODO
-		myLevelView = new LevelEditorView(this, myGameData);//TODO pass gamedata instead
-			
+		myLevelView = new LevelEditorView(this, myGameData);
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLevelView.setPrefWidth(SIDE_PANE_WIDTH);
-		
 		this.myBorderPane.setRight(myLevelView);
-		
 	} 
 	
 	private void setupLeftPane(){
@@ -265,19 +264,22 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	
 	private void slideMenuIn(){
 		System.out.println("menu pressed");
-		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 		t.setNode(myMenuView);
 		t.setByX(myMenuView.widthProperty().doubleValue());
 		t.play();
 	}
 	private void slideMenuOut(){
-		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
+		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 		t.setNode(myMenuView);
 		t.setToX(0);
 		t.play();
 	}
 	private void openPaneWithAnimation(Pane pane, PopupSize size){
-		setDim(true, Duration.seconds(0.4));//dim background
+		pane.setCache(true);
+		pane.setCacheShape(true);
+		pane.setCacheHint(CacheHint.SPEED);
+		setDim(true, Duration.seconds(0.5));//dim background
 		this.myDimmerEvent = e -> closePaneWithAnimation(pane);
 		myDimmerView.addEventHandler(MouseEvent.MOUSE_CLICKED, this.myDimmerEvent);
 
@@ -287,17 +289,19 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		AnchorPane.setTopAnchor(pane, inset.getTop());
 		AnchorPane.setLeftAnchor(pane, inset.getLeft());
 		AnchorPane.setRightAnchor(pane, inset.getRight());
-		pane.setScaleX(0);
-		pane.setScaleY(0);
+		pane.setScaleX(0.0);
+		pane.setScaleY(0.0);
 		this.getChildren().add(pane);
 		
 		Duration dur = Duration.seconds(0.5);
 		ScaleTransition st = new ScaleTransition(dur);
 		st.setNode(pane);
-		st.setToX(1);
-		st.setToY(1);
+		st.setToX(1.0);
+		st.setToY(1.0);
 		st.play();
 	}
+	
+	
 	private Insets insetForPopupSize(PopupSize size) {
 		
 		switch(size){
@@ -316,7 +320,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void closePaneWithAnimation(Pane pane){
-		setDim(false, Duration.seconds(0.4));
+		setDim(false, Duration.seconds(0.5));
 		ScaleTransition s = new ScaleTransition(Duration.seconds(0.5));
 		s.setNode(pane);
 		s.setToX(0);
@@ -385,20 +389,32 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	@Override
 	public void didPressLoadButton() {
-		FileChooser f = new FileChooser();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select Image File");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("XML Files", "*.xml"));
+		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
+		if (selectedFile != null) {
+			try {
+				DirectoryFileReader reader = new ExistingDirectoryHelper("games");
+				XStreamSerializer x = new XStreamSerializer();
+				GameData data = x.makeObjectFromXMLString(reader.getFileContent(selectedFile.getName()), GameData.class);
+				loadGameData(data);
+			} catch (IllegalXStreamCastException | IOException | InvalidRootDirectoryException | IllegalFileException e) {
+				e.printStackTrace();
+			}
 		
-		
-		//loadGameData();
-		
-	}
-
-	private GameData getGameData() {
-		return myGameData;
+		}		
 	}
 
 	@Override
 	public void didPressSaveButton() {
 		saveGameData();
+		
+	}
+
+	@Override
+	public void didPressReturnMain() {
+		this.loginhandler.returnToMain();
 		
 	}
 

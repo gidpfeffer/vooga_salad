@@ -1,9 +1,7 @@
 package ui.player.inGame;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,11 +15,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import ui.general.ImageViewPane;
+import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import util.VoogaException;
-
 public class GenericGameScreen extends AnchorPane{
-
 	private UIHandler uihandler;
 	private Optional<String> songString;
 	private Optional<String> css;
@@ -32,20 +29,26 @@ public class GenericGameScreen extends AnchorPane{
 	public static final String cssPath = "panel.css";
 	public static final String backgroundImagePath = "default_map_background_0.jpg";
 	private MusicPlayer musicPlayer; 
+	private AnimationHandler animationhandler;
 	
-	public ImageViewPane getIVP() {
+	protected ImageViewPane getIVP() {
 		return ivp;
 	}
 	
-	public MediaPlayer getMediaPlayer() {
+	protected MediaPlayer getMediaPlayer() {
 		return musicPlayer.getMediaPlayer();
 	}
 	
-	public void setLoginReturn(EventHandler<ActionEvent> value) {
+	public void setAnimationHandler(AnimationHandler animationhandler) {
+		this.animationhandler = animationhandler;
+	}
+	
+	public void setReturnToMain(EventHandler<ActionEvent> value) {
 		settingsPane.setBackToLoginAction(value);
 	}
 	
-	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css, Optional<String> backgroundImage) {
+	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css, 
+			Optional<String> backgroundImage) {
 		this.uihandler = uihandler;
 		this.songString = songString;
 		this.css = css;
@@ -59,7 +62,7 @@ public class GenericGameScreen extends AnchorPane{
 		addStartLevelButton();
 		//addAnimationButtons();
 	}
-
+	
 	private void setupBackground() {
 		ivp = new ImageViewPane(new ImageView(new Image(backgroundImage.orElse(backgroundImagePath))));
 		this.getChildren().add(ivp);
@@ -121,9 +124,9 @@ public class GenericGameScreen extends AnchorPane{
 	
 	private Map<String, EventHandler<MouseEvent>> addIcons() {
 		Map<String, EventHandler<MouseEvent>> animationIcons = new LinkedHashMap<>();
-		animationIcons.put("play_icon.png", e -> uihandler.play());
-		animationIcons.put("pause_icon.png", e -> uihandler.pause());
-		animationIcons.put("stop_icon.png", e -> uihandler.stop());
+		animationIcons.put("play_icon.png", e -> animationhandler.play());
+		animationIcons.put("pause_icon.png", e -> animationhandler.pause());
+		animationIcons.put("stop_icon.png", e -> animationhandler.stop());
 		return animationIcons;
 	}
 	
@@ -132,5 +135,9 @@ public class GenericGameScreen extends AnchorPane{
 		AnchorPane.setTopAnchor(node, 0.0);
 		AnchorPane.setLeftAnchor(node, 0.0);
 		AnchorPane.setRightAnchor(node, 0.0);
+	}
+	public void setSong(String song){
+		musicPlayer.setSong(song);
+		musicPlayer.getMediaPlayer().play();
 	}
 }
