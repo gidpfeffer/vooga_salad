@@ -12,5 +12,6 @@ public interface MenuDelegate {
 	public abstract void didPressBackButton();
 	public abstract void didPressLoadButton();
 	public abstract void didPressSaveButton();
+	public abstract void didPressReturnMain();
 	
 }

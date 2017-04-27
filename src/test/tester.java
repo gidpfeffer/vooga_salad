@@ -3,8 +3,8 @@ package test;
 import java.util.ArrayList;
 
 import gamedata.composition.MoveWithSetPathData;
-import gameengine.actors.properties.health.LimitedHealthProperty;
-import gameengine.actors.properties.move.MoveWithSetPathProperty;
+import gameengine.actors.properties.LimitedHealthProperty;
+import gameengine.actors.properties.MoveWithSetPathProperty;
 import gameengine.actors.propertygen.HealthProperty;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.Troop;

@@ -30,6 +30,7 @@ import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
+import ui.ratings.RatingView;
 import util.FileSelector;
 
 public class LoginMain {
@@ -116,11 +117,12 @@ public class LoginMain {
 			public void gotoGameSelector() {
 				//TODO: Replace with actual games list
 				List<Game> gamesList = new ArrayList<>(Arrays.asList(
+						//file path
+						loginScreen.new Game("Load Custom Game","black.jpg",e -> promptUserToChooseGame()),
 						loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> {}),
 						loginScreen.new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {}), 
-						loginScreen.new Game("Asteroids", "asteroids.png", e -> {}),
-						//file path
-						loginScreen.new Game("Load Custom Game","black.jpg",e -> promptUserToChooseGame())));
+						loginScreen.new Game("Asteroids", "asteroids.png", e -> {}))
+						);
 				GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
 				stage.setScene(select.getScene());
 				stage.setTitle("Game Selector");
@@ -133,6 +135,17 @@ public class LoginMain {
 				loginScreen.getRoot().getChildren().add(cornerCard);
 				AnchorPane.setRightAnchor(cornerCard, 15.);
 				AnchorPane.setTopAnchor(cornerCard, 15.);
+			}
+
+			@Override
+			public void gotoReviews() {
+				// TODO Auto-generated method stub
+				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
+				stage.setWidth(800);
+				stage.setHeight(800);
+				stage.setResizable(false);
+				stage.show();
+				
 			}
 		};
 	}

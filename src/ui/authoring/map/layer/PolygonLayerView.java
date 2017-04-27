@@ -3,7 +3,7 @@ package ui.authoring.map.layer;
 import java.util.ArrayList;
 import java.util.List;
 
-import gamedata.composition.LayerData;
+import gamedata.LayerData;
 import gamedata.map.PolygonData;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -16,6 +16,7 @@ import javafx.scene.shape.Polygon;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
 import util.Location;
+import util.Tuple;
 
 public class PolygonLayerView extends Layer {
 	
@@ -32,20 +33,18 @@ public class PolygonLayerView extends Layer {
 		else if(e.getEventType().equals(MouseEvent.MOUSE_MOVED)){
 			mouseMoved(e);
 		} 
-		
-		
 	};
 	
 	private LayerData myLayerData;
 	private Polygon myCurrentPolygon;
-	private ObservableList<Node> myPolygons;
 	private Color myColor = CustomColors.AMBER;
 	private boolean isActive = false;
+	Tuple<Double, Double> myInsets;
 	
-	public PolygonLayerView(LayerData layerData){
+	public PolygonLayerView(LayerData layerData,Tuple<Double, Double> insets){
 		super();
 		myLayerData = layerData;
-		myPolygons = this.getChildren();
+		myInsets = insets;
 		setupPolygonViews();
 	}
 
@@ -54,7 +53,6 @@ public class PolygonLayerView extends Layer {
 		for( PolygonData data : myLayerData.getMyPolygons()){
 			addPolygonFromData(data);
 		}
-		
 	}
 	
 	/**
@@ -64,7 +62,7 @@ public class PolygonLayerView extends Layer {
 	private void addPolygonFromData(PolygonData data) {
 		Polygon p = makePolygon(data);
 		p.setFill(myColor);
-		myPolygons.add(p);
+		getChildren().add(p);
 	}
 
 	
@@ -120,7 +118,7 @@ public class PolygonLayerView extends Layer {
 					e.getX(), e.getY(),
 					e.getX(), e.getY());
 			setPolygonStyle(myCurrentPolygon);
-			this.myPolygons.add(myCurrentPolygon);
+			getChildren().add(myCurrentPolygon);
 		}else{
 			myCurrentPolygon.getPoints().addAll(e.getX(), e.getY());
 		}
@@ -190,6 +188,7 @@ public class PolygonLayerView extends Layer {
 	 * sets the plygons opacity to 100
 	 * allows user to add or delete polygons
 	 */
+	@Override
 	public void activate(){
 		this.addEventHandler(MouseEvent.ANY, myMouseEvents);
 		isActive = true;
@@ -198,6 +197,7 @@ public class PolygonLayerView extends Layer {
 	/**
 	 * dims 
 	 */
+	@Override
 	public void deactivate(){
 		this.removeEventHandler(MouseEvent.ANY, myMouseEvents);
 		isActive = false;
@@ -206,7 +206,7 @@ public class PolygonLayerView extends Layer {
 
 	@Override
 	public void clear() {
-		myPolygons.clear();
+		getChildren().clear();
 		myLayerData.getMyPolygons().clear();
 	}
 
@@ -233,6 +233,8 @@ public class PolygonLayerView extends Layer {
 	@Override
 	public void sizeDidChange(ImageViewPane imagepane) {
 		// TODO Auto-generated method stub
+		myInsets = imagepane.getImageInsets();
+
 		
 	}
 

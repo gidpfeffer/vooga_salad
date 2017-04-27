@@ -31,7 +31,7 @@ public class SettingsPane extends SlidingPane {
 	private String helpText;
 	public static final String howToPlay = "data/resource/howToPlay.txt";
 
-	public void setReturnToMain(EventHandler<ActionEvent> value) {
+	public void setBackToLoginAction(EventHandler<ActionEvent> value) {
 		backToLogin.setOnAction(value);
 	}
 	

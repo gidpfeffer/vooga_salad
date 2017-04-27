@@ -26,6 +26,7 @@ public class MainActor implements Actor {
 		myID = id;
 		myHealth = health;
 		myProperties = new ArrayList<>();
+		myExits = new ArrayList<>();
 		myOption = option;
 	}
 	
@@ -35,6 +36,7 @@ public class MainActor implements Actor {
 		this(type, option, id, health);
 		for (IActProperty<MasterGrid> p : properties) {
 			myProperties.add(p);
+			System.out.println(p.toString());
 		}
 	}
 

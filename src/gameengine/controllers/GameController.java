@@ -50,6 +50,7 @@ public class GameController {
 		setupGameStatus();
 		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGameScreen.setAnimationHandler(myAnimationHandler);
+		myGameScreen.setSong(myGameData.getPreferences().getMusicFilePath()); //set music for game
 	}
 	/**
 	 * @param UIObserver
@@ -60,6 +61,10 @@ public class GameController {
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
+	}
+	
+	public ControllableGrid getMyGrid() {
+		return myGrid;
 	}
 	
 	public GameScreen getGameScreen() {
@@ -74,7 +79,7 @@ public class GameController {
 	
 	public void start() {
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getNewActorGrid(myGameScreen),() -> displayWinAlert());
+		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert());
 		intitializeTimeline();
 	}
 	

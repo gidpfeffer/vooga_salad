@@ -54,6 +54,7 @@ import util.Location;
  * properties
  * 
  * @author TNK
+ * @author maddiebriere
  *
  */
 public class ActorEditorView extends AnchorPane {
@@ -252,8 +253,8 @@ public class ActorEditorView extends AnchorPane {
 		}
 	}
 
-	
 	private void selectActor(StackPane stackButton){
+		myActorInfoView.setGameData(myGameData);
 		myActorInfoView.setLineageData(this.myActors.get(stackButton));
 	}
 	
