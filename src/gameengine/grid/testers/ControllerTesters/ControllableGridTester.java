@@ -16,8 +16,8 @@ public class ControllableGridTester {
 
 	
     public void setUp () {
-       myGrid = new ActorGrid(1, 1, i -> new TestActor(-5));
-       myActor = new TestActor(1);
+       myGrid = new ActorGrid(1, 1, null, i -> new TestActor(-5));
+       myActor = new TestActor(10);
        myGrid.controllerSpawnActor(myActor, 1, 5);
     }
     
