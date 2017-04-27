@@ -12,7 +12,7 @@ import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import gamedata.MapLayersData;
 import gamedata.PathData;
-import gamedata.composition.LayerData;
+import gamedata.LayerData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;

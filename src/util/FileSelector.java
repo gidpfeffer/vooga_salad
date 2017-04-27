@@ -10,7 +10,7 @@ public class FileSelector {
     
     FileChooser myChooser;
     
-    public FileSelector(String extension) {
+    public FileSelector(String ... extension) {
         myChooser = makeFileChooser();
         setExtension(extension);
     }
@@ -29,7 +29,7 @@ public class FileSelector {
         return myChooser.showSaveDialog(stage);
     }
     
-    public void setExtension(String extension) {
+    public void setExtension(String ... extension) {
         myChooser.getExtensionFilters().setAll(new ExtensionFilter("Text Files", extension));
     }
     
