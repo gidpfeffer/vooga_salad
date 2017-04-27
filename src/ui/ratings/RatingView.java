@@ -3,6 +3,8 @@
  */
 package ui.ratings;
 
+import java.util.ResourceBundle;
+
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import ui.Preferences;
+import ui.general.CustomColors;
 import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
 
@@ -25,15 +28,21 @@ import ui.handlers.LoginHandler;
  */
 public class RatingView extends BorderPane {
 	
-	LoginHandler loginhandler;
+	private static final String BACK_ICON = "back_icon.png"; 
+	private static final int DEFAULT_BACK_BUTTON_SIZE = 50;
+	private static final int TITLE_BAR_SPACING = 10;
+	private static final int SCREEN_WIDTH = 1000;
+	private static final Background DEFAULT_TITE_BACKGROUND = 
+			new Background(new BackgroundFill(Color.LAVENDER, new CornerRadii(5), null));
+	
+	private LoginHandler loginhandler;
+	private ResourceBundle resource;
 	
 	public RatingView(LoginHandler loginhandler, String lang) {
-		
 		this.loginhandler = loginhandler;
-		
+		resource = ResourceBundle.getBundle(lang);
 		ScrollPane sp = new ScrollPane();
-		
-		sp.setContent(new RatingDisplay("reviews.xml"));
+		sp.setContent(new RatingDisplay(lang));
 		setCenter(sp);
 		setTop(setUpTopNode());
 	}
@@ -46,7 +55,7 @@ public class RatingView extends BorderPane {
 		HBox hb = new HBox();
 		hb.getChildren().add(setUpBackButton());
 		hb.getChildren().add(setUpTitle());
-		hb.setSpacing(10);
+		hb.setSpacing(TITLE_BAR_SPACING);
 		return hb;
 	}
 
@@ -55,14 +64,14 @@ public class RatingView extends BorderPane {
 	 */
 	private Node setUpTitle() {
 		// TODO Auto-generated method stub
-		Label lbl = new Label("Ratings and Reviews");
+		Label lbl = new Label(resource.getString("ratingreviewtitle"));
 		Button b = new Button();
 		UIHelper.setDropShadow(b);
 		UIHelper.setDropShadow(lbl);
 		lbl.setFont(Preferences.FONT_BIG_BOLD);
 		b.setGraphic(lbl);
-		b.setPrefSize(1000, 60);
-		b.setBackground(new Background(new BackgroundFill(Color.LAVENDER, new CornerRadii(5), null)));
+		b.setPrefSize(SCREEN_WIDTH, DEFAULT_BACK_BUTTON_SIZE + 10);
+		b.setBackground(DEFAULT_TITE_BACKGROUND);
 		return b;
 	}
 
@@ -70,17 +79,15 @@ public class RatingView extends BorderPane {
 	 * @return
 	 */
 	private Node setUpBackButton() {
-		// TODO Auto-generated method stub
 		Button b = new Button();
 		UIHelper.setDropShadow(b);
-		ImageView backimg = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("back_icon.png")));
-		backimg.setFitHeight(50);
-		backimg.setFitWidth(50);
+		ImageView backimg = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(BACK_ICON)));
+		backimg.setFitHeight(DEFAULT_BACK_BUTTON_SIZE);
+		backimg.setFitWidth(DEFAULT_BACK_BUTTON_SIZE);
 		UIHelper.addClickAnimation(b);
-		b.setBackground(new Background(new BackgroundFill(Color.LAVENDER, new CornerRadii(5), null)));
+		b.setBackground(DEFAULT_TITE_BACKGROUND);
 		b.setGraphic(backimg);
 		b.setOnAction(e -> loginhandler.returnToMain());
-		b.setPrefSize(5, 5);
 		return b;
 	}
 }

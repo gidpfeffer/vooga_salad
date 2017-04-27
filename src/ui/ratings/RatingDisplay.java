@@ -4,19 +4,11 @@
 package ui.ratings;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,31 +39,43 @@ import ui.general.UIHelper;
 public class RatingDisplay extends VBox {
 	
 	private static final int SCREEN_WIDTH = 975;
+	private static final int TOTAL_NUM_STARS = 5;
+	private static final int DEFAULT_SPACING = 8;
+	private static final Insets DEFAULT_PADDING_INSETS = new Insets(10,10,10,10);
+	private static final int SINGLE_RATING_DISPLAY_SPACING = 5;
+	private static final File REVIEWS_FILE = new File("reviews.xml");
+	private static final String XML_REVIEW_NODE = "user_review";
+	private static final String XML_USER_TAG = "username";
+	private static final String XML_RATING_TAG = "rating";
+	private static final String XML_REVIEW_TAG = "review";
+	private static final String ADD_ICON = "add_icon.png"; 
+	private static final Background DEFAULT_NODE_BACKGROUND = 
+			new Background(new BackgroundFill(CustomColors.INDIGO, new CornerRadii(3.5), null));
 	
-	public RatingDisplay(String fileName) {
+	private XMLParser parser;
+	private ResourceBundle resource;
+	private String lang;
 	
+	public RatingDisplay(String lang) {
+		this.lang = lang;
+		resource = ResourceBundle.getBundle(lang);
 		setPrefWidth(SCREEN_WIDTH);
 		setMinWidth(SCREEN_WIDTH);
 		setMaxWidth(SCREEN_WIDTH);
-		setSpacing(8);
-		
+		setSpacing(DEFAULT_SPACING);
 		loadContents();
 	}
 	
 	private void loadContents() {
 		getChildren().clear();
-		
 		getChildren().add(setUpAddReview());
-		
-		
-		XMLParser reader = new XMLParser(new File("reviews.xml"));
-		
-		NodeList reviewElementList = reader.getElementsByName("user_review");
+		parser = new XMLParser(REVIEWS_FILE);
+		NodeList reviewElementList = parser.getElementsByName(XML_REVIEW_NODE);
 		for (int i = 0; i < reviewElementList.getLength(); i++) {
 			Element reviewElement = (Element) reviewElementList.item(i);
-			addRating(Integer.parseInt(reader.getTextValue(reviewElement, "rating")),
-					reader.getTextValue(reviewElement, "username"),
-					reader.getTextValue(reviewElement, "review"));
+			addRating(Integer.parseInt(parser.getTextValue(reviewElement, XML_RATING_TAG)),
+					parser.getTextValue(reviewElement, XML_USER_TAG),
+					parser.getTextValue(reviewElement, XML_REVIEW_TAG));
 		}
 	}
 	
@@ -80,11 +84,10 @@ public class RatingDisplay extends VBox {
 	 */
 	private Node setUpAddReview() {
 		// TODO Auto-generated method stub
-		Label lbl = new Label("Add Review");
+		Label lbl = new Label(resource.getString("addreviewprompt"));
 		lbl.setFont(Preferences.FONT_MEDIUM_BOLD);
 		lbl.setTextFill(Color.WHITE);
-		System.out.println("hello");
-		return UIHelper.buttonStack(e -> addReview(), Optional.of(lbl), Optional.of(new ImageView(new Image("add_icon.png"))), Pos.CENTER_LEFT, true);
+		return UIHelper.buttonStack(e -> addReview(), Optional.of(lbl), Optional.of(new ImageView(new Image(ADD_ICON))), Pos.CENTER_LEFT, true);
 	}
 
 	/**
@@ -93,13 +96,13 @@ public class RatingDisplay extends VBox {
 	private void addReview() {
 		// TODO Auto-generated method stub
 		getChildren().remove(0);
-		RatingEntry re = new RatingEntry();
+		RatingEntry re = new RatingEntry(TOTAL_NUM_STARS, lang);
 		re.addSubmitEventHandler(e -> submit(re.getUser(), re.getRating(),re.getReview()));
 		getChildren().add(0, re);
 	}
 
 	private void addRating(int rating, String username, String review) {
-		VBox vb = new VBox(5);
+		VBox vb = new VBox(SINGLE_RATING_DISPLAY_SPACING);
 		Text usernameText = new Text(username);
 		Text reviewText = new Text(review);
 		usernameText.setFont(Preferences.FONT_SMALL_BOLD);
@@ -112,54 +115,30 @@ public class RatingDisplay extends VBox {
 		usernameText.wrappingWidthProperty().bind(widthProperty());
 		reviewText.wrappingWidthProperty().bind(widthProperty());
 		vb.getChildren().add(usernameText);
-		vb.getChildren().add(new RatingStars(rating, false));
+		vb.getChildren().add(new RatingStars(rating, false, TOTAL_NUM_STARS, lang));
 		vb.getChildren().add(reviewText);
-		vb.setBackground(new Background(new BackgroundFill(CustomColors.INDIGO, new CornerRadii(3.5), null)));
-		vb.setPadding(new Insets(10,10,10,10));
+		vb.setBackground(DEFAULT_NODE_BACKGROUND);
+		vb.setPadding(DEFAULT_PADDING_INSETS);
 		UIHelper.setDropShadow(vb);
 		getChildren().add(vb);
 	}
-	
+
 	private void submit(String user, int rating, String review) {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(new File("reviews.xml"));
-			Element reviewElement = addElement(doc, "user_review", "", doc.getDocumentElement());
-			addElement(doc, "username", user, reviewElement);
-			addElement(doc, "rating", Integer.toString(rating), reviewElement);
-			addElement(doc, "review", review, reviewElement);
-			
-			saveXML("reviews.xml", doc);
-						
+			Document doc = builder.parse(REVIEWS_FILE);
+			Element reviewElement = parser.addElement(doc, XML_REVIEW_NODE, "", doc.getDocumentElement());
+			parser.addElement(doc, XML_USER_TAG, user, reviewElement);
+			parser.addElement(doc, XML_RATING_TAG, Integer.toString(rating), reviewElement);
+			parser.addElement(doc, XML_REVIEW_TAG, review, reviewElement);
+			parser.saveXML(REVIEWS_FILE.getName(), doc);			
 		} catch (Exception e) {
 			e.printStackTrace();
+			//THROW ALERT TO UNABLE TO LOAD REVIEW
 		}
-		
 		loadContents();
 		
-	}
-
-	private Element addElement(Document doc, String elementTitle, String elementData, Element root) {
-		Element newElement = doc.createElement(elementTitle);
-		newElement.appendChild(doc.createTextNode(elementData));
-		root.appendChild(newElement);
-		return newElement;
-	}
-	
-	private void saveXML(String filePath, Document doc) throws TransformerException, IOException {
-		TransformerFactory transfac = TransformerFactory.newInstance();
-		Transformer transformer = transfac.newTransformer();
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		StringWriter stringWriter = new StringWriter();
-		StreamResult result = new StreamResult(stringWriter);
-		DOMSource source = new DOMSource(doc);
-		transformer.transform(source, result);
-		String xmlString = stringWriter.toString();
-		FileWriter fileWriter = new FileWriter(filePath);
-		fileWriter.write(xmlString);
-		fileWriter.close();
 	}
 
 }
