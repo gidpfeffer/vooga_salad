@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import builders.OptionGenerator;
+import builders.AuthorInfoGenerator;
 import gamedata.FieldData;
 import gamedata.compositiongen.Data;
 import javafx.geometry.Insets;
@@ -31,7 +31,7 @@ public class DataSelectionView extends GridPane{
 	private final int GRID_X_DIM = 3;
 	
 	private OptionPickerDelegate myDelegate;
-	private static Map<String, List<FieldData>> OPTIONS = OptionGenerator.getPropertyTypesWithArgs();
+	private static Map<String, List<FieldData>> OPTIONS = AuthorInfoGenerator.getPropertyTypesWithArgs();
 	
 	public DataSelectionView(OptionPickerDelegate delegate){
 		super();
@@ -58,7 +58,7 @@ public class DataSelectionView extends GridPane{
 			view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> didPickOption(view));
 			Tooltip.install(
 				    view,
-				    new Tooltip(OptionGenerator.getDescription(entry.getKey()))
+				    new Tooltip(AuthorInfoGenerator.getDescription(entry.getKey()))
 				);
 			this.add(view, col, row);
 			count++;

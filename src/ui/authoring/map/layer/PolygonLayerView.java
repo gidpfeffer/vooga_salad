@@ -3,7 +3,7 @@ package ui.authoring.map.layer;
 import java.util.ArrayList;
 import java.util.List;
 
-import gamedata.composition.LayerData;
+import gamedata.LayerData;
 import gamedata.map.PolygonData;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;

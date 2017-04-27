@@ -1,10 +1,12 @@
 package ui.authoring.level;
 
+
 import gamedata.LevelData;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -37,6 +39,7 @@ public class LevelEditorMenu extends AnchorPane {
 	}
 	
 	private void populateViews(){
+
 		LevelUtil.setupBackButton(myDelegate, this);
 		setupFields();
 	}
@@ -127,6 +130,7 @@ public class LevelEditorMenu extends AnchorPane {
 		box.getChildren().addAll(LevelUtil.labelForStackButtonBlue(name), field);
 		VBox.setMargin(box, new Insets(18));
 		return box;
+
 	}
 
 	private void setupViews() {

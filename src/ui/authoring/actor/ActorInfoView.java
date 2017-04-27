@@ -9,30 +9,38 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import builders.DataGenerator;
-import builders.OptionGenerator;
 import gamedata.ActorData;
 import gamedata.FieldData;
+import gamedata.GameData;
 import gamedata.LineageData;
+import gamedata.MapLayersData;
+import gamedata.PathData;
 import gamedata.compositiongen.Data;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import types.BasicActorType;
+import ui.Preferences;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
 /**
  * 
  * @author TNK
+ * @author maddiebriere
  *
  */
 public class ActorInfoView extends AnchorPane implements DataViewDelegate, OptionPickerDelegate{
@@ -46,7 +54,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private DataSelectionView myOptionPickerView;
 	private Set<BasicActorType> myActorTypeOptions;
 	private ActorData myCurrentActorData;
-
+	private GameData gameData;
 
 	
 	public ActorInfoView(){
@@ -57,44 +65,134 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private void setupViews(){
 		setupLayout();
 		this.setupAddNewClassButton();
+		setupAddGenButton();
 	}
-
 	
-private void setupImageView(Image img) {
-		myActorImageView = new ImageView(img);
-		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight() - 32);
-		myActorImageView.setPreserveRatio(true);
-		StackPane button = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), Optional.of(myActorImageView), Pos.CENTER, true);
-		button.heightProperty().addListener(e -> {
-		});
-		HBox.setMargin(button, new Insets(8));
-		this.myUpgradePickerView.getChildren().add(button);
+	private void setupAddGenButton(){
+		ImageView add = imageForStackButton("add_icon_w.png");
+		StackPane addButton = UIHelper.buttonStack(e -> {
+			setupImageView(new Image(myCurrentActorData.getImagePath()));}, Optional.ofNullable(null), 
+				Optional.of(add), Pos.CENTER, true);
+		HBox.setMargin(addButton, new Insets( 38.0, 12.0, 38.0, 12.0));
+		this.myUpgradePickerView.getChildren().add(addButton);
+	}
+	
+	public static ImageView imageForStackButton(String imagePath){
+		Image img = new Image(imagePath);
+		ImageView imageView = new ImageView(img);
+		imageView.setFitWidth(40);
+		imageView.setPreserveRatio(true);
+		return imageView;
 	}
 
-//	private void setupGridPane() {
-//		int count = 0;
-//		for(Entry<String, List<FieldData>> e: OPTIONS.entrySet()){
-//			
-//		}
-//		
-//	}
-
-	private void setupOptions() {
-		// TODO Auto-generated method stub
+	private void addLabel(String label, AnchorPane toAdd, double offset){
+		Label fieldName = new Label(label);
+		fieldName.setTextFill(CustomColors.BLUE_800);
+		fieldName.setTextAlignment(TextAlignment.CENTER);
+		AnchorPane.setLeftAnchor(fieldName, 4.0);
+		AnchorPane.setTopAnchor(fieldName, 4.0 + offset);
+		AnchorPane.setBottomAnchor(fieldName, 4.0);
+		fieldName.setMaxWidth(80);
+		toAdd.getChildren().add(fieldName);
+	}
+	
+	public TextField addField(String value, double width){
+		StackPane lblWrapper = new StackPane();
+		TextField field = new TextField(value);
+		field.setPrefWidth(width);
+		field.setPrefHeight(20);
+		field.setFont(Preferences.FONT_SMALL);
+		field.setAlignment(Pos.CENTER);
+		field.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_50));
+		field.setStyle("-fx-text-fill-color: #FFFFFF");
+		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_50) + ";");
+		lblWrapper.getChildren().add(field);
+		return field;
+	}
+	
+	private void setupImageView(Image img) {
+		double width = 50;
+		VBox root = new VBox();
+		root.setSpacing(5);
+		root.setAlignment(Pos.CENTER);
 		
+		myActorImageView = new ImageView(img);
+		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight()*(1/8));
+		myActorImageView.setPreserveRatio(true);
+		StackPane button = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), 
+				Optional.of(myActorImageView), Pos.CENTER, true);
+		button.heightProperty().addListener(e -> {
+			//TODO?
+		});
+		root.getChildren().add(button);
+		
+		AnchorPane content = new AnchorPane();
+		VBox box = new VBox();
+		box.setSpacing(10);
+		box.setAlignment(Pos.CENTER);
+		
+		addLabel("Cost:", content, -20);
+		TextField field = addField("", width);
+		ActorData actor = myCurrentActorData; //set to current image when this added
+		field.textProperty().addListener((o,oldText,newText) -> {
+			updateCost(actor, (String)newText);
+		});
+		
+		addLabel("Layer:", content, 40);
+		BasicPicker<String> layers = 
+				new BasicPicker<String>("", new ArrayList<>(gameData.getLayers().getMyLayers().keySet()));
+		layers.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_50));
+		layers.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> {updateLayer(actor, layers.getTypeProperty().get());});
+		
+		AnchorPane.setRightAnchor(box, 4.0);
+		AnchorPane.setTopAnchor(box, 4.0);
+		AnchorPane.setBottomAnchor(box, 4.0);
+		AnchorPane.setLeftAnchor(box, width);
+		
+		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
+		box.getChildren().addAll(field, layers);
+		content.getChildren().add(box);
+		
+		VBox.setMargin(content, new Insets(8.0));
+		root.getChildren().add(content);
+		HBox.setMargin(root, new Insets(8));
+		this.myUpgradePickerView.getChildren().add(root);
 	}
+	
+	private void updateLayer(ActorData actor, String newLayer){
+		if(!newLayer.equals("")){
+			actor.setLayer(gameData.getLayers().getMyLayers().get(newLayer));
+		}
+	}
+	
+	private void updateCost(ActorData actor, String newText){
+		double newCost = 0.0;
+		try{
+			newCost = Double.parseDouble(newText);
+			actor.setCost(newCost);
+		}catch(Exception e){
+			//TODO: Error handling
+		}
+		System.out.println(newCost);
+	}
+	
 	private void setupLayout() {
 		myGridPane = new GridPane();
 		myUpgradePickerView = new HBox(8.0);
 		double inset = 10.0;
+		double prefHeight = 150;
+		
 		AnchorPane.setLeftAnchor(myUpgradePickerView, inset);
 		AnchorPane.setRightAnchor(myUpgradePickerView, inset + 2);
 		AnchorPane.setTopAnchor(myUpgradePickerView, inset);
-		myUpgradePickerView.setPrefHeight(80);
+		AnchorPane.setBottomAnchor(myUpgradePickerView, prefHeight*1.85);
+		
+		myUpgradePickerView.setPrefHeight(prefHeight);
 		AnchorPane.setLeftAnchor(myGridPane, inset);
 		AnchorPane.setRightAnchor(myGridPane, inset + 2);
 		AnchorPane.setBottomAnchor(myGridPane, inset);
-		AnchorPane.setTopAnchor(myGridPane, (myUpgradePickerView.getPrefHeight() + 2*inset));
+		AnchorPane.setTopAnchor(myGridPane, 
+				(myUpgradePickerView.getPrefHeight()*1.25 + 2*inset));
 		//myGridPane.prefHeightProperty().bind(this.heightProperty().add();
 		
 		UIHelper.setBackgroundColor(myGridPane, CustomColors.BLUE_200);
@@ -119,8 +217,10 @@ private void setupImageView(Image img) {
 			addDataView(d);
 		}
 	}
+	
 	private void addDataView(Data data){
-		DataView view = new DataView(data, this, Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
+		DataView view = new DataView(gameData.getMyPaths(), data, this, 
+				Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
 		myDataViews.add(view);
@@ -206,5 +306,10 @@ private void setupImageView(Image img) {
 	public void setActorTypeOptions(Set<BasicActorType> keySet) {
 		this.myActorTypeOptions = keySet;
 	}
+	
+	public void setGameData(GameData data){
+		gameData = data;
+	}
+	
 
 }

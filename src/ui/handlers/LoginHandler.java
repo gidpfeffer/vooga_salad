@@ -13,5 +13,6 @@ public interface LoginHandler {
 	public void setActiveUser(User user);
 	public void gotoAuth();
 	public void gotoGameSelector();
+	public void gotoReviews();
 	public void setCornerProfileCard(User user);
 }

@@ -2,6 +2,8 @@ package gameengine.actors.properties;
 
 import java.util.Collection;
 
+import java.util.List;
+
 import gamedata.composition.BaseDamageData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
@@ -17,11 +19,11 @@ import types.BasicActorType;
 public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProperty<G> {
 
 	private double myRadius;
-	private Collection<BasicActorType> myTargets;
+	private List<BasicActorType> myTargets;
 
 	public BaseDamageProperty(BaseDamageData data) {
 		myRadius = data.getMyRadius();
-		myTargets = data.getMyTarget();
+		myTargets = data.getMyTargets();
 	}
 
 	@Override

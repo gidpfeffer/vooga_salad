@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Optional;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,9 +24,15 @@ import org.w3c.dom.NodeList;
 
 import XML.XMLParser;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -39,11 +46,13 @@ import ui.general.UIHelper;
  */
 public class RatingDisplay extends VBox {
 	
+	private static final int SCREEN_WIDTH = 975;
+	
 	public RatingDisplay(String fileName) {
 	
-		setPrefWidth(800);
-		setMinWidth(800);
-		setMaxWidth(800);
+		setPrefWidth(SCREEN_WIDTH);
+		setMinWidth(SCREEN_WIDTH);
+		setMaxWidth(SCREEN_WIDTH);
 		setSpacing(8);
 		
 		loadContents();
@@ -51,12 +60,9 @@ public class RatingDisplay extends VBox {
 	
 	private void loadContents() {
 		getChildren().clear();
-		setPrefWidth(800);
 		
-		RatingEntry re = new RatingEntry();
-		re.addSubmitEventHandler(e -> submit(re.getUser(), re.getRating(), re.getReview()));
+		getChildren().add(setUpAddReview());
 		
-		getChildren().add(re);
 		
 		XMLParser reader = new XMLParser(new File("reviews.xml"));
 		
@@ -69,6 +75,29 @@ public class RatingDisplay extends VBox {
 		}
 	}
 	
+	/**
+	 * @return
+	 */
+	private Node setUpAddReview() {
+		// TODO Auto-generated method stub
+		Label lbl = new Label("Add Review");
+		lbl.setFont(Preferences.FONT_MEDIUM_BOLD);
+		lbl.setTextFill(Color.WHITE);
+		System.out.println("hello");
+		return UIHelper.buttonStack(e -> addReview(), Optional.of(lbl), Optional.of(new ImageView(new Image("add_icon.png"))), Pos.CENTER_LEFT, true);
+	}
+
+	/**
+	 * @return
+	 */
+	private void addReview() {
+		// TODO Auto-generated method stub
+		getChildren().remove(0);
+		RatingEntry re = new RatingEntry();
+		re.addSubmitEventHandler(e -> submit(re.getUser(), re.getRating(),re.getReview()));
+		getChildren().add(0, re);
+	}
+
 	private void addRating(int rating, String username, String review) {
 		VBox vb = new VBox(5);
 		Text usernameText = new Text(username);
@@ -77,6 +106,9 @@ public class RatingDisplay extends VBox {
 		usernameText.setFill(Color.WHITE);
 		reviewText.setFont(Preferences.FONT_SMALL);
 		reviewText.setFill(Color.WHITE);
+		vb.setPrefWidth(SCREEN_WIDTH);
+		vb.setMaxWidth(SCREEN_WIDTH);
+		vb.setMinWidth(SCREEN_WIDTH);
 		usernameText.wrappingWidthProperty().bind(widthProperty());
 		reviewText.wrappingWidthProperty().bind(widthProperty());
 		vb.getChildren().add(usernameText);

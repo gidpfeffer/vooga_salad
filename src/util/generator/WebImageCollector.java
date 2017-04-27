@@ -59,7 +59,7 @@ public class WebImageCollector {
 		String name = qry + "_random";
 		String savePath = IMAGE_FOLDER + name;
 		String s = savePng(image, savePath);
-		return new ImageInfo(transparent, s, name + PNG);
+		return new ImageInfo(transparent, s, name + "." +  PNG);
 	}
 	
 	//TODO: Debug this
@@ -165,7 +165,7 @@ public class WebImageCollector {
 	 */
 	public static BufferedImage findSearchItem(String qry, String fileType, 
 			String searchType, int iter, List<String> hit, int searchIter){
-		if(searchIter>20){
+		if(searchIter>5){
 			try {
 				return ImageIO.read(new File(IMAGE_FOLDER + "profile_icon.png"));
 			} catch (IOException e) {
