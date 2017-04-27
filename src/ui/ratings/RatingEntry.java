@@ -54,7 +54,7 @@ public class RatingEntry extends VBox {
 		usernameLabel.setTextFill(Color.WHITE);
 		myUsernameEntry.getChildren().addAll(usernameLabel, myUserNameText);
 		mySubmitButton = new Button("Submit");
-		mySubmitButton.setPrefSize(800, 50);
+		mySubmitButton.setPrefSize(975, 50);
 		mySubmitButton.setTextFill(Color.WHITE);
 		mySubmitButton.setFont(Preferences.FONT_SMALL_BOLD);
 		mySubmitButton.setBackground(new Background(new BackgroundFill(CustomColors.INDIGO, null, null)));

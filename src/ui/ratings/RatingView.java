@@ -61,7 +61,7 @@ public class RatingView extends BorderPane {
 		UIHelper.setDropShadow(lbl);
 		lbl.setFont(Preferences.FONT_BIG_BOLD);
 		b.setGraphic(lbl);
-		b.setPrefSize(750, 60);
+		b.setPrefSize(1000, 60);
 		b.setBackground(new Background(new BackgroundFill(Color.LAVENDER, new CornerRadii(5), null)));
 		return b;
 	}
