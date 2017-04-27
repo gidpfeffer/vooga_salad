@@ -1,6 +1,6 @@
 package gameengine.actors.properties;
 
-import gamedata.composition.MoneyUpgradeData;
+import gamedata.compositioncon.MoneyUpgradeData;
 import gameengine.actors.propertygen.UpgradeProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 

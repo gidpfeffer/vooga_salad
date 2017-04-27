@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import gamedata.compositiongen.DamageableData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import types.BasicActorType;

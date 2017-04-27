@@ -3,7 +3,6 @@ package gameengine.actors.properties;
 import java.util.Collection;
 
 import gamedata.composition.ShootTargetWithMouseData;
-import gamedata.compositiongen.ShootData;
 import gameengine.actors.propertygen.ShootTargetProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;

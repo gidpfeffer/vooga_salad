@@ -4,8 +4,8 @@
 package ui.ratings;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -14,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import ui.Preferences;
 
 /**
@@ -22,23 +21,26 @@ import ui.Preferences;
  *
  */
 public class RatingStars extends HBox {
+	
+	private static final int STAR_SIZE = 20;
+	private static final String EMPTY_STAR_IMG = "empty_star.png";
+	private static final String FILLED_STAR_IMG = "filled_star.png";
 
 	private List<ImageView> myStars;
 	private int myRating;
+	private ResourceBundle resource;
 
-	public RatingStars(int rating, boolean editable) {
+	public RatingStars(int rating, boolean editable, int totalstars, String lang) {
 		super();
+		resource = ResourceBundle.getBundle(lang);
 		myRating = rating;
-		Image img = new Image(getClass().getClassLoader().getResourceAsStream("empty_star.png"));
-		myStars = new ArrayList<>(Arrays.asList(new ImageView(img),
-												new ImageView(img),
-												new ImageView(img),
-												new ImageView(img),
-												new ImageView(img)));
+		Image img = new Image(getClass().getClassLoader().getResourceAsStream(EMPTY_STAR_IMG));
+		myStars = new ArrayList<>();
+		for (int i = 0; i < totalstars; i++) myStars.add(new ImageView(img));
 		setUpStars(editable);
 		fillStars(myRating - 1);
 		if (editable) {
-			Label lbl = new Label("Your Rating: ");
+			Label lbl = new Label(resource.getString("ratingprompt"));
 			lbl.setFont(Preferences.FONT_MEDIUM_BOLD);
 			lbl.setTextFill(Color.WHITE);
 			getChildren().add(lbl);
@@ -48,8 +50,8 @@ public class RatingStars extends HBox {
 
 	private void setUpStars(boolean editable) {
 		for (int i = 0; i < myStars.size(); i++) {
-			myStars.get(i).setFitHeight(20);
-			myStars.get(i).setFitWidth(20);
+			myStars.get(i).setFitHeight(STAR_SIZE);
+			myStars.get(i).setFitWidth(STAR_SIZE);
 			if (editable) {
 				myStars.get(i).addEventHandler(MouseEvent.MOUSE_ENTERED, new StarMouseHoverHandler(i));
 				myStars.get(i).addEventHandler(MouseEvent.MOUSE_CLICKED, new StarMouseClickHandler(i));
@@ -61,9 +63,9 @@ public class RatingStars extends HBox {
 	private void fillStars(int index) {
 		for (int i = 0; i < myStars.size(); i++) {
 			if (i <= index)
-				myStars.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("filled_star.png")));
+				myStars.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream(FILLED_STAR_IMG)));
 			else {
-				myStars.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream("empty_star.png")));
+				myStars.get(i).setImage(new Image(getClass().getClassLoader().getResourceAsStream(EMPTY_STAR_IMG)));
 			}
 				
 		}
