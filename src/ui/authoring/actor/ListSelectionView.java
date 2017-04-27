@@ -18,14 +18,15 @@ import ui.Preferences;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 
-public class ActorTypeListSelectionView extends StackPane{
+public class ListSelectionView<A> extends StackPane{
 
-	private ObjectProperty<List<BasicActorType>> mySelectedTypes;
-	private List<BasicActorType> actorTypes;
+	private ObjectProperty<List<A>> mySelectedTypes;
+	private List<A> myTypes;
 	private VBox myVBox;
-	public ActorTypeListSelectionView(List<BasicActorType> actorTypes){
-		mySelectedTypes = new SimpleObjectProperty<>(new ArrayList<BasicActorType>());
-		this.actorTypes = actorTypes;
+	
+	public ListSelectionView(List<A> types){
+		mySelectedTypes = new SimpleObjectProperty<>(new ArrayList<A>());
+		this.myTypes = types;
 		setupViews();
 		
 	}
@@ -35,31 +36,32 @@ public class ActorTypeListSelectionView extends StackPane{
 		StackPane.setAlignment(myVBox, Pos.CENTER);
 		StackPane.setMargin(myVBox, new Insets(8.0));
 		
-		for(BasicActorType actorType : actorTypes){
-			addSwitchForActor(actorType);
+		for(A type : myTypes){
+			addSwitchForActor(type);
 		}
 		
 		this.getChildren().add(myVBox);
 
 	}
-	private void addSwitchForActor(BasicActorType actorType) {
-		Label label = new Label(actorType.getType());
+	//TODO: Tostring method for BasicActorType
+	private void addSwitchForActor(A type) {
+		Label label = new Label(type.toString());
 		label.setAlignment(Pos.CENTER);
 		label.setTextFill(CustomColors.BLACK_GRAY);
 		setLabelUnselected(label);
 		StackPane button = UIHelper.buttonStack(e -> {
 			//determine if it is selected
-			if(!mySelectedTypes.get().contains(actorType)){
-				mySelectedTypes.get().add(actorType);
+			if(!mySelectedTypes.get().contains(type)){
+				mySelectedTypes.get().add(type);
 				setLabelSelected(label);
 				UIHelper.setBackgroundColor((StackPane)e.getSource(), CustomColors.GREEN_200);
 			}else{
-				mySelectedTypes.get().remove(actorType);
+				mySelectedTypes.get().remove(type);
 				setLabelUnselected(label);
 				UIHelper.setBackgroundColor((StackPane)e.getSource(), Color.TRANSPARENT);
 			}
 			System.out.println(mySelectedTypes.get().size());
-			List<BasicActorType> copy = new ArrayList<>(mySelectedTypes.get());
+			List<A> copy = new ArrayList<>(mySelectedTypes.get());
 			mySelectedTypes.set(copy);
 		}, Optional.of(label), Optional.ofNullable(null), Pos.CENTER, false);
 		button.setPrefHeight(32);
@@ -74,7 +76,7 @@ public class ActorTypeListSelectionView extends StackPane{
 	private void setLabelUnselected(Label label){
 		label.setFont(Preferences.FONT_SMALL);
 	}
-	public ObjectProperty<List<BasicActorType>> getBasicActorTypeList() {
+	public ObjectProperty<List<A>> getTypeList() {
 		return this.mySelectedTypes;
 	}
 	

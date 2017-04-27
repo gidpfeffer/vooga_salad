@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 import builders.DataGenerator;
-import builders.OptionGenerator;
+import builders.AuthorInfoGenerator;
 import gamedata.FieldData;
 import gamedata.PathData;
 import gamedata.StringToFieldFactory;
+import gamedata.composition.MoveWithSetPathData;
 import gamedata.compositiongen.Data;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -35,8 +38,18 @@ import ui.general.ImageButton;
 import ui.general.UIHelper;
 import util.Location;
 
-public class DataView extends AnchorPane {
+/**
+ * 
+ * Data view for data box in actor creation
+ * 
+ * @author talhakoc
+ * @author maddiebriere
+ *
+ */
 
+public class DataView extends AnchorPane {
+	
+	private PathData myPaths;
 	private Data myData;
 	private String myDataClassName;
 	private VBox vbox;
@@ -44,14 +57,15 @@ public class DataView extends AnchorPane {
 	private List<BasicActorType> myActorTypes;
 	private DataViewDelegate myDelegate;
 	
-	public DataView(Data data, DataViewDelegate delegate,  List<BasicActorType> actorTypes){
+	public DataView(PathData paths, Data data, DataViewDelegate delegate,  List<BasicActorType> actorTypes){
 		super();
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_50);
 		myActorTypes = actorTypes;
 		myData = data;
 		myDataClassName = data.getClass().getSimpleName();
-		myFields = OptionGenerator.getFields(data);
+		myFields = AuthorInfoGenerator.getFields(data);
 		myDelegate = delegate;
+		myPaths = paths;
 		setupViews();
 		addFields();
 	}
@@ -101,7 +115,10 @@ public class DataView extends AnchorPane {
 		}else if(clazz == BasicActorType.class){
 			addActorTypeField(nameKey, (BasicActorType) value);
 		}else if(clazz == List.class || clazz == ArrayList.class){
-			addActorTypeList(nameKey,  (List<BasicActorType>) value);
+			if(!myDataClassName.equals("MoveWithSetPathData"))
+				addList(this.myActorTypes, nameKey);
+			else
+				addIntegerList(new ArrayList<Integer>(myPaths.getMyPaths().keySet()), nameKey);
 		}
 		else{
 			
@@ -109,10 +126,7 @@ public class DataView extends AnchorPane {
 		
 	}
 
-	
-	private void addActorTypeList(String nameKey, List<BasicActorType> value) {
-		AnchorPane content = new AnchorPane();
-
+	private void addLabel(AnchorPane content, String nameKey){
 		Label fieldName = new Label(nameKey);
 		fieldName.setTextFill(CustomColors.BLUE_800);
 		fieldName.setAlignment(Pos.CENTER);
@@ -121,23 +135,51 @@ public class DataView extends AnchorPane {
 		AnchorPane.setRightAnchor(fieldName, 4.0);
 		fieldName.setPrefHeight(28);
 		content.getChildren().add(fieldName);
-		
-		ActorTypeListSelectionView input = new ActorTypeListSelectionView(this.myActorTypes);
+	}
+	
+	private void addSelectionView(AnchorPane content, ListSelectionView<?> input){
 		AnchorPane.setTopAnchor(input, 28.0);
 		AnchorPane.setLeftAnchor(input, 4.0);
 		AnchorPane.setBottomAnchor(input, 4.0);
 		AnchorPane.setRightAnchor(input, 4.0);
 		content.getChildren().add(input);
-		input.getBasicActorTypeList().addListener(e -> {
-			System.out.println("toggled basic actor field input thing");
-			didEditBasicActorTypeList(input.getBasicActorTypeList().get(),nameKey);
-			
-		});
-		
+	}
+	
+	private void format(AnchorPane content){
 		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
 		VBox.setMargin(content, new Insets(8.0));
 		vbox.getChildren().add(content);
+	}
+	
+	private <T extends Object> void addList(List<T> list, String nameKey) {
+		System.out.println("HERE BOI" );
+		AnchorPane content = new AnchorPane();
+		addLabel(content, nameKey);
 		
+		ListSelectionView<T> input = 
+				new ListSelectionView<T>(list);
+		addSelectionView(content, input);
+		input.getTypeList().addListener(e -> {
+			System.out.println("toggled field input thing");
+			didEditList(input.getTypeList().get(), nameKey);
+		});
+		
+		format(content);
+	}
+	
+	private void addIntegerList(List<Integer> list, String nameKey) {
+		AnchorPane content = new AnchorPane();
+		addLabel(content, nameKey);
+		
+		ListSelectionView<Integer> input = 
+				new ListSelectionView<Integer>(list);
+		addSelectionView(content, input);
+		input.getTypeList().addListener(e -> {
+			System.out.println("toggled integer field input thing");
+			didEditIntegerList(input.getTypeList().get(), nameKey);
+		});
+		
+		format(content);
 	}
 
 
@@ -153,10 +195,11 @@ public class DataView extends AnchorPane {
 		fieldName.setMaxWidth(80);
 		content.getChildren().add(fieldName);
 		
-		BasicActorPicker input = new BasicActorPicker(value, myActorTypes);
-		input.getBasicActorTypeProperty().addListener(e -> {
+		BasicPicker <BasicActorType> input = 
+				new BasicPicker<BasicActorType>(value, myActorTypes);
+		input.getTypeProperty().addListener(e -> {
 			System.out.println("toggled basic actor field input thing");
-			didEditBasicActorType(input.getBasicActorTypeProperty().get(),nameKey);
+			didEditBasicActorType(input.getTypeProperty().get(),nameKey);
 			
 		});
 		AnchorPane.setRightAnchor(input, 4.0);
@@ -225,10 +268,9 @@ public class DataView extends AnchorPane {
  		printMyData();
  		setMyData(d); 
  		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
+	} 
 
-	}
-
-	private void didEditBasicActorTypeList(List<BasicActorType> list, String nameKey) {
+	private <T extends Object> void didEditList(List<T> list, String nameKey) {
    	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
    	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
 		this.myFields.put(nameKey, 
@@ -238,7 +280,20 @@ public class DataView extends AnchorPane {
  		printMyData();
  		setMyData(d); 
  		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
-		
+	}
+	
+	private void didEditIntegerList(List<Integer> list, String nameKey){
+		System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+   	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
+   	 	List<List<Grid2D>> toPlace = list.stream()
+   	 			.map(p -> myPaths.getPathByIndex(p))
+   	 			.collect(Collectors.toList());
+		this.myFields.put(nameKey, 
+				toPlace);
+		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+		printMyData();
+ 		setMyData(d); 
+ 		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
 	}
 	
 	private void printMyData(){

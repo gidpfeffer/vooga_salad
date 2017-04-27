@@ -172,7 +172,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	
 	private void setupName() {
-		TextField toAdd = addField("Untitled_Game");
+		TextField toAdd = addField("Untitled");
 		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                toAdd.clear();
@@ -195,8 +195,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	public TextField addField(String value){
 		StackPane lblWrapper = new StackPane();
 		TextField field = new TextField(value);
-		field.setPrefWidth(200);
-		field.setFont(Preferences.FONT_MEDIUM);
+		field.setPrefWidth(240);
+		field.setPrefHeight(20);
+		field.setFont(Preferences.FONT_SMALL);
 		field.setAlignment(Pos.CENTER);
 		field.setBackground(UIHelper.backgroundForColor(THEME_COLOR));
 		field.setStyle("-fx-text-fill-color: #FFFFFF");
