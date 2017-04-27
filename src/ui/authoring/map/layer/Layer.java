@@ -1,6 +1,6 @@
 package ui.authoring.map.layer;
 
-import gamedata.composition.LayerData;
+import gamedata.LayerData;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import ui.general.ImageViewPane;

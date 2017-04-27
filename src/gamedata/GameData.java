@@ -1,9 +1,11 @@
 package gamedata;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
@@ -99,7 +101,9 @@ public class GameData {
 		}
 		return toRet;
 	}
-	
+	public Collection<LineageData> getLineageData(){
+		return pieces.values();
+	}
 	/**
 	 * Get all option matching to a certain type (Troop, Tower, etc.) of
 	 * Actor. 

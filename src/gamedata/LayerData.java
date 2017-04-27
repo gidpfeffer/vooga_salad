@@ -1,4 +1,4 @@
-package gamedata.composition;
+package gamedata;
 
 import java.util.ArrayList;
 import java.util.List;

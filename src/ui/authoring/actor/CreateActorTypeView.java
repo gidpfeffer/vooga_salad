@@ -75,6 +75,7 @@ public class CreateActorTypeView extends VBox {
 			File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 			if(selectedFile!= null){
 				myImagePath = selectedFile.getName();
+				System.out.println(myImagePath);
 				myImageView.setImage(new Image(myImagePath));
 			}
 		}, Optional.ofNullable(null), Optional.of(myImageView), Pos.CENTER, true);
@@ -87,7 +88,8 @@ public class CreateActorTypeView extends VBox {
 			String qry =  myTextField.textProperty().getValue();
 			ImageInfo im = WebImageCollector.
 					findAndSaveRandomIcon(randy, qry, hits);
-			myImagePath = im.getMyName();
+			myImagePath = im.getMyPath();
+			System.out.println(myImagePath);
 			Image image = SwingFXUtils.toFXImage(im.getMyImage(), null);
 			myImageView.setImage(image);
 		});

@@ -1,22 +1,34 @@
 package gamedata.composition;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
 public class BaseDamageData implements Data {
 
 	private double myRadius;
-	private BasicActorType myTarget;
+	private List<BasicActorType> myTargets;
 
 	public BaseDamageData(){
-		this(0.0, new BasicActorType("Troop"));
+		this(0.0, new BasicActorType[0]);
 	}
 	
-	public BaseDamageData(Double radius, BasicActorType type) {
-		myRadius = radius;
-		myTarget = type;
+	public BaseDamageData(Double radius, BasicActorType... types) {
+		this(radius, Arrays.asList(types));
 	}
-
+	
+	public BaseDamageData(Double radius, List<BasicActorType> types) {
+		myRadius = radius;
+		myTargets = types;
+		this.myTargets = new ArrayList<>();
+		for (BasicActorType e: types) {
+			this.myTargets.add(e);
+		}
+	}
+	
 	public double getMyRadius() {
 		return myRadius;
 	}
@@ -25,13 +37,13 @@ public class BaseDamageData implements Data {
 		this.myRadius = myRadius;
 	}
 
-	public BasicActorType getMyTarget() {
-		return myTarget;
+	public List<BasicActorType> getMyTargets() {
+		return myTargets;
 	}
 
-	public void setMyTarget(BasicActorType myTarget) {
-		this.myTarget = myTarget;
+	public void setMyTargets(List<BasicActorType> myTargets) {
+		this.myTargets = myTargets;
 	}
-	
+
 	
 }

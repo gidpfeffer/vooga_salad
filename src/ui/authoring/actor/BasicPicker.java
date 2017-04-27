@@ -12,17 +12,18 @@ import javafx.scene.text.TextAlignment;
 import types.BasicActorType;
 import ui.Preferences;
 
-public class BasicActorPicker extends StackPane{
+public class BasicPicker <A> extends StackPane{
 	
 	private int pos = 0;
-	private List<BasicActorType> actorTypes;
+	private List<A> myTypes;
 	private Label myLabel;
-	private ObjectProperty<BasicActorType> myType;
-	public BasicActorPicker(BasicActorType actorType, List<BasicActorType> actorTypes){
+	private ObjectProperty<A> myType;
+	
+	public BasicPicker(A actorType, List<A> actorTypes){
 		super();
-		this.actorTypes = actorTypes;
-		this.myType = new SimpleObjectProperty<BasicActorType>(actorType);
-		myLabel = new Label(actorType.getType());
+		this.myTypes = actorTypes;
+		this.myType = new SimpleObjectProperty<A>(actorType);
+		myLabel = new Label(actorType.toString());
 		myLabel.setFont(Preferences.FONT_SMALL);
 		myLabel.setAlignment(Pos.CENTER);
 		myLabel.setTextAlignment(TextAlignment.CENTER);
@@ -32,12 +33,15 @@ public class BasicActorPicker extends StackPane{
 	}
 	public void toggle(){
 		pos++;
-		if(pos==actorTypes.size())
+		if(pos==myTypes.size())
 			pos = 0;
-		myType.set(actorTypes.get(pos));
-		myLabel.setText(myType.get().getType());
+		if(myTypes.size()==0){
+			return;
+		}
+		myType.set(myTypes.get(pos));
+		myLabel.setText(myType.get().toString());
 	}
-	public ObjectProperty<BasicActorType> getBasicActorTypeProperty(){
+	public ObjectProperty<A> getTypeProperty(){
 		return myType;
 	}
 	

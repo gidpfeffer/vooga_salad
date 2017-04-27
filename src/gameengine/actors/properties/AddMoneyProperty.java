@@ -1,7 +1,7 @@
 package gameengine.actors.properties;
 
 import gameengine.actors.propertygen.IActProperty;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
 /**
  * STUB: implement as soon as grid has ability to access game status
@@ -9,17 +9,21 @@ import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
  *
  * @param <G>
  */
-public class AddMoneyProperty<G extends ReadableGrid> implements IActProperty<G>{
+public class AddMoneyProperty<G extends ReadAndDamageGrid> implements IActProperty<G>{
 
+	private Double myMoney;
+	
+	public AddMoneyProperty() {
+		
+	}
+	
 	@Override
 	public void action(G grid, Integer actorID) {
-		// TODO Auto-generated method stub
-		
+		grid.getWriteableGameStatus().addMoney(myMoney);
 	}
 
 	@Override
 	public boolean isOn() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
