@@ -1,7 +1,9 @@
 package ui.authoring.map.layer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import gamedata.PathData;
@@ -10,7 +12,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import ui.authoring.map.Point;
 import ui.authoring.map.PointType;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
@@ -25,7 +26,7 @@ public class PathLayerView extends Layer {
 		return myPathData;
 	}
 
-	private ArrayList<Line> myLines = new ArrayList<Line>();
+	private Map<Integer, List<Line>> myLines = new HashMap<>();
 	private boolean isFirstPoint = true;
 	private Color myColor = CustomColors.BLACK_GRAY;
 	Tuple<Double, Double> myInsets; //
@@ -59,26 +60,36 @@ public class PathLayerView extends Layer {
 				line.setEndX(event.getX());
 				line.setEndY(event.getY());
 			});
+			this.setOnMouseDragged(event -> {
+				line.setEndX(event.getX());
+				line.setEndY(event.getY());
+			});
 			List<Grid2D> listOfPoints = myPathData.poll();
-			listOfPoints.add(p);
 			// determines if the point is exit, entry, or regular path
 			if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {// exit
 																				// path
 				isFirstPoint = true;
 				p.setPointType(PointType.EXIT);
 				setOnMouseMoved(irrelevantName -> {});
-				System.out.println(listOfPoints);
-				myPathData.addPath(new ArrayList<Grid2D>());
+				setOnMouseDragged(irrelevantName -> {});
+				
+				System.out.println(myPathData.getMyPaths().values());
 			} else if (isFirstPoint) {
+				myPathData.addPath(new ArrayList<>());
+				listOfPoints = myPathData.poll();
 				p.setPointType(PointType.ENTRY);
 				isFirstPoint = false;
+				this.myLines.put(myLines.size(), new ArrayList<>());
+
 			} else {
 				p.setPointType(PointType.PATH);
 			}
-
+			
+			listOfPoints.add(p);
 			this.getChildren().add(line);
 			this.getChildren().add(p);
-			this.myLines.add(line);
+			myLines.get(myLines.size() - 1).add(line);
+
 
 		}
 
@@ -102,16 +113,24 @@ public class PathLayerView extends Layer {
 			}
 		}
 		myPathData.clear();
-		for (Line l : myLines) {
-			getChildren().remove(l);
+		for (List<Line> list : myLines.values()) {
+			getChildren().removeAll(list);
 		}
 
 	}
 
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
-
+		
+		List<Grid2D> path = myPathData.pop();
+		System.out.println(path);
+		for(Grid2D p:path){
+			getChildren().remove((Point) p);
+		}
+		for(List<Line> list: myLines.values()){
+			System.out.println(list);
+		}
+		getChildren().removeAll(myLines.get(myLines.size() - 1));
 	}
 
 	@Override
@@ -131,7 +150,6 @@ public class PathLayerView extends Layer {
 			for (Grid2D p : path.getValue())
 				((Point) p).updateSize(new Tuple<Double, Double>(imagepane.getWidth(), imagepane.getHeight()),
 						imagepane.getImageInsets());
-
 	}
 
 }

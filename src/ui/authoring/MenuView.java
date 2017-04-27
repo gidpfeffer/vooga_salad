@@ -47,13 +47,12 @@ public class MenuView extends AnchorPane {
 	
 	private Map<String, ToggleSwitch> myPreferences;
 
-	public MenuView(MenuDelegate delegate, LoginHandler loginhandler) {
-		this(delegate, new PreferencesData(), loginhandler);
+	public MenuView(MenuDelegate delegate) {
+		this(delegate, new PreferencesData());
 	}
 	
-	public MenuView(MenuDelegate delegate, PreferencesData data, LoginHandler loginhandler){
+	public MenuView(MenuDelegate delegate, PreferencesData data){
 		super();
-		this.loginhandler = loginhandler;
 		myDelegate = delegate;
 		myData = data;
 		myPreferences = new HashMap<>();
@@ -73,7 +72,7 @@ public class MenuView extends AnchorPane {
 				Optional.ofNullable(null), Pos.CENTER, false); //TODO remove
 		StackPane load = UIHelper.buttonStack(e-> loadButtonClicked(), Optional.of(getPlainLabel("Load")),
 				Optional.ofNullable(null), Pos.CENTER, false);
-		StackPane returnMain = UIHelper.buttonStack(e-> loginhandler.returnToMain(), 
+		StackPane returnMain = UIHelper.buttonStack(e-> this.myDelegate.didPressReturnMain(), 
 				Optional.of(getPlainLabel("Return to Main")), Optional.ofNullable(null), Pos.CENTER, false);
 		save.setPrefHeight(40);
 		load.setPrefHeight(40);

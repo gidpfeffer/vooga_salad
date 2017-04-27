@@ -3,6 +3,7 @@ package gameengine.grid.interfaces.ActorGrid;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import gamestatus.WriteableGameStatus;
 import types.BasicActorType;
 
 /**
@@ -32,6 +33,12 @@ public interface ReadAndDamageGrid extends ReadableGrid{
 	 * @return the consumer which can be used to apply damage to the actor 
 	 * with the specified ID (consumer.accept(double damageToDeal))
 	 */
-	Consumer<Double>getMyDamageable(int actorID);
+	Consumer<Double> getMyDamageable(int actorID);
+	
+	/**
+	 * @return the WriteableGameStatus associated with the grid instance such that actors can edit the
+	 * status of the game. For example, dying and adding xp to to WriteableGameStatus
+	 */
+	WriteableGameStatus getWriteableGameStatus();
 
 }

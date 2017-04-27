@@ -1,6 +1,7 @@
 package gameengine.actors;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -17,6 +18,7 @@ public class MainActor implements Actor {
 	protected HealthProperty myHealth;
 	private BasicActorType myType;
 	private List<IActProperty<MasterGrid>> myProperties;
+	private List<IActProperty<MasterGrid>> myExits;
 	
 	public MainActor(BasicActorType type, Integer option, 
 			Integer id, HealthProperty health) {
@@ -87,6 +89,16 @@ public class MainActor implements Actor {
 
 	public List<IActProperty<MasterGrid>> getMyProperties() {
 		return myProperties;
+	}
+
+	@Override
+	public void exit(MasterGrid grid) {
+		myExits.stream().forEach(prop -> prop.action(grid, myID));
+	}
+
+	@Override
+	public void changeExit(Consumer<Collection<IActProperty<MasterGrid>>> action) {
+		action.accept(myExits);
 	}
 	
 	

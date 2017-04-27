@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import XML.xmlmanager.classes.ConcreteFileHelper;
+import XML.xmlmanager.classes.ExistingDirectoryHelper;
+import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
+import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import gamedata.MapLayersData;
 import gamedata.PathData;
-import gamedata.map.LayerData;
+import gamedata.composition.LayerData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -37,7 +41,7 @@ import ui.authoring.map.layer.PathLayerView;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
 import ui.general.UIHelper;
-
+import util.Tuple;
 
 /**
  * 
@@ -46,15 +50,11 @@ import ui.general.UIHelper;
  * @author TNK
  *
  */
-public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate{
+public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate {
 
 	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
-	private static final Color[] LAYER_COLORS = {
-			CustomColors.AMBER,
-			CustomColors.BLUE_500,
-			CustomColors.GREEN,
-			CustomColors.INDIGO
-	};
+	private static final Color[] LAYER_COLORS = { CustomColors.AMBER, CustomColors.BLUE_500, CustomColors.GREEN,
+			CustomColors.INDIGO };
 
 	private ImageViewPane myBackgroundView;
 	private PathLayerView myPathLayer;
@@ -62,10 +62,11 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private List<Layer> myLayers = new ArrayList<>();
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
+	private Insets LAYER_INSET = new Insets(8, 8, 72, 8);
 
 	private Pane myLayerPopup;
 
-	public MapEditorView(PathData pathData , MapLayersData mapData, PopViewDelegate popDelegate) { 
+	public MapEditorView(PathData pathData, MapLayersData mapData, PopViewDelegate popDelegate) {
 		super();
 		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
 		myPathLayer = new PathLayerView(pathData, myBackgroundView.getImageInsets());
@@ -74,13 +75,15 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		setupViews();
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
+		this.heightProperty().addListener(e -> sizeDidChange());
 	}
 
 	private void setupMouseEvents() {
-		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> this.getScene().setCursor(Cursor.CROSSHAIR));
+		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_ENTERED,
+				e -> this.getScene().setCursor(Cursor.CROSSHAIR));
 		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_EXITED, e -> this.getScene().setCursor(Cursor.DEFAULT));
 		this.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-			if(e.getCode().equals(KeyCode.ENTER)){
+			if (e.getCode().equals(KeyCode.ENTER)) {
 				printData();
 			}
 		});
@@ -89,43 +92,45 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private void setupViews() {
 		UIHelper.setBackgroundColor(myBackgroundView, CustomColors.GREEN);
 		StackPane.setAlignment(myBackgroundView, Pos.TOP_CENTER);
-		StackPane.setMargin(myBackgroundView, new Insets(8,8,72,8));
+		StackPane.setMargin(myBackgroundView, new Insets(8, 8, 72, 8));
 		this.getChildren().add(myBackgroundView);
 
 		setupButtons();
 		setupLayerSelector();
-		
-		addLayer(myPathLayer, "Path");
-		
 		setupMapData();
+		addLayer(myPathLayer, "Path");
 	}
-	
+
 	/**
-	 * adds the already existing layers in the mapdata into this classes children nodes
+	 * adds the already existing layers in the mapdata into this classes
+	 * children nodes
 	 */
 	private void setupMapData() {
-		for(Entry<String, LayerData> entry :myMapData.getMyLayers().entrySet()){
-			addLayer(new PolygonLayerView(entry.getValue()),entry.getKey());
+		for (Entry<String, LayerData> entry : myMapData.getMyLayers().entrySet()) {
+			addLayer(new PolygonLayerView(entry.getValue(), myBackgroundView.getImageInsets()), entry.getKey());
 		}
-		
+
 	}
-	
+
 	/**
-	 * This adds a layer that spans the size of the backgroundView.
-	 * It will able to switched to by clicking the button on the
-	 * HBox on the bottom of the MapEditor
+	 * This adds a layer that spans the size of the backgroundView. It will able
+	 * to switched to by clicking the button on the HBox on the bottom of the
+	 * MapEditor
+	 * 
 	 * @param layer
-	 * @param layerName the name that you can set to w.e you want
+	 * @param layerName
+	 *            the name that you can set to w.e you want
 	 */
-	private void addLayer(Layer layer, String layerName){
+	private void addLayer(Layer layer, String layerName) {
 		StackPane.setAlignment(layer, Pos.TOP_CENTER);
-		StackPane.setMargin(layer, new Insets(8,8,72,8));
-		layer.setColor(LAYER_COLORS[myLayers.size()%LAYER_COLORS.length]);
+		StackPane.setMargin(layer, getAdjustedInsets());
+		layer.setColor(LAYER_COLORS[myLayers.size() % LAYER_COLORS.length]);
 		Label layerNumber = new Label(layerName);
 		layerNumber.setFont(Preferences.FONT_MEDIUM_BOLD);
-		layerNumber.setTextFill(CustomColors.GREEN_900);
+		layerNumber.setTextFill(CustomColors.BLUE_500);
 		StackPane.setMargin(layerNumber, new Insets(8));
-		StackPane layerIcon = UIHelper.buttonStack(e -> switchToLayer(layer), Optional.of(layerNumber), Optional.ofNullable(null),Pos.CENTER, false);
+		StackPane layerIcon = UIHelper.buttonStack(e -> switchToLayer(layer), Optional.of(layerNumber),
+				Optional.ofNullable(null), Pos.CENTER, false);
 		HBox.setMargin(layerIcon, new Insets(8));
 		UIHelper.setBackgroundColor(layerIcon, CustomColors.GREEN_100);
 		myLayerPicker.getChildren().add(myLayerPicker.getChildren().size() - 1, layerIcon);
@@ -134,57 +139,73 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		this.myLayers.add(layer);
 		switchToLayer(layer);
 	}
-	
+
+	/**
+	 * This method is crucial to making sure that the points returned are
+	 * accurate. Without this method, all the point data will be inaccurate.
+	 * 
+	 * @return insets that constrain to the image rather than the entire
+	 *         ImageViewPane node.
+	 * 
+	 */
+	private Insets getAdjustedInsets() {
+		Tuple<Double, Double> xyInsets = myBackgroundView.getImageInsets();
+		return new Insets(LAYER_INSET.getTop() + xyInsets.y, LAYER_INSET.getRight() + xyInsets.x,
+				LAYER_INSET.getBottom() + xyInsets.y, LAYER_INSET.getLeft() + xyInsets.x);
+	}
+
 	/**
 	 * Switches off all of the layers that aren't visible
-	 * @param layer the layer that should be visible to the user
+	 * 
+	 * @param layer
+	 *            the layer that should be visible to the user
 	 */
-	private void switchToLayer(Layer layer){
-		
-		myLayers.forEach( l -> {
-			if(l == layer){
+	private void switchToLayer(Layer layer) {
+
+		myLayers.forEach(l -> {
+			if (l == layer) {
 				l.setOpacity(0.75);
 				l.activate();
 				getChildren().remove(layer);
 				getChildren().add(layer);
-				
-			}else{
+
+			} else {
 				l.setOpacity(0.15);
 				l.deactivate();
 
 			}
 		});
-		
+
 	}
 
 	private void setupLayerSelector() {
-		//setup HBox
+		// setup HBox
 		myLayerPicker = new HBox();
-		//add button that switches path maker
+		// add button that switches path maker
 		StackPane.setAlignment(myLayerPicker, Pos.BOTTOM_CENTER);
-		StackPane.setMargin(myLayerPicker, new Insets(8,192,8,8));
+		StackPane.setMargin(myLayerPicker, new Insets(8, 192, 8, 8));
 		myLayerPicker.setMaxHeight(56);
 		ScrollPane scroll = new ScrollPane();
 		scroll.setContent(myLayerPicker);
-		//TODO scrollpane
+		// TODO scrollpane
 		UIHelper.setBackgroundColor(myLayerPicker, CustomColors.GREEN);
-		//add new layer button
+		// add new layer button
 		addNewLayerButton();
 		this.getChildren().add(myLayerPicker);
-		
+
 	}
-	
+
 	private void addNewLayerButton() {
 		ImageView img = new ImageView(new Image("add_icon_w.png"));
 		img.setFitHeight(32);
 		img.setPreserveRatio(true);
-		StackPane button = UIHelper.buttonStack(e -> didClickNewLayerButton(), Optional.ofNullable(null), Optional.of(img),
-				Pos.CENTER, true);
+		StackPane button = UIHelper.buttonStack(e -> didClickNewLayerButton(), Optional.ofNullable(null),
+				Optional.of(img), Pos.CENTER, true);
 		UIHelper.setBackgroundColor(button, Color.TRANSPARENT);
 		this.myLayerPicker.getChildren().add(button);
 	}
 
-	private void didClickNewLayerButton(){
+	private void didClickNewLayerButton() {
 		launchLayerPopup();
 	}
 
@@ -198,22 +219,15 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 		ImageView backImage = makeImageFromString("undo_icon.png");
 		StackPane b = UIHelper.buttonStack(
-				e -> myLayers.stream().filter(
-						layer -> layer.isActive()).findFirst().ifPresent(
-								layer -> layer.undo()), 
-				Optional.ofNullable(null), 
-				Optional.of(backImage),
-				Pos.CENTER, true);
+				e -> myLayers.stream().filter(layer -> layer.isActive()).findFirst().ifPresent(layer -> layer.undo()),
+				Optional.ofNullable(null), Optional.of(backImage), Pos.CENTER, true);
 		StackPane.setMargin(b, new Insets(12));
 		panes.add(b);
 
 		ImageView clearImage = makeImageFromString("clear_icon.png");
 		StackPane c = UIHelper.buttonStack(
-				e -> myLayers.stream().filter(
-						layer -> layer.isActive()).findFirst().ifPresent(
-								layer -> layer.clear()), 
-				Optional.ofNullable(null),
-				Optional.of(clearImage), Pos.CENTER_RIGHT, true);
+				e -> myLayers.stream().filter(layer -> layer.isActive()).findFirst().ifPresent(layer -> layer.clear()),
+				Optional.ofNullable(null), Optional.of(clearImage), Pos.CENTER_RIGHT, true);
 		StackPane.setMargin(c, new Insets(0, 72, 12, 0));
 		panes.add(c);
 
@@ -241,48 +255,55 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private void toggleBackground(MouseEvent e) {
 		e.consume();
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Selectc Image File");
+		fileChooser.setTitle("Select Image File");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
+			ConcreteFileHelper manager = new ConcreteFileHelper();
+			// TODO copy file to images folder
 			myBackgroundView.getImageView().setImage(new Image(selectedFile.getName()));
 		}
 	}
 
-
-	
 	/**
-	 * This method updates the location of the points on the map
-	 * This method is needed because the scaling of the points will 
-	 * change as the user resizes the map
+	 * This method updates the location of the points on the map This method is
+	 * needed because the scaling of the points will change as the user resizes
+	 * the map
 	 */
 	private void sizeDidChange() {
-		for(Layer layer :myLayers){
+		for (Layer layer : myLayers) {
 			layer.sizeDidChange(myBackgroundView);
+			//TODO manually resize each layer
+
 		}
 	}
 
-	
 	/*
 	 * LayerViewDelegate
-	 * @see ui.authoring.delegates.LayerViewDelegate#removeLayerView(ui.authoring.map.layer.Layer)
+	 * 
+	 * @see
+	 * ui.authoring.delegates.LayerViewDelegate#removeLayerView(ui.authoring.map
+	 * .layer.Layer)
 	 */
 	@Override
 	public void removeLayerView(Layer layerView) {
 		// TODO Auto-generated method stub
-//		this.getChildren().remove(layerView);
-//		this.myLayers.remove(layerView);
-//		this.myLayerPicker.getChildren().removeIf(filter);
+		// this.getChildren().remove(layerView);
+		// this.myLayers.remove(layerView);
+		// this.myLayerPicker.getChildren().removeIf(filter);
 	}
 
 	/*
 	 * LayerPopupDelegate
-	 * @see ui.authoring.map.LayerPopupDelegate#layerPopupDidPressConfirm(java.lang.String)
+	 * 
+	 * @see
+	 * ui.authoring.map.LayerPopupDelegate#layerPopupDidPressConfirm(java.lang.
+	 * String)
 	 */
 	@Override
 	public void layerPopupDidPressConfirm(String nameInput) {
 		LayerData data = new LayerData();
-		PolygonLayerView layer = new PolygonLayerView(data);
+		PolygonLayerView layer = new PolygonLayerView(data, myBackgroundView.getImageInsets());
 		this.myMapData.addLayer(nameInput, data);
 		this.addLayer(layer, nameInput);
 		myPopDelegate.closeView(myLayerPopup);
@@ -290,13 +311,10 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 	@Override
 	public void layerPopupDidPressCancel() {
-		myPopDelegate.closeView(myLayerPopup);		
+		myPopDelegate.closeView(myLayerPopup);
 	}
-	
-	
-	
-	
-	private void printData(){
+
+	private void printData() {
 		System.out.println(this.myPathLayer.getMyPathData());
 		System.out.println(this.myMapData);
 	}

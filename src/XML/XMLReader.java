@@ -162,11 +162,7 @@ public class XMLReader extends XMLParser {
 		Optional<Double> speedMultiplier = getOptionalDouble(getTextValue(allWaves, "SpeedMultiplier"));
 		Optional<Double> attackMultiplier = getOptionalDouble(getTextValue(allWaves, "AttackMultiplier"));
 		LevelData levelData = new LevelData(duration);
-		levelData.setDifficulty(difficulty);
-		levelData.setHealthMultiplier(healthMultiplier);
-		levelData.setSpeedMultiplier(speedMultiplier);
-		levelData.setAttackMultiplier(attackMultiplier);
-		NodeList waves = allWaves.getElementsByTagName("Wave");
+				NodeList waves = allWaves.getElementsByTagName("Wave");
 		for (int i = 0; i < waves.getLength(); i++) {
 			Element wave = (Element) waves.item(i);
 			NodeList enemies = wave.getElementsByTagName("Enemy");
@@ -216,7 +212,14 @@ public class XMLReader extends XMLParser {
 
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		XMLReader x = new XMLReader("data/voogatest.xml");
+	ArrayList<String>sd=new ArrayList<String>();
+	sd.add("dsad");
+	sd.add("ds");
+	ArrayList<String>ds=new ArrayList<String>();
+	ds.addAll(sd);
+	sd.add("dasdasdsa");
+	System.out.println(sd);
+	System.out.println(ds);
 		
 
 	}

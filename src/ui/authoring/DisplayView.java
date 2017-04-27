@@ -77,6 +77,7 @@ public class DisplayView extends BorderPane {
 	private DisplayData myData;
 	private GameData myGameData;
 	private VBox myVBox;
+	private DisplayMenu myMenu;
 	private String menuLocs[]={"Top","Left","Right","Bottom"};
 	private Collection<String> mySwitchTitles;
 	
@@ -120,10 +121,13 @@ public class DisplayView extends BorderPane {
 		posChoice.getItems().add(s);
 		}
 		posChoice.valueProperty().addListener((x, y, newValue) -> {
-			
+			TexttoPosFactory.updateMenuPosition(this, newValue, myMenu);
 		});
 		myVBox.getChildren().add(makeField(title, posChoice));
 		myPreferences.put(title, posChoice);
+	}
+	public void updateDisplayMenu(){
+	myMenu.updateDisplayList();
 	}
 	private void getWidthPrompt(){
 		TextField field = new TextField();
@@ -134,7 +138,9 @@ public class DisplayView extends BorderPane {
 	                field.setText(newValue.replaceAll("[^\\d]", ""));
 	            }
 	            try {
-	            	myData.setWidth(Integer.parseInt(newValue));
+	            	int newWidth=Integer.parseInt(newValue);
+	            	myData.setWidth(newWidth);
+	            	myMenu.setWidth(newWidth);
 	            } catch (Exception e) {}
 	        }
 	    });
@@ -150,7 +156,9 @@ public class DisplayView extends BorderPane {
 	                field.setText(newValue.replaceAll("[^\\d]", ""));
 	            }
 	            try {
-	            	myData.setWidth((Integer.parseInt(newValue)));
+	            	int newHeight=Integer.parseInt(newValue);
+	            	myData.setHeight(newHeight);
+	            	myMenu.setHeight(newHeight);
 	            } catch (Exception e) {}
 	        }
 	    });
@@ -238,21 +246,12 @@ public class DisplayView extends BorderPane {
 		leftSide.prefWidthProperty().bind(this.widthProperty().divide(3.0).subtract(inset * 3 / 2));
 
 		this.setCenter(leftSide);
+		 myMenu=new DisplayMenu(myData,displayDelegate,myGameData);
 		
-		this.setLeft(new DisplayMenu(myData,displayDelegate,myGameData));
+		this.setLeft(myMenu.getNode());
 
 	}
-	private void getMenuLauncher(){
-		Label label=new Label("Launch Menu");
-		StackPane view = UIHelper.buttonStack(e -> launchMenu(), 
-				Optional.of(label), Optional.ofNullable(null), 
-				Pos.CENTER_LEFT, true);
-		myVBox.getChildren().add(view);
-	}
-	private void launchMenu(){
-		displayDelegate.slideDisplayIn();
-		System.out.println("dsasdasidasdas");
-	}
+	
 	private void setupVBox(ScrollPane pane) {
 		myVBox = new VBox();
 		myVBox.setAlignment(Pos.CENTER);
@@ -261,7 +260,7 @@ public class DisplayView extends BorderPane {
 	getWidthPrompt();
 	getHeightPrompt();
 	getPositionComboBox("Tower Menu Position");
-	getMenuLauncher();
+
 	}
 
 
