@@ -40,6 +40,7 @@ import ui.general.UIHelper;
 /**
  * 
  * @author TNK
+ * @author maddiebriere
  *
  */
 public class ActorInfoView extends AnchorPane implements DataViewDelegate, OptionPickerDelegate{
@@ -69,7 +70,8 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	
 	private void setupAddGenButton(){
 		ImageView add = imageForStackButton("add_icon_w.png");
-		StackPane addButton = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), 
+		StackPane addButton = UIHelper.buttonStack(e -> {
+			setupImageView(new Image(myCurrentActorData.getImagePath()));}, Optional.ofNullable(null), 
 				Optional.of(add), Pos.CENTER, true);
 		HBox.setMargin(addButton, new Insets( 38.0, 12.0, 38.0, 12.0));
 		this.myUpgradePickerView.getChildren().add(addButton);

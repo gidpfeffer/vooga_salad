@@ -54,6 +54,7 @@ import util.Location;
  * properties
  * 
  * @author TNK
+ * @author maddiebriere
  *
  */
 public class ActorEditorView extends AnchorPane {
