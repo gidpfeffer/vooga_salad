@@ -73,7 +73,6 @@ public class PathLayerView extends Layer {
 				setOnMouseMoved(irrelevantName -> {});
 				setOnMouseDragged(irrelevantName -> {});
 				
-				System.out.println(myPathData.getMyPaths().values());
 			} else if (isFirstPoint) {
 				myPathData.addPath(new ArrayList<>());
 				listOfPoints = myPathData.poll();
@@ -89,6 +88,9 @@ public class PathLayerView extends Layer {
 			this.getChildren().add(line);
 			this.getChildren().add(p);
 			myLines.get(myLines.size() - 1).add(line);
+			System.out.println("myPathData:");
+			for(List<Grid2D> l:myPathData.getMyPaths().values())
+				System.out.println("\t-"+l);
 
 
 		}

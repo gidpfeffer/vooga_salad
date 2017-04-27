@@ -97,8 +97,8 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 		setupButtons();
 		setupLayerSelector();
-		setupMapData();
 		addLayer(myPathLayer, "Path");
+		setupMapData();
 	}
 
 	/**
