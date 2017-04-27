@@ -192,19 +192,19 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		myGridPane = new GridPane();
 		myUpgradePickerView = new HBox(8.0);
 		double inset = 10.0;
-		double prefHeight = 150;
+		double prefHeight = 184;
 		
 		AnchorPane.setLeftAnchor(myUpgradePickerView, inset);
 		AnchorPane.setRightAnchor(myUpgradePickerView, inset + 2);
 		AnchorPane.setTopAnchor(myUpgradePickerView, inset);
-		AnchorPane.setBottomAnchor(myUpgradePickerView, prefHeight*1.85);
+		//AnchorPane.setBottomAnchor(myUpgradePickerView, prefHeight*1.85);
 		
 		myUpgradePickerView.setPrefHeight(prefHeight);
 		AnchorPane.setLeftAnchor(myGridPane, inset);
 		AnchorPane.setRightAnchor(myGridPane, inset + 2);
 		AnchorPane.setBottomAnchor(myGridPane, inset);
 		AnchorPane.setTopAnchor(myGridPane, 
-				(myUpgradePickerView.getPrefHeight()*1.25 + 2*inset));
+				(myUpgradePickerView.getPrefHeight()+2*inset));
 		//myGridPane.prefHeightProperty().bind(this.heightProperty().add();
 		
 		UIHelper.setBackgroundColor(myGridPane, CustomColors.BLUE_200);
