@@ -39,7 +39,7 @@ public class PolygonLayerView extends Layer {
 	private Polygon myCurrentPolygon;
 	private Color myColor = CustomColors.AMBER;
 	private boolean isActive = false;
-	Tuple<Double, Double> myInsets;
+	private Tuple<Double, Double> myInsets;
 	
 	public PolygonLayerView(LayerData layerData,Tuple<Double, Double> insets){
 		super();
