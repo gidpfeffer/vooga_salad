@@ -18,13 +18,15 @@ import XML.XMLParser;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -134,8 +136,12 @@ public class RatingDisplay extends VBox {
 			parser.addElement(doc, XML_REVIEW_TAG, review, reviewElement);
 			parser.saveXML(REVIEWS_FILE.getName(), doc);			
 		} catch (Exception e) {
-			e.printStackTrace();
-			//THROW ALERT TO UNABLE TO LOAD REVIEW
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle(resource.getString("XMLReviewErrorTitle"));
+			alert.setHeaderText(resource.getString("XMLReviewErrorHeader"));
+			alert.setContentText(resource.getString("XMLReviewErrorMessage"));
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) alert.close();
 		}
 		loadContents();
 		

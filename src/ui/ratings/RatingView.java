@@ -18,7 +18,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import ui.Preferences;
-import ui.general.CustomColors;
 import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
 
