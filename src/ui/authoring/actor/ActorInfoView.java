@@ -73,7 +73,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	
 	private void addUpgrade(){
 		ActorData upgrade = new ActorData(myCurrentActorData.getType(), 
-				new BasicData(myCurrentActorData.getName() + 
+				new BasicData(myCurrentActorData.getName() + " " +
 						(myLineageData.getMap().keySet().size()+1), myCurrentActorData.getImagePath()));
 		setupImageView(new Image(myCurrentActorData.getImagePath()), upgrade);
 		myLineageData.addGeneration(upgrade);
