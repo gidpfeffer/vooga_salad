@@ -72,9 +72,22 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addUpgrade(){
-		setupImageView(new Image(myCurrentActorData.getImagePath()));
-		myLineageData.addGeneration(new ActorData(myCurrentActorData.getType(), 
-				new BasicData(myCurrentActorData.getName(), myCurrentActorData.getImagePath())));
+		ActorData upgrade = new ActorData(myCurrentActorData.getType(), 
+				new BasicData(myCurrentActorData.getName() + 
+						(myLineageData.getMap().keySet().size()+1), myCurrentActorData.getImagePath()));
+		setupImageView(new Image(myCurrentActorData.getImagePath()), upgrade);
+		myLineageData.addGeneration(upgrade);
+		selectActorData(upgrade);
+		
+		printCurrent();
+	}
+	
+	private void printCurrent(){
+		System.out.println("Lineage size: " + myLineageData.getMap().keySet().size());
+		for(ActorData a: myLineageData.getMap().values()){
+			System.out.println("Actor: " + a.getName());
+		}
+		System.out.println("My current actor: "+ myCurrentActorData.getName());
 	}
 	
 	private ImageView imageForStackButton(String imagePath){
@@ -110,7 +123,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		return field;
 	}
 	
-	private void setupImageView(Image img) {
+	private void setupImageView(Image img, ActorData actor) {
 		double width = 50;
 		VBox root = new VBox();
 		root.setSpacing(5);
@@ -119,7 +132,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		myActorImageView = new ImageView(img);
 		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight()*(1/8));
 		myActorImageView.setPreserveRatio(true);
-		StackPane button = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null), 
+		StackPane button = UIHelper.buttonStack(e -> {selectActorData(actor);}, Optional.ofNullable(null), 
 				Optional.of(myActorImageView), Pos.CENTER, true);
 		button.heightProperty().addListener(e -> {
 			//TODO?
@@ -133,7 +146,6 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		
 		addLabel("Cost:", content, -20);
 		TextField field = addField("", width);
-		ActorData actor = myCurrentActorData; //set to current image when this added
 		field.textProperty().addListener((o,oldText,newText) -> {
 			updateCost(actor, (String)newText);
 		});
@@ -215,11 +227,23 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		myGridPane.getChildren().clear();
 		myUpgradePickerView.getChildren().clear(); 
 		setupAddGenButton();
-		for(ActorData actors: lineageData.getMap().values()){
-			setupImageView(new Image(actors.getImagePath()));
+		for(ActorData actor: lineageData.getMap().values()){
+			setupImageView(new Image(actor.getImagePath()), actor);
 		}
 		myActorImageView.setImage(new Image(first.getImagePath()));
 		for(Data d: first.getMyData()){
+			addDataView(d);
+		}
+	}
+	
+	private void selectActorData(ActorData actorData){
+		System.out.println("ActorInfoView.setActorData: "+ actorData.getName() +
+				" : size=" + actorData.getMyData().size());
+		myCurrentActorData = actorData;
+		myDataViews.clear();
+		myGridPane.getChildren().clear();
+		myActorImageView.setImage(new Image(actorData.getImagePath()));
+		for(Data d: actorData.getMyData()){
 			addDataView(d);
 		}
 	}
