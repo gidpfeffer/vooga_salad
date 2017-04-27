@@ -139,7 +139,6 @@ public class LoginMain {
 
 			@Override
 			public void gotoReviews() {
-				// TODO Auto-generated method stub
 				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
 				stage.setWidth(800);
 				stage.setHeight(800);
