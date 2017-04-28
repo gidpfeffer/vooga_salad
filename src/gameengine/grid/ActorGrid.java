@@ -162,10 +162,11 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	}
 
 	@Override
-	public Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY) {
+	public void actorSpawnActor(Integer actorType, double startX, double startY, Consumer<Collection<IActProperty<MasterGrid>>> action) {
 		Actor newActor = actorMaker.apply(actorType);
 		addActor(newActor, startX, startY);
-		return newActor.addProperty();
+		//return newActor.addProperty();
+		newActor.addProperty(action);
 	}
 
 	@Override
