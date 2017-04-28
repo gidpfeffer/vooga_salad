@@ -59,9 +59,9 @@ public class WebImageCollector {
 		BufferedImage image = findRandomIcon(randy, qry, hits);
 		BufferedImage transparent = transparent(image, Color.WHITE, Color.LIGHT_GRAY);
 		String name = qry + "_random";
-		String savePath = IMAGE_FOLDER + name;
+		String savePath = name;
 		String s = savePng(image, savePath);
-		return new ImageInfo(transparent, s, name + "." +  PNG);
+		return new ImageInfo(transparent, name + "." +  PNG, s);
 	}
 	
 	//TODO: Debug this
@@ -117,10 +117,9 @@ public class WebImageCollector {
 	private static String savePng(BufferedImage image, String fileName) {
 		String toRet = "";
         try {
-        	toRet = fileName + "." + PNG;
+        	toRet = System.getProperty("user.home")+ "/Desktop/" + fileName + "." + PNG;
         	File file = new File(toRet);
             ImageIO.write(image, PNG, file);
-            toRet = download(fileName);
             
         } catch (IOException e) {
         	//TODO
@@ -129,28 +128,6 @@ public class WebImageCollector {
         return toRet;
     }
 	
-	private static String download(String restore){
-	    FileOutputStream out = null;
-	    FileInputStream in = null;
-	    String toRet = "";
-	    int cursor;
-	    try{
-	        in = new FileInputStream(new File(restore + "." + "PNG"));
-	        toRet = restore + "im." + PNG;
-	        out = new FileOutputStream(toRet);
-	        while((cursor = in.read())!=-1){
-	            out.write(cursor);
-	        }
-	        if(in!=null){
-	            in.close();
-	        }
-	        if(out!=null){
-	            out.close();
-	        }
-	    }
-	    catch(Exception e){}
-	    return toRet;
-	}
 	/**
 	 * For use in random Actor generation.
 	 * 
@@ -190,7 +167,8 @@ public class WebImageCollector {
 	 */
 	public static BufferedImage findSearchItem(String qry, String fileType, 
 			String searchType, int iter, List<String> hit, int searchIter){
-		if(searchIter>5){
+		System.out.println(iter);
+		if(searchIter>20){
 			try {
 				return ImageIO.read(new File(IMAGE_FOLDER + "profile_icon.png"));
 			} catch (IOException e) {

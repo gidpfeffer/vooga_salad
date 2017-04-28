@@ -1,10 +1,12 @@
 package ui.authoring;
 
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +23,7 @@ import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LineageData;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -188,7 +191,20 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		return lbl;
 	}
 	private ImageView imageForStackButton(String imagePath){
-		ImageView iv = new ImageView(new Image(imagePath));
+		Image image = null;
+		try{
+			image = new Image(imagePath);
+		} catch(Exception e){
+			BufferedImage im = null;
+			try {
+				im = ImageIO.read(new File(imagePath));
+			} catch (IOException ee) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			image = SwingFXUtils.toFXImage(im, null);
+		}
+		ImageView iv = new ImageView(image);
 		iv.setFitWidth(ICON_WIDTH);
 		iv.setPreserveRatio(true);
 		return iv;
