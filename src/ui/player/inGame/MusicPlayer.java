@@ -30,14 +30,14 @@ public class MusicPlayer {
 	private Media song;
 	private MediaPlayer mediaPlayer;
 	private Slider volumeSlider;
-	static final String heroSong = "data/resource/hero_song.mp3";
+	static final String heroSong = "music/hero_song.mp3";
 	
 
 	public MusicPlayer(Optional<String> audioString) {
 		layout = new VBox();
 		component1 = new HBox();
 		
-		song = new Media(new File(audioString.orElse(heroSong)).toURI().toString());
+		song = new Media(new File(heroSong).toURI().toString());
 		mediaPlayer = new MediaPlayer(song);
 		//mediaPlayer.play();
 		
@@ -91,7 +91,7 @@ public class MusicPlayer {
 	}
 	
 	public void setSong(String s){
-		song = new Media(s);
+		song = new Media(new File(s).toURI().toString());
 	}
 	
 	private void playMusic() {
