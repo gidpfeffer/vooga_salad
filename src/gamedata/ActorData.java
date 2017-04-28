@@ -42,7 +42,8 @@ public class ActorData {
 	private BasicActorType type;
 	private HealthData health;
 	private BasicData basic;
-	private LayerData layer; 
+	private LayerData layer;
+	private String layerName;
 	private double cost;
 	/**
 	 * This list holds the layer that this actor belong.  Layer is a list of polygons
@@ -185,6 +186,14 @@ public class ActorData {
 
 	public void setCost(double cost) {
 		this.cost = cost;
+	}
+
+	public String getLayerName() {
+		return layerName;
+	}
+
+	public void setLayerName(String layerName) {
+		this.layerName = layerName;
 	}
 
 	

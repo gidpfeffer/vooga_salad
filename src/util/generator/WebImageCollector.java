@@ -11,6 +11,8 @@ import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -57,9 +59,9 @@ public class WebImageCollector {
 		BufferedImage image = findRandomIcon(randy, qry, hits);
 		BufferedImage transparent = transparent(image, Color.WHITE, Color.LIGHT_GRAY);
 		String name = qry + "_random";
-		String savePath = IMAGE_FOLDER + name;
+		String savePath = name;
 		String s = savePng(image, savePath);
-		return new ImageInfo(transparent, s, name + "." +  PNG);
+		return new ImageInfo(transparent, name + "." +  PNG, s);
 	}
 	
 	//TODO: Debug this
@@ -115,16 +117,16 @@ public class WebImageCollector {
 	private static String savePng(BufferedImage image, String fileName) {
 		String toRet = "";
         try {
-        	toRet = fileName + "." + PNG;
-            ImageIO.write(image, PNG,
-                    new File(toRet));
+        	toRet = System.getProperty("user.home")+ "/Desktop/" + fileName + "." + PNG;
+        	File file = new File(toRet);
+            ImageIO.write(image, PNG, file);
+            
         } catch (IOException e) {
         	//TODO
             e.printStackTrace();
         }
         return toRet;
     }
-	
 	
 	/**
 	 * For use in random Actor generation.
@@ -165,7 +167,8 @@ public class WebImageCollector {
 	 */
 	public static BufferedImage findSearchItem(String qry, String fileType, 
 			String searchType, int iter, List<String> hit, int searchIter){
-		if(searchIter>5){
+		System.out.println(iter);
+		if(searchIter>20){
 			try {
 				return ImageIO.read(new File(IMAGE_FOLDER + "profile_icon.png"));
 			} catch (IOException e) {
