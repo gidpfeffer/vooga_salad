@@ -57,7 +57,8 @@ public interface Actor {
 	 * 
 	 * @return consumer that allows for the addition of properties
 	 */
-	public Consumer<IActProperty<MasterGrid>> addProperty();
+	public void addProperty(Consumer<Collection<IActProperty<MasterGrid>>> function);
+	//public void changeProperty(Consumer<Collection<IActProperty<MasterGrid>>> action);
 
 	/**
 	 * Method that allows the grid to identify various actors
