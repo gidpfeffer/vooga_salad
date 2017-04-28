@@ -1,5 +1,6 @@
 package gameengine.grid.interfaces.ActorGrid;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
 import gameengine.actors.propertygen.IActProperty;
@@ -23,6 +24,7 @@ public interface ReadAndSpawnGrid extends ReadableGrid{
 	 * call Consumer.accept(IActProperty propertyToAdd) for each new property you would like to add
 	 * to the spawned actor.
 	 */
-	Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY);
+	//Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY);
+	void actorSpawnActor(Integer actorType, double startX, double startY, Consumer<Collection<IActProperty<MasterGrid>>> action);
 	
 }

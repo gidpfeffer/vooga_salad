@@ -1,5 +1,9 @@
 package gameengine.actors.properties;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.function.Consumer;
+
 import gamedata.compositiongen.ShootTargetLineData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.actors.propertygen.ShootTargetProperty;
@@ -13,8 +17,8 @@ public abstract class ShootTargetLineProperty<G extends ReadAndSpawnGrid> extend
 	}
 	
 	@Override
-	protected IActProperty<MasterGrid> projectileProperty(Double target, double range, double speed) {
-		return new MoveAlongAngleProperty<MasterGrid>(target, range, speed);
+	protected Consumer<Collection<IActProperty<MasterGrid>>> projectileProperty(Double target, double range, double speed) {
+		return (list) -> Arrays.asList(new MoveAlongAngleProperty<MasterGrid>(target, range, speed));
 	}
 
 }

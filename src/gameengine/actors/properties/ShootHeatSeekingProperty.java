@@ -3,6 +3,7 @@ package gameengine.actors.properties;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import gamedata.composition.ShootHeatSeekingData;
 import gameengine.actors.propertygen.IActProperty;
@@ -18,8 +19,9 @@ public class ShootHeatSeekingProperty<G extends ReadAndSpawnGrid> extends ShootT
 	}
 	
 	@Override
-	protected IActProperty<MasterGrid> projectileProperty(Double target, double range, double speed) {
-		return new MoveWithHeatSeekProperty<MasterGrid>(range, speed, getMyTarget());
+	protected Consumer<Collection<IActProperty<MasterGrid>>> projectileProperty(Double target, double range, double speed) {
+		return (list) -> list.addAll(Arrays.asList(new MoveWithHeatSeekProperty<MasterGrid>(range, speed, getMyTarget())));
+		//return new MoveWithHeatSeekProperty<MasterGrid>(range, speed, getMyTarget());
 	}
 
 	@Override
