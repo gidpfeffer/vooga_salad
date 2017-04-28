@@ -1,5 +1,7 @@
 package ui.authoring.actor;
 
+import java.beans.EventHandler;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -27,6 +30,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import types.BasicActorType;
 import ui.Preferences;
@@ -130,12 +135,17 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		root.setAlignment(Pos.CENTER);
 		
 		myActorImageView = new ImageView(img);
-		myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight()*(1/8));
+		ImageView local = myActorImageView;
+		//myActorImageView.setFitHeight(myUpgradePickerView.getPrefHeight()*(1/8));
+		myActorImageView.setFitHeight(64);
+		myActorImageView.setFitWidth(64);
 		myActorImageView.setPreserveRatio(true);
 		StackPane button = UIHelper.buttonStack(e -> 
-			{selectActorData(actor);}, Optional.ofNullable(null), 
+			{selectActorData(actor, local);}, Optional.ofNullable(null), 
 				Optional.of(myActorImageView), Pos.CENTER, true);
 		button.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {highlightCurrentActor(button);});
+		button.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {doubleClick(actor, local, e);});
+		
 		button.heightProperty().addListener(e -> {
 			//TODO?
 		});
@@ -183,6 +193,35 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		HBox.setMargin(root, new Insets(8));
 		this.myUpgradePickerView.getChildren().add(root);
 		return button;
+	}
+	
+	private void doubleClick(ActorData actor, ImageView toEdit, MouseEvent mouseEvent){
+        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+            if(mouseEvent.getClickCount() == 2){
+                System.out.println("Double clicked");
+                updateImage(actor,toEdit);
+            }
+        }
+	}
+	
+	private void updateImage(ActorData actor, ImageView view){
+		String imagePath = getImageFile();
+		view.setImage(new Image(imagePath));
+		view.setFitHeight(64);
+		view.setFitWidth(64);
+		view.setPreserveRatio(true);
+		actor.getBasic().setImagePath(imagePath);
+	}
+	
+	private String getImageFile(){
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select Image File");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
+		if(selectedFile!= null){
+			return selectedFile.getName();
+		}
+		return "profile_icon.png";
 	}
 	
 	private void updateLayer(ActorData actor, String newLayer){
@@ -239,7 +278,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	
 	private void setActorData(LineageData lineageData){
 		ActorData first = lineageData.getProgenitor();
-		System.out.println("ActorInfoView.selectActorData: "+ first.getName());
+		System.out.println("ActorInfoView.setActorData: "+ first.getName());
 		myCurrentActorData = lineageData.getProgenitor();
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
@@ -248,17 +287,16 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		List<ActorData>actors = new ArrayList<>(lineageData.getMap().values());
 		StackPane actorButton=null;
 		for(int i=0; i<actors.size(); i++){
-			StackPane temp = setupImageView(new Image(actors.get(i).getImagePath()), actors.get(i));
+			String path =actors.get(i).getImagePath();
+			StackPane temp = setupImageView(new Image(path), actors.get(i));
 			if(i==0){
 				actorButton=temp;
 			}
 		}
-		selectActorData(lineageData.getProgenitor());
+		selectActorData(first);
 		if(actorButton!=null){
 			highlightCurrentActor(actorButton);
 		}
-		myActorImageView.setImage(new Image(first.getImagePath()));
-		addDataViews(first);
 	}
 	
 	private void addDataViews(ActorData first){
@@ -274,12 +312,19 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void selectActorData(ActorData actorData){
-		System.out.println("ActorInfoView.setActorData: "+ actorData.getName() +
+		selectActorData(actorData, null);
+	}
+	
+	private void selectActorData(ActorData actorData, ImageView view){
+		System.out.println("ActorInfoView.selectActorData: "+ actorData.getName() +
 				" : size=" + actorData.getMyData().size());
 		myCurrentActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
-		myActorImageView.setImage(new Image(actorData.getImagePath()));
+		if(view!=null){
+			myActorImageView = view;
+			myActorImageView.setImage(new Image(actorData.getImagePath()));
+		}
 		addDataViews(actorData);
 	}
 	
@@ -294,7 +339,6 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		view.prefHeightProperty().bind(view.prefWidthProperty());
 		GridPane.setMargin(view, new Insets(8));
 		myGridPane.add(view, col, row);
-		
 	}
 	
 	private void setupAddNewClassButton(){
