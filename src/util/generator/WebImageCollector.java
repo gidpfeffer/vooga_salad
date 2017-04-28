@@ -11,6 +11,8 @@ import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -116,8 +118,10 @@ public class WebImageCollector {
 		String toRet = "";
         try {
         	toRet = fileName + "." + PNG;
-            ImageIO.write(image, PNG,
-                    new File(toRet));
+        	File file = new File(toRet);
+            ImageIO.write(image, PNG, file);
+            toRet = download(fileName);
+            
         } catch (IOException e) {
         	//TODO
             e.printStackTrace();
@@ -125,7 +129,28 @@ public class WebImageCollector {
         return toRet;
     }
 	
-	
+	private static String download(String restore){
+	    FileOutputStream out = null;
+	    FileInputStream in = null;
+	    String toRet = "";
+	    int cursor;
+	    try{
+	        in = new FileInputStream(new File(restore + "." + "PNG"));
+	        toRet = restore + "im." + PNG;
+	        out = new FileOutputStream(toRet);
+	        while((cursor = in.read())!=-1){
+	            out.write(cursor);
+	        }
+	        if(in!=null){
+	            in.close();
+	        }
+	        if(out!=null){
+	            out.close();
+	        }
+	    }
+	    catch(Exception e){}
+	    return toRet;
+	}
 	/**
 	 * For use in random Actor generation.
 	 * 

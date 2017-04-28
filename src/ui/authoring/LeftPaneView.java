@@ -1,6 +1,11 @@
 package ui.authoring;
 
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
@@ -169,6 +176,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 
 	
 	private void launchEditor(ActorEditorView view) {
+		view.setGameData(myGameData);
 		view.setActorTypeOptions(this.actorTypeToView.keySet());
 		myDelegate.openView(view);
 	}
@@ -186,15 +194,6 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		return iv;
 	}
 	
-	private void deleteActorType(BasicActorType actorType){
-		//TODO
-		this.actorTypeToView.get(actorType);
-	}
-	
-
-	
-
-
 	@Override
 	public void closeSelfAndReturn(Pane pane, String actorName, String imagePath) {
 		this.addActor(actorName, imagePath, new HashMap<String, String>());

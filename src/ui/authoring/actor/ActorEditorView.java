@@ -76,7 +76,6 @@ public class ActorEditorView extends AnchorPane {
 		myActors = new HashMap<StackPane, LineageData>();
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
-
 	}
 
 	private void setupBackButton() {
@@ -251,6 +250,11 @@ public class ActorEditorView extends AnchorPane {
 			String s = selectedFile.getName();
 			addActor(s,s.substring(0, s.indexOf(".")) );
 		}
+	}
+	
+	public void setGameData(GameData data){
+		myActorInfoView.setGameData(myGameData);
+		myGameData = data;
 	}
 
 	private void selectActor(StackPane stackButton){
