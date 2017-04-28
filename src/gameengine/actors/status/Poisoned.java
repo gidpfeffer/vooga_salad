@@ -1,6 +1,6 @@
 package gameengine.actors.status;
 
-import gamedata.compositiongen.PoisonedStatusData;
+import gamedata.compositioncon.PoisonedStatusData;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import util.Delay;
 
