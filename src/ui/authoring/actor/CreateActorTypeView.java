@@ -51,12 +51,14 @@ public class CreateActorTypeView extends VBox {
 	private CreateActorDelegate myDelegate;
 	private Random randy;
 	private List<String>hits;
+	private List<Integer> hitIters;
 	
 	public CreateActorTypeView(CreateActorDelegate delegate){
 		super();
 		myDelegate = delegate;
 		randy = new Random();
 		hits = new ArrayList<String>();
+		hitIters = new ArrayList<Integer>();
 		setupViews();
 		
 	}
@@ -87,7 +89,7 @@ public class CreateActorTypeView extends VBox {
 		StackPane add = buttonForName("Randomize Image", CustomColors.BLUE_50, e -> {
 			String qry =  myTextField.textProperty().getValue();
 			ImageInfo im = WebImageCollector.
-					findAndSaveRandomIcon(randy, qry, hits);
+					findAndSaveRandomIcon(randy, qry, hits, hitIters);
 			myImagePath = im.getMyPath();
 			System.out.println(myImagePath);
 			Image image = SwingFXUtils.toFXImage(im.getMyImage(), null);
