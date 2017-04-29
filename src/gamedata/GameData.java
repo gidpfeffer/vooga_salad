@@ -143,6 +143,26 @@ public class GameData {
 	}
 	
 	/**
+	 * Completely remove any traces of an ActorData from the GameData,
+	 * including references in the LevelData objects
+	 * @param actor
+	 */
+	public void completeWipeActor(ActorData actor){
+		removeActor(actor);
+		removeFromLevels(actor);
+	}
+	
+	private void removeFromLevels(ActorData actor){
+		for (int i=0; i<levels.size(); i++){
+			List<WaveData> waves = levels.get(i).getMyWaves();
+			for(int j=0; j<waves.size(); j++){
+				WaveData wave = waves.get(j);
+				wave.removeActor(actor);
+			}
+		}
+	}
+	
+	/**
 	 * This is for use in the GameController.
 	 * 
 	 * This returns you the ActorData matching to 

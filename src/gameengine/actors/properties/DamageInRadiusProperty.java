@@ -2,6 +2,7 @@ package gameengine.actors.properties;
 
 import java.util.Collection;
 
+import gamedata.composition.DamageInRadiusData;
 import gameengine.actors.propertygen.CycleProperty;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;

@@ -3,11 +3,6 @@ package gamedata;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * wave of enemy attack for each level
- * @author Anh
- *
- */
 
 /**
  * Wave ex: 
@@ -15,7 +10,8 @@ import java.util.List;
  * 
  * number of troops and its types and its path options as indexes 
  *  
- * @author Anh
+ * @author anh
+ * @author maddiebriere
  *
  */
 public class WaveData {
@@ -25,9 +21,24 @@ public class WaveData {
 		waveEnemies = new ArrayList<EnemyInWaveData>(); 
 	}
 	
+	/**
+	 * Remove actor if it exists in any of the EnemyInWaveDatas
+	 * 
+	 * @param actor ActorData to remove
+	 */
+	public void removeActor(ActorData actor){
+		if(!contains(actor)){
+			return;
+		}
+		for(EnemyInWaveData enemy: waveEnemies){
+			if(enemy.getMyActor().equals(actor)){
+				waveEnemies.remove(enemy);
+			}
+		}
+	}
+	
 	public boolean contains(ActorData actor){
 		for(EnemyInWaveData enemy: waveEnemies){
-
 			if(enemy.getMyActor().equals(actor)){
 				return true;
 			}
