@@ -91,11 +91,12 @@ public class LevelController {
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
+		System.out.println("got actor");
 		Actor actor = builders.ActorGenerator.makeActor(enemyData.getOption(), actorData);
 		System.out.println(actor.getType().toString()+" "+actor.getID());
 		Grid2D firstPathCoor = getFirstPathCoor(pathData);
+		System.out.println("got coordinate");
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
-		
 		System.out.println("enemy spawned");
 	}
 	
@@ -106,6 +107,7 @@ public class LevelController {
 	}
 	
 	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,PathData pathData) {
+		System.out.println("got enemy waves");
 		enemyInWaveDatas.forEach(e -> spawnEnemy(e,pathData));
 	}
 	

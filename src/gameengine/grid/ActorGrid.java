@@ -52,7 +52,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 						a -> new DisplayInfo(a.getLocation(), 
 								a.getActor().getPercentHealth(), a.getActor().getMyOption()))));
 		notifyObservers();
-		System.out.println(myMap.keySet());
+		System.out.println(actors.size());
 	}
 	
 	private void updateActors(){
@@ -153,7 +153,8 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	@Override
 	public void controllerSpawnActor(Actor actor, double startX, double startY){
 		actors.add(new ActorLocator(new Coordinates(startX, startY), actor));
-		//addActor(actor,startX,startY);
+		System.out.println("adding "+ actor.getID() + " " + actor.isActive());
+		System.out.println(actors.size());
 	}
 	
 	private void addActor(Actor newActor, double startX, double startY){
