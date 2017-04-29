@@ -67,7 +67,8 @@ public class LoginMain {
 			
 			@Override
 			public void showProfile() {
-				showProfileCard(getActiveUser());
+				if (getActiveUser() != null) showProfileCard(getActiveUser());
+				System.out.println(getActiveUser().getProfilePicture());
 			}
 			
 			@Override
