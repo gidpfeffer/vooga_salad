@@ -53,18 +53,17 @@ public class PathLayerView extends Layer {
 		if (!coordinate.isValid())
 			return;
 		
-		Point p = new Point(coordinate);
-		Line line = new Line(e.getX(), e.getY(), e.getX(), e.getY());
-		line.setStrokeWidth(3);
-		line.setFill(COLOR);
-		this.setOnMouseMoved(event -> {
-			line.setEndX(event.getX());
-			line.setEndY(event.getY());
-		});
-		this.setOnMouseDragged(event -> {
-			line.setEndX(event.getX());
-			line.setEndY(event.getY());
-		});
+		Point p = new Point(coordinate, e.getX(), e.getY());
+//		Line line = new Line(e.getX(), e.getY(), e.getX(), e.getY());
+//
+//		this.setOnMouseMoved(event -> {
+//			line.setEndX(event.getX());
+//			line.setEndY(event.getY());
+//		});
+//		this.setOnMouseDragged(event -> {
+//			line.setEndX(event.getX());
+//			line.setEndY(event.getY());
+//		});
 		List<Grid2D> listOfPoints = myPathData.poll();
 		// determines if the point is exit, entry, or regular path
 		if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {// exit

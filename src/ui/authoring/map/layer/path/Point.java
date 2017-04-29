@@ -30,8 +30,10 @@ public class Point extends Circle {
      * @param size - the size of the parent node that holds the image
      * @param insets - use ImageViewPane's getInsets method to provide this
      */
-	public Point(Coordinates coordinates){
+	public Point(Coordinates coordinates, double centerX, double centerY){
 		super();
+		setCenterX(centerX);
+		setCenterY(centerY);
 		myCompressedLocation = coordinates;
 		setColor(myColor);
 		setRadius(7);
