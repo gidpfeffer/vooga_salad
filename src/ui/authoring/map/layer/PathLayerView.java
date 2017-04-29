@@ -1,4 +1,4 @@
-package ui.authoring.map.layer.path;
+package ui.authoring.map.layer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import ui.authoring.map.PointType;
-import ui.authoring.map.layer.Layer;
+import ui.authoring.map.layer.path.Path;
+import ui.authoring.map.layer.path.Point;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
 import util.Location;
