@@ -86,7 +86,7 @@ public class GameController {
 	
 	public void start() {
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert(),() -> myGameStatus.levelUp());
+		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert(),() -> myGameStatus.levelUp(),myGameData);
 		intitializeTimeline();
 	}
 	
@@ -151,11 +151,11 @@ public class GameController {
 			}
 			@Override
 			public void changeLevel(int level) throws VoogaException {
-				myLevelController.changeLevel(myGameData, level);
+				myLevelController.changeLevel(level);
 			}
 			
 			public void launchGame() throws VoogaException {
-				myLevelController.changeLevel(myGameData, 1);
+				myLevelController.changeLevel(1);
 			}
 		};
 	}
