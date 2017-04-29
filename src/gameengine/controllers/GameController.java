@@ -1,5 +1,5 @@
 package gameengine.controllers;
-import java.util.Map;	
+import java.util.Map;		
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;

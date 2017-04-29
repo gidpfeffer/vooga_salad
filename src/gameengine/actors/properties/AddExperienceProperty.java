@@ -4,7 +4,7 @@ import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
 /**
- * STUB: need to implement when grid has access to modification of game status
+ * TODO: make sure that AddExperienceData is a thing
  * @author Moses Wayne
  *
  * @param <G>
