@@ -18,7 +18,7 @@ public abstract class ShootTargetLineProperty<G extends ReadAndSpawnGrid> extend
 	
 	@Override
 	protected Consumer<Collection<IActProperty<MasterGrid>>> projectileProperty(Double target, double range, double speed) {
-		return (list) -> Arrays.asList(new MoveAlongAngleProperty<MasterGrid>(target, range, speed));
+		return (list) -> list.addAll(Arrays.asList(new MoveAlongAngleProperty<MasterGrid>(target, range, speed)));
 	}
 
 }
