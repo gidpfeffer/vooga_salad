@@ -70,7 +70,7 @@ public class GenericGameScreen extends AnchorPane{
 	}
 	
 	private void addSettings() {
-		musicPlayer = new MusicPlayer(Optional.ofNullable(null));
+		musicPlayer = new MusicPlayer();
 		settingsPane = new SettingsPane(this, songString, 0, Optional.ofNullable(null));
 		settingsPane.addObject(musicPlayer.getNode());
 		OptionButton helpButton = new OptionButton(0, "", backIcon, e -> settingsPane.slidePane(settingsPane, settingsPane.getPrefWidth()));
