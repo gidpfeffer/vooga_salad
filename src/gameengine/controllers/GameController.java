@@ -1,11 +1,13 @@
 package gameengine.controllers;
-import java.util.Map;		
+import java.util.Map;			
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import gameengine.grid.interfaces.controllerinfo.GridHandler;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
+import gameengine.handlers.LevelHandler;
 import gamestatus.GameStatus;
 import gamestatus.WriteableGameStatus;
 import javafx.animation.KeyFrame;
@@ -15,13 +17,15 @@ import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
+import ui.player.listener.ListenQueue;
+import ui.player.listener.SceneListen;
 import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 /**
  * GameController is the controller layer between the front end display and the back end game engine
- * Implements UIHandler and initializes all necessary back end and front end components of game engine
+ * Implements UIHandler and initializes all necessary back end and front end components of game engine, as well as the Timeline
  * @author sarahzhou
  *
  */
@@ -29,13 +33,21 @@ public class GameController {
 	private Timeline animation;
 	
 	private GameData myGameData;
+	
 	private GameStatus myGameStatus;
 	
 	private UIHandler myUIHandler;
 	private AnimationHandler myAnimationHandler;
+	private LevelHandler myLevelHandler;
+	private GridHandler myGridHandler;
+	
 	private WriteableGameStatus myWriteableGameStatus;
+	
 	private LevelController myLevelController;
+	
 	private ControllableGrid myGrid;
+	
+	private SceneListen mySceneListen;
 	
 	private GameObjectUtil myGameObjectUtil;
 	
@@ -46,11 +58,14 @@ public class GameController {
 	private final int MAX_Y = 1;
 	
 	private final double MILLISECOND_DELAY=17;
+	
 	public GameController(GameData gameData,WriteableUser writeableUser) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
 		initializeUIHandler();
 		initializeAnimationHandler();
+		initializeGridHandler();
+		initializeLevelHandler();
 		setupGameStatus(writeableUser);
 		setUpGameScreen();
 	}
@@ -65,14 +80,10 @@ public class GameController {
 	 * @return a new clean instance of ActorGrid
 	 */
 	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
-		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myWriteableGameStatus,
+		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myGridHandler,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
-	}
-	
-	public ControllableGrid getMyGrid() {
-		return myGrid;
 	}
 	
 	public GameScreen getGameScreen() {
@@ -87,8 +98,29 @@ public class GameController {
 	
 	public void start() {
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert(),() -> myGameStatus.levelUp(),myGameData);
+		myLevelController = new LevelController(myLevelHandler,myGameData);
 		intitializeTimeline();
+	}
+	
+	private void initializeLevelHandler() {
+		myLevelHandler = new LevelHandler() {
+
+			@Override
+			public ControllableGrid getMyGrid() {
+				return myGrid;
+			}
+
+			@Override
+			public void displayWinAlert() {
+				myGameScreen.notifyWin();
+			}
+
+			@Override
+			public void levelUp() {
+				myGameStatus.levelUp();
+			}
+			
+		};
 	}
 	
 	private void intitializeTimeline() {
@@ -100,11 +132,24 @@ public class GameController {
 	}
 	
 	private void step() {
+		mySceneListen.pollQueue();
 		myGrid.step();
 	}
 	
-	private void displayWinAlert() {
-		myGameScreen.notifyWin();
+	private void initializeGridHandler() {
+		myGridHandler = new GridHandler() {
+
+			@Override
+			public WriteableGameStatus getWriteableGameStatus() {
+				return myWriteableGameStatus;
+			}
+
+			@Override
+			public ListenQueue getEventQueue() {
+				return mySceneListen.pollQueue();
+			}
+			
+		};
 	}
 	
 	private void initializeAnimationHandler() {

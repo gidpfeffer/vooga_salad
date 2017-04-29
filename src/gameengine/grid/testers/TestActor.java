@@ -37,11 +37,6 @@ public class TestActor implements Actor{
 	}
 
 	@Override
-	public Consumer<IActProperty<MasterGrid>> addProperty() {
-		return null;
-	}
-
-	@Override
 	public Integer getID() {
 		return ID;
 	}
@@ -74,6 +69,12 @@ public class TestActor implements Actor{
 
 	@Override
 	public void changeExit(Consumer<Collection<IActProperty<MasterGrid>>> action) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addProperty(Consumer<Collection<IActProperty<MasterGrid>>> function) {
 		// TODO Auto-generated method stub
 		
 	}

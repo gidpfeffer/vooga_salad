@@ -33,7 +33,7 @@ public class MusicPlayer {
 	static final String heroSong = "music/hero_song.mp3";
 	
 
-	public MusicPlayer(Optional<String> audioString) {
+	public MusicPlayer() {
 		layout = new VBox();
 		component1 = new HBox();
 		
@@ -92,6 +92,7 @@ public class MusicPlayer {
 	
 	public void setSong(String s){
 		song = new Media(new File(s).toURI().toString());
+		mediaPlayer = new MediaPlayer(song);
 	}
 	
 	private void playMusic() {
