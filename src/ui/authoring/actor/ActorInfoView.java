@@ -332,7 +332,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataView(Data data){
-		DataView view = new DataView(gameData.getMyPaths(), data, this, 
+		DataView view = new DataView(gameData, data, this, 
 				Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;

@@ -134,6 +134,14 @@ public class GameData {
 		return getOptions().get(option);
 	}
 	
+	public Integer getOptionKey(ActorData actor){
+		for(Integer option: pieces.keySet()){
+			if(pieces.get(option).getProgenitor().equals(actor)){
+				return option;
+			}
+		}
+		return 0;
+	}
 	
 	
 	/**
