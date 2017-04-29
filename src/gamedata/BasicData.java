@@ -11,7 +11,7 @@ import types.ActorType;
  *
  */
 
-public class BasicData implements Data {
+public class BasicData {
 	
 	private static final double HEADING = 0.0;
 	

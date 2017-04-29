@@ -1,30 +1,32 @@
 package gameengine.actors.properties;
 
+<<<<<<< HEAD
+import gamedata.compositiongen.AddMoneyData;
+=======
+import gameengine.actors.propertygen.CycleProperty;
+>>>>>>> master
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
 /**
- * STUB: implement as soon as grid has ability to access game status
+ * TODO: make sure AddMoneyData 
  * @author Moses Wayne
  *
  * @param <G>
  */
-public class AddMoneyProperty<G extends ReadAndDamageGrid> implements IActProperty<G>{
+
+public class AddMoneyProperty<G extends ReadAndDamageGrid> extends CycleProperty<G>{
 
 	private Double myMoney;
 	
-	public AddMoneyProperty() {
-		
+	public AddMoneyProperty(AddMoneyData myData) {
+		super(myData.getRate());
+		myMoney = myData.getMoney();
 	}
 	
 	@Override
 	public void action(G grid, Integer actorID) {
 		grid.getWriteableGameStatus().addMoney(myMoney);
-	}
-
-	@Override
-	public boolean isOn() {
-		return false;
 	}
 
 }

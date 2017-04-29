@@ -33,6 +33,10 @@ public class OptionGeneratorTest {
 		assertEquals(data.getTypes().size(), 3);
 		assertEquals(data.getTypes().get(0), new BasicActorType("Bear"));
 	}
+	
+	@Test
+	public void fieldPrint(){
+	}
 
 	
 	@Test 

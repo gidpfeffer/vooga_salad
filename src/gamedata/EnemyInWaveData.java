@@ -4,16 +4,13 @@ import java.util.List;
 
 public class EnemyInWaveData {
 	
-	//Corresponds to a number in the Map.3
+	//Corresponds to a number in the Map.
 	private ActorData myActor;
-	private int myNumber;
-	//private List<Integer> myPaths;
+	private int myWaveNumber;
 	
-	//TODO: Need paths?
 	public EnemyInWaveData(ActorData myActor, int myNumber) {
 		this.myActor = myActor;
-		this.myNumber = myNumber;
-		//this.myPaths = myPaths;
+		this.myWaveNumber = myNumber;
 	}
 
 	public ActorData getMyActor() {
@@ -26,10 +23,10 @@ public class EnemyInWaveData {
 
 
 	public int getOption() {
-		return myNumber;
+		return myWaveNumber;
 	}
 	public void setMyNumber(int myNumber) {
-		this.myNumber = myNumber;
+		this.myWaveNumber = myNumber;
 	}
 
 

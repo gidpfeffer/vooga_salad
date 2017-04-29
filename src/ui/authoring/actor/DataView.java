@@ -9,7 +9,9 @@ import java.util.Optional;
 
 import builders.DataGenerator;
 import builders.AuthorInfoGenerator;
+import gamedata.ActorData;
 import gamedata.FieldData;
+import gamedata.GameData;
 import gamedata.PathData;
 import gamedata.StringToFieldFactory;
 import gamedata.composition.MoveWithSetPathData;
@@ -27,6 +29,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -50,6 +53,7 @@ import util.Location;
 public class DataView extends AnchorPane {
 	
 	private PathData myPaths;
+	private GameData myGame;
 	private Data myData;
 	private String myDataClassName;
 	private VBox vbox;
@@ -57,7 +61,7 @@ public class DataView extends AnchorPane {
 	private List<BasicActorType> myActorTypes;
 	private DataViewDelegate myDelegate;
 	
-	public DataView(PathData paths, Data data, DataViewDelegate delegate,  List<BasicActorType> actorTypes){
+	public DataView(GameData game, Data data, DataViewDelegate delegate,  List<BasicActorType> actorTypes){
 		super();
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_50);
 		myActorTypes = actorTypes;
@@ -65,7 +69,9 @@ public class DataView extends AnchorPane {
 		myDataClassName = data.getClass().getSimpleName();
 		myFields = AuthorInfoGenerator.getFields(data);
 		myDelegate = delegate;
-		myPaths = paths;
+		myPaths = game.getMyPaths();
+		myGame = game;
+		
 		setupViews();
 		addFields();
 	}
@@ -77,6 +83,14 @@ public class DataView extends AnchorPane {
 		
 	}
 
+	private void colorByType(Label name){
+		if(myDataClassName.contains("Health")){
+			name.setTextFill(CustomColors.AMBER_700);
+		}else{
+			name.setTextFill(CustomColors.BLUE_800);
+		}
+	}
+	
 	private void setupViews() {
 		Label name = new Label(myDataClassName.replaceAll("Data", ""));
 		name.setTextFill(CustomColors.BLUE_800);
@@ -86,6 +100,7 @@ public class DataView extends AnchorPane {
 		AnchorPane.setTopAnchor(name, 4.0);
 		AnchorPane.setLeftAnchor(name, 4.0);
 		AnchorPane.setRightAnchor(name, 4.0);
+		colorByType(name);
 		
 		vbox = new VBox();
 		AnchorPane.setTopAnchor(vbox, 8.0 + name.getPrefHeight());
@@ -106,22 +121,29 @@ public class DataView extends AnchorPane {
 		this.getChildren().addAll(name,vbox,remove);		
 	}
 	
+	private void removeView(AnchorPane toClose){
+		
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void addField(String nameKey, Object value){
 		Class<?> clazz = value.getClass();
 		System.out.println(clazz);
 		if(clazz == double.class ||clazz == Integer.class ||clazz == Double.class ||clazz == int.class ){
-			addNumberField(nameKey, value);
-		}else if(clazz == BasicActorType.class){
-			addActorTypeField(nameKey, (BasicActorType) value);
-		}else if(clazz == List.class || clazz == ArrayList.class){
-			if(!myDataClassName.equals("MoveWithSetPathData"))
-				addList(this.myActorTypes, nameKey);
+			//TODO: Make this not awful
+			if(clazz == Integer.class && myDataClassName.contains("Shoot") && nameKey.equals("myProjectile"))
+				addClickableActorField(nameKey, (Integer) value);
 			else
+				addNumberField(nameKey, value);
+		}else if(clazz == BasicActorType.class){
+			addClickableTypeField(nameKey, (BasicActorType) value);
+			//TODO: Clean up
+		}else if(clazz == List.class || clazz == ArrayList.class){
+			if(myDataClassName.equals("MoveWithSetPathData"))
 				addIntegerList(new ArrayList<Integer>(myPaths.getMyPaths().keySet()), nameKey);
-		}
-		else{
-			
+			else
+				addCategoryList(this.myActorTypes, nameKey);
+				
 		}
 		
 	}
@@ -151,8 +173,7 @@ public class DataView extends AnchorPane {
 		vbox.getChildren().add(content);
 	}
 	
-	private <T extends Object> void addList(List<T> list, String nameKey) {
-		System.out.println("HERE BOI" );
+	private <T extends Object> void addCategoryList(List<T> list, String nameKey) {
 		AnchorPane content = new AnchorPane();
 		addLabel(content, nameKey);
 		
@@ -182,8 +203,26 @@ public class DataView extends AnchorPane {
 		format(content);
 	}
 
+	
+	private void addClickableTypeField(String nameKey, BasicActorType value){
+		BasicPicker<BasicActorType> input = addClickableField(nameKey, value, this.myActorTypes);
+		input.getTypeProperty().addListener(e -> {
+			System.out.println("toggled basic actor field input thing");
+			didEditClickable(input.getTypeProperty().get(),nameKey);
+		});
+	}
+	
+	private void addClickableActorField(String nameKey, Integer option){
+		ActorData myActor = myGame.getOption(option);
+		BasicPicker<ActorData> input = addClickableField(nameKey, myActor, 
+				new ArrayList<>(myGame.getOptions().values()));
+		input.getTypeProperty().addListener(e -> {
+			System.out.println("toggled basic actor field input thing");
+			didEditProjectileClickable(input.getTypeProperty().get(), nameKey);
+		});
+	}
 
-	private void addActorTypeField(String nameKey, BasicActorType value) {
+	private <T extends Object> BasicPicker<T> addClickableField(String nameKey, T value, List<T> types) {
 		AnchorPane content = new AnchorPane();
 
 		Label fieldName = new Label(nameKey + ":");
@@ -195,13 +234,8 @@ public class DataView extends AnchorPane {
 		fieldName.setMaxWidth(80);
 		content.getChildren().add(fieldName);
 		
-		BasicPicker <BasicActorType> input = 
-				new BasicPicker<BasicActorType>(value, myActorTypes, true);
-		input.getTypeProperty().addListener(e -> {
-			System.out.println("toggled basic actor field input thing");
-			didEditBasicActorType(input.getTypeProperty().get(),nameKey);
-			
-		});
+		BasicPicker <T> input = 
+				new BasicPicker<T>(value, types, true);
 		AnchorPane.setRightAnchor(input, 4.0);
 		AnchorPane.setTopAnchor(input, 4.0);
 		AnchorPane.setBottomAnchor(input, 4.0);
@@ -211,6 +245,8 @@ public class DataView extends AnchorPane {
 		content.getChildren().add(input);
 		VBox.setMargin(content, new Insets(8.0));
 		vbox.getChildren().add(content);
+		
+		return input;
 	}
 
 	private void addNumberField(String nameKey, Object value){
@@ -258,12 +294,23 @@ public class DataView extends AnchorPane {
      		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
          }
 	}
-	private void didEditBasicActorType(BasicActorType basicActorType, String varName){
+	private <T extends Object> void didEditClickable(T basicActorType, String varName){
    	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
    	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
 		this.myFields.put(varName, 
 				basicActorType
  				);
+		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
+ 		printMyData();
+ 		setMyData(d); 
+ 		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
+	} 
+	
+	private void didEditProjectileClickable(ActorData actor, String varName){
+   	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
+   	 	System.out.println("\tADDING NEW DATA TO ACTORDATA");
+   	 	Integer option = myGame.getOptionKey(actor);
+		this.myFields.put(varName, option);
 		Data d = DataGenerator.makeData(myDataClassName, myFields.values().toArray());
  		printMyData();
  		setMyData(d); 

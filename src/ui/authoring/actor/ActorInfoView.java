@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import builders.AuthorInfoGenerator;
 import builders.DataGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
@@ -93,6 +94,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 			System.out.println("Actor: " + a.getName());
 		}
 		System.out.println("My current actor: "+ myCurrentActorData.getName());
+		System.out.println("Number of datas: " + myCurrentActorData.getMyData().size());
 	}
 	
 	private ImageView imageForStackButton(String imagePath){
@@ -300,6 +302,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataViews(ActorData first){
+		addDataView(first.getHealth());
 		for(Data d: first.getMyData()){
 			addDataView(d);
 		}
@@ -318,6 +321,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private void selectActorData(ActorData actorData, ImageView view){
 		System.out.println("ActorInfoView.selectActorData: "+ actorData.getName() +
 				" : size=" + actorData.getMyData().size());
+		printCurrent();
 		myCurrentActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
@@ -329,7 +333,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataView(Data data){
-		DataView view = new DataView(gameData.getMyPaths(), data, this, 
+		DataView view = new DataView(gameData, data, this, 
 				Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
@@ -369,7 +373,8 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	 */
 	@Override
 	public void setData(Data newData) {
-		myCurrentActorData.addData(newData);
+		System.out.println("HERE");
+		newData.addData(myCurrentActorData);
 	}
 
 	@Override
@@ -393,7 +398,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
-		this.myCurrentActorData.addData(d);
+		d.addData(this.myCurrentActorData);
 		addDataView(d);
 	}
 

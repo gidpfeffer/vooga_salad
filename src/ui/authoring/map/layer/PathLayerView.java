@@ -5,14 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 
+import gamedata.MapLayersData;
 import gamedata.PathData;
+import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import ui.authoring.map.PointType;
+import ui.authoring.map.layer.path.Path;
+import ui.authoring.map.layer.path.Point;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
 import util.Location;
@@ -22,19 +27,14 @@ public class PathLayerView extends Layer {
 
 	private boolean isActive = false;
 	private PathData myPathData;
-	public PathData getMyPathData() {
-		return myPathData;
-	}
-
-	private Map<Integer, List<Line>> myLines = new HashMap<>();
 	private boolean isFirstPoint = true;
-	private Color myColor = CustomColors.BLACK_GRAY;
-	Tuple<Double, Double> myInsets; //
-
-	public PathLayerView(PathData data, Tuple<Double, Double> insets) {
+	private List<Path> myDataToPath;
+	private Path myCurrentPath;
+	
+	public PathLayerView(PathData data) {
 		super();
 		myPathData = data;
-		myInsets = insets;
+		myDataToPath = new ArrayList<>();
 		addEventHandler(MouseEvent.MOUSE_RELEASED, e -> handleMouseRelease(e));
 	}
 
@@ -45,55 +45,56 @@ public class PathLayerView extends Layer {
 
 	// TODO refactor
 	private void addPointToMap(MouseEvent e) {
-
-		Tuple<Double, Double> size = new Tuple<Double, Double>(getWidth(), getHeight());
-		Location loc = new Location(e.getX(), e.getY());
-		Tuple<Double, Double> insets = myInsets;
-		Point p = new Point(loc, size, insets);
-		System.out.println(e.getX() + "\t" + e.getY());
-		if (p.isValid()) {
-
-			Line line = new Line(loc.getX(), loc.getY(), loc.getX(), loc.getY());
-			line.setStrokeWidth(3);
-			line.setFill(myColor);
-			this.setOnMouseMoved(event -> {
-				line.setEndX(event.getX());
-				line.setEndY(event.getY());
-			});
-			this.setOnMouseDragged(event -> {
-				line.setEndX(event.getX());
-				line.setEndY(event.getY());
-			});
-			List<Grid2D> listOfPoints = myPathData.poll();
-			// determines if the point is exit, entry, or regular path
-			if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {// exit
-																				// path
-				isFirstPoint = true;
-				p.setPointType(PointType.EXIT);
-				setOnMouseMoved(irrelevantName -> {});
-				setOnMouseDragged(irrelevantName -> {});
-				
-			} else if (isFirstPoint) {
-				myPathData.addPath(new ArrayList<>());
-				listOfPoints = myPathData.poll();
-				p.setPointType(PointType.ENTRY);
-				isFirstPoint = false;
-				this.myLines.put(myLines.size(), new ArrayList<>());
-
-			} else {
-				p.setPointType(PointType.PATH);
-			}
-			
-			listOfPoints.add(p.getCoordinates());
-			this.getChildren().add(line);
-			this.getChildren().add(p);
-			myLines.get(myLines.size() - 1).add(line);
-			System.out.println("myPathData:");
-			for(List<Grid2D> l:myPathData.getMyPaths().values())
-				System.out.println("\t-"+l);
-
-
+		
+		Coordinates coordinate = new Coordinates(e.getX()/this.getWidth(), e.getY()/this.getHeight());
+		if (!coordinate.isValid())
+			return;
+		if(myCurrentPath == null){
+			myCurrentPath = new Path();
+			myPathData.addPath(new ArrayList<>());
+			myDataToPath.add(myCurrentPath);
 		}
+
+		
+		Point p = new Point(coordinate, e.getX(), e.getY());
+		myCurrentPath.addPointTo(p, this);
+		List<Grid2D> listOfPoints = myPathData.poll();
+		listOfPoints.add(coordinate);
+//		Line line = new Line(e.getX(), e.getY(), e.getX(), e.getY());
+//
+//		this.setOnMouseMoved(event -> {
+//			line.setEndX(event.getX());
+//			line.setEndY(event.getY());
+//		});
+//		this.setOnMouseDragged(event -> {
+//			line.setEndX(event.getX());
+//			line.setEndY(event.getY());
+//		});
+
+
+		// determines if the point is exit, entry, or regular path
+		if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {// exit																// path
+			isFirstPoint = true;
+			p.setPointType(PointType.EXIT);
+			setOnMouseMoved(i -> {});
+			setOnMouseDragged(i -> {});
+			myCurrentPath = null;
+		} 
+		else if (isFirstPoint) {
+			p.setPointType(PointType.ENTRY);
+			isFirstPoint = false;
+		} 
+		else {
+			p.setPointType(PointType.PATH);
+		}
+		
+		/*
+		 * printing map data
+		 */
+		System.out.println("myPathData:");
+		for(List<Grid2D> l:myPathData.getMyPaths().values())
+			System.out.println("\t-"+l);
+
 
 	}
 
@@ -109,35 +110,32 @@ public class PathLayerView extends Layer {
 
 	@Override
 	public void clear() {
-		for (Entry<Integer, List<Grid2D>> path : myPathData.getMyPaths().entrySet()) {
-			for (Grid2D p : path.getValue()) {
-				getChildren().remove((Point) p);
-			}
-		}
+//		while(!myPathData.getMyPaths().isEmpty()){
+//			Path path = this.myDataToPath.get(myPathData.pop());
+//			getChildren().removeAll(path.getLines());
+//			getChildren().removeAll(path.getPoints());
+//		}
+		this.getChildren().clear();
 		myPathData.clear();
-		for (List<Line> list : myLines.values()) {
-			getChildren().removeAll(list);
-		}
-
+		myDataToPath.clear();
 	}
 
 	@Override
 	public void undo() {
 		
-		List<Grid2D> path = myPathData.pop();
+		List<Grid2D> data = myPathData.pop();
+		System.out.println("REMOVING PATH: "+data);
+		System.out.println(myDataToPath.size());
+		Path path = this.myDataToPath.remove(myDataToPath.size() - 1);
 		System.out.println(path);
-		for(Grid2D p:path){
-			getChildren().remove((Point) p);
-		}
-		for(List<Line> list: myLines.values()){
-			System.out.println(list);
-		}
-		getChildren().removeAll(myLines.get(myLines.size() - 1));
+		myDataToPath.forEach(d -> System.out.println(d));
+		getChildren().removeAll(path.getLines());
+		getChildren().removeAll(path.getPoints());
 	}
 
 	@Override
 	public void setColor(Color c) {
-		this.myColor = c;
+		//nothing
 	}
 
 	@Override
@@ -146,12 +144,14 @@ public class PathLayerView extends Layer {
 	}
 
 	@Override
-	public void sizeDidChange(ImageViewPane imagepane) {
-		myInsets = imagepane.getImageInsets();
-		for (Entry<Integer, List<Grid2D>> path : myPathData.getMyPaths().entrySet())
-			for (Grid2D p : path.getValue())
-				((Point) p).updateSize(new Tuple<Double, Double>(imagepane.getWidth(), imagepane.getHeight()),
-						imagepane.getImageInsets());
+	public void sizeDidChange() {
+			clear();
+	}
+
+	@Override
+	public void load(MapLayersData mapData) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

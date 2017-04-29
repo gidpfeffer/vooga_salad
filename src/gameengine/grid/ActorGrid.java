@@ -19,9 +19,11 @@ import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import gameengine.grid.interfaces.controllerinfo.GridHandler;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import gamestatus.WriteableGameStatus;
 import types.BasicActorType;
+import ui.player.listener.ListenQueue;
 import util.observerobservable.VoogaObservableMap;
 
 public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> implements MasterGrid, ControllableGrid{
@@ -30,15 +32,15 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private Collection<SettableActorLocator> actors;
 	private Function<Integer, Actor> actorMaker;
 	private Stack<SettableActorLocator> newActors;
-	private WriteableGameStatus myWriteableGameStatus;
+	private GridHandler myHandler;
 	
-	public ActorGrid(double maxX, double maxY, WriteableGameStatus myWriteableGameStatus, Function<Integer, Actor> actorMaker){
+	public ActorGrid(double maxX, double maxY, GridHandler myHandler, Function<Integer, Actor> actorMaker){
 		super();
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
 		newActors = new Stack<>();
 		this.actorMaker = actorMaker;
-		this.myWriteableGameStatus = myWriteableGameStatus;
+		this.myHandler = myHandler;
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 						a -> new DisplayInfo(a.getLocation(), 
 								a.getActor()))));
 		notifyObservers();
-		System.out.println(myMap.keySet());
+		System.out.println(actors.size());
 	}
 	
 	private void updateActors(){
@@ -153,7 +155,8 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	@Override
 	public void controllerSpawnActor(Actor actor, double startX, double startY){
 		actors.add(new ActorLocator(new Coordinates(startX, startY), actor));
-		//addActor(actor,startX,startY);
+		System.out.println("adding "+ actor.getID() + " " + actor.isActive());
+		System.out.println(actors.size());
 	}
 	
 	private void addActor(Actor newActor, double startX, double startY){
@@ -175,7 +178,12 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 
 	@Override
 	public WriteableGameStatus getWriteableGameStatus() {
-		return myWriteableGameStatus;
+		return myHandler.getWriteableGameStatus();
+	}
+
+	@Override
+	public ListenQueue getEventQueue() {
+		return myHandler.getEventQueue();
 	}
 
 }

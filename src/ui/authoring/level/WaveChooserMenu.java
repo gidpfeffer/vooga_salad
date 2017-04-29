@@ -65,8 +65,10 @@ public class WaveChooserMenu extends AnchorPane {
 		//TODO: Fix scroll bar
 		waves = new ScrollPane();
 		waves.setHbarPolicy(ScrollBarPolicy.NEVER);
+		waves.setVbarPolicy(ScrollBarPolicy.NEVER);
 		actors = new ScrollPane();
 		actors.setHbarPolicy(ScrollBarPolicy.NEVER);
+		actors.setVbarPolicy(ScrollBarPolicy.NEVER);
 		setupBack(actors, waves);
 	}
 	
@@ -96,6 +98,16 @@ public class WaveChooserMenu extends AnchorPane {
 		HBox.setMargin(newWave, new Insets(20));
 		root.getChildren().add(newWave);
 		waves.setContent(root);
+	}
+	
+	private void printTest(){
+		System.out.println("START");
+		
+		List<EnemyInWaveData> enemies = editWave.getWaveEnemies();
+		for(EnemyInWaveData enemy: enemies){
+			System.out.println(enemy.getMyActor().getName());
+		}
+				
 	}
 	
 	private  void populateEnemies(){
@@ -143,6 +155,7 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private void updateQuantity(String newVal, ActorData data){
+		printTest();
 		try{
 			int quantity = Integer.parseInt(newVal);
 			if(editWave.contains(data)){
@@ -169,6 +182,7 @@ public class WaveChooserMenu extends AnchorPane {
 		waveBoxes.add(newWave);
 		waves.setContent(root); 
 		myData.addWave(new WaveData());
+		selectWave(newWave, waveBoxes.indexOf(newWave));
 		return newWave;
 	}
 	

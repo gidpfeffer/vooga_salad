@@ -3,6 +3,7 @@ package util.generator;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -26,8 +27,9 @@ public class WebImageCollectorTest {
 
     public WebImageCollectorTest() throws IOException
     {
-        BufferedImage img= WebImageCollector.findAndSaveRandomIcon(new Random(), "bomb");
-        ImageIcon icon=new ImageIcon(img);
+        ImageInfo img= WebImageCollector.findAndSaveRandomIcon
+        		(new Random(), "bomb", new ArrayList<String>(), new ArrayList<Integer>());
+        ImageIcon icon=new ImageIcon(img.getMyImage());
         JFrame frame=new JFrame();
         frame.setLayout(new FlowLayout());
         frame.setSize(200,300);
