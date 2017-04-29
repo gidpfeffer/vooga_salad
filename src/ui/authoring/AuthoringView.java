@@ -182,7 +182,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		//end test
 		
 
-		myMenuView = new MenuView(this);
+		myMenuView = new MenuView(this, myGameData.getPreferences());
 
 
 		
