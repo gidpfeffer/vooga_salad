@@ -37,7 +37,7 @@ import ui.authoring.map.layer.Layer;
 import ui.authoring.map.layer.LayerPopupDelegate;
 import ui.authoring.map.layer.LayerPopupView;
 import ui.authoring.map.layer.PolygonLayerView;
-import ui.authoring.map.layer.PathLayerView;
+import ui.authoring.map.layer.path.PathLayerView;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
 import ui.general.UIHelper;
@@ -62,14 +62,14 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private List<Layer> myLayers = new ArrayList<>();
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
-	private Insets LAYER_INSET = new Insets(8, 8, 72, 8);
+	private static final Insets LAYER_INSET = new Insets(8, 8, 72, 8);
 
 	private Pane myLayerPopup;
 
 	public MapEditorView(PathData pathData, MapLayersData mapData, PopViewDelegate popDelegate) {
 		super();
 		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
-		myPathLayer = new PathLayerView(pathData, myBackgroundView.getImageInsets());
+		myPathLayer = new PathLayerView(pathData);
 		myMapData = mapData;
 		myPopDelegate = popDelegate;
 		setupViews();
@@ -97,7 +97,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 		setupButtons();
 		setupLayerSelector();
-		addLayer(myPathLayer, "Path");
+		addLayerView(myPathLayer, "Path");
 		setupMapData();
 	}
 
@@ -107,7 +107,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 */
 	private void setupMapData() {
 		for (Entry<String, LayerData> entry : myMapData.getMyLayers().entrySet()) {
-			addLayer(new PolygonLayerView(entry.getValue(), myBackgroundView.getImageInsets()), entry.getKey());
+			addLayerView(new PolygonLayerView(entry.getValue(), myBackgroundView.getImageInsets()), entry.getKey());
 		}
 
 	}
@@ -121,7 +121,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 * @param layerName
 	 *            the name that you can set to w.e you want
 	 */
-	private void addLayer(Layer layer, String layerName) {
+	private void addLayerView(Layer layer, String layerName) {
 		StackPane.setAlignment(layer, Pos.TOP_CENTER);
 		StackPane.setMargin(layer, getAdjustedInsets());
 		layer.setColor(LAYER_COLORS[myLayers.size() % LAYER_COLORS.length]);
@@ -272,8 +272,8 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 */
 	private void sizeDidChange() {
 		for (Layer layer : myLayers) {
-			layer.sizeDidChange(myBackgroundView);
-			//TODO manually resize each layer
+			//layer.sizeDidChange(myBackgroundView);
+			StackPane.setMargin(layer, getAdjustedInsets());
 
 		}
 	}
@@ -305,7 +305,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		LayerData data = new LayerData();
 		PolygonLayerView layer = new PolygonLayerView(data, myBackgroundView.getImageInsets());
 		this.myMapData.addLayer(nameInput, data);
-		this.addLayer(layer, nameInput);
+		this.addLayerView(layer, nameInput);
 		myPopDelegate.closeView(myLayerPopup);
 	}
 
@@ -315,7 +315,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	}
 
 	private void printData() {
-		System.out.println(this.myPathLayer.getMyPathData());
+		System.out.println(this.myMapData.getMyPathData());
 		System.out.println(this.myMapData);
 	}
 

@@ -1,6 +1,8 @@
 package ui.authoring.map.layer;
 
+import gamedata.GameData;
 import gamedata.LayerData;
+import gamedata.MapLayersData;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import ui.general.ImageViewPane;
@@ -12,5 +14,6 @@ public abstract class Layer extends Pane{
 	public abstract void undo();
 	public abstract void setColor(Color c);
 	public abstract boolean isActive();
-	public abstract void sizeDidChange(ImageViewPane imagepane);
+	public abstract void sizeDidChange();
+	public abstract void load(MapLayersData mapData);
 }
