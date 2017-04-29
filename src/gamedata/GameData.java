@@ -150,7 +150,8 @@ public class GameData {
 	 */
 	public LineageData add(ActorData data){
 		LineageData lin = new LineageData(data);
-		pieces.put(numOptions++, lin);
+		pieces.put(numOptions, lin);
+		numOptions++;
 		return lin;
 	}
 	

@@ -98,6 +98,16 @@ public class WaveChooserMenu extends AnchorPane {
 		waves.setContent(root);
 	}
 	
+	private void printTest(){
+		System.out.println("START");
+		
+		List<EnemyInWaveData> enemies = editWave.getWaveEnemies();
+		for(EnemyInWaveData enemy: enemies){
+			System.out.println(enemy.getMyActor().getName());
+		}
+				
+	}
+	
 	private  void populateEnemies(){
 		HBox root=new HBox();
 		root.setSpacing(25);
@@ -143,6 +153,7 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private void updateQuantity(String newVal, ActorData data){
+		printTest();
 		try{
 			int quantity = Integer.parseInt(newVal);
 			if(editWave.contains(data)){

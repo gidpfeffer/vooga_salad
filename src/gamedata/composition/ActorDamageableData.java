@@ -2,6 +2,8 @@ package gamedata.composition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import gamedata.compositiongen.ActData;
 import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
@@ -12,7 +14,7 @@ import types.BasicActorType;
  * 
  */
 
-public class ActorDamageableData implements Data {
+public class ActorDamageableData extends ActData {
 	
 	private double myHitRadius;
 	private List<BasicActorType> myEnemyTypes;
