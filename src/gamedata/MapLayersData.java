@@ -19,11 +19,13 @@ import java.util.Map;
  *
  */
 public class MapLayersData {
-
+	
+	private PathData myPathData;
 	private Map<String, LayerData> myLayers;
-
+	
 	public MapLayersData() {
 		myLayers = new HashMap<>();
+		setMyPathData(new PathData());
 	}
 
 	/**
@@ -61,6 +63,14 @@ public class MapLayersData {
 	 */
 	public Map<String, LayerData> getMyLayers() {
 		return myLayers;
+	}
+
+	public PathData getMyPathData() {
+		return myPathData;
+	}
+
+	public void setMyPathData(PathData myPathData) {
+		this.myPathData = myPathData;
 	}
 
 }
