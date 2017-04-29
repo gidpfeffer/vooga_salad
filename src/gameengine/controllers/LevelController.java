@@ -28,6 +28,7 @@ public class LevelController {
 	private ControllableGrid myGrid;
 	
 	private Runnable win;
+	private Runnable updateGameStatusLevel;
 	
 	private Delay delay;
 	
@@ -39,6 +40,7 @@ public class LevelController {
 		myGrid = getControllableGrid.get();
 		delay = new Delay(DELAY_CONSTANT);
 		this.win = win;
+		this.updateGameStatusLevel = updateGameStatusLevel;
 	}
 	
 	public int getLevel() {
@@ -48,7 +50,7 @@ public class LevelController {
 	public void levelUp (GameData gameData) throws VoogaException {
 		if (!(gameData.getLevels().get(level+1)==null)) {
 			changeLevel(gameData,level+1);
-			
+			updateGameStatusLevel.run();
 		} else {
 			win.run();
 		}
