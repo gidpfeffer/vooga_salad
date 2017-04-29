@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import builders.AuthorInfoGenerator;
 import builders.DataGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;

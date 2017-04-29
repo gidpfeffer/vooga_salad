@@ -29,6 +29,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -82,6 +83,14 @@ public class DataView extends AnchorPane {
 		
 	}
 
+	private void colorByType(Label name){
+		if(myDataClassName.contains("Health")){
+			name.setTextFill(CustomColors.AMBER_700);
+		}else{
+			name.setTextFill(CustomColors.BLUE_800);
+		}
+	}
+	
 	private void setupViews() {
 		Label name = new Label(myDataClassName.replaceAll("Data", ""));
 		name.setTextFill(CustomColors.BLUE_800);
@@ -91,6 +100,7 @@ public class DataView extends AnchorPane {
 		AnchorPane.setTopAnchor(name, 4.0);
 		AnchorPane.setLeftAnchor(name, 4.0);
 		AnchorPane.setRightAnchor(name, 4.0);
+		colorByType(name);
 		
 		vbox = new VBox();
 		AnchorPane.setTopAnchor(vbox, 8.0 + name.getPrefHeight());
@@ -109,6 +119,10 @@ public class DataView extends AnchorPane {
 		AnchorPane.setRightAnchor(remove, -12.0);
 		
 		this.getChildren().addAll(name,vbox,remove);		
+	}
+	
+	private void removeView(AnchorPane toClose){
+		
 	}
 	
 	@SuppressWarnings("unchecked")

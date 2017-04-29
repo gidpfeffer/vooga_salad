@@ -1,6 +1,10 @@
 package gameengine.actors.properties;
 
+<<<<<<< HEAD
+import gamedata.compositiongen.AddMoneyData;
+=======
 import gameengine.actors.propertygen.CycleProperty;
+>>>>>>> master
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
@@ -10,6 +14,7 @@ import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
  *
  * @param <G>
  */
+
 public class AddMoneyProperty<G extends ReadAndDamageGrid> extends CycleProperty<G>{
 
 	private Double myMoney;
