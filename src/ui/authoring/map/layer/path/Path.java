@@ -31,17 +31,22 @@ public class Path {
 		});
 		pane.getChildren().add(line);
 		myLines.add(line);
-		System.out.println(myLines.size() + " size of lines");
-		System.out.println(myPoints.size() + " size of points");
+		print();
 	}
 	
 	public List<Point> getPoints(){
+		print();
 		return myPoints;
 	}
 	
 	public List<Line> getLines(){
+		print();
 		return myLines;
 	}
-
+	
+	private void print(){
+		System.out.println(myLines.size() + " size of lines");
+		System.out.println(myPoints.size() + " size of points");
+	}
 	
 }
