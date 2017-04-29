@@ -1,7 +1,6 @@
 package gameengine.controllers;
 
-import java.util.List;	
-import java.util.function.Supplier;	
+import java.util.List;		
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
@@ -12,6 +11,7 @@ import gamedata.WaveData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import gameengine.handlers.LevelHandler;
 import util.Delay;
 import util.VoogaException;
 
@@ -29,8 +29,7 @@ public class LevelController {
 	
 	private PreferencesData myPreferences;
 	
-	private Runnable win;
-	private Runnable updateGameStatusLevel;
+	private LevelHandler myLevelHandler;
 	
 	private Delay delay;
 	
@@ -38,11 +37,10 @@ public class LevelController {
 	
 	private int level;
 	
-	public LevelController(Supplier<ControllableGrid> getControllableGrid, Runnable win,Runnable updateGameStatusLevel,GameData gameData) {
-		myGrid = getControllableGrid.get();
+	public LevelController(LevelHandler levelHandler,GameData gameData) {
+		myLevelHandler = levelHandler;
+		myGrid = myLevelHandler.getMyGrid();
 		delay = new Delay(DELAY_CONSTANT);
-		this.win = win;
-		this.updateGameStatusLevel = updateGameStatusLevel;
 		myGameData = gameData;
 		myPreferences = myGameData.getPreferences();
 	}
@@ -54,9 +52,9 @@ public class LevelController {
 	public void levelUp() throws VoogaException {
 		if (!(myGameData.getLevels().get(level+1)==null)) {
 			changeLevel(level+1);
-			updateGameStatusLevel.run();
+			myLevelHandler.levelUp();
 		} else {
-			win.run();
+			myLevelHandler.displayWinAlert();
 		}
 	}
 	

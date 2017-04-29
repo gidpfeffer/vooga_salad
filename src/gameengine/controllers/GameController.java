@@ -6,6 +6,7 @@ import gamedata.GameData;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
+import gameengine.handlers.LevelHandler;
 import gamestatus.GameStatus;
 import gamestatus.WriteableGameStatus;
 import javafx.animation.KeyFrame;
@@ -21,7 +22,7 @@ import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 /**
  * GameController is the controller layer between the front end display and the back end game engine
- * Implements UIHandler and initializes all necessary back end and front end components of game engine
+ * Implements UIHandler and initializes all necessary back end and front end components of game engine, as well as the Timeline
  * @author sarahzhou
  *
  */
@@ -33,6 +34,8 @@ public class GameController {
 	
 	private UIHandler myUIHandler;
 	private AnimationHandler myAnimationHandler;
+	private LevelHandler myLevelHandler;
+	
 	private WriteableGameStatus myWriteableGameStatus;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
@@ -71,10 +74,6 @@ public class GameController {
 		return actorGrid;
 	}
 	
-	public ControllableGrid getMyGrid() {
-		return myGrid;
-	}
-	
 	public GameScreen getGameScreen() {
 		return myGameScreen;
 	}
@@ -87,8 +86,29 @@ public class GameController {
 	
 	public void start() {
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert(),() -> myGameStatus.levelUp(),myGameData);
+		myLevelController = new LevelController(myLevelHandler,myGameData);
 		intitializeTimeline();
+	}
+	
+	private void initializeLevelHandler() {
+		myLevelHandler = new LevelHandler() {
+
+			@Override
+			public ControllableGrid getMyGrid() {
+				return myGrid;
+			}
+
+			@Override
+			public void displayWinAlert() {
+				myGameScreen.notifyWin();
+			}
+
+			@Override
+			public void levelUp() {
+				myGameStatus.levelUp();
+			}
+			
+		};
 	}
 	
 	private void intitializeTimeline() {
@@ -100,12 +120,11 @@ public class GameController {
 	}
 	
 	private void step() {
+		myListenQuee.poll
 		myGrid.step();
 	}
 	
-	private void displayWinAlert() {
-		myGameScreen.notifyWin();
-	}
+	private void initialize
 	
 	private void initializeAnimationHandler() {
 		myAnimationHandler = new AnimationHandler() {
