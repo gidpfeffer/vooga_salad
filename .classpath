@@ -49,6 +49,7 @@
 	<classpathentry kind="lib" path="lib/selenium-java-3.3.1/lib/xalan-2.7.2.jar"/>
 	<classpathentry kind="lib" path="lib/selenium-java-3.3.1/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/selenium-java-3.3.1/lib/xml-apis-1.4.01.jar"/>
+<<<<<<< HEAD
 	<classpathentry combineaccessrules="false" kind="src" path="/voogasalad_util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/analysis_hpr4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/AST"/>
@@ -65,5 +66,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/slogo_team05"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/VoogaSalad"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/xml_practice"/>
+=======
+>>>>>>> 607acb60baab219daf2d1ec602a81f00d47ee0e0
 	<classpathentry kind="output" path="bin"/>
 </classpath>

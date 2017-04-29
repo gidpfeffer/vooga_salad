@@ -1,5 +1,5 @@
 package gameengine.controllers;
-import java.util.Map;	
+import java.util.Map;		
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
@@ -36,6 +36,8 @@ public class GameController {
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
 	
+	private GameObjectUtil myGameObjectUtil;
+	
 	private GameScreen myGameScreen;
 	private SimpleHUD mySimpleHUD;
 	
@@ -45,9 +47,14 @@ public class GameController {
 	private final double MILLISECOND_DELAY=17;
 	public GameController(GameData gameData) {
 		myGameData = gameData;
+		myGameObjectUtil = new GameObjectUtil();
 		initializeUIHandler();
 		initializeAnimationHandler();
 		setupGameStatus();
+		setUpGameScreen();
+	}
+	
+	private void setUpGameScreen() {
 		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGameScreen.setAnimationHandler(myAnimationHandler);
 		myGameScreen.setSong(myGameData.getPreferences().getMusicFilePath()); //set music for game
@@ -79,7 +86,7 @@ public class GameController {
 	
 	public void start() {
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert());
+		myLevelController = new LevelController(() -> getMyGrid(),() -> displayWinAlert(),() -> myGameStatus.levelUp());
 		intitializeTimeline();
 	}
 	
@@ -124,19 +131,19 @@ public class GameController {
 		myUIHandler = new UIHandler() {
 			@Override
 			public void deleteGameObject(int id) {
-				GameObjectUtil.deleteGameObject(id, myGrid);
+				myGameObjectUtil.deleteGameObject(id, myGrid);
 			}
 			@Override
 			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
-				GameObjectUtil.updateGameObjectType(id, currentOption, newOption, myGrid, myGameData);
+				myGameObjectUtil.updateGameObjectType(id, currentOption, newOption, myGrid, myGameData);
 			}
 			@Override
 			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
-				GameObjectUtil.updateGameObjectLocation(id, xRatio, yRatio, myGrid);
+				myGameObjectUtil.updateGameObjectLocation(id, xRatio, yRatio, myGrid);
 			}
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
-				return GameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGrid);
+				return myGameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGrid);
 			}
 			@Override
 			public Map<Integer, ActorData> getOptions() {
