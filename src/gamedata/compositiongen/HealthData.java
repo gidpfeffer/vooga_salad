@@ -1,6 +1,7 @@
 package gamedata.compositiongen;
 
 import gamedata.ActorData;
+import gamedata.composition.LimitedHealthData;
 
 public abstract class HealthData implements Data {
 	@Override

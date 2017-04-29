@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
+import ui.player.listener.ListenQueue;
 
 /**
  * @author Gideon
@@ -52,4 +53,11 @@ public interface ReadableGrid{
 	 * @return the maximum y coordinate of the grid (0 - returnVal) are the y boundaries
 	 */
 	double getMaxY();
+	
+	/**
+	 * @return the event queue which contains information
+	 * about the keys being pressed such that the actors can listen to it
+	 * and act accordingly
+	 */
+	ListenQueue getEventQueue();
 }

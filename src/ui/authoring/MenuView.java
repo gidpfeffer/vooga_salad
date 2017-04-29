@@ -59,10 +59,6 @@ public class MenuView extends AnchorPane {
 	
 	
 	private Map<String, ToggleSwitch> myPreferences;
-
-	public MenuView(MenuDelegate delegate) {
-		this(delegate, new PreferencesData());
-	}
 	
 	public MenuView(MenuDelegate delegate, PreferencesData data){
 		super();
@@ -72,8 +68,6 @@ public class MenuView extends AnchorPane {
 		mySwitchTitles = new ArrayList<>(Arrays.asList(ENEMY_LOOP_LABEL, TOWERS_ATTACKABLE_LABEL, WANT_MONEY_LABEL, EXP_BY_LEVEL_LABEL,
 				PAUSE_BETWEEN_WAVES_LABEL, CLEAN_LEVEL_LABEL)); 
 		setupViews();
-		
-		
 	}
 
 	private void setupViews() {
@@ -125,6 +119,7 @@ public class MenuView extends AnchorPane {
 		FileSelector selector = new FileSelector("*.mp3");
 		File data = selector.open(new Stage());
 		String[] temp = data.toURI().toString().split(PATH);
+		System.out.println(PATH + temp[temp.length-1]);
 		myData.setMusicFilePath(PATH + temp[temp.length-1]);
 	}
 
