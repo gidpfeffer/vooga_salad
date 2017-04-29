@@ -44,6 +44,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	private String profilePicture = "profile_icon.png";
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
+	public final static String path= "images/";
 
 	@Override
 	public Scene getScene() {
@@ -123,16 +124,14 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	EventHandler<MouseEvent> loadPicture = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent t) {
-/*			FileChooser fileChooser = new FileChooser();
-			FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-			FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-			fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-			File file = fileChooser.showOpenDialog(null); */
-			FileSelector fileScelector = new FileSelector("*.png");
-			File file = fileScelector.open(new Stage());
+			FileSelector fileSelector = new FileSelector("*.png");
+			fileSelector.setExtension("*.jpg");
+			File file = fileSelector.open(new Stage());
 			if (file != null) {
 				profileImage.getChildren().clear();
-				profilePicture = file.toURI().toString();
+				String[] temp = file.toURI().toString().split(path);
+				profilePicture = temp[temp.length-1];
+				System.out.println(profilePicture);
 				profileImage.getChildren().add(new ImageView(new Image(profilePicture, 200, 200, false, true)));
 			}
 		}

@@ -93,6 +93,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 			System.out.println("Actor: " + a.getName());
 		}
 		System.out.println("My current actor: "+ myCurrentActorData.getName());
+		System.out.println("Number of datas: " + myCurrentActorData.getMyData().size());
 	}
 	
 	private ImageView imageForStackButton(String imagePath){
@@ -318,6 +319,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private void selectActorData(ActorData actorData, ImageView view){
 		System.out.println("ActorInfoView.selectActorData: "+ actorData.getName() +
 				" : size=" + actorData.getMyData().size());
+		printCurrent();
 		myCurrentActorData = actorData;
 		myDataViews.clear();
 		myGridPane.getChildren().clear();
@@ -369,7 +371,8 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	 */
 	@Override
 	public void setData(Data newData) {
-		myCurrentActorData.addData(newData);
+		System.out.println("HERE");
+		newData.addData(myCurrentActorData);
 	}
 
 	@Override
@@ -393,7 +396,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	@Override
 	public void didPickOptionWithData(String dataName) {
 		Data d = DataGenerator.makeData(dataName+"Data");
-		this.myCurrentActorData.addData(d);
+		d.addData(this.myCurrentActorData);
 		addDataView(d);
 	}
 

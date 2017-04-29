@@ -32,7 +32,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private Stack<SettableActorLocator> newActors;
 	private WriteableGameStatus myWriteableGameStatus;
 	
-	public ActorGrid(double maxX, double maxY, WriteableGameStatus myWriteableGameStatus,Function<Integer, Actor> actorMaker){
+	public ActorGrid(double maxX, double maxY, WriteableGameStatus myWriteableGameStatus, Function<Integer, Actor> actorMaker){
 		super();
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
@@ -50,9 +50,9 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 		myMap = Collections.unmodifiableMap(actors.stream()
 				.collect(Collectors.toMap(a -> a.getActor().getID(), 
 						a -> new DisplayInfo(a.getLocation(), 
-								a.getActor().getPercentHealth(), a.getActor().getMyOption()))));
+								a.getActor()))));
 		notifyObservers();
-		System.out.println(myMap.keySet());
+		System.out.println(actors.size());
 	}
 	
 	private void updateActors(){
@@ -153,7 +153,8 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	@Override
 	public void controllerSpawnActor(Actor actor, double startX, double startY){
 		actors.add(new ActorLocator(new Coordinates(startX, startY), actor));
-		//addActor(actor,startX,startY);
+		System.out.println("adding "+ actor.getID() + " " + actor.isActive());
+		System.out.println(actors.size());
 	}
 	
 	private void addActor(Actor newActor, double startX, double startY){
@@ -162,10 +163,10 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	}
 
 	@Override
-	public Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY) {
+	public void actorSpawnActor(Integer actorType, double startX, double startY, Consumer<Collection<IActProperty<MasterGrid>>> action) {
 		Actor newActor = actorMaker.apply(actorType);
 		addActor(newActor, startX, startY);
-		return newActor.addProperty();
+		newActor.addProperty(action);
 	}
 
 	@Override

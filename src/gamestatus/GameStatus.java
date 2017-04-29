@@ -14,6 +14,7 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	private final String EXPERIENCE = "Experience";
 	private final String MONEY = "Money";
 	private final String LEVEL = "Level";
+	private final String LIVES = "Lives";
 
 	public void addExperience(double exp){
 		double newExp = Double.parseDouble(myMap.get(EXPERIENCE))+exp;
@@ -52,6 +53,18 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 
 	public void clear() {
 		myMap = new HashMap<String,String>();
+		notifyObservers();
+	}
+
+	@Override
+	public void loseLife() {
+		myMap.put(LIVES, Double.toString(Double.parseDouble(myMap.get(LIVES))-1));
+		notifyObservers();
+	}
+
+	@Override
+	public void gainLife() {
+		myMap.put(LIVES, Double.toString(Double.parseDouble(myMap.get(LIVES))+1));
 		notifyObservers();
 	}
 	

@@ -11,7 +11,7 @@ import gamedata.map.PolygonData;
  * @author Anh
  *
  */
-public class LayerData implements Data{
+public class LayerData {
 	
 	private List<PolygonData> myPolygons;
 	

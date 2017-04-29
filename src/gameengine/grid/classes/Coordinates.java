@@ -25,6 +25,10 @@ public class Coordinates implements Grid2D {
 		this.x = other.getX();
 		this.y = other.getY();
 	}
+	
+	public boolean isValid(){
+		return x <= 1.0 && x >= 0.0 && y<=1.0 & y>=0.0;	
+	}
 
 	@Override
 	public double getX() {

@@ -56,7 +56,7 @@ public class GameData {
 	PreferencesData preferences;
 	
 	//Path information
-	PathData myPaths;
+	//PathData myPaths;
 	
 	//Layer information
 	MapLayersData myLayers; 
@@ -80,7 +80,6 @@ public class GameData {
 	public GameData(String name){
 		this.name = name;
 		levels=new HashMap<Integer,LevelData>();
-		myPaths = new PathData();
 		preferences = new PreferencesData();
 		display = new DisplayData();
 		pieces = new HashMap<Integer, LineageData>();
@@ -203,7 +202,7 @@ public class GameData {
 	 * @return Map of Integers mapped to Paths
 	 */
 	public Map<Integer, List<Grid2D>> getPathOptions(){
-		return myPaths.getMyPaths();
+		return myLayers.getMyPathData().getMyPaths();
 	}
 	
 	
@@ -227,11 +226,11 @@ public class GameData {
 	}
 
 	public PathData getMyPaths() {
-		return myPaths;
+		return myLayers.getMyPathData();
 	}
 
-	public void setMyPaths(PathData myPaths) {
-		this.myPaths = myPaths;
+	public void setMyPaths(PathData pathData) {
+		this.myLayers.setMyPathData(pathData);
 	}
 
 	public List<BasicActorType> getTypes() {

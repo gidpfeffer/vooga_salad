@@ -3,7 +3,7 @@ package gamedata.compositiongen;
 import gameengine.actors.status.StatusDuration;
 import types.BasicActorType;
 
-public abstract class StatusData implements Data{
+public abstract class StatusData extends ActData{
 	
 	BasicActorType myTarget;
 	StatusDuration myLife;

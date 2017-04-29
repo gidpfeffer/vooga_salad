@@ -392,10 +392,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 */
 	private void saveGameData() {
 		XStreamSerializer x = new XStreamSerializer();
-		String xml = x.getXMLStringFromObject(GameDataGenerator.getComplexSampleGame());
+		String xml = x.getXMLStringFromObject(myGameData);
 		try {
 			DirectoryFileManager h = new ExistingDirectoryHelper("games");
-				System.out.println("File is added? "+h.addStringFileToDirectory(xml, "file2"));
+				System.out.println("File is added? "+h.addStringFileToDirectory(xml, myGameData.getName() + ".xml"));
 		} catch (IllegalFileException | InvalidRootDirectoryException | IOException e) {
 			e.printStackTrace();
 		} 
