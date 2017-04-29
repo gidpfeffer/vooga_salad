@@ -50,17 +50,11 @@ public class ActorGenerator{
 		toBuild.add(health);
 		IActProperty[] extras = new IActProperty[data.getMyData().size()];
 		for(int i=0; i<properties.size(); i++){
-			System.out.println("number:"+i);
 			String dataName = properties.get(i).getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
-			System.out.println("making property"+"arg1 " + propertyName.getClass());
-			System.out.println("making property"+"arg2 " + properties.get(i).getClass());
 			Property property = propFactory.make(propertyName, properties.get(i));
-			System.out.println("made property");
-			//TODO: FIX THIS UNCHECKED CAST
 			extras[i]=(IActProperty)property;
 		}
-		System.out.println("loop ended");
 		toBuild.add(extras);
 		MainActor toRet = actorFactory.make(toBuild.toArray());
 		return toRet;

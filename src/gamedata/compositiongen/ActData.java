@@ -2,9 +2,9 @@ package gamedata.compositiongen;
 
 import gamedata.ActorData;
 
-public abstract class HealthData implements Data {
+public abstract class ActData implements Data{
 	@Override
 	public void addData(ActorData actor){
-		actor.setHealth(this);
+		actor.addData(this);
 	}
 }

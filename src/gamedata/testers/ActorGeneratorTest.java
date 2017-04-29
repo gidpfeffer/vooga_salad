@@ -50,7 +50,7 @@ public class ActorGeneratorTest {
 		System.out.println("\nGenerate 2");
 		ActorData toTest2 = new ActorData(new BasicActorType("Troop"), new BasicData("Bob", "imagePath"));
 		toTest2.addData(new ShootTargetFarData(100.0, 50, new BasicActorType("Base"), 10, 10.0));
-		MainActor actor1 = ActorGenerator.makeActor(1, toTest2);
+		MainActor actor1 = ActorGenerator.makeActor(5, toTest2);
 		System.out.println(actor1.getMyProperties().size());
 		
 		System.out.println("\nGenerate 3");

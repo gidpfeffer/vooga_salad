@@ -16,11 +16,11 @@ public class DataGeneratorTest {
 		assertNotEquals(DataGenerator.makeData("LimitedHealthData"), null);
 		System.out.println(DataGenerator.makeData("LimitedHealthData"));
 		assertNotEquals(DataGenerator.makeData("MoveWithSetPathData"), null);
-		assertNotEquals(DataGenerator.makeData("MoneyUpgradeData"), null);
+		//assertNotEquals(DataGenerator.makeData("MoneyUpgradeData"), null);
 		DataGenerator.makeData("LimitedHealthData", 10.0);
 		DataGenerator.makeData("ShootTargetNearData", 10.0, 10, new BasicActorType("Tower"), 10, 10.0);
 		DataGenerator.makeData("ShootTargetFarData", 10.0, 10, new BasicActorType("Tower"), 10, 10.0);
-		DataGenerator.makeData("MoneyUpgradeData", 1.0);
+		//DataGenerator.makeData("MoneyUpgradeData", 1.0);
 	}
 	
 	public void testSavedData(){

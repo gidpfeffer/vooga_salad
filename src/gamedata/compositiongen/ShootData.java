@@ -2,7 +2,7 @@ package gamedata.compositiongen;
 
 import types.BasicActorType;
 
-public class ShootData implements Data {
+public class ShootData extends ActData {
 
 	private double myRange;
 	private int fireRate;
