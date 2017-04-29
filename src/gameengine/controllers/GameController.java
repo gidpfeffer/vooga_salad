@@ -1,5 +1,5 @@
 package gameengine.controllers;
-import java.util.Map;		
+import java.util.Map;			
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
@@ -33,6 +33,7 @@ public class GameController {
 	private Timeline animation;
 	
 	private GameData myGameData;
+	
 	private GameStatus myGameStatus;
 	
 	private UIHandler myUIHandler;
@@ -41,7 +42,9 @@ public class GameController {
 	private GridHandler myGridHandler;
 	
 	private WriteableGameStatus myWriteableGameStatus;
+	
 	private LevelController myLevelController;
+	
 	private ControllableGrid myGrid;
 	
 	private SceneListen mySceneListen;
@@ -55,12 +58,14 @@ public class GameController {
 	private final int MAX_Y = 1;
 	
 	private final double MILLISECOND_DELAY=17;
+	
 	public GameController(GameData gameData,WriteableUser writeableUser) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
 		initializeUIHandler();
 		initializeAnimationHandler();
 		initializeGridHandler();
+		initializeLevelHandler();
 		setupGameStatus(writeableUser);
 		setUpGameScreen();
 	}
@@ -127,7 +132,7 @@ public class GameController {
 	}
 	
 	private void step() {
-		myListenQuee.poll
+		mySceneListen.pollQueue();
 		myGrid.step();
 	}
 	
