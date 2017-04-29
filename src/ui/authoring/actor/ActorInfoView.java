@@ -301,6 +301,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataViews(ActorData first){
+		addDataView(first.getHealth());
 		for(Data d: first.getMyData()){
 			addDataView(d);
 		}
