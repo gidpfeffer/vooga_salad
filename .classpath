@@ -50,5 +50,20 @@
 	<classpathentry kind="lib" path="lib/selenium-java-3.3.1/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/selenium-java-3.3.1/lib/xml-apis-1.4.01.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/voogasalad_util"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/analysis_hpr4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AST"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/breakout"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cellsociety_team24"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ChatApp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/example_advanced"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/example_roulette"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/example_xml"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lab_bins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lab_bounce"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lab_browser"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Slogo"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/slogo_team05"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/VoogaSalad"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/xml_practice"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,11 +1,11 @@
 package util;
 
-import java.util.stream.Collectors;	
+import java.util.stream.Collectors;
 
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
-import gamedata.composition.LayerData;
+import gamedata.LayerData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;

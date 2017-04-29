@@ -1,6 +1,5 @@
 package gamedata.testers;
 
-import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Map;
 import org.junit.Test;
 
 import builders.DataGenerator;
-import builders.OptionGenerator;
 import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.compositiongen.Data;
