@@ -65,8 +65,10 @@ public class WaveChooserMenu extends AnchorPane {
 		//TODO: Fix scroll bar
 		waves = new ScrollPane();
 		waves.setHbarPolicy(ScrollBarPolicy.NEVER);
+		waves.setVbarPolicy(ScrollBarPolicy.NEVER);
 		actors = new ScrollPane();
 		actors.setHbarPolicy(ScrollBarPolicy.NEVER);
+		actors.setVbarPolicy(ScrollBarPolicy.NEVER);
 		setupBack(actors, waves);
 	}
 	
@@ -180,6 +182,7 @@ public class WaveChooserMenu extends AnchorPane {
 		waveBoxes.add(newWave);
 		waves.setContent(root); 
 		myData.addWave(new WaveData());
+		selectWave(newWave, waveBoxes.indexOf(newWave));
 		return newWave;
 	}
 	

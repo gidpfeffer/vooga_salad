@@ -1,5 +1,6 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.AddMoneyCycleData;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 import util.Delay;
 
