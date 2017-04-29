@@ -43,6 +43,7 @@ public class LevelController {
 		delay = new Delay(DELAY_CONSTANT);
 		this.win = win;
 		this.updateGameStatusLevel = updateGameStatusLevel;
+		myGameData = gameData;
 		myPreferences = myGameData.getPreferences();
 	}
 	
