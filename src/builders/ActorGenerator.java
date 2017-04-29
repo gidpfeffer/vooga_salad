@@ -54,7 +54,6 @@ public class ActorGenerator{
 			String dataName = properties.get(i).getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
 			Property property = propFactory.make(propertyName, properties.get(i));
-			//TODO: FIX THIS UNCHECKED CAST
 			extras[i]=(IActProperty)property;
 		}
 		toBuild.add(extras);

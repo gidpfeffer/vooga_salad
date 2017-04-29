@@ -168,7 +168,6 @@ public class WebImageCollector {
 	public static BufferedImage findSearchItem(String qry, String fileType, 
 			String searchType, int iter, List<String> hit, List<Integer> hitIters,
 			int searchIter){
-		System.out.println(iter);
 		hitIters.add(iter);
 		if(searchIter>100){
 			try {
