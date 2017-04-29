@@ -116,11 +116,13 @@ public class MenuView extends AnchorPane {
 	}
 	
 	private void loadMusicButtonClicked(){
-		FileSelector selector = new FileSelector("*.mp3");
-		File data = selector.open(new Stage());
-		String[] temp = data.toURI().toString().split(PATH);
-		System.out.println(PATH + temp[temp.length-1]);
-		myData.setMusicFilePath(PATH + temp[temp.length-1]);
+			FileSelector selector = new FileSelector("*.mp3","*.wav");
+			File data = selector.open(new Stage());
+			if (data != null){
+				String[] temp = data.toURI().toString().split(PATH);
+				System.out.println(PATH + temp[temp.length-1]);
+				myData.setMusicFilePath(PATH + temp[temp.length-1]);
+			}
 	}
 
 	private void setupVBox() {

@@ -30,7 +30,6 @@ public class PreferencesData{
 	private Optional<Boolean> expByLevel;
 	private Optional<Boolean> pauseBetweenWaves;
 	private Optional<Boolean> cleanLevel;
-	//private String musicFilePath = new File("music/hero_song.mp3").toURI().toString(); // default for now
 	
 	private String musicFilePath = "music/hero_song.mp3";
 	
