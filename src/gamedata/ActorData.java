@@ -108,6 +108,18 @@ public class ActorData {
 		myData.put(name, property);
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(o == null){
+			return false;
+		}
+		ActorData actor = (ActorData)o;
+		return this.getName().equals(actor.getName());
+	}
+	
+	public String toString(){
+		return getName();
+	}
 	
 	public void removeData(Data property){
 		String name = AuthorInfoGenerator.getName(property);

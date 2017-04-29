@@ -7,7 +7,7 @@ public class LimitedHealthData extends HealthData{
 	private double startHealth;
 	
 	public LimitedHealthData(){
-		this(0.0);
+		this(10.0);
 	}
 	
 	public LimitedHealthData(Double health){
