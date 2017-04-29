@@ -5,6 +5,7 @@ import gamedata.ActorData;
 import gamedata.GameData;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import gameengine.grid.interfaces.controllerinfo.GridHandler;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import gameengine.handlers.LevelHandler;
 import gamestatus.GameStatus;
@@ -16,6 +17,8 @@ import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
+import ui.player.listener.ListenQueue;
+import ui.player.listener.SceneListen;
 import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
 import util.VoogaException;
@@ -35,10 +38,13 @@ public class GameController {
 	private UIHandler myUIHandler;
 	private AnimationHandler myAnimationHandler;
 	private LevelHandler myLevelHandler;
+	private GridHandler myGridHandler;
 	
 	private WriteableGameStatus myWriteableGameStatus;
 	private LevelController myLevelController;
 	private ControllableGrid myGrid;
+	
+	private SceneListen mySceneListen;
 	
 	private GameObjectUtil myGameObjectUtil;
 	
@@ -54,6 +60,7 @@ public class GameController {
 		myGameObjectUtil = new GameObjectUtil();
 		initializeUIHandler();
 		initializeAnimationHandler();
+		initializeGridHandler();
 		setupGameStatus(writeableUser);
 		setUpGameScreen();
 	}
@@ -68,7 +75,7 @@ public class GameController {
 	 * @return a new clean instance of ActorGrid
 	 */
 	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
-		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myWriteableGameStatus,
+		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myGridHandler,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
@@ -124,7 +131,21 @@ public class GameController {
 		myGrid.step();
 	}
 	
-	private void initialize
+	private void initializeGridHandler() {
+		myGridHandler = new GridHandler() {
+
+			@Override
+			public WriteableGameStatus getWriteableGameStatus() {
+				return myWriteableGameStatus;
+			}
+
+			@Override
+			public ListenQueue getEventQueue() {
+				return mySceneListen.pollQueue();
+			}
+			
+		};
+	}
 	
 	private void initializeAnimationHandler() {
 		myAnimationHandler = new AnimationHandler() {
