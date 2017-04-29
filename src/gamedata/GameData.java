@@ -70,6 +70,7 @@ public class GameData {
 	//Actors available for entire game
 	private Map<Integer, LineageData> pieces;
 	
+	//References the location of the last index
 	private int numOptions;
 
 
@@ -118,7 +119,28 @@ public class GameData {
 		return toRet;
 	}
 	
+	/**
+	 * Remove a general category from the GameData (e.g., Projectile)
+	 * 
+	 * @param actor BasicActorType to remove
+	 */
+	public void removeCategory(BasicActorType actor){
+		types.remove(actor);
+	}
 	
+	/**
+	 * Remove an actor (e.g., Snorlax)
+	 * 
+	 * @param actor ActorData to remove
+	 */
+	public void removeActor(ActorData actor){
+		for(Integer gen: pieces.keySet()){
+			ActorData first = pieces.get(gen).getProgenitor(); 
+			if(first.equals(actor)){
+				pieces.remove(gen);
+			}
+		}
+	}
 	
 	/**
 	 * This is for use in the GameController.
