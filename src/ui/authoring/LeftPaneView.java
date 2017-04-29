@@ -156,8 +156,8 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	}
 
 	private void setupDefaultActors() {
-		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
 		addActor("Troop","enemy_icon.png", DEFAULT_TROOPS);
+		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
 		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
 		
 	}

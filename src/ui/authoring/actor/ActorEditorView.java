@@ -106,13 +106,10 @@ public class ActorEditorView extends AnchorPane {
 		Image noplace = new Image("no_place_icon.png");
 		
 		Image selected = place;
-		//Image unselected = noplace;
 		
 		if(myActorType.isPlaceable()){
 			selected = noplace;
-			//unselected = place;
 		}
-		//b.updateImages(selected, unselected, new Location(40., 40.));
 		
 		ImageView im = new ImageView(selected);
 		im.setFitWidth(32);
