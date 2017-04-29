@@ -1,7 +1,5 @@
 package gameengine.actors.properties;
 
-import java.util.Collection;
-
 import java.util.List;
 
 import gamedata.composition.BaseDamageData;
@@ -32,6 +30,7 @@ public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProp
 			damage.accept(remaining);
 			grid.getMyDamageable(actorID).accept(remaining);
 				}));
+		//grid.getWriteableGameStatus().
 	}
 
 	@Override
