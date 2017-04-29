@@ -4,7 +4,7 @@ import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
 /**
- * STUB: implement as soon as grid has ability to access game status
+ * TODO: make sure AddMoneyData 
  * @author Moses Wayne
  *
  * @param <G>
@@ -13,8 +13,8 @@ public class AddMoneyProperty<G extends ReadAndDamageGrid> implements IActProper
 
 	private Double myMoney;
 	
-	public AddMoneyProperty() {
-		
+	public AddMoneyProperty(AddMoneyData myData) {
+		myMoney = myData.getMoney();
 	}
 	
 	@Override

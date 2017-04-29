@@ -43,6 +43,7 @@ public class LevelController {
 		delay = new Delay(DELAY_CONSTANT);
 		this.win = win;
 		this.updateGameStatusLevel = updateGameStatusLevel;
+		myGameData = gameData;
 		myPreferences = myGameData.getPreferences();
 	}
 	
@@ -67,7 +68,6 @@ public class LevelController {
 	}
 	
 	private void loadLevel(LevelData levelData) {
-		//if(preferences.cleanLevel()) ;
 		addPieces(levelData);
 	}
 	
@@ -90,13 +90,9 @@ public class LevelController {
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
-		System.out.println(enemyData==null);
 		Actor actor = builders.ActorGenerator.makeActor(enemyData.getOption(), actorData);
-		System.out.println("here"+actor.getType().toString()+" "+actor.getID());
 		Grid2D firstPathCoor = getFirstPathCoor(pathData);
-		System.out.println("got coordinate");
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
-		System.out.println("enemy spawned");
 		if (myPreferences.pauseBetweenWaves()) delay.delayAction();
 	}
 	

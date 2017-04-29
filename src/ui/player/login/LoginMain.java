@@ -188,7 +188,7 @@ public class LoginMain {
 	}
 	
 	private void goToGameScreen(GameData gameData) {
-		gameController = new GameController(gameData);
+		gameController = new GameController(gameData,loginhandler.getActiveUser());
 		gameController.getGameScreen().setLoginHandler(loginhandler);
 		gameController.start();
 		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
