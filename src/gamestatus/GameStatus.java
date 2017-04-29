@@ -2,6 +2,7 @@ package gamestatus;
 
 import java.util.HashMap;
 
+import ui.player.users.WriteableUser;
 import util.observerobservable.VoogaObservableMap;
 
 /**
@@ -15,6 +16,12 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	private final String MONEY = "Money";
 	private final String LEVEL = "Level";
 	private final String LIVES = "Lives";
+	
+	private WriteableUser myWriteableUser;
+	
+	public GameStatus(WriteableUser writeableUser) {
+		myWriteableUser =writeableUser;
+	}
 
 	public void addExperience(double exp){
 		double newExp = Double.parseDouble(myMap.get(EXPERIENCE))+exp;
@@ -37,16 +44,19 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	}
 
 	public void setMyExperience(double myExperience) {
+		myWriteableUser.setExperience(myExperience);
 		myMap.put(EXPERIENCE, Double.toString(myExperience));
 		notifyObservers();
 	}
 
 	public void setMyMoney(double myMoney) {
+		myWriteableUser.setMoney(myMoney);
 		myMap.put(MONEY, Double.toString(myMoney));
 		notifyObservers();
 	}
 
-	public void setMyLevel(double myLevel) {
+	public void setMyLevel(int myLevel) {
+		myWriteableUser.setLevel(myLevel);
 		myMap.put(LEVEL, Double.toString(myLevel));
 		notifyObservers();
 	}
