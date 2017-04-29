@@ -1,6 +1,7 @@
 package gameengine.actors.propertygen;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import gamedata.compositiongen.ShootData;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
@@ -37,11 +38,11 @@ public abstract class ShootTargetProperty<G extends ReadAndSpawnGrid> implements
 		targets.stream().forEach(target -> {
 			//IActProperty<MasterGrid> newProperty = new MoveAlongAngleProperty<MasterGrid>(target, myRange, mySpeed);
 			//IActProperty<MasterGrid> newProperty = new MoveWithHeatSeekProperty<MasterGrid>(myRange, mySpeed, myTarget);
-			grid.actorSpawnActor(myProjectile, myLoc.getX(), myLoc.getY()).accept(projectileProperty(target,myRange,mySpeed));
+			grid.actorSpawnActor(myProjectile, myLoc.getX(), myLoc.getY(), projectileProperty(target,myRange,mySpeed));
 		});
 	}
 	
-	protected abstract IActProperty<MasterGrid> projectileProperty(Double target, double range, double speed);
+	protected abstract Consumer<Collection<IActProperty<MasterGrid>>> projectileProperty(Double target, double range, double speed);
 	
 	protected BasicActorType getMyTarget() {
 		return myTarget;

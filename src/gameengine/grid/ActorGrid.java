@@ -32,7 +32,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	private Stack<SettableActorLocator> newActors;
 	private WriteableGameStatus myWriteableGameStatus;
 	
-	public ActorGrid(double maxX, double maxY, WriteableGameStatus myWriteableGameStatus,Function<Integer, Actor> actorMaker){
+	public ActorGrid(double maxX, double maxY, WriteableGameStatus myWriteableGameStatus, Function<Integer, Actor> actorMaker){
 		super();
 		limits = new Coordinates(maxX, maxY);
 		actors = new ArrayList<>();
@@ -50,7 +50,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 		myMap = Collections.unmodifiableMap(actors.stream()
 				.collect(Collectors.toMap(a -> a.getActor().getID(), 
 						a -> new DisplayInfo(a.getLocation(), 
-								a.getActor().getPercentHealth(), a.getActor().getMyOption()))));
+								a.getActor()))));
 		notifyObservers();
 		System.out.println(myMap.keySet());
 	}
@@ -162,10 +162,10 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	}
 
 	@Override
-	public Consumer<IActProperty<MasterGrid>> actorSpawnActor(Integer actorType, double startX, double startY) {
+	public void actorSpawnActor(Integer actorType, double startX, double startY, Consumer<Collection<IActProperty<MasterGrid>>> action) {
 		Actor newActor = actorMaker.apply(actorType);
 		addActor(newActor, startX, startY);
-		return newActor.addProperty();
+		newActor.addProperty(action);
 	}
 
 	@Override

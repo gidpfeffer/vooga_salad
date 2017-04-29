@@ -48,6 +48,7 @@ public class MenuView extends AnchorPane {
 	private static final String PAUSE_BETWEEN_WAVES_LABEL = "Buffer Waves";
 	private static final String CLEAN_LEVEL_LABEL = "Clean Level";
 	private static final String LOAD_MUSIC_LABEL = "Load Music";
+	private static final String PATH = "music/";
 	
 	private MenuDelegate myDelegate;
 	private PreferencesData myData;
@@ -123,7 +124,8 @@ public class MenuView extends AnchorPane {
 	private void loadMusicButtonClicked(){
 		FileSelector selector = new FileSelector("*.mp3");
 		File data = selector.open(new Stage());
-		myData.setMusicFilePath(data.toURI().toString());
+		String[] temp = data.toURI().toString().split(PATH);
+		myData.setMusicFilePath(PATH + temp[temp.length-1]);
 	}
 
 	private void setupVBox() {

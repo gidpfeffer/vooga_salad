@@ -1,5 +1,6 @@
 package gameengine.grid.classes;
 
+import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 
@@ -9,10 +10,10 @@ public class DisplayInfo implements FrontEndInformation{
 	private double healthRemaining;
 	private int actorOption;
 	
-	public DisplayInfo(Grid2D loc, double healthRemaining, int actorOption){
+	public DisplayInfo(Grid2D loc, Actor actor){
 		this.loc = loc;
-		this.healthRemaining = healthRemaining;
-		this.actorOption = actorOption;
+		this.healthRemaining = actor.getPercentHealth();
+		this.actorOption = actor.getMyOption();
 	}
 
 	@Override

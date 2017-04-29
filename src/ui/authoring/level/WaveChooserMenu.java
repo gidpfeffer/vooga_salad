@@ -178,18 +178,21 @@ public class WaveChooserMenu extends AnchorPane {
 		
 		HBox root=LevelUtil.generateHBox();
 		addWaveButton(root);
-		
-		for(StackPane box: waveBoxes){
-			box.setOpacity(1);
-		}
+		highlight(selected);
 		
 		for(int i =0; i<textBoxes.size(); i++){
 			//TODO: Restore saved
 			int quantity = editWave.getQuantity(enemies.get(i));
 			textBoxes.get(i).setText(""+quantity);
 		}
-		selected.setOpacity(.5);
 		root.getChildren().addAll(waveBoxes);
+	}
+	
+	private void highlight(StackPane selected){
+		for(StackPane box: waveBoxes){
+			box.setOpacity(.5);
+		}
+		selected.setOpacity(1);
 	}
 	
 	private StackPane nextWave(){
@@ -201,6 +204,7 @@ public class WaveChooserMenu extends AnchorPane {
 				Optional.of(LevelUtil.labelForStackButton
 				(String.format("      Wave %d       ", waveNumber + 1))), 
 				Optional.ofNullable(null),Pos.CENTER_RIGHT, true);
+		highlight(nextWave);
 		nextWave.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 				e -> selectWave(nextWave, waveNumber));
 		nextWave.setPrefHeight(56);
