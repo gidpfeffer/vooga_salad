@@ -15,6 +15,7 @@ import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
+import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
@@ -45,12 +46,12 @@ public class GameController {
 	private final int MAX_Y = 1;
 	
 	private final double MILLISECOND_DELAY=17;
-	public GameController(GameData gameData) {
+	public GameController(GameData gameData,WriteableUser writeableUser) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
 		initializeUIHandler();
 		initializeAnimationHandler();
-		setupGameStatus();
+		setupGameStatus(writeableUser);
 		setUpGameScreen();
 	}
 	
@@ -78,9 +79,9 @@ public class GameController {
 		return myGameScreen;
 	}
 	
-	private void setupGameStatus() {
+	private void setupGameStatus(WriteableUser writeableUser) {
 		mySimpleHUD = new SimpleHUD();
-		myGameStatus = new GameStatus();
+		myGameStatus = new GameStatus(writeableUser);
 		myGameStatus.addObserver(mySimpleHUD);
 	}
 	
