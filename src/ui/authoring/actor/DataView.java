@@ -196,7 +196,7 @@ public class DataView extends AnchorPane {
 		content.getChildren().add(fieldName);
 		
 		BasicPicker <BasicActorType> input = 
-				new BasicPicker<BasicActorType>(value, myActorTypes);
+				new BasicPicker<BasicActorType>(value, myActorTypes, true);
 		input.getTypeProperty().addListener(e -> {
 			System.out.println("toggled basic actor field input thing");
 			didEditBasicActorType(input.getTypeProperty().get(),nameKey);

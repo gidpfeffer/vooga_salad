@@ -1,4 +1,4 @@
-package gameengine.actors.properties;
+package gamedata.composition;
 
 import gamedata.composition.LimitedHealthData;
 
