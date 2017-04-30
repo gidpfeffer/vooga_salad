@@ -1,7 +1,5 @@
 package gameengine.conditions;
 
-import java.util.Optional;
-
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
@@ -18,12 +16,6 @@ public class EnduranceCondition<G extends ReadableGrid> extends WinLoseCondition
 	@Override
 	protected void update() {
 		myCurrentFrame++;
-	}
-
-	@Override
-	public Optional<Boolean> conditionSatisfied(G grid, ReadableGameStatus status) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
