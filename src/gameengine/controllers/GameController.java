@@ -24,7 +24,6 @@ import ui.player.inGame.SimpleHUD;
 import ui.player.listener.ListenQueue;
 import ui.player.listener.SceneListen;
 import ui.player.users.InitialGameStatus;
-import ui.player.users.User;
 import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
 import util.VoogaException;
@@ -123,7 +122,6 @@ public class GameController {
 	
 	private void initializeGridHandler() {
 		myGridHandler = new GridHandler() {
-
 			@Override
 			public WriteableGameStatus getWriteableGameStatus() {
 				return myWriteableGameStatus;
@@ -133,7 +131,6 @@ public class GameController {
 			public ListenQueue getEventQueue() {
 				return mySceneListen.getQueue();
 			}
-			
 		};
 	}
 	
@@ -201,7 +198,6 @@ public class GameController {
 
 			@Override
 			public void displayWinAlert() {
-				myAnimationHandler.stop();
 				animation.stop();
 				myGameScreen.notifyWin();
 			}
