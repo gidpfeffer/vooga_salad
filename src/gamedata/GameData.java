@@ -56,7 +56,7 @@ public class GameData {
 	PreferencesData preferences;
 	
 	//Path information
-	PathData myPaths;
+	//PathData myPaths;
 	
 	//Layer information
 	MapLayersData myLayers; 
@@ -70,6 +70,7 @@ public class GameData {
 	//Actors available for entire game
 	private Map<Integer, LineageData> pieces;
 	
+	//References the location of the last index
 	private int numOptions;
 
 
@@ -80,7 +81,6 @@ public class GameData {
 	public GameData(String name){
 		this.name = name;
 		levels=new HashMap<Integer,LevelData>();
-		myPaths = new PathData();
 		preferences = new PreferencesData();
 		display = new DisplayData();
 		pieces = new HashMap<Integer, LineageData>();
@@ -119,7 +119,48 @@ public class GameData {
 		return toRet;
 	}
 	
+	/**
+	 * Remove a general category from the GameData (e.g., Projectile)
+	 * 
+	 * @param actor BasicActorType to remove
+	 */
+	public void removeCategory(BasicActorType actor){
+		types.remove(actor);
+	}
 	
+	/**
+	 * Remove an actor (e.g., Snorlax)
+	 * 
+	 * @param actor ActorData to remove
+	 */
+	public void removeActor(ActorData actor){
+		for(Integer gen: pieces.keySet()){
+			ActorData first = pieces.get(gen).getProgenitor(); 
+			if(first.equals(actor)){
+				pieces.remove(gen);
+			}
+		}
+	}
+	
+	/**
+	 * Completely remove any traces of an ActorData from the GameData,
+	 * including references in the LevelData objects
+	 * @param actor
+	 */
+	public void completeWipeActor(ActorData actor){
+		removeActor(actor);
+		removeFromLevels(actor);
+	}
+	
+	private void removeFromLevels(ActorData actor){
+		for (int i=0; i<levels.size(); i++){
+			List<WaveData> waves = levels.get(i).getMyWaves();
+			for(int j=0; j<waves.size(); j++){
+				WaveData wave = waves.get(j);
+				wave.removeActor(actor);
+			}
+		}
+	}
 	
 	/**
 	 * This is for use in the GameController.
@@ -135,6 +176,14 @@ public class GameData {
 		return getOptions().get(option);
 	}
 	
+	public Integer getOptionKey(ActorData actor){
+		for(Integer option: pieces.keySet()){
+			if(pieces.get(option).getProgenitor().equals(actor)){
+				return option;
+			}
+		}
+		return 0;
+	}
 	
 	
 	/**
@@ -151,7 +200,8 @@ public class GameData {
 	 */
 	public LineageData add(ActorData data){
 		LineageData lin = new LineageData(data);
-		pieces.put(numOptions++, lin);
+		pieces.put(numOptions, lin);
+		numOptions++;
 		return lin;
 	}
 	
@@ -202,7 +252,7 @@ public class GameData {
 	 * @return Map of Integers mapped to Paths
 	 */
 	public Map<Integer, List<Grid2D>> getPathOptions(){
-		return myPaths.getMyPaths();
+		return myLayers.getMyPathData().getMyPaths();
 	}
 	
 	
@@ -226,11 +276,11 @@ public class GameData {
 	}
 
 	public PathData getMyPaths() {
-		return myPaths;
+		return myLayers.getMyPathData();
 	}
 
-	public void setMyPaths(PathData myPaths) {
-		this.myPaths = myPaths;
+	public void setMyPaths(PathData pathData) {
+		this.myLayers.setMyPathData(pathData);
 	}
 
 	public List<BasicActorType> getTypes() {

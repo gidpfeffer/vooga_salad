@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gamedata.LayerData;
+import gamedata.MapLayersData;
 import gamedata.map.PolygonData;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -39,7 +40,7 @@ public class PolygonLayerView extends Layer {
 	private Polygon myCurrentPolygon;
 	private Color myColor = CustomColors.AMBER;
 	private boolean isActive = false;
-	Tuple<Double, Double> myInsets;
+	private Tuple<Double, Double> myInsets;
 	
 	public PolygonLayerView(LayerData layerData,Tuple<Double, Double> insets){
 		super();
@@ -112,7 +113,9 @@ public class PolygonLayerView extends Layer {
 	 * @param e
 	 */
 	private void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (!checkIfPointInBounds(e)) {
+	        return;
+	    }
 		if(myCurrentPolygon == null){
 			myCurrentPolygon = new Polygon(
 					e.getX(), e.getY(),
@@ -124,11 +127,16 @@ public class PolygonLayerView extends Layer {
 		}
 	}
 	
+	private boolean checkIfPointInBounds(MouseEvent e){
+		return this.intersects(e.getX(), e.getY(), 1, 1);
+	}
+	
 	private void setPolygonStyle(Polygon polygon) {
 		polygon.setFill(myColor);
 		polygon.setStroke(myColor.darker());
 		polygon.setStrokeWidth(3.0);
 	}
+
 
 
 	/**
@@ -231,10 +239,18 @@ public class PolygonLayerView extends Layer {
 
 
 	@Override
-	public void sizeDidChange(ImageViewPane imagepane) {
+	public void sizeDidChange() {
 		// TODO Auto-generated method stub
-		myInsets = imagepane.getImageInsets();
+		clear();
+		
 
+		
+	}
+
+
+	@Override
+	public void load(MapLayersData mapData) {
+		// TODO Auto-generated method stub
 		
 	}
 

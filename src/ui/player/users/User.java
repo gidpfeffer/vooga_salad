@@ -1,10 +1,10 @@
 package ui.player.users;
 
-public class User {
+public class User implements WriteableUser{
 	
 	private String username;
 	private String password;
-	private Integer score;
+	private Double money;
 	private String avatar;
 	private String email;
 	private Integer level;
@@ -55,11 +55,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Integer getHighScore() {
-		return score;
+	public double getHighScore() {
+		return money;
 	}
-	public void setScores(int scores) {
-		this.score = scores;
+	public void setMoney(double money) {
+		this.money = money;
 	}
 	public String getProfilePicture() {
 		return avatar;
@@ -83,7 +83,7 @@ public class User {
 		this.level = 1;
 		this.rank = "Novice";
 		this.last = "";
-		this.score = 0;
+		this.money = 0.0;
 	}
 	
 }

@@ -22,7 +22,7 @@ public class ListenQueue {
 		myEvents = new HashSet<>();
 	}
 	
-	public Grid2D getPointer() {
+	public Grid2D getLocation() {
 		return myPointer;
 	}
 	
@@ -30,12 +30,14 @@ public class ListenQueue {
 		myEvents.add(code);
 	}
 	
-	public boolean queryKey(String key) {
-		return myEvents.contains(KeyCode.getKeyCode(key));
+	public boolean queryKey(KeyCode key) {
+		return myEvents.contains(key);
 	}
-	
+	/*
 	@Override
 	public ListenQueue clone() {
-		return this.clone();
-	}
+		ListenQueue ret = new ListenQueue(myPointer.getX(),myPointer.getY());
+		myEvents.stream().forEach(event -> ret.addEvent(event));
+		return ret;
+	}*/
 }

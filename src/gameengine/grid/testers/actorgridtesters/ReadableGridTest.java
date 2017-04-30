@@ -5,62 +5,58 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import gameengine.grid.ActorGrid;
-import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.testers.TestActor;
 import types.BasicActorType;
 
 public class ReadableGridTest {
 	
-	private MasterGrid myGrid = null;
+	private ReadableGrid myGrid = null;
 	private final int actorID = 3;
 	
     public void setUp () {
-       myGrid = new ActorGrid(1, 1, i -> new TestActor(i));
-       myGrid.actorSpawnActor(actorID, 5, 20);
+       ActorGrid grid = new ActorGrid(1, 1, null, i -> new TestActor(i));
+       grid.controllerSpawnActor(new TestActor(actorID), 5, 20);
+       myGrid = grid;
     }
     
-    // tests the locational ability of finding actors on the grid
+    // tests the locational ability of finding actors on the myGrid
 	@Test
 	public void locationTest() {
 		setUp();
-		ReadableGrid grid = myGrid;
-		assertEquals(grid.getLocationOf(actorID).getX(), 5, 0);
-		assertEquals(grid.getLocationOf(actorID).getY(), 20, 0);
+		assertEquals(myGrid.getLocationOf(actorID).getX(), 5, 0);
+		assertEquals(myGrid.getLocationOf(actorID).getY(), 20, 0);
 	}
 	
     // tests the getActorLocations
 	@Test
 	public void actorTypeFilteringTest() {
 		setUp();
-		ReadableGrid grid = myGrid;
-		assertEquals(grid.getActorLocations(new BasicActorType("troop")).size(), 1);
-		assertEquals(grid.getActorLocations(new BasicActorType("tower")).size(), 0);
-		assertEquals(grid.getActorLocations(new BasicActorType("troop")).iterator().next().getX(), 5, 0);
-		assertEquals(grid.getActorLocations(new BasicActorType("troop")).iterator().next().getY(), 20, 0);
+		assertEquals(myGrid.getActorLocations(new BasicActorType("troop")).size(), 1);
+		assertEquals(myGrid.getActorLocations(new BasicActorType("tower")).size(), 0);
+		assertEquals(myGrid.getActorLocations(new BasicActorType("troop")).iterator().next().getX(), 5, 0);
+		assertEquals(myGrid.getActorLocations(new BasicActorType("troop")).iterator().next().getY(), 20, 0);
 	}
 	
     // tests the getActorLocationsInRadius
 	@Test
 	public void radiusTest() {
 		setUp();
-		ReadableGrid grid = myGrid;
-		assertEquals(grid.getActorLocationsInRadius(5, 25, 5, new BasicActorType("troop")).size(), 1);
-		assertEquals(grid.getActorLocationsInRadius(5, 25, 4.999, new BasicActorType("troop")).size(), 0);
-		assertEquals(grid.getActorLocationsInRadius(5, 20, 100, new BasicActorType("tower")).size(), 0);
+		assertEquals(myGrid.getActorLocationsInRadius(5, 25, 5, new BasicActorType("troop")).size(), 1);
+		assertEquals(myGrid.getActorLocationsInRadius(5, 25, 4.999, new BasicActorType("troop")).size(), 0);
+		assertEquals(myGrid.getActorLocationsInRadius(5, 20, 100, new BasicActorType("tower")).size(), 0);
 	}
 	
     // tests the boundary system
 	@Test
 	public void boundaryTest() {
 		setUp();
-		ReadableGrid grid = myGrid;
-		assertEquals(grid.isValidLoc(-1, -1), false);
-		assertEquals(grid.isValidLoc(1.5, 0), false);
-		assertEquals(grid.isValidLoc(0, 0), true);
-		assertEquals(grid.isValidLoc(1, 1), true);
-		assertEquals(grid.isValidLoc(1, 0), true);
-		assertEquals(grid.isValidLoc(0, 1), true);
+		assertEquals(myGrid.isValidLoc(-1, -1), false);
+		assertEquals(myGrid.isValidLoc(1.5, 0), false);
+		assertEquals(myGrid.isValidLoc(0, 0), true);
+		assertEquals(myGrid.isValidLoc(1, 1), true);
+		assertEquals(myGrid.isValidLoc(1, 0), true);
+		assertEquals(myGrid.isValidLoc(0, 1), true);
 	}
 
 }

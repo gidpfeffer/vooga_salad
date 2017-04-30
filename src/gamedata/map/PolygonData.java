@@ -3,7 +3,7 @@ package gamedata.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import ui.authoring.map.layer.Point;
+import ui.authoring.map.layer.path.Point;
 import util.Location;
 
 /**

@@ -19,7 +19,7 @@ public class BasicPicker <A> extends StackPane{
 	private Label myLabel;
 	private ObjectProperty<A> myType;
 	
-	public BasicPicker(A actorType, List<A> actorTypes){
+	public BasicPicker(A actorType, List<A> actorTypes, boolean toggle){
 		super();
 		this.myTypes = actorTypes;
 		this.myType = new SimpleObjectProperty<A>(actorType);
@@ -28,9 +28,15 @@ public class BasicPicker <A> extends StackPane{
 		myLabel.setAlignment(Pos.CENTER);
 		myLabel.setTextAlignment(TextAlignment.CENTER);
 		pos = actorTypes.indexOf(actorType);
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> toggle());
+		if(toggle)
+			addToggle();
 		this.getChildren().add(myLabel);
 	}
+
+	public void addToggle(){
+		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> toggle());
+	}
+	
 	public void toggle(){
 		pos++;
 		if(pos==myTypes.size())
@@ -41,8 +47,18 @@ public class BasicPicker <A> extends StackPane{
 		myType.set(myTypes.get(pos));
 		myLabel.setText(myType.get().toString());
 	}
+	
 	public ObjectProperty<A> getTypeProperty(){
 		return myType;
 	}
+
+	public List<A> getMyTypes() {
+		return myTypes;
+	}
+
+	public void setMyTypes(List<A> myTypes) {
+		this.myTypes = myTypes;
+	}
+	
 	
 }

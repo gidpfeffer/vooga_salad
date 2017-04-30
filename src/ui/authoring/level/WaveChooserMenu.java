@@ -65,8 +65,10 @@ public class WaveChooserMenu extends AnchorPane {
 		//TODO: Fix scroll bar
 		waves = new ScrollPane();
 		waves.setHbarPolicy(ScrollBarPolicy.NEVER);
+		waves.setVbarPolicy(ScrollBarPolicy.NEVER);
 		actors = new ScrollPane();
 		actors.setHbarPolicy(ScrollBarPolicy.NEVER);
+		actors.setVbarPolicy(ScrollBarPolicy.NEVER);
 		setupBack(actors, waves);
 	}
 	
@@ -96,6 +98,16 @@ public class WaveChooserMenu extends AnchorPane {
 		HBox.setMargin(newWave, new Insets(20));
 		root.getChildren().add(newWave);
 		waves.setContent(root);
+	}
+	
+	private void printTest(){
+		System.out.println("START");
+		
+		List<EnemyInWaveData> enemies = editWave.getWaveEnemies();
+		for(EnemyInWaveData enemy: enemies){
+			System.out.println(enemy.getMyActor().getName());
+		}
+				
 	}
 	
 	private  void populateEnemies(){
@@ -143,6 +155,7 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private void updateQuantity(String newVal, ActorData data){
+		printTest();
 		try{
 			int quantity = Integer.parseInt(newVal);
 			if(editWave.contains(data)){
@@ -169,6 +182,7 @@ public class WaveChooserMenu extends AnchorPane {
 		waveBoxes.add(newWave);
 		waves.setContent(root); 
 		myData.addWave(new WaveData());
+		selectWave(newWave, waveBoxes.indexOf(newWave));
 		return newWave;
 	}
 	
@@ -178,18 +192,21 @@ public class WaveChooserMenu extends AnchorPane {
 		
 		HBox root=LevelUtil.generateHBox();
 		addWaveButton(root);
-		
-		for(StackPane box: waveBoxes){
-			box.setOpacity(1);
-		}
+		highlight(selected);
 		
 		for(int i =0; i<textBoxes.size(); i++){
 			//TODO: Restore saved
 			int quantity = editWave.getQuantity(enemies.get(i));
 			textBoxes.get(i).setText(""+quantity);
 		}
-		selected.setOpacity(.5);
 		root.getChildren().addAll(waveBoxes);
+	}
+	
+	private void highlight(StackPane selected){
+		for(StackPane box: waveBoxes){
+			box.setOpacity(.5);
+		}
+		selected.setOpacity(1);
 	}
 	
 	private StackPane nextWave(){
@@ -201,6 +218,7 @@ public class WaveChooserMenu extends AnchorPane {
 				Optional.of(LevelUtil.labelForStackButton
 				(String.format("      Wave %d       ", waveNumber + 1))), 
 				Optional.ofNullable(null),Pos.CENTER_RIGHT, true);
+		highlight(nextWave);
 		nextWave.addEventHandler(MouseEvent.MOUSE_CLICKED, 
 				e -> selectWave(nextWave, waveNumber));
 		nextWave.setPrefHeight(56);

@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
  * @author Moses Wayne
  *
  */
-public class SceneListen {
+public class SceneListen implements IListen{
 
 	private ListenQueue myQueue;
 	private Grid2D myMouse;
@@ -47,10 +47,14 @@ public class SceneListen {
 	private void generateNewQueue() {
 		myQueue = new ListenQueue(myMouse.getX(), myMouse.getY());
 	}
+	
+	public ListenQueue getQueue() {
+		return myQueue;
+	}
 
-	public ListenQueue pollQueue() {
-		ListenQueue retQueue = myQueue.clone();
+	public void pollQueue() {
+		//ListenQueue retQueue = myQueue.clone();
 		generateNewQueue();
-		return retQueue;
+		//return retQueue;
 	}
 }

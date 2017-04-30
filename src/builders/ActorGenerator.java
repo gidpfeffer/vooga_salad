@@ -49,12 +49,10 @@ public class ActorGenerator{
 				getClass().getSimpleName().replace("Data", "Property"), data.getHealth());
 		toBuild.add(health);
 		IActProperty[] extras = new IActProperty[data.getMyData().size()];
-
 		for(int i=0; i<properties.size(); i++){
 			String dataName = properties.get(i).getClass().getSimpleName();
 			String propertyName = dataName.replace("Data", "Property");
 			Property property = propFactory.make(propertyName, properties.get(i));
-			//TODO: FIX THIS UNCHECKED CAST
 			extras[i]=(IActProperty)property;
 		}
 		toBuild.add(extras);

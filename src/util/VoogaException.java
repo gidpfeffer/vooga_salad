@@ -1,9 +1,6 @@
 package util;
 
-/**
- * @author sarahzhou
- *
- */
+
 public class VoogaException extends Exception {
 	
 	public static final String ILLEGAL_UPDATE = "Illegal update";
