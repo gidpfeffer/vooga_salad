@@ -68,9 +68,7 @@ public class GameLevelController {
 			enemiesInWave.poll().get();
 		}
 		Optional<Boolean> isSatisfied = myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus);
-		if (isSatisfied.isPresent()) {
-			if (isSatisfied.get()) levelUp();
-		}
+		if (isSatisfied.isPresent()&&isSatisfied.get()) levelUp();
 	}
 	
 	public int getLevel() {
