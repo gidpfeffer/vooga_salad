@@ -1,4 +1,4 @@
-package gamedata.composition;
+package gamedata.compositioncon;
 
 import gamedata.compositiongen.StatusData;
 import gameengine.actors.status.StatusDuration;

@@ -11,6 +11,8 @@ import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,13 +55,13 @@ public class WebImageCollector {
 	private final static String API_ADDRESS = "https://www.googleapis.com/customsearch/v1?";
 	private final static String IMAGE_FOLDER = "images/";
 	
-	public static ImageInfo findAndSaveRandomIcon(Random randy, String qry, List<String> hits){
-		BufferedImage image = findRandomIcon(randy, qry, hits);
+	public static ImageInfo findAndSaveRandomIcon(Random randy, String qry, List<String> hits, List<Integer> hitIters){
+		BufferedImage image = findRandomIcon(randy, qry, hits, hitIters);
 		BufferedImage transparent = transparent(image, Color.WHITE, Color.LIGHT_GRAY);
 		String name = qry + "_random";
-		String savePath = IMAGE_FOLDER + name;
+		String savePath = name;
 		String s = savePng(image, savePath);
-		return new ImageInfo(transparent, s, name + "." +  PNG);
+		return new ImageInfo(transparent, name + "." +  PNG, s);
 	}
 	
 	//TODO: Debug this
@@ -115,16 +117,16 @@ public class WebImageCollector {
 	private static String savePng(BufferedImage image, String fileName) {
 		String toRet = "";
         try {
-        	toRet = fileName + "." + PNG;
-            ImageIO.write(image, PNG,
-                    new File(toRet));
+        	toRet = System.getProperty("user.home")+ "/Desktop/" + fileName + "." + PNG;
+        	File file = new File(toRet);
+            ImageIO.write(image, PNG, file);
+            
         } catch (IOException e) {
         	//TODO
             e.printStackTrace();
         }
         return toRet;
     }
-	
 	
 	/**
 	 * For use in random Actor generation.
@@ -133,9 +135,9 @@ public class WebImageCollector {
 	 * @param qry The String topic to search
 	 * @return BufferedImage found on the internet
 	 */
-	public static BufferedImage findRandomIcon(Random randy, String qry, List<String> hits){
+	public static BufferedImage findRandomIcon(Random randy, String qry, List<String> hits, List<Integer> hitIters){
 		int index = randy.nextInt(20) + 1;
-		return findImage(qry+"+cartoon", PNG, index, hits);
+		return findImage(qry+"+cartoon", PNG, index, hits, hitIters);
 	}
 	
 	/**
@@ -145,12 +147,12 @@ public class WebImageCollector {
 	 * the final image
 	 * @return BufferedImage found on the internet
 	 */
-	public static BufferedImage findIcon(String qry, int iter, List<String> hits){
-		return findImage(qry+"+cartoon", PNG, iter, hits);
+	public static BufferedImage findIcon(String qry, int iter, List<String> hits, List<Integer> hitIters){
+		return findImage(qry+"+cartoon", PNG, iter, hits, hitIters);
 	}
 	
-	public static BufferedImage findImage(String qry, String fileType, int iter, List<String> hits){
-		return findSearchItem(qry, fileType, IMAGE, iter, hits, 0);
+	public static BufferedImage findImage(String qry, String fileType, int iter, List<String> hits, List<Integer> hitIters){
+		return findSearchItem(qry, fileType, IMAGE, iter, hits, hitIters, 0);
 	}
 	
 	/**
@@ -164,8 +166,10 @@ public class WebImageCollector {
 	 * @return
 	 */
 	public static BufferedImage findSearchItem(String qry, String fileType, 
-			String searchType, int iter, List<String> hit, int searchIter){
-		if(searchIter>5){
+			String searchType, int iter, List<String> hit, List<Integer> hitIters,
+			int searchIter){
+		hitIters.add(iter);
+		if(searchIter>100){
 			try {
 				return ImageIO.read(new File(IMAGE_FOLDER + "profile_icon.png"));
 			} catch (IOException e) {
@@ -187,10 +191,15 @@ public class WebImageCollector {
 		} catch(IOException e){
 			//TODO
 		}
-		if(toRet == null && iter-1>0){
-			toRet = findSearchItem(qry, fileType, searchType, --iter, hit, ++searchIter);
-		} else if (toRet == null){
-			toRet = findSearchItem(qry, fileType, searchType, ++iter, hit, ++searchIter);
+		if(toRet == null && iter-1>0 && !hitIters.contains(iter-1)){
+			toRet = findSearchItem(qry, fileType, searchType, --iter, hit, hitIters, ++searchIter);
+		} else if (toRet == null && !hitIters.contains(iter+1)){
+			toRet = findSearchItem(qry, fileType, searchType, ++iter, hit, hitIters, ++searchIter);
+		} else {
+			while(hitIters.contains(iter)){
+				iter++;
+			}
+			toRet = findSearchItem(qry, fileType, searchType, iter, hit, hitIters, ++searchIter);
 		}
 		return toRet;
 	}

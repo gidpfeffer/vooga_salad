@@ -9,7 +9,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import builders.DataGenerator;
-import builders.OptionGenerator;
+import builders.AuthorInfoGenerator;
 import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.compositiongen.Data;
@@ -18,7 +18,7 @@ import types.BasicActorType;
 //import java.lang.reflect.Field;
 
 /**
- * Test OptionGenerator
+ * Test AuthorInfoGenerator
  * @author maddiebriere
  *
  */
@@ -36,16 +36,13 @@ public class OptionGeneratorTest {
 	}
 	
 	@Test
-	public void correctProperties(){
-		List<String> properties = OptionGenerator.getPropertyTypes();
-		assertEquals(properties.get(0), "BaseDamage");
-		System.out.println("Properties");
-		Arrays.asList(properties).stream().forEach(p -> System.out.println(p));
+	public void fieldPrint(){
 	}
+
 	
 	@Test 
 	public void correctPropertyArgs(){
-		Map<String, List<FieldData>> options = OptionGenerator.getPropertyTypesWithArgs();
+		Map<String, List<FieldData>> options = AuthorInfoGenerator.getPropertyTypesWithArgs();
 		for(String s: options.keySet()){
 			System.out.println(s + " ");
 			for(FieldData f: options.get(s)){
@@ -54,36 +51,19 @@ public class OptionGeneratorTest {
 			System.out.println();
 		}
 	}
-	
-	@Test
-	public void correctTypeProperties(){
-		List<String> properties = OptionGenerator.getGeneralPropertyTypes();
-		assertEquals(properties.get(0), "Damageable");
-		System.out.println("General Properties");
-		Arrays.asList(properties).stream().forEach(p -> System.out.println(p));
-	}
-	
-	
-	@Test
-	public void correctSubtypes(){
-		List<String> properties = OptionGenerator.getSubcategories("Shoot");
-		//assertEquals(properties.get(0), "");
-		assertEquals(properties.get(0), "ShootTargetFar");
-		System.out.println("Shoot Properties");
-		Arrays.asList(properties).stream().forEach(System.out::println);
-	}
+
 	
 	@Test
 	public void getName(){
 		Data d = DataGenerator.makeData("LimitedHealthData", 10.0);
-		assertEquals("LimitedHealth", OptionGenerator.getName(d));
+		assertEquals("LimitedHealth", AuthorInfoGenerator.getName(d));
 	}
 	
 	@Test 
 	public void getFields(){
 		System.out.println("\n");
 		Data d = DataGenerator.makeData("LimitedHealthData", 10.0);
-		Map<String, Object> values = OptionGenerator.getFields(d);
+		Map<String, Object> values = AuthorInfoGenerator.getFields(d);
 		for(String s: values.keySet()){
 			System.out.println(s + " " + values.get(s));
 		}
@@ -93,36 +73,36 @@ public class OptionGeneratorTest {
 	
 	@Test
 	public void testPropertyDescriptions(){
-		System.out.println(OptionGenerator.getDescription("BaseDamage"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shoot"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
-		System.out.println(OptionGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("BaseDamage"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
+		System.out.println(AuthorInfoGenerator.getDescription("Shootsfldldjfhgl"));
 	}
 
 }

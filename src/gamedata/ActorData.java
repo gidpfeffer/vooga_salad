@@ -42,7 +42,8 @@ public class ActorData {
 	private BasicActorType type;
 	private HealthData health;
 	private BasicData basic;
-	private LayerData layer; 
+	private LayerData layer;
+	private String layerName;
 	private double cost;
 	/**
 	 * This list holds the layer that this actor belong.  Layer is a list of polygons
@@ -107,6 +108,18 @@ public class ActorData {
 		myData.put(name, property);
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(o == null){
+			return false;
+		}
+		ActorData actor = (ActorData)o;
+		return this.getName().equals(actor.getName());
+	}
+	
+	public String toString(){
+		return getName();
+	}
 	
 	public void removeData(Data property){
 		String name = AuthorInfoGenerator.getName(property);
@@ -186,9 +199,17 @@ public class ActorData {
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-	public String toString(){
-		return this.getName();
+
+
+	public String getLayerName() {
+		return layerName;
 	}
+
+	public void setLayerName(String layerName) {
+		this.layerName = layerName;
+	}
+
+
 	
 	
 }

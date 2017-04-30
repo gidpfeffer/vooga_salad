@@ -1,5 +1,7 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.MultiLifeHealthData;
+
 public class MultiLifeHealthProperty extends LimitedHealthProperty{
 	
 	private Integer myLives;

@@ -1,5 +1,6 @@
 package gameengine.grid.testers;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
 import gameengine.actors.management.Actor;
@@ -36,11 +37,6 @@ public class TestActor implements Actor{
 	}
 
 	@Override
-	public Consumer<IActProperty<MasterGrid>> addProperty() {
-		return null;
-	}
-
-	@Override
 	public Integer getID() {
 		return ID;
 	}
@@ -63,6 +59,24 @@ public class TestActor implements Actor{
 	@Override
 	public double getPercentHealth() {
 		return 0.1;
+	}
+
+	@Override
+	public void exit(MasterGrid grid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void changeExit(Consumer<Collection<IActProperty<MasterGrid>>> action) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addProperty(Consumer<Collection<IActProperty<MasterGrid>>> function) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

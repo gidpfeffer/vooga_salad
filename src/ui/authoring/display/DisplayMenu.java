@@ -51,6 +51,7 @@ public class DisplayMenu {
 		myData = data;
 		// setupBackButton();
 		myGameData = gameData;
+		myGameData.setDisplayData(myData);
 		displayList = new ListView<ImageView>();
 		displayList.setMaxWidth(100);
 		displayList.setMaxHeight(400);

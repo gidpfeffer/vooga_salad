@@ -27,6 +27,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	private Scene scene;
 	private Button auth;
 	private Button selector;
+	private Button reviews;
 	private Button loginEnter;
 	private final Text actiontarget;
 	private HBox bottomHBox;
@@ -146,9 +147,13 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		selector = new Button(loginResource.getString("gotoSelector"));
 		selector.setOnAction(e -> loginhandler.gotoGameSelector());
 		
+		reviews = new Button("Ratings and Reviews");
+		reviews.setOnAction(e -> loginhandler.gotoReviews());
+		
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
-		bottomHBox = new HBox(100, auth, selector);
+		UIHelper.setDropShadow(reviews);
+		bottomHBox = new HBox(100, auth, selector, reviews);
 		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
@@ -177,7 +182,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	private void createNewScreen() {
 		getBorderPane().setBottom(null);
 		bottomHBox.getChildren().clear();
-		VBox vbox = new VBox(40, auth, selector);
+		VBox vbox = new VBox(40, auth, selector, reviews);
 		vbox.setAlignment(Pos.CENTER);
 		getBorderPane().setCenter(vbox);
 		Label us = new Label("'I Heart Singletons' - Duvall, probably");

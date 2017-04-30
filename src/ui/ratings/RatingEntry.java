@@ -4,10 +4,11 @@
 package ui.ratings;
 
 
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -28,33 +29,37 @@ import ui.general.UIHelper;
  */
 public class RatingEntry extends VBox {
 	
+	private static final Insets DEFAULT_PADDING_INSETS = new Insets(10,10,10,10);
+	private static final int DEFAULT_WIDTH = 1000;
+	private static final int DEFAULT_BUTTON_HEIGHT = 50;
+	private static final int DEFAULT_SPACING = 5;
+	private static final Background DEFAULT_NODE_BACKGROUND = 
+							new Background(new BackgroundFill(CustomColors.INDIGO, new CornerRadii(3.5), null));
+	
 	private TextArea myReviewText;
 	private TextField myUserNameText;
 	private Button mySubmitButton;
 	private RatingStars myRatingStars;
+	private ResourceBundle resource;
 	
-	public RatingEntry() {
-		
+	public RatingEntry(int totalstars, String lang) {
+		resource = ResourceBundle.getBundle(lang);
 		UIHelper.setDropShadow(this);
-
-		
-		setSpacing(5);
-		
-		setBackground(new Background(new BackgroundFill(CustomColors.INDIGO, new CornerRadii(3.5), null)));
-		setPadding(new Insets(10,10,10,10));
-		
-		myRatingStars = new RatingStars(0, true);
+		setSpacing(DEFAULT_SPACING);
+		setBackground(DEFAULT_NODE_BACKGROUND);
+		setPadding(DEFAULT_PADDING_INSETS);
+		myRatingStars = new RatingStars(0, true, totalstars, lang);
 		myReviewText = new TextArea();
-		myReviewText.setPrefHeight(200);
+		myReviewText.setPrefHeight(DEFAULT_WIDTH / 5);
 		HBox myUsernameEntry = new HBox();
 		myUserNameText = new TextField();
-		myUserNameText.prefWidth(100);
-		Label usernameLabel = new Label("Username: ");
+		myUserNameText.prefWidth(DEFAULT_WIDTH / 10);
+		Label usernameLabel = new Label(resource.getString("usernameprompt"));
 		usernameLabel.setFont(Preferences.FONT_MEDIUM_BOLD);
 		usernameLabel.setTextFill(Color.WHITE);
 		myUsernameEntry.getChildren().addAll(usernameLabel, myUserNameText);
-		mySubmitButton = new Button("Submit");
-		mySubmitButton.setPrefSize(800, 50);
+		mySubmitButton = new Button(resource.getString("submitbuttontext"));
+		mySubmitButton.setPrefSize(DEFAULT_WIDTH - 25, DEFAULT_BUTTON_HEIGHT);
 		mySubmitButton.setTextFill(Color.WHITE);
 		mySubmitButton.setFont(Preferences.FONT_SMALL_BOLD);
 		mySubmitButton.setBackground(new Background(new BackgroundFill(CustomColors.INDIGO, null, null)));

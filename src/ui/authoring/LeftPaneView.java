@@ -1,6 +1,13 @@
 package ui.authoring;
 
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,11 +16,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import javax.imageio.ImageIO;
+
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import gamedata.ActorData;
+import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LineageData;
+import gamedata.composition.LimitedHealthData;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -146,10 +158,24 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	}
 
 	private void setupDefaultActors() {
-		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
 		addActor("Troop","enemy_icon.png", DEFAULT_TROOPS);
+		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
 		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
 		
+	}
+	
+	private void printCurrent(){
+		System.out.print("****GameData review******\n");
+		if(myGameData.getLevels().size()!=0 && myGameData.getLevel(1).getNumWaves()!=0)
+			for(EnemyInWaveData enemy: myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies()){
+				System.out.println("Level 1 ENEMY: " + enemy.getMyActor().getName());
+			}
+		for(ActorData actor: myGameData.getOptions().values()){
+			System.out.print("ACTOR: "+actor.getName() +"\t");
+			if(actor.getHealth() instanceof LimitedHealthData){
+				System.out.println("Health: "+ ((LimitedHealthData)(actor.getHealth())).getStartHealth());
+			}
+		}
 	}
 
 	private void addActor(String actorType, String imagePath, Map<String,String> defaultActors){
@@ -166,11 +192,11 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		
 	}
 	
-
-	
 	private void launchEditor(ActorEditorView view) {
+		view.setGameData(myGameData);
 		view.setActorTypeOptions(this.actorTypeToView.keySet());
 		myDelegate.openView(view);
+		printCurrent();
 	}
 
 	private Label labelForStackButton(String title){
@@ -180,21 +206,25 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		return lbl;
 	}
 	private ImageView imageForStackButton(String imagePath){
-		ImageView iv = new ImageView(new Image(imagePath));
+		Image image = null;
+		try{
+			image = new Image(imagePath);
+		} catch(Exception e){
+			BufferedImage im = null;
+			try {
+				im = ImageIO.read(new File(imagePath));
+			} catch (IOException ee) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			image = SwingFXUtils.toFXImage(im, null);
+		}
+		ImageView iv = new ImageView(image);
 		iv.setFitWidth(ICON_WIDTH);
 		iv.setPreserveRatio(true);
 		return iv;
 	}
 	
-	private void deleteActorType(BasicActorType actorType){
-		//TODO
-		this.actorTypeToView.get(actorType);
-	}
-	
-
-	
-
-
 	@Override
 	public void closeSelfAndReturn(Pane pane, String actorName, String imagePath) {
 		this.addActor(actorName, imagePath, new HashMap<String, String>());

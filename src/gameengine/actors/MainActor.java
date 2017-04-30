@@ -13,9 +13,9 @@ import types.BasicActorType;
 
 public class MainActor implements Actor {
 
-	protected Integer myID;
-	protected Integer myOption;
-	protected HealthProperty myHealth;
+	private Integer myID;
+	private Integer myOption;
+	private HealthProperty myHealth;
 	private BasicActorType myType;
 	private List<IActProperty<MasterGrid>> myProperties;
 	private List<IActProperty<MasterGrid>> myExits;
@@ -62,11 +62,15 @@ public class MainActor implements Actor {
 		return myID;
 	}
 
-	@Override
+	/*@Override
 	public Consumer<IActProperty<MasterGrid>> addProperty() {
 		return (property) -> {
 			myProperties.add(property);
 		};
+	}*/
+	@Override
+	public void addProperty(Consumer<Collection<IActProperty<MasterGrid>>> function) {
+		function.accept(myProperties);
 	}
 
 	@Override

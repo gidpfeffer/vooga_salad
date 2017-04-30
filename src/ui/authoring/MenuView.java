@@ -48,6 +48,7 @@ public class MenuView extends AnchorPane {
 	private static final String PAUSE_BETWEEN_WAVES_LABEL = "Buffer Waves";
 	private static final String CLEAN_LEVEL_LABEL = "Clean Level";
 	private static final String LOAD_MUSIC_LABEL = "Load Music";
+	private static final String PATH = "music/";
 	
 	private MenuDelegate myDelegate;
 	private PreferencesData myData;
@@ -58,10 +59,6 @@ public class MenuView extends AnchorPane {
 	
 	
 	private Map<String, ToggleSwitch> myPreferences;
-
-	public MenuView(MenuDelegate delegate) {
-		this(delegate, new PreferencesData());
-	}
 	
 	public MenuView(MenuDelegate delegate, PreferencesData data){
 		super();
@@ -71,8 +68,6 @@ public class MenuView extends AnchorPane {
 		mySwitchTitles = new ArrayList<>(Arrays.asList(ENEMY_LOOP_LABEL, TOWERS_ATTACKABLE_LABEL, WANT_MONEY_LABEL, EXP_BY_LEVEL_LABEL,
 				PAUSE_BETWEEN_WAVES_LABEL, CLEAN_LEVEL_LABEL)); 
 		setupViews();
-		
-		
 	}
 
 	private void setupViews() {
@@ -121,9 +116,13 @@ public class MenuView extends AnchorPane {
 	}
 	
 	private void loadMusicButtonClicked(){
-		FileSelector selector = new FileSelector("*.mp3");
-		File data = selector.open(new Stage());
-		myData.setMusicFilePath(data.toURI().toString());
+			FileSelector selector = new FileSelector("*.mp3","*.wav");
+			File data = selector.open(new Stage());
+			if (data != null){
+				String[] temp = data.toURI().toString().split(PATH);
+				System.out.println(PATH + temp[temp.length-1]);
+				myData.setMusicFilePath(PATH + temp[temp.length-1]);
+			}
 	}
 
 	private void setupVBox() {

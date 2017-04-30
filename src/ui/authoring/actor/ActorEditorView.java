@@ -76,7 +76,6 @@ public class ActorEditorView extends AnchorPane {
 		myActors = new HashMap<StackPane, LineageData>();
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
-
 	}
 
 	private void setupBackButton() {
@@ -107,13 +106,10 @@ public class ActorEditorView extends AnchorPane {
 		Image noplace = new Image("no_place_icon.png");
 		
 		Image selected = place;
-		//Image unselected = noplace;
 		
 		if(myActorType.isPlaceable()){
 			selected = noplace;
-			//unselected = place;
 		}
-		//b.updateImages(selected, unselected, new Location(40., 40.));
 		
 		ImageView im = new ImageView(selected);
 		im.setFitWidth(32);
@@ -251,6 +247,11 @@ public class ActorEditorView extends AnchorPane {
 			String s = selectedFile.getName();
 			addActor(s,s.substring(0, s.indexOf(".")) );
 		}
+	}
+	
+	public void setGameData(GameData data){
+		myActorInfoView.setGameData(myGameData);
+		myGameData = data;
 	}
 
 	private void selectActor(StackPane stackButton){
