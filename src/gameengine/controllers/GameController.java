@@ -23,6 +23,8 @@ import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
 import ui.player.listener.ListenQueue;
 import ui.player.listener.SceneListen;
+import ui.player.users.InitialGameStatus;
+import ui.player.users.User;
 import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
 import util.VoogaException;
@@ -63,15 +65,14 @@ public class GameController {
 	
 	private final double MILLISECOND_DELAY=17;
 	
-	public GameController(GameData gameData,LoginHandler loginHandler, SceneListen sceneListen) {
+	public GameController(GameData gameData,LoginHandler loginHandler) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
-		mySceneListen = sceneListen;
 		initializeUIHandler();
 		initializeAnimationHandler();
 		initializeGridHandler();
 		initializeLevelHandler();
-		//setupGameStatus(loginHandler.getActiveUser());
+		setupGameStatus(loginHandler.getActiveUser(),loginHandler.getActiveUser().getInitialGameStatus());
 		setUpGameScreen(loginHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(myLevelHandler,myGameData);
@@ -93,15 +94,17 @@ public class GameController {
 		return actorGrid;
 	}
 	
-//	private void setupGameStatus(WriteableUser writeableUser) {
-//		mySimpleHUD = new SimpleHUD();
-//		myGameStatus = new GameStatus(writeableUser);
-//		myGameStatus.addObserver(mySimpleHUD);
-//	}
+	private void setupGameStatus(WriteableUser writeableUser,InitialGameStatus initialGameStatus) {
+		mySimpleHUD = new SimpleHUD();
+		myGameStatus = new GameStatus(writeableUser,initialGameStatus);
+		myGameStatus.addObserver(mySimpleHUD);
+	}
 	
 	public void start(Stage stage,double width, double height, Paint fill) {
+		Scene myScene = new Scene(myGameScreen,width,height,fill);
+		mySceneListen = new SceneListen(myScene); 
+		stage.setScene(myScene);
 		intitializeTimeline();
-		stage.setScene(new Scene(myGameScreen,width,height,fill));
 	}
 	
 	private void intitializeTimeline() {

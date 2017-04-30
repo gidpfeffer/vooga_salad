@@ -13,6 +13,8 @@ import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -24,7 +26,6 @@ import ui.handlers.LoginHandler;
 import ui.player.GameSelector;
 import ui.player.ProfileCornerPicture;
 import ui.player.XStreamFileChooser;
-import ui.player.listener.SceneListen;
 import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
@@ -32,8 +33,20 @@ import ui.player.users.UserDatabase;
 import ui.ratings.RatingView;
 import util.FileSelector;
 
+/**
+ * Acts as the primary controller for the UI. Houses all of the visual elements: user authentication
+ * screens ({@link ui.player.login.Login Login} and {@link ui.player.login.Signup Signup}), 
+ * {@link ui.authoring.AuthoringView AuthoringView}, {@link ui.player.GameSelector GameSelector}, 
+ * {@link ui.ratings.RatingView RatingView}, and {@link ui.player.inGame.GameScreen GameScreen}.
+ * 
+ * Navigation between screens and querying of the {@link ui.player.users.UserDatabase UserDatabase}
+ * is handled by the {@link ui.handlers.LoginHandler LoginHandler}.
+ * 
+ * @author Vishnu Gottiparthy
+ *
+ */
 public class LoginMain {
-	
+
 	private Stage stage;
 	private GameController gameController;
 	private UserDatabase database;
@@ -45,8 +58,14 @@ public class LoginMain {
 	private String resource;
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
-	private SceneListen mySceneListen;
+	private static final String guestUser = "Guest";
 	
+	/**
+	 * Initialized in {@link voogasalad_ilovesingletons.Main}
+	 * @param stage Main window for the UI
+	 * @param css Filename describing CSS styling for the UI
+	 * @param resource Filename describing the resource file of all login dialog messages
+	 */
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
 		this.css = css;
@@ -59,7 +78,6 @@ public class LoginMain {
 		loginScreen = new Login(loginhandler, css, resource);
 		Scene scene = loginScreen.getScene();
 		stage.setScene(scene);
-		mySceneListen = new SceneListen(scene);
 	}
 	
 	private void setupLoginHandler() {
@@ -142,7 +160,6 @@ public class LoginMain {
 
 			@Override
 			public void gotoReviews() {
-				// TODO Auto-generated method stub
 				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
 				stage.setWidth(800);
 				stage.setHeight(800);
@@ -153,29 +170,45 @@ public class LoginMain {
 		};
 	}
 	
+	/**
+	 * Reads in the {@code UserDatabase} from the file
+	 */
 	private void setupDatabase() {
 		try {
 			XStream mySerializer = new XStream(new DomDriver());
 			XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
 			database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
+			if(loginhandler.findUser(guestUser) == null) {
+				database.addUser(new User());
+			}
 		} catch (Exception e) {
 			database = new UserDatabase();
 		}
 	}
 	
+	/**
+	 * @see ui.handlers.LoginHandler#showProfile()
+	 */
 	private void showProfileCard(User user) {
-		ProfileCard card = new ProfileCard("profile", user, "profile.css");
-		card.setLogoutAction(e -> {
-			loginhandler.setActiveUser(null);
-			loginScreen = new Login(loginhandler, css, resource);
-			loginhandler.returnToMain();
-		});
-		HBox hb = card.getCard();
-		((Pane) stage.getScene().getRoot()).getChildren().add(hb);
-		AnchorPane.setBottomAnchor(hb, 25.);
-		AnchorPane.setLeftAnchor(hb, 25.);
+		if(!user.equals(loginhandler.findUser(guestUser))) {
+			ProfileCard card = new ProfileCard("profile", user, "profile.css");
+			card.setLogoutAction(e -> {
+				loginhandler.setActiveUser(loginhandler.findUser(guestUser));
+				loginScreen = new Login(loginhandler, css, resource);
+				loginhandler.returnToMain();
+			});
+			HBox hb = card.getCard();
+			((Pane) stage.getScene().getRoot()).getChildren().add(hb);
+			AnchorPane.setBottomAnchor(hb, 25.);
+			AnchorPane.setLeftAnchor(hb, 25.);
+		} else {
+			new Alert(AlertType.ERROR, loginResource.getString("pleaselogin")).showAndWait();
+		}
 	}
 	
+	/**
+	 * Allows the user to load in a custom game file from XML
+	 */
 	private void promptUserToChooseGame(){
 		try {
 			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
@@ -192,8 +225,12 @@ public class LoginMain {
 		}
 	}
 	
+	/**
+	 * Launches the game specified by {@code gameData}
+	 * @param gameData Describes the game to launch
+	 */
 	private void goToGameScreen(GameData gameData) {
-		gameController = new GameController(gameData,loginhandler,mySceneListen);
+		gameController = new GameController(gameData,loginhandler);
 		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
 		stage.setTitle("Game Screen");
 	}

@@ -1,77 +1,12 @@
 <ui.player.users.UserDatabase>
   <database class="list">
     <ui.player.users.User>
-      <username>apple</username>
-      <password>0112b6f1f335082e9c089ac49a10c1b925d79e2e</password>
-      <score>0</score>
-      <avatar>profile_icon.png</avatar>
-      <email>h@duke.edu</email>
-      <level>1</level>
-      <experience>0.0</experience>
-      <rank>Novice</rank>
-      <last></last>
-    </ui.player.users.User>
-    <ui.player.users.User>
+
       <username>hello</username>
       <password>73c2e8db3532034b5efdc9dc70a99019428afc4d</password>
-      <score>0</score>
+      <money>0.0</money>
       <avatar>profile_icon.png</avatar>
-      <email>hello@hello.com</email>
-      <level>1</level>
-      <experience>0.0</experience>
-      <rank>Novice</rank>
-      <last></last>
-    </ui.player.users.User>
-    <ui.player.users.User>
-      <username>honey</username>
-      <password>7f482b1efe6a764d7dafc1b32a662a81f1704a6e</password>
-      <score>0</score>
-      <avatar>profile_icon.png</avatar>
-      <email>a@d.edu</email>
-      <level>1</level>
-      <experience>0.0</experience>
-      <rank>Novice</rank>
-      <last></last>
-    </ui.player.users.User>
-    <ui.player.users.User>
-      <username>jieshen</username>
-      <password>9789fd1b31da544ae96d5fcb55488f56c7d5d044</password>
-      <score>0</score>
-      <avatar>profile_icon.png</avatar>
-      <email>ioawgoawij@gmail.com</email>
-      <level>1</level>
-      <experience>0.0</experience>
-      <rank>Novice</rank>
-      <last></last>
-    </ui.player.users.User>
-    <ui.player.users.User>
-      <username>juju</username>
-      <password>fa914f4dbd71df8b5c377bbb9af724cbf296f0a3</password>
-      <score>0</score>
-      <avatar>profile_icon.png</avatar>
-      <email>juju@juju.com</email>
-      <level>1</level>
-      <experience>0.0</experience>
-      <rank>Novice</rank>
-      <last></last>
-    </ui.player.users.User>
-    <ui.player.users.User>
-      <username>bilva</username>
-      <password>4e48297149c501cf4077858931278ea204117a0b</password>
-      <score>0</score>
-      <avatar>profile_icon.png</avatar>
-      <email>bilva@gmail.com</email>
-      <level>1</level>
-      <experience>0.0</experience>
-      <rank>Novice</rank>
-      <last></last>
-    </ui.player.users.User>
-    <ui.player.users.User>
-      <username>star</username>
-      <password>f126d46cf7c53672ba0c757c0f9f3ada01278dc2</password>
-      <score>0</score>
-      <avatar>file:/C:/Users/Lyque/workspace/voogasalad_ilovesingletons/images/filled_star.png</avatar>
-      <email>s@s.com</email>
+      <email>hello@gmail.com</email>
       <level>1</level>
       <experience>0.0</experience>
       <rank>Novice</rank>
@@ -125,4 +60,15 @@
       </entry>
     </database>
   </passwords>
+  <activeUser>
+    <username>Guest</username>
+    <password></password>
+    <money>0.0</money>
+    <avatar>profile_icon.png</avatar>
+    <email></email>
+    <level>1</level>
+    <experience>0.0</experience>
+    <rank>Novice</rank>
+    <last></last>
+  </activeUser>
 </ui.player.users.UserDatabase>

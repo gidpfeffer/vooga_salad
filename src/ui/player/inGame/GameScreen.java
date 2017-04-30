@@ -90,9 +90,8 @@ public class GameScreen extends GenericGameScreen
 	
 	private void setup() {
 		setupPanels();
-		//setupHUD();
-		setReturnToMain(e -> loginhandler.returnToMain());
-		
+		setupHUD();
+		setReturnToMain(e -> returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -124,6 +123,20 @@ public class GameScreen extends GenericGameScreen
 		ft.setToValue(to);
 		ft.play();
 		return ft;
+	}
+
+	private EventHandler<ActionEvent> returnToMain() {
+		return new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				animationhandler.stop();
+				loginhandler.returnToMain();
+				System.out.println(getMediaPlayer().getStatus());
+				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
+					getMediaPlayer().stop();
+				}
+			}
+		};
 	}
 
 	
