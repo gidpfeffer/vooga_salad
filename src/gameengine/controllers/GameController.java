@@ -201,6 +201,8 @@ public class GameController {
 
 			@Override
 			public void displayWinAlert() {
+				myAnimationHandler.stop();
+				animation.stop();
 				myGameScreen.notifyWin();
 			}
 

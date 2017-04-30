@@ -54,15 +54,20 @@ public class GameLevelController {
 	}
 	
 	public void update() {
-		if(delay.delayAction()) {
+		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		checkLevel();
+		//checkLevel();
 	}
 	
 	private void checkLevel() {
 		if(enemiesInWave.isEmpty()) {
-			myLevelHandler.levelUp();
+			try {
+				levelUp();
+			} catch (VoogaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
