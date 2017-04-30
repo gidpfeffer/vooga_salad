@@ -1,6 +1,7 @@
 <ui.player.users.UserDatabase>
   <database class="list">
     <ui.player.users.User>
+
       <username>hello</username>
       <password>73c2e8db3532034b5efdc9dc70a99019428afc4d</password>
       <money>0.0</money>
@@ -20,4 +21,15 @@
       </entry>
     </database>
   </passwords>
+  <activeUser>
+    <username>Guest</username>
+    <password></password>
+    <money>0.0</money>
+    <avatar>profile_icon.png</avatar>
+    <email></email>
+    <level>1</level>
+    <experience>0.0</experience>
+    <rank>Novice</rank>
+    <last></last>
+  </activeUser>
 </ui.player.users.UserDatabase>
