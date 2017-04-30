@@ -11,7 +11,7 @@ public class MoveHorizontalUserProperty<G extends ReadAndMoveGrid> extends MoveA
 
 	@Override
 	protected void move(String posKey, String negKey, Integer sensitivity, G grid, Integer actorID) {
-		grid.move(actorID, grid.getEventQueue().queryKey(posKey), newY);
+		grid.move(actorID, grid.getLocationOf(actorID).getX()+(grid.getEventQueue().queryKey(posKey) ? sensitivity:0)+(grid.getEventQueue().queryKey(posKey) ? -1*sensitivity:0), grid.getLocationOf(actorID).getY());
 	}
 
 }
