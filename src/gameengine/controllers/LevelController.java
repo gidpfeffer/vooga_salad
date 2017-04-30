@@ -84,6 +84,10 @@ public class LevelController {
 		processEnemyWaves(waveData.getWaveEnemies(),pathData);
 	}
 	
+	private void spawnEnemies(EnemyInWaveData enemyData, PathData pathData) {
+		for (int i =0; i<enemyData.getWaveNumber();i++) spawnEnemy(enemyData, pathData);
+	}
+	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
 		Actor actor = builders.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
@@ -99,7 +103,7 @@ public class LevelController {
 	}
 	
 	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,PathData pathData) {
-		enemyInWaveDatas.forEach(enemyData -> spawnEnemy(enemyData,pathData));
+		enemyInWaveDatas.forEach(enemyData -> spawnEnemies(enemyData,pathData));
 	}
 	
 	
