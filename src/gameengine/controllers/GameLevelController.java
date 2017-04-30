@@ -67,17 +67,23 @@ public class GameLevelController {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		Optional<Boolean> isSatisfied = myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus);
-		if (isSatisfied.isPresent()) {
-			if (isSatisfied.get()) levelUp();
-		}
+		myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus).ifPresent((win) -> winCondition((Boolean) win));
+		//myWin.ifPresent(win -> winCondition(win).run());
+	}
+	
+	private Runnable winCondition(Boolean win) {
+		return win ? () -> levelUp():()->lose();
+	}
+	
+	private void lose() {
+		//TODO: do something when you lose
 	}
 	
 	public int getLevel() {
 		return level;
 	}
 	
-	public void levelUp() throws VoogaException {
+	public void levelUp() {
 		if (!(myGameData.getLevels().get(level+1)==null)) {
 			changeLevel(level+1);
 			myLevelHandler.levelUp();
@@ -86,11 +92,11 @@ public class GameLevelController {
 		}
 	}
 	
-	public void changeLevel(int level) throws VoogaException{
+	public void changeLevel(int level) {
 		this.level = level;
 		LevelData levelData = myGameData.getLevel(level);
 		if (levelData!=null) loadLevel(levelData);
-		else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
+		//else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
 	}
 	
 	private void loadLevel(LevelData levelData) {
