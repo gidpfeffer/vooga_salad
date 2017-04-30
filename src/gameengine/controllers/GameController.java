@@ -17,6 +17,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.handlers.AnimationHandler;
+import ui.handlers.LoginHandler;
 import ui.handlers.UIHandler;
 import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
@@ -62,7 +63,7 @@ public class GameController {
 	
 	private final double MILLISECOND_DELAY=17;
 	
-	public GameController(GameData gameData,WriteableUser writeableUser,SceneListen sceneListen) {
+	public GameController(GameData gameData,LoginHandler loginHandler, SceneListen sceneListen) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
 		mySceneListen = sceneListen;
@@ -70,14 +71,14 @@ public class GameController {
 		initializeAnimationHandler();
 		initializeGridHandler();
 		initializeLevelHandler();
-		setupGameStatus(writeableUser);
-		setUpGameScreen();
+		//setupGameStatus(loginHandler.getActiveUser());
+		setUpGameScreen(loginHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(myLevelHandler,myGameData);
 	}
 	
-	private void setUpGameScreen() {
-		myGameScreen = new GameScreen(myUIHandler,myAnimationHandler,() -> mySimpleHUD);
+	private void setUpGameScreen(LoginHandler loginHandler) {
+		myGameScreen = new GameScreen(loginHandler,myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGameScreen.setAnimationHandler(myAnimationHandler);
 		myGameScreen.setSong(myGameData.getPreferences().getMusicFilePath()); //set music for game
 	}
@@ -92,11 +93,11 @@ public class GameController {
 		return actorGrid;
 	}
 	
-	private void setupGameStatus(WriteableUser writeableUser) {
-		mySimpleHUD = new SimpleHUD();
-		myGameStatus = new GameStatus(writeableUser);
-		myGameStatus.addObserver(mySimpleHUD);
-	}
+//	private void setupGameStatus(WriteableUser writeableUser) {
+//		mySimpleHUD = new SimpleHUD();
+//		myGameStatus = new GameStatus(writeableUser);
+//		myGameStatus.addObserver(mySimpleHUD);
+//	}
 	
 	public void start(Stage stage,double width, double height, Paint fill) {
 		intitializeTimeline();
