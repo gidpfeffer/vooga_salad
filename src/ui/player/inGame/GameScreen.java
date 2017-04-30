@@ -69,7 +69,7 @@ public class GameScreen extends GenericGameScreen
 		screenHandler = new ScreenHandler(){
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
-				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp, actorsMap);
+				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp);
 				actor.getPane().setLayoutX(getWidth() - x);
 				actor.getPane().setLayoutY(y);
 				getChildren().add(actor.getPane());
@@ -90,7 +90,7 @@ public class GameScreen extends GenericGameScreen
 			}
 			@Override
 			public void addActorToMap(int id, Actor actor) {
-				actorsMap.put(id, actor);
+				if (actorsMap.get(id) != null) actorsMap.put(id, actor);
 			}
 		};
 	}
@@ -159,7 +159,7 @@ public class GameScreen extends GenericGameScreen
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
-				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp, actorsMap);
+				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
 				actorsMap.put(id, newActor);
 				this.getChildren().add(newActor.getPane());
 			}
