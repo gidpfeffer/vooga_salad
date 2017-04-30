@@ -24,6 +24,7 @@ import ui.handlers.LoginHandler;
 import ui.player.GameSelector;
 import ui.player.ProfileCornerPicture;
 import ui.player.XStreamFileChooser;
+import ui.player.listener.SceneListen;
 import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
@@ -44,6 +45,7 @@ public class LoginMain {
 	private String resource;
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
+	private SceneListen mySceneListen;
 	
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
@@ -55,7 +57,9 @@ public class LoginMain {
 		stage.setMinWidth(Preferences.SCREEN_WIDTH);
 		loginResource = ResourceBundle.getBundle(resource);
 		loginScreen = new Login(loginhandler, css, resource);
-		stage.setScene(loginScreen.getScene());
+		Scene scene = loginScreen.getScene();
+		stage.setScene(scene);
+		mySceneListen = new SceneListen(scene);
 	}
 	
 	private void setupLoginHandler() {
@@ -188,10 +192,8 @@ public class LoginMain {
 	}
 	
 	private void goToGameScreen(GameData gameData) {
-		gameController = new GameController(gameData,loginhandler.getActiveUser());
-		gameController.getGameScreen().setLoginHandler(loginhandler);
-		gameController.start();
-		stage.setScene(new Scene(gameController.getGameScreen(), Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE));
+		gameController = new GameController(gameData,loginhandler.getActiveUser(),mySceneListen);
+		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
 		stage.setTitle("Game Screen");
 	}
 }
