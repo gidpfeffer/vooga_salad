@@ -275,6 +275,10 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 				myBackgroundView.getImageView().setImage(img);
 		}
 	}
+	
+	private void setBackground(String fileName){
+		//TODO
+	}
 
 	/**
 	 * This method updates the location of the points on the map This method is
@@ -317,6 +321,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		this.addLayerView(layer, nameInput);
 		myPopDelegate.closeView(myLayerPopup);
 	}
+
 
 	@Override
 	public void layerPopupDidPressCancel() {
