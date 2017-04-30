@@ -84,7 +84,7 @@ public class DisplayView extends BorderPane {
 	private Map<String, ComboBox<String>> myPreferences;
 
 	public DisplayView(PopViewDelegate delegate,DisplayDelegate displayDelegate,GameData gameData) {
-		this(delegate,displayDelegate, new DisplayData(),gameData);
+		this(delegate,displayDelegate, gameData.getDisplayData(),gameData);
 	}
 	
 	public DisplayView(PopViewDelegate delegate,DisplayDelegate displayDelegate, DisplayData data, GameData gameData){
