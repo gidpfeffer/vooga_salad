@@ -5,5 +5,6 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 public interface LevelHandler {
 	ControllableGrid getMyGrid();
 	void displayWinAlert();
+	void displayLoseAlert();
 	void levelUp();
 }

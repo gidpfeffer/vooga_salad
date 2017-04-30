@@ -27,12 +27,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import ui.Preferences;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
+import util.SimpleDateTimeUtil;
 
 /**
  * @author harirajan
@@ -50,6 +54,7 @@ public class RatingDisplay extends VBox {
 	private static final String XML_USER_TAG = "username";
 	private static final String XML_RATING_TAG = "rating";
 	private static final String XML_REVIEW_TAG = "review";
+	private static final String XML_TIME_TAG = "time";
 	private static final String ADD_ICON = "add_icon.png"; 
 	private static final Background DEFAULT_NODE_BACKGROUND = 
 			new Background(new BackgroundFill(CustomColors.INDIGO, new CornerRadii(3.5), null));
@@ -57,9 +62,11 @@ public class RatingDisplay extends VBox {
 	private XMLParser parser;
 	private ResourceBundle resource;
 	private String lang;
+	private SimpleDateTimeUtil dateTime;
 	
 	public RatingDisplay(String lang) {
 		this.lang = lang;
+		dateTime = new SimpleDateTimeUtil();
 		resource = ResourceBundle.getBundle(lang);
 		setPrefWidth(SCREEN_WIDTH);
 		setMinWidth(SCREEN_WIDTH);
@@ -77,7 +84,8 @@ public class RatingDisplay extends VBox {
 			Element reviewElement = (Element) reviewElementList.item(i);
 			addRating(Integer.parseInt(parser.getTextValue(reviewElement, XML_RATING_TAG)),
 					parser.getTextValue(reviewElement, XML_USER_TAG),
-					parser.getTextValue(reviewElement, XML_REVIEW_TAG));
+					parser.getTextValue(reviewElement, XML_REVIEW_TAG),
+					parser.getTextValue(reviewElement, XML_TIME_TAG));
 		}
 	}
 	
@@ -103,22 +111,25 @@ public class RatingDisplay extends VBox {
 		getChildren().add(0, re);
 	}
 
-	private void addRating(int rating, String username, String review) {
+	private void addRating(int rating, String username, String review, String time) {
 		VBox vb = new VBox(SINGLE_RATING_DISPLAY_SPACING);
-		Text usernameText = new Text(username);
+		HBox topHB = new HBox();
+		Label usernameText = new Label(username);
+		Label datetimeText = new Label(time);
 		Text reviewText = new Text(review);
+		usernameText.setPrefWidth(SCREEN_WIDTH - 200);
+		datetimeText.setFont(Preferences.FONT_SMALL_BOLD);
+		datetimeText.setTextFill(Color.WHITE);
 		usernameText.setFont(Preferences.FONT_SMALL_BOLD);
-		usernameText.setFill(Color.WHITE);
+		usernameText.setTextFill(Color.WHITE);
 		reviewText.setFont(Preferences.FONT_SMALL);
 		reviewText.setFill(Color.WHITE);
 		vb.setPrefWidth(SCREEN_WIDTH);
 		vb.setMaxWidth(SCREEN_WIDTH);
 		vb.setMinWidth(SCREEN_WIDTH);
-		usernameText.wrappingWidthProperty().bind(widthProperty());
+		topHB.getChildren().addAll(usernameText, datetimeText);
 		reviewText.wrappingWidthProperty().bind(widthProperty());
-		vb.getChildren().add(usernameText);
-		vb.getChildren().add(new RatingStars(rating, false, TOTAL_NUM_STARS, lang));
-		vb.getChildren().add(reviewText);
+		vb.getChildren().addAll(topHB, new RatingStars(rating, false, TOTAL_NUM_STARS, lang), reviewText);
 		vb.setBackground(DEFAULT_NODE_BACKGROUND);
 		vb.setPadding(DEFAULT_PADDING_INSETS);
 		UIHelper.setDropShadow(vb);
@@ -134,6 +145,7 @@ public class RatingDisplay extends VBox {
 			parser.addElement(doc, XML_USER_TAG, user, reviewElement);
 			parser.addElement(doc, XML_RATING_TAG, Integer.toString(rating), reviewElement);
 			parser.addElement(doc, XML_REVIEW_TAG, review, reviewElement);
+			parser.addElement(doc, XML_TIME_TAG, dateTime.getDateTimeWritten(false, false), reviewElement);
 			parser.saveXML(REVIEWS_FILE.getName(), doc);			
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR);

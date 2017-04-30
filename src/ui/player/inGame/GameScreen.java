@@ -36,11 +36,12 @@ public class GameScreen extends GenericGameScreen
 	private LoginHandler loginhandler;
 	private AnimationHandler animationhandler;
 	
-	public GameScreen(UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
+	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
 		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
+		this.loginhandler = loginHandler;
 		this.ivp = this.getIVP();
 		hud = simpleHUD.get();
 		initializeScreenHandler();
@@ -53,14 +54,22 @@ public class GameScreen extends GenericGameScreen
 	}
 	
 	public void notifyWin() {
-		new Alert(AlertType.INFORMATION, "You win!").showAndWait();
+		notifyStatus("You won!");
+	}
+	
+	public void notifyLose() {
+		notifyStatus("You lost!");
+	}
+	
+	private void notifyStatus(String status) {
+		new Alert(AlertType.INFORMATION, status).showAndWait();
 	}
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
-				Actor actor = new Actor(uihandler, screenHandler, option,actorData,ivp, actorsMap);
+				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp, actorsMap);
 				actor.getPane().setLayoutX(getWidth() - x);
 				actor.getPane().setLayoutY(y);
 				getChildren().add(actor.getPane());
@@ -79,14 +88,17 @@ public class GameScreen extends GenericGameScreen
 				AnchorPane.setRightAnchor(holder, 20.);
 				AnchorPane.setBottomAnchor(holder, 20.);
 			}
+			@Override
+			public void addActorToMap(int id, Actor actor) {
+				actorsMap.put(id, actor);
+			}
 		};
 	}
 	
 	private void setup() {
 		setupPanels();
 		setupHUD();
-		setReturnToMain(e -> loginhandler.returnToMain());
-		
+		setReturnToMain(e -> returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -118,19 +130,20 @@ public class GameScreen extends GenericGameScreen
 		ft.play();
 		return ft;
 	}
+
 	private EventHandler<ActionEvent> returnToMain() {
 		return new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				animationhandler.stop();
 				loginhandler.returnToMain();
-				System.out.println(getMediaPlayer().getStatus());
 				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
 					getMediaPlayer().stop();
 				}
 			}
 		};
 	}
+
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {

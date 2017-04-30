@@ -12,9 +12,6 @@ import java.util.Optional;
 
 
 import XML.xmlmanager.classes.ConcreteFileHelper;
-import XML.xmlmanager.classes.ExistingDirectoryHelper;
-import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
-import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import gamedata.MapLayersData;
 import gamedata.PathData;
 import gamedata.DisplayData;
@@ -57,25 +54,26 @@ import util.Tuple;
  *
  */
 public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate {
-
+	
+	private boolean IS_LOADED = false;
 	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
 	private static final Color[] LAYER_COLORS = { CustomColors.AMBER, CustomColors.BLUE_500, CustomColors.GREEN,
 			CustomColors.INDIGO };
 
 	private ImageViewPane myBackgroundView;
-	private PathLayerView myPathLayer;
 	private MapLayersData myMapData;
 	private List<Layer> myLayers = new ArrayList<>();
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
+
 	private static final Insets LAYER_INSET = new Insets(8, 8, 72, 8);
 	private DisplayData myDisplayData;
 	private Pane myLayerPopup;
 
 	public MapEditorView(PathData pathData, MapLayersData mapData, PopViewDelegate popDelegate,DisplayData displayData) {
+
 		super();
 		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
-		myPathLayer = new PathLayerView(pathData);
 		myMapData = mapData;
 		myPopDelegate = popDelegate;
 		myDisplayData=displayData;
@@ -83,6 +81,18 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
 		this.heightProperty().addListener(e -> sizeDidChange());
+	}
+	
+	@Override
+	protected void layoutChildren(){
+		super.layoutChildren();
+		if(!IS_LOADED)
+			didFinishLayout();
+	}
+
+	private void didFinishLayout() {
+		IS_LOADED = true;
+		setupMapData();
 	}
 
 	private void setupMouseEvents() {
@@ -104,8 +114,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 		setupButtons();
 		setupLayerSelector();
-		addLayerView(myPathLayer, "Path");
-		setupMapData();
+
 	}
 
 	/**
@@ -113,8 +122,10 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 * children nodes
 	 */
 	private void setupMapData() {
+		System.out.println("isLoaded:" + IS_LOADED);
+		addLayerView(new PathLayerView(myMapData.getMyPathData()), "Path");
 		for (Entry<String, LayerData> entry : myMapData.getMyLayers().entrySet()) {
-			addLayerView(new PolygonLayerView(entry.getValue(), myBackgroundView.getImageInsets()), entry.getKey());
+			addLayerView(new PolygonLayerView(entry.getValue()), entry.getKey());
 		}
 
 	}
@@ -142,6 +153,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		UIHelper.setBackgroundColor(layerIcon, CustomColors.GREEN_100);
 		myLayerPicker.getChildren().add(myLayerPicker.getChildren().size() - 1, layerIcon);
 		layer.setOpacity(0.8);
+		System.out.println("adding to layer" + layer.getClass().getName());
 		this.getChildren().add(layer);
 		this.myLayers.add(layer);
 		switchToLayer(layer);
@@ -156,6 +168,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 * 
 	 */
 	private Insets getAdjustedInsets() {
+		Insets LAYER_INSET = new Insets(8, 8, 72, 8);
 		Tuple<Double, Double> xyInsets = myBackgroundView.getImageInsets();
 		return new Insets(LAYER_INSET.getTop() + xyInsets.y, LAYER_INSET.getRight() + xyInsets.x,
 				LAYER_INSET.getBottom() + xyInsets.y, LAYER_INSET.getLeft() + xyInsets.x);
@@ -266,6 +279,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
+
 			ConcreteFileHelper manager = new ConcreteFileHelper();
 			// TODO copy file to images folder
 			
@@ -287,6 +301,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 			myBackgroundView.getImageView().setImage(image);
 			myDisplayData.setBackgroundImagePath(selectedFile.getName());
 			System.out.println("backgroundimage:"+selectedFile.getName());
+
 		}
 	}
 
@@ -297,9 +312,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 */
 	private void sizeDidChange() {
 		for (Layer layer : myLayers) {
-			//layer.sizeDidChange(myBackgroundView);
 			StackPane.setMargin(layer, getAdjustedInsets());
-
 		}
 	}
 
@@ -328,7 +341,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	@Override
 	public void layerPopupDidPressConfirm(String nameInput) {
 		LayerData data = new LayerData();
-		PolygonLayerView layer = new PolygonLayerView(data, myBackgroundView.getImageInsets());
+		PolygonLayerView layer = new PolygonLayerView(data);
 		this.myMapData.addLayer(nameInput, data);
 		this.addLayerView(layer, nameInput);
 		myPopDelegate.closeView(myLayerPopup);

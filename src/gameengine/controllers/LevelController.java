@@ -1,6 +1,6 @@
 package gameengine.controllers;
 
-import java.util.List;		
+import java.util.List;			
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
@@ -84,6 +84,11 @@ public class LevelController {
 		processEnemyWaves(waveData.getWaveEnemies(),pathData);
 	}
 	
+	private void spawnEnemies(EnemyInWaveData enemyData, PathData pathData) {
+		int numEnemies = enemyData.getOption();
+		for (int i =0; i<numEnemies;i++) spawnEnemy(enemyData, pathData);
+	}
+	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
 		Actor actor = builders.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
@@ -99,7 +104,7 @@ public class LevelController {
 	}
 	
 	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,PathData pathData) {
-		enemyInWaveDatas.forEach(enemyData -> spawnEnemy(enemyData,pathData));
+		enemyInWaveDatas.forEach(enemyData -> spawnEnemies(enemyData,pathData));
 	}
 	
 	
