@@ -12,6 +12,9 @@ import gamestatus.GameStatus;
 import gamestatus.WriteableGameStatus;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Scene;
+import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
@@ -59,15 +62,18 @@ public class GameController {
 	
 	private final double MILLISECOND_DELAY=17;
 	
-	public GameController(GameData gameData,WriteableUser writeableUser) {
+	public GameController(GameData gameData,WriteableUser writeableUser,SceneListen sceneListen) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
+		mySceneListen = sceneListen;
 		initializeUIHandler();
 		initializeAnimationHandler();
 		initializeGridHandler();
 		initializeLevelHandler();
 		setupGameStatus(writeableUser);
 		setUpGameScreen();
+		myGrid = getNewActorGrid(myGameScreen);
+		myLevelController = new LevelController(myLevelHandler,myGameData);
 	}
 	
 	private void setUpGameScreen() {
@@ -79,15 +85,11 @@ public class GameController {
 	 * @param UIObserver
 	 * @return a new clean instance of ActorGrid
 	 */
-	public ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
+	private ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
 		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myGridHandler,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
-	}
-	
-	public GameScreen getGameScreen() {
-		return myGameScreen;
 	}
 	
 	private void setupGameStatus(WriteableUser writeableUser) {
@@ -96,31 +98,9 @@ public class GameController {
 		myGameStatus.addObserver(mySimpleHUD);
 	}
 	
-	public void start() {
-		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(myLevelHandler,myGameData);
+	public void start(Stage stage,double width, double height, Paint fill) {
 		intitializeTimeline();
-	}
-	
-	private void initializeLevelHandler() {
-		myLevelHandler = new LevelHandler() {
-
-			@Override
-			public ControllableGrid getMyGrid() {
-				return myGrid;
-			}
-
-			@Override
-			public void displayWinAlert() {
-				myGameScreen.notifyWin();
-			}
-
-			@Override
-			public void levelUp() {
-				myGameStatus.levelUp();
-			}
-			
-		};
+		stage.setScene(new Scene(myGameScreen,width,height,fill));
 	}
 	
 	private void intitializeTimeline() {
@@ -146,7 +126,7 @@ public class GameController {
 
 			@Override
 			public ListenQueue getEventQueue() {
-				return mySceneListen.pollQueue();
+				return mySceneListen.getQueue();
 			}
 			
 		};
@@ -203,6 +183,27 @@ public class GameController {
 			public void launchGame() throws VoogaException {
 				myLevelController.changeLevel(1);
 			}
+		};
+	}
+	
+	private void initializeLevelHandler() {
+		myLevelHandler = new LevelHandler() {
+
+			@Override
+			public ControllableGrid getMyGrid() {
+				return myGrid;
+			}
+
+			@Override
+			public void displayWinAlert() {
+				myGameScreen.notifyWin();
+			}
+
+			@Override
+			public void levelUp() {
+				myGameStatus.levelUp();
+			}
+			
 		};
 	}
 	
