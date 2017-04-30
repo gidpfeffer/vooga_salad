@@ -45,7 +45,6 @@ public class LoginMain {
 	private String resource;
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
-	private SceneListen mySceneListen;
 	
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
@@ -59,7 +58,6 @@ public class LoginMain {
 		loginScreen = new Login(loginhandler, css, resource);
 		Scene scene = loginScreen.getScene();
 		stage.setScene(scene);
-		mySceneListen = new SceneListen(scene);
 	}
 	
 	private void setupLoginHandler() {
@@ -192,7 +190,7 @@ public class LoginMain {
 	}
 	
 	private void goToGameScreen(GameData gameData) {
-		gameController = new GameController(gameData,loginhandler,mySceneListen);
+		gameController = new GameController(gameData,loginhandler);
 		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
 		stage.setTitle("Game Screen");
 	}
