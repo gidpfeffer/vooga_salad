@@ -21,6 +21,7 @@ public class DataGeneratorTest {
 		DataGenerator.makeData("ShootTargetNearData", 10.0, 10, new BasicActorType("Tower"), 10, 10.0);
 		DataGenerator.makeData("ShootTargetFarData", 10.0, 10, new BasicActorType("Tower"), 10, 10.0);
 		//DataGenerator.makeData("MoneyUpgradeData", 1.0);
+		assertNotEquals(DataGenerator.makeData("DamageInRadiusData"), null);
 	}
 	
 	public void testSavedData(){

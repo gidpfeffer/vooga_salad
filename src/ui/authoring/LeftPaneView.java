@@ -21,8 +21,10 @@ import javax.imageio.ImageIO;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import gamedata.ActorData;
+import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LineageData;
+import gamedata.composition.LimitedHealthData;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -161,6 +163,20 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
 		
 	}
+	
+	private void printCurrent(){
+		System.out.print("****GameData review******\n");
+		if(myGameData.getLevels().size()!=0 && myGameData.getLevel(1).getNumWaves()!=0)
+			for(EnemyInWaveData enemy: myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies()){
+				System.out.println("Level 1 ENEMY: " + enemy.getMyActor().getName());
+			}
+		for(ActorData actor: myGameData.getOptions().values()){
+			System.out.print("ACTOR: "+actor.getName() +"\t");
+			if(actor.getHealth() instanceof LimitedHealthData){
+				System.out.println("Health: "+ ((LimitedHealthData)(actor.getHealth())).getStartHealth());
+			}
+		}
+	}
 
 	private void addActor(String actorType, String imagePath, Map<String,String> defaultActors){
 		ActorEditorView view = new ActorEditorView(myDelegate, new BasicActorType(actorType), myGameData);
@@ -176,12 +192,11 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		
 	}
 	
-
-	
 	private void launchEditor(ActorEditorView view) {
 		view.setGameData(myGameData);
 		view.setActorTypeOptions(this.actorTypeToView.keySet());
 		myDelegate.openView(view);
+		printCurrent();
 	}
 
 	private Label labelForStackButton(String title){

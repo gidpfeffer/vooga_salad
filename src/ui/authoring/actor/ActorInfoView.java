@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import builders.AuthorInfoGenerator;
 import builders.DataGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
@@ -301,6 +302,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataViews(ActorData first){
+		addDataView(first.getHealth());
 		for(Data d: first.getMyData()){
 			addDataView(d);
 		}
@@ -331,7 +333,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataView(Data data){
-		DataView view = new DataView(gameData.getMyPaths(), data, this, 
+		DataView view = new DataView(gameData, data, this, 
 				Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;

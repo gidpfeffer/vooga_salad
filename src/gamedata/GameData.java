@@ -70,6 +70,7 @@ public class GameData {
 	//Actors available for entire game
 	private Map<Integer, LineageData> pieces;
 	
+	//References the location of the last index
 	private int numOptions;
 
 
@@ -118,7 +119,48 @@ public class GameData {
 		return toRet;
 	}
 	
+	/**
+	 * Remove a general category from the GameData (e.g., Projectile)
+	 * 
+	 * @param actor BasicActorType to remove
+	 */
+	public void removeCategory(BasicActorType actor){
+		types.remove(actor);
+	}
 	
+	/**
+	 * Remove an actor (e.g., Snorlax)
+	 * 
+	 * @param actor ActorData to remove
+	 */
+	public void removeActor(ActorData actor){
+		for(Integer gen: pieces.keySet()){
+			ActorData first = pieces.get(gen).getProgenitor(); 
+			if(first.equals(actor)){
+				pieces.remove(gen);
+			}
+		}
+	}
+	
+	/**
+	 * Completely remove any traces of an ActorData from the GameData,
+	 * including references in the LevelData objects
+	 * @param actor
+	 */
+	public void completeWipeActor(ActorData actor){
+		removeActor(actor);
+		removeFromLevels(actor);
+	}
+	
+	private void removeFromLevels(ActorData actor){
+		for (int i=0; i<levels.size(); i++){
+			List<WaveData> waves = levels.get(i).getMyWaves();
+			for(int j=0; j<waves.size(); j++){
+				WaveData wave = waves.get(j);
+				wave.removeActor(actor);
+			}
+		}
+	}
 	
 	/**
 	 * This is for use in the GameController.
@@ -134,6 +176,14 @@ public class GameData {
 		return getOptions().get(option);
 	}
 	
+	public Integer getOptionKey(ActorData actor){
+		for(Integer option: pieces.keySet()){
+			if(pieces.get(option).getProgenitor().equals(actor)){
+				return option;
+			}
+		}
+		return 0;
+	}
 	
 	
 	/**
