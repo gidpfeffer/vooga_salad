@@ -57,18 +57,6 @@ public class GameLevelController {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		//checkLevel();
-	}
-	
-	private void checkLevel() {
-		if(enemiesInWave.isEmpty()) {
-			try {
-				levelUp();
-			} catch (VoogaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	public int getLevel() {
@@ -103,22 +91,26 @@ public class GameLevelController {
 	 * @param grid Grid to modify (add actors)
 	 */
 	private void addPieces(LevelData curr){
-		curr.getMyWaves().forEach(wave -> processWave(wave,myGameData.getMyPaths()));
+		Grid2D firstPathCoor =getFirstPathCoor(myGameData.getMyPaths());
+		curr.getMyWaves().forEach(wave -> processWave(wave,firstPathCoor));
 	}
 	
-	private void processWave(WaveData waveData,PathData pathData) {
-		processEnemyWaves(waveData.getWaveEnemies(),pathData);
+	private void processWave(WaveData waveData,Grid2D firstPathCoor) {
+		processEnemyWaves(waveData.getWaveEnemies(),firstPathCoor);
 	}
 	
-	private void spawnEnemies(EnemyInWaveData enemyData, PathData pathData) {
-		int numEnemies = enemyData.getOption();
-		for (int i =0; i<numEnemies;i++) spawnEnemy(enemyData, pathData);
+	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,Grid2D firstPathCoor) {
+		enemyInWaveDatas.forEach(data -> {
+			for(int i = 0; i<data.getOption(); i++) enemiesInWave.add(() -> {
+				spawnEnemy(data,firstPathCoor);
+				return true;
+			});
+		});
 	}
-	
-	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
+
+	private void spawnEnemy(EnemyInWaveData enemyData, Grid2D firstPathCoor) {
 		ActorData actorData = enemyData.getMyActor();
 		Actor actor = builders.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
-		Grid2D firstPathCoor = getFirstPathCoor(pathData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
 	}
 	
@@ -128,14 +120,6 @@ public class GameLevelController {
 		return pathData.getPathByIndex(rand).get(0);
 	}
 	
-	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,PathData pathData) {
-		enemyInWaveDatas.forEach(data -> {
-			for(int i = 0; i<data.getOption(); i++) enemiesInWave.add(() -> {
-				spawnEnemy(data,pathData);
-				return true;
-			});
-		});
-	}
-	
+
 	
 }
