@@ -103,7 +103,7 @@ public class ProfileCard {
 	private void setupGSGridValues() {
 		gsGrid.getLastPlayed().setText(user.getLastPlayed());
 		gsGrid.getMostPlayed().setText(user.getMostPlayed());
-		gsGrid.getScore().setText(user.getHighScore().toString());
+		gsGrid.getScore().setText(user.getHighScore() + "");
 		gsGrid.getUsername().setText(user.getUsername());
 		gsGrid.getEntryMap().keySet().forEach(entry -> {
 			gsGrid.getEntryMap().get(entry).setEditable(false);

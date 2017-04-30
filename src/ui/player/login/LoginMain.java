@@ -34,8 +34,20 @@ import ui.player.users.UserDatabase;
 import ui.ratings.RatingView;
 import util.FileSelector;
 
+/**
+ * Acts as the primary controller for the UI. Houses all of the visual elements: user authentication
+ * screens ({@link ui.player.login.Login Login} and {@link ui.player.login.Signup Signup}), 
+ * {@link ui.authoring.AuthoringView AuthoringView}, {@link ui.player.GameSelector GameSelector}, 
+ * {@link ui.ratings.RatingView RatingView}, and {@link ui.player.inGame.GameScreen GameScreen}.
+ * 
+ * Navigation between screens and querying of the {@link ui.player.users.UserDatabase UserDatabase}
+ * is handled by the {@link ui.handlers.LoginHandler LoginHandler}.
+ * 
+ * @author Vishnu Gottiparthy
+ *
+ */
 public class LoginMain {
-	
+
 	private Stage stage;
 	private GameController gameController;
 	private UserDatabase database;
@@ -49,6 +61,12 @@ public class LoginMain {
 	public static final String CONFIG_EXTENSION = "*.xml";
 	private SceneListen mySceneListen;
 	
+	/**
+	 * Initialized in {@link voogasalad_ilovesingletons.Main}
+	 * @param stage Main window for the UI
+	 * @param css Filename describing CSS styling for the UI
+	 * @param resource Filename describing the resource file of all login dialog messages
+	 */
 	public LoginMain(Stage stage, String css, String resource) {
 		this.stage = stage;
 		this.css = css;
@@ -153,6 +171,9 @@ public class LoginMain {
 		};
 	}
 	
+	/**
+	 * Reads in the {@code UserDatabase} from the file
+	 */
 	private void setupDatabase() {
 		try {
 			XStream mySerializer = new XStream(new DomDriver());
@@ -163,6 +184,9 @@ public class LoginMain {
 		}
 	}
 	
+	/**
+	 * @see ui.handlers.LoginHandler#showProfile()
+	 */
 	private void showProfileCard(User user) {
 		if(user != null) {
 			ProfileCard card = new ProfileCard("profile", user, "profile.css");
@@ -180,6 +204,9 @@ public class LoginMain {
 		}
 	}
 	
+	/**
+	 * Allows the user to load in a custom game file from XML
+	 */
 	private void promptUserToChooseGame(){
 		try {
 			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
@@ -196,6 +223,10 @@ public class LoginMain {
 		}
 	}
 	
+	/**
+	 * Launches the game specified by {@code gameData}
+	 * @param gameData Describes the game to launch
+	 */
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData,loginhandler.getActiveUser(),mySceneListen);
 		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
