@@ -50,8 +50,9 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	
 	private boolean IS_LOADED = false;
 	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_1.png";
-	private static final Color[] LAYER_COLORS = { CustomColors.AMBER, CustomColors.BLUE_500, CustomColors.GREEN,
-			CustomColors.INDIGO };
+	private static final Color[] LAYER_COLORS = { 
+			CustomColors.AMBER, CustomColors.BLUE_500, 
+			CustomColors.GREEN, CustomColors.INDIGO };
 
 	private ImageViewPane myBackgroundView;
 	private MapLayersData myMapData;
