@@ -25,6 +25,7 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 		hud.setStyle("-fx-background-color: slateblue; -fx-opacity: .5");
 	}
 	
+
 	@Override
 	public void update(Map<String, String> arg) {
 		System.out.println("clearing");
