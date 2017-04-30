@@ -99,7 +99,7 @@ public class User implements WriteableUser{
 			}
 		};
 	}
-
+	
 	public User() {
 		this(guestUser, "", guestPicture, "");
 	}
