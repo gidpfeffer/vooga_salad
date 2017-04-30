@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.util.Duration;
 import ui.general.ToggleSwitch;
 
 /**
@@ -65,6 +66,8 @@ public class MusicPlayer {
 		          }
             }
         });
+        
+        
  
  
         
@@ -93,6 +96,7 @@ public class MusicPlayer {
 	public void setSong(String s){
 		song = new Media(new File(s).toURI().toString());
 		mediaPlayer = new MediaPlayer(song);
+		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 	
 	private void playMusic() {
