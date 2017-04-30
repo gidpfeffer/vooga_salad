@@ -1,8 +1,5 @@
 package ui.player.inGame;
 
-
-
-
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -37,8 +34,7 @@ public class MediaControl{
     private boolean stopRequested = false;
     private Duration duration;
     private Button muteButton; 
-    
-    
+        
 	public MediaControl(MediaPlayer mp){
 		this.mp  = mp; 
 		setupPlayButton();

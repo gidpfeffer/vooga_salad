@@ -30,8 +30,8 @@ public class ListenQueue {
 		myEvents.add(code);
 	}
 	
-	public boolean queryKey(KeyCode key) {
-		return myEvents.contains(key);
+	public boolean queryKey(String key) {
+		return myEvents.contains(KeyCode.getKeyCode(key));
 	}
 	/*
 	@Override

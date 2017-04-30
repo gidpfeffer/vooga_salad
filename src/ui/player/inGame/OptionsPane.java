@@ -37,6 +37,7 @@ public class OptionsPane extends SlidingPane {
 		this.paneName = name;
 		this.setPrefWidth(width);
 		addActorPane();
+		setSlideTo(this.getPrefWidth());
 	}
 
 	/**

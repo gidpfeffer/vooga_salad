@@ -23,6 +23,7 @@ import ui.player.inGame.GameScreen;
 import ui.player.inGame.SimpleHUD;
 import ui.player.listener.ListenQueue;
 import ui.player.listener.SceneListen;
+import ui.player.users.InitialGameStatus;
 import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
 import util.VoogaException;
@@ -47,7 +48,7 @@ public class GameController {
 	
 	private WriteableGameStatus myWriteableGameStatus;
 	
-	private LevelController myLevelController;
+	private GameLevelController myLevelController;
 	
 	private ControllableGrid myGrid;
 	
@@ -63,18 +64,17 @@ public class GameController {
 	
 	private final double MILLISECOND_DELAY=17;
 	
-	public GameController(GameData gameData,LoginHandler loginHandler, SceneListen sceneListen) {
+	public GameController(GameData gameData,LoginHandler loginHandler) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
-		mySceneListen = sceneListen;
 		initializeUIHandler();
 		initializeAnimationHandler();
 		initializeGridHandler();
 		initializeLevelHandler();
-		setupGameStatus(loginHandler.getActiveUser());
+		setupGameStatus(loginHandler.getActiveUser(),loginHandler.getActiveUser().getInitialGameStatus());
 		setUpGameScreen(loginHandler);
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(myLevelHandler,myGameData);
+		myLevelController = new GameLevelController(myLevelHandler,myGameData);
 	}
 	
 	private void setUpGameScreen(LoginHandler loginHandler) {
@@ -93,15 +93,17 @@ public class GameController {
 		return actorGrid;
 	}
 	
-	private void setupGameStatus(WriteableUser writeableUser) {
+	private void setupGameStatus(WriteableUser writeableUser,InitialGameStatus initialGameStatus) {
 		mySimpleHUD = new SimpleHUD();
-		myGameStatus = new GameStatus(writeableUser);
+		myGameStatus = new GameStatus(writeableUser,initialGameStatus);
 		myGameStatus.addObserver(mySimpleHUD);
 	}
 	
 	public void start(Stage stage,double width, double height, Paint fill) {
+		Scene myScene = new Scene(myGameScreen,width,height,fill);
+		mySceneListen = new SceneListen(myScene); 
+		stage.setScene(myScene);
 		intitializeTimeline();
-		stage.setScene(new Scene(myGameScreen,width,height,fill));
 	}
 	
 	private void intitializeTimeline() {
@@ -113,13 +115,13 @@ public class GameController {
 	}
 	
 	private void step() {
+		myLevelController.update();
 		mySceneListen.pollQueue();
 		myGrid.step();
 	}
 	
 	private void initializeGridHandler() {
 		myGridHandler = new GridHandler() {
-
 			@Override
 			public WriteableGameStatus getWriteableGameStatus() {
 				return myWriteableGameStatus;
@@ -129,7 +131,6 @@ public class GameController {
 			public ListenQueue getEventQueue() {
 				return mySceneListen.getQueue();
 			}
-			
 		};
 	}
 	
@@ -197,6 +198,7 @@ public class GameController {
 
 			@Override
 			public void displayWinAlert() {
+				animation.stop();
 				myGameScreen.notifyWin();
 			}
 
