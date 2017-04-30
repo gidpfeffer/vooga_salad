@@ -26,8 +26,10 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 	
 	@Override
 	public void update(Map<String, String> arg) {
+		System.out.println("clearing");
 		hud.getChildren().clear();
 		arg.forEach((k,v) -> display(k,v,rowIdx));
+		System.out.println("update GameStatus");
 	}
 	
 	private void display(String key, String val, int row) {
