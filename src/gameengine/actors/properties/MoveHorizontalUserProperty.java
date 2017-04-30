@@ -3,27 +3,15 @@ package gameengine.actors.properties;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
-public class MoveHorizontalUserProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
+public class MoveHorizontalUserProperty<G extends ReadAndMoveGrid> extends MoveAxisUserProperty<G>{
 
-	private String moveLeftButton;
-	private String moveRightButton;
-	private Integer sensitivity;
-	
 	public MoveHorizontalUserProperty(MoveHorizontalUserData myData) {
-		moveLeftButton = myData.getLeft();
-		moveRightButton = myData.getRight();
-		sensitivity = myData.getSensitivity();
-	}
-	
-	@Override
-	public void action(G grid, Integer actorID) {
-		// TODO Auto-generated method stub
-		
+		super(myData.getRight(),myData.getLeft(),myData.getSensitivity());
 	}
 
 	@Override
-	public boolean isOn() {
-		return true;
+	protected void move(String posKey, String negKey, Integer sensitivity, G grid, Integer actorID) {
+		grid.move(actorID, grid.getEventQueue().queryKey(posKey), newY);
 	}
 
 }
