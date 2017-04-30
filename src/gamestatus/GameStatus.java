@@ -49,7 +49,7 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	}
 
 	public void levelUp() {
-		int newLevel = Integer.parseInt(myMap.get(LEVEL))+1;
+		int newLevel = (int) Double.parseDouble(myMap.get(LEVEL))+1;
 		setMyLevel(newLevel);
 	}
 

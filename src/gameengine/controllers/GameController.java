@@ -49,7 +49,7 @@ public class GameController {
 	
 	private WriteableGameStatus myWriteableGameStatus;
 	
-	private LevelController myLevelController;
+	private GameLevelController myLevelController;
 	
 	private ControllableGrid myGrid;
 	
@@ -75,7 +75,7 @@ public class GameController {
 		setupGameStatus(loginHandler.getActiveUser(),loginHandler.getActiveUser().getInitialGameStatus());
 		setUpGameScreen(loginHandler);
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new LevelController(myLevelHandler,myGameData);
+		myLevelController = new GameLevelController(myLevelHandler,myGameData);
 	}
 	
 	private void setUpGameScreen(LoginHandler loginHandler) {
@@ -116,6 +116,7 @@ public class GameController {
 	}
 	
 	private void step() {
+		myLevelController.update();
 		mySceneListen.pollQueue();
 		myGrid.step();
 	}
