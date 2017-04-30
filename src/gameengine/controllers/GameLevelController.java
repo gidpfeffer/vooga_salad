@@ -1,8 +1,8 @@
 package gameengine.controllers;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
 
@@ -14,9 +14,13 @@ import gamedata.PathData;
 import gamedata.PreferencesData;
 import gamedata.WaveData;
 import gameengine.actors.management.Actor;
+import gameengine.conditions.Condition;
+import gameengine.conditions.EnduranceCondition;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
+import gamestatus.ReadableGameStatus;
 import util.Delay;
 import util.VoogaException;
 
@@ -34,36 +38,47 @@ public class GameLevelController {
 	
 	private PreferencesData myPreferences;
 	
+	private ReadableGameStatus myReadableGameStatus;
+	
 	private LevelHandler myLevelHandler;
 	
 	private Delay delay;
 	
 	private final int DELAY_CONSTANT = 2;
 	
+	private Condition myEnduranceCondition;
+	
 	private int level;
 	
 	private Queue<Supplier<Boolean>> enemiesInWave;
 	
-	public GameLevelController(LevelHandler levelHandler,GameData gameData) {
+	public GameLevelController(LevelHandler levelHandler,GameData gameData,ReadableGameStatus readableGameStatus) {
 		myLevelHandler = levelHandler;
 		myGrid = myLevelHandler.getMyGrid();
 		delay = new Delay(DELAY_CONSTANT);
 		myGameData = gameData;
 		myPreferences = myGameData.getPreferences();
 		enemiesInWave = new ArrayDeque<>();
+		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(100);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void update() {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
+		myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus).ifPresent((win) -> winCondition((Boolean) win));
+	}
+	
+	private Runnable winCondition(Boolean win) {
+		return win ? () -> levelUp():()->myLevelHandler.displayLoseAlert();
 	}
 	
 	public int getLevel() {
 		return level;
 	}
 	
-	public void levelUp() throws VoogaException {
+	public void levelUp() {
 		if (!(myGameData.getLevels().get(level+1)==null)) {
 			changeLevel(level+1);
 			myLevelHandler.levelUp();
@@ -72,11 +87,11 @@ public class GameLevelController {
 		}
 	}
 	
-	public void changeLevel(int level) throws VoogaException{
+	public void changeLevel(int level) {
 		this.level = level;
 		LevelData levelData = myGameData.getLevel(level);
 		if (levelData!=null) loadLevel(levelData);
-		else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
+		//else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
 	}
 	
 	private void loadLevel(LevelData levelData) {

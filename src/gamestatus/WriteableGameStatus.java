@@ -6,5 +6,5 @@ public interface WriteableGameStatus {
 	void spendMoney(double mon);
 	void loseLife();
 	void gainLife();
-	void clear();
+	void setInitialValues();
 }
