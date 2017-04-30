@@ -17,7 +17,7 @@ public abstract class MoveAxisUserProperty<G extends ReadAndMoveGrid> implements
 	
 	@Override
 	public void action(G grid, Integer actorID) {
-		move(posButton, negButton, mySensitivity, grid, actorID);
+		move(grid, actorID);
 	}
 	
 	protected abstract void move(G grid, Integer actorID);

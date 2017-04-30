@@ -3,7 +3,6 @@ package gameengine.conditions;
 import java.util.Optional;
 
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
-import gamestatus.GameStatus;
 import gamestatus.ReadableGameStatus;
 
 public abstract class WinLoseCondition<G extends ReadableGrid> implements Condition<G>{
