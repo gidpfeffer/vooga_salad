@@ -54,7 +54,15 @@ public class GameScreen extends GenericGameScreen
 	}
 	
 	public void notifyWin() {
-		new Alert(AlertType.INFORMATION, "You win!").showAndWait();
+		notifyStatus("You won!");
+	}
+	
+	public void notifyLose() {
+		notifyStatus("You lost!");
+	}
+	
+	private void notifyStatus(String status) {
+		new Alert(AlertType.INFORMATION, status).showAndWait();
 	}
 	
 	private void initializeScreenHandler() {
