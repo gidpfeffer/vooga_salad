@@ -2,7 +2,8 @@ package ui.handlers;
 
 import java.util.Map;
 
-import gamedata.ActorData; 
+import gamedata.ActorData;
+import gamedata.DisplayData;
 import util.VoogaException;
 
 /**
@@ -17,6 +18,7 @@ public interface UIHandler {
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
 	int addGameObject(Integer option, double x, double y) throws VoogaException;
 	Map<Integer,ActorData> getOptions();
+	DisplayData getDisplayData();
 	void launchGame() throws VoogaException;
 	void changeLevel(int level) throws VoogaException;
 }

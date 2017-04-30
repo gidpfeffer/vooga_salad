@@ -1,13 +1,20 @@
 package ui.authoring.map;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+
+
 import XML.xmlmanager.classes.ConcreteFileHelper;
 import gamedata.MapLayersData;
+import gamedata.PathData;
+import gamedata.DisplayData;
 import gamedata.LayerData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -59,13 +66,17 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
 
+	private static final Insets LAYER_INSET = new Insets(8, 8, 72, 8);
+	private DisplayData myDisplayData;
 	private Pane myLayerPopup;
 
-	public MapEditorView(MapLayersData mapData, PopViewDelegate popDelegate) {
+	public MapEditorView(PathData pathData, MapLayersData mapData, PopViewDelegate popDelegate,DisplayData displayData) {
+
 		super();
 		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
 		myMapData = mapData;
 		myPopDelegate = popDelegate;
+		myDisplayData=displayData;
 		setupViews();
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
@@ -268,10 +279,29 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
-			//ConcreteFileHelper manager = new ConcreteFileHelper();
-			Image img = new Image(selectedFile.getName());
-			if(img != null)
-				myBackgroundView.getImageView().setImage(img);
+
+			ConcreteFileHelper manager = new ConcreteFileHelper();
+			// TODO copy file to images folder
+			
+			
+			try {
+				
+				//Files.move(Paths.get(selectedFile.getAbsolutePath()), Paths.get(new File("images\\").getAbsolutePath()));
+				
+				manager.moveFile(selectedFile.getParent(), "images", selectedFile.getName());
+				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+			e1.printStackTrace();
+				
+			}
+			System.out.println(selectedFile.getName());
+			//Image image=new Image(selectedFile.getName());
+			Image image=new Image(selectedFile.toURI().toString());
+			myBackgroundView.getImageView().setImage(image);
+			myDisplayData.setBackgroundImagePath(selectedFile.getName());
+			System.out.println("backgroundimage:"+selectedFile.getName());
+
 		}
 	}
 

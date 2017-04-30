@@ -26,7 +26,7 @@ public class EnduranceCondition<G extends ReadableGrid> extends WinLoseCondition
 
 	@Override
 	protected boolean loseCondition(G grid, ReadableGameStatus status) {
-		return status.getLives()>0;
+		return status.getLives()<1;
 	}
 
 }

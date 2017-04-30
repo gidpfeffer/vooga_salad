@@ -247,7 +247,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupMapView() {
-		myMapView = new MapEditorView(myGameData.getLayers(), this);
+		myMapView = new MapEditorView(myGameData.getMyPaths(),myGameData.getLayers(), this,myGameData.getDisplayData());
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
