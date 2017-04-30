@@ -11,6 +11,4 @@ public abstract class Layer extends Pane{
 	public abstract void undo();
 	public abstract void setColor(Color c);
 	public abstract boolean isActive();
-	public abstract void sizeDidChange();
-	public abstract void load(MapLayersData mapData);
 }

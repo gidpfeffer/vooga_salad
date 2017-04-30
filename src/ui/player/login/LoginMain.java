@@ -228,7 +228,7 @@ public class LoginMain {
 	 * @param gameData Describes the game to launch
 	 */
 	private void goToGameScreen(GameData gameData) {
-		gameController = new GameController(gameData,loginhandler.getActiveUser(),mySceneListen);
+		gameController = new GameController(gameData,loginhandler,mySceneListen);
 		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
 		stage.setTitle("Game Screen");
 	}

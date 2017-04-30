@@ -51,7 +51,9 @@ import util.Location;
 
 /**
  * Provides the user the ability to add new types of towers and customize their
- * properties
+ * properties.
+ * 
+ * Also loads the actors of the given BasicActorType
  * 
  * @author TNK
  * @author maddiebriere
@@ -61,19 +63,19 @@ public class ActorEditorView extends AnchorPane {
 	private static final double BUTTON_HEIGHT = 72;
 	
 	
-	private GameData myGameData; //NOTE: this is the legit thing don't fuck with it
-	private HashMap<StackPane, LineageData> myActors;
+	private GameData myGameData;
 	private PopViewDelegate myDelegate;
 	private VBox myActorsView;
 	private ActorInfoView myActorInfoView;
 	private BasicActorType myActorType;
 
 	public ActorEditorView(PopViewDelegate delegate, BasicActorType type, GameData gameData) {
+		
 		super();
 		myDelegate = delegate;
 		myActorType = type;
 		myGameData = gameData;
-		myActors = new HashMap<StackPane, LineageData>();
+		myGameData.getAllOfType(type);
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
 	}
@@ -131,7 +133,7 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	private void setupInfoView(ScrollPane scroll){
-		myActorInfoView = new ActorInfoView();
+		myActorInfoView = new ActorInfoView(myGameData);
 		myActorInfoView.prefWidthProperty().bind(scroll.widthProperty());
 		myActorInfoView.minHeightProperty().bind(scroll.heightProperty());
 		scroll.setContent(myActorInfoView);
@@ -220,17 +222,17 @@ public class ActorEditorView extends AnchorPane {
 		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
 		StackPane.setMargin(field, new Insets(8,32,8,32));
 		lblWrapper.getChildren().add(field);
-		
-		StackPane view = UIHelper.buttonStack(e -> {}, 
+		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
+		StackPane view = UIHelper.buttonStack(e -> {
+			myActorInfoView.setLineageData(data);
+		}, 
 				Optional.of(field), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
 		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectActor(view));
-		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(view, newText));
+		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(data, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
-		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
-		myActors.put(view, data);
 		myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
 	}
 
@@ -250,27 +252,22 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	public void setGameData(GameData data){
-		myActorInfoView.setGameData(myGameData);
 		myGameData = data;
 	}
 
 	private void selectActor(StackPane stackButton){
-		myActorInfoView.setGameData(myGameData);
-		myActorInfoView.setLineageData(this.myActors.get(stackButton));
+		
 	}
 	
-	private void updateTowerName(StackPane pane, String text){
-		for(ActorData data : this.myActors.get(pane).getMap().values()){
-			data.getBasic().setName(text);
-		}
-		for(ActorData data : this.myActors.get(pane).getMap().values()){
-			System.out.print(data.getBasic().getName());
+	private void updateTowerName(LineageData data, String text){
+		for(ActorData actor : data.getMap().values()){
+			actor.getBasic().setName(text);
 		}
 	}
 	
-	public Collection<LineageData> getActorData() {
-		return	myActors.values();
-	}
+//	public Collection<LineageData> getActorData() {
+//		return	myActors.values();
+//	}
 
 	public void setActorTypeOptions(Set<BasicActorType> keySet) {
 		this.myActorInfoView.setActorTypeOptions(keySet);

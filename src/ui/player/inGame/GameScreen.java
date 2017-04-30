@@ -36,11 +36,12 @@ public class GameScreen extends GenericGameScreen
 	private LoginHandler loginhandler;
 	private AnimationHandler animationhandler;
 	
-	public GameScreen(UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
+	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
 		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
+		this.loginhandler = loginHandler;
 		this.ivp = this.getIVP();
 		hud = simpleHUD.get();
 		initializeScreenHandler();
