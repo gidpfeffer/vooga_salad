@@ -19,15 +19,23 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 		return hud;
 	}
 	
-	public SimpleHUD(){
+	public SimpleHUD(Map<String, String> arg){
 		hud = new GridPane();
+		updateDisplay(arg);
+		System.out.println("GameStatus initialized and dipslayed");
 		hud.setStyle("-fx-background-color: slateblue; -fx-opacity: .5");
+	}
+	
+	private void updateDisplay(Map<String, String> arg) {
+		arg.forEach((k,v) -> display(k,v,rowIdx));
 	}
 	
 	@Override
 	public void update(Map<String, String> arg) {
+		System.out.println("clearing");
 		hud.getChildren().clear();
-		arg.forEach((k,v) -> display(k,v,rowIdx));
+		updateDisplay(arg);
+		System.out.println("update GameStatus");
 	}
 	
 	private void display(String key, String val, int row) {
