@@ -36,7 +36,7 @@ public class SimpleDateTimeUtil {
 	}
 	
 	public String getTime(boolean timezone) {
-		dateFormat = (timezone) ? new SimpleDateFormat("hh:mm aaa") : new SimpleDateFormat("hh:mm aaa z"); 
+		dateFormat = (timezone) ? new SimpleDateFormat("hh:mm aaa z") : new SimpleDateFormat("hh:mm aaa"); 
 		return get();
 	}
 	
