@@ -41,8 +41,8 @@ public class DirectoryTreeTest {
 		assertEquals(root.addDirectoryToTree("src/XML/xmlmanager/tests/foo/blah/test2/a/b/c/d/e/f"), true);
 		assertEquals(root.addDirectoryToTree("src/XML/xmlmanager/tests/foo/blah/test2/a/b/c"), false);
 		assertEquals(root.addDirectoryToTree("src/XML/xmlmanager/tests/"), false);
-
-//		root.printTree();
+		System.out.println("test 1");
+		root.printTree();
 	}
 	
     //directoryAddition test
@@ -59,6 +59,7 @@ public class DirectoryTreeTest {
 		assertEquals(root.addFileToTree("src/XML/xmlmanager/tests/a"), true);
 		assertEquals(root.addFileToTree("src/XML/xmlmanager/tests/"), false);
 		assertEquals(root.addFileToTree("src/XML/xmlmanager/tests/a/b"), false);
+		System.out.println("\n\n\n\n\ntest 2:");
 		root.printTree();
 	}
 
