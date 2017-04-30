@@ -43,7 +43,7 @@ public class Actor{
 		return Integer.parseInt(actor.getId());
 	}
 	
-	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp, Map<Integer, Actor> mapOfActors) {
+	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp) {
 		//System.out.println("IN ACTOR: making the option: " + option);
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
@@ -54,7 +54,7 @@ public class Actor{
 		this.option = option;
 		this.imp = ivp;
 		this.uihandler = uihandler;
-		this.mapOfActors = mapOfActors;
+		//this.mapOfActors = mapOfActors;
 		this.removeable = Optional.of(true);
 		setup();
 	}
@@ -114,13 +114,14 @@ public class Actor{
 		public void handle(final MouseEvent ME) {
 			if (((MouseEvent) ME).getButton().equals(MouseButton.SECONDARY)) {
 				try {
+					System.out.println(actor.getLayoutX() / width + " " + actor.getLayoutY() / height);
 					Integer actorID = uihandler.addGameObject(option, actor.getLayoutX() / width, actor.getLayoutY() / height);
 					Object obj = ME.getSource();
 					if (obj instanceof Pane) {
 						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
 						if (removeable.isPresent() && !removeable.get()) ((Pane) obj).removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
-						//screenhandler.addActorToMap(actorID, clazz);
-						mapOfActors.put(actorID, clazz);
+						screenhandler.addActorToMap(actorID, clazz);
+						//mapOfActors.put(actorID, clazz);
 						actor.setId(actorID.toString());
 					}
 				} catch (NumberFormatException | VoogaException e) {
