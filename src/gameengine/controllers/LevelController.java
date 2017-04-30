@@ -81,14 +81,12 @@ public class LevelController {
 	}
 	
 	private void processWave(WaveData waveData,PathData pathData) {
-		System.out.println("processing enemy waves");
 		processEnemyWaves(waveData.getWaveEnemies(),pathData);
-		System.out.println("processed enemy waves");
 	}
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
-		Actor actor = builders.ActorGenerator.makeActor(enemyData.getOption(), actorData);
+		Actor actor = builders.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
 		Grid2D firstPathCoor = getFirstPathCoor(pathData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
 		if (myPreferences.pauseBetweenWaves()) delay.delayAction();
@@ -101,7 +99,7 @@ public class LevelController {
 	}
 	
 	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,PathData pathData) {
-		enemyInWaveDatas.forEach(e -> spawnEnemy(e,pathData));
+		enemyInWaveDatas.forEach(enemyData -> spawnEnemy(enemyData,pathData));
 	}
 	
 	
