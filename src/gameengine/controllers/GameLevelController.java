@@ -59,7 +59,8 @@ public class GameLevelController {
 		myGameData = gameData;
 		myPreferences = myGameData.getPreferences();
 		enemiesInWave = new ArrayDeque<>();
-		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(100);
+		myReadableGameStatus = readableGameStatus;
+		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(10);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -67,7 +68,9 @@ public class GameLevelController {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus).ifPresent((win) -> winCondition((Boolean) win));
+		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus);//.ifPresent((win) -> winCondition((Boolean) win));
+		myWin.ifPresent(win -> winCondition(win).run());
+		System.out.println("pls");
 	}
 	
 	private Runnable winCondition(Boolean win) {

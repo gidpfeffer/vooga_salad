@@ -3,29 +3,24 @@ package gameengine.conditions;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
-public class EnduranceCondition<G extends ReadableGrid> extends WinLoseCondition<G> {
+public class KillAllCondition<G extends ReadableGrid> extends WinLoseCondition<G> {
 
-	private Integer myFinalFrame;
-	private Integer myCurrentFrame;
-	
-	public EnduranceCondition(Integer duration) {
-		myFinalFrame = duration;
-		myCurrentFrame = 0;
-	}
-	
 	@Override
 	protected void update() {
-		myCurrentFrame++;
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	protected boolean winCondition(G grid, ReadableGameStatus status) {
-		return myCurrentFrame>myFinalFrame;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	protected boolean loseCondition(G grid, ReadableGameStatus status) {
-		return status.getLives()<1;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
