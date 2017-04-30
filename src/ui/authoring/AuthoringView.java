@@ -167,10 +167,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 		
 		//alex test
-		ImageButton displayButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
+		ImageButton displayButton = new ImageButton("icon.png", new Location(40.0,40.0));
 		displayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> launchDisplayView());
-		AnchorPane.setLeftAnchor(displayButton, 150.0);
-		AnchorPane.setTopAnchor(displayButton, 150.0);
+		AnchorPane.setLeftAnchor(displayButton, 80.0);
+		AnchorPane.setTopAnchor(displayButton, 12.0);
 		UIHelper.setDropShadow(displayButton);
 		this.getChildren().add(displayButton);
 		myDisplayView=new DisplayView(this,this,myGameData);

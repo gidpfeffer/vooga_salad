@@ -124,6 +124,12 @@ public class GameData {
 	 * 
 	 * @param actor BasicActorType to remove
 	 */
+	public DisplayData getDisplayData(){
+		return display;
+	}
+	public void setDisplayData(DisplayData data){
+		display=data;
+	}
 	public void removeCategory(BasicActorType actor){
 		types.remove(actor);
 	}
