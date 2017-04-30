@@ -85,7 +85,8 @@ public class LevelController {
 	}
 	
 	private void spawnEnemies(EnemyInWaveData enemyData, PathData pathData) {
-		for (int i =0; i<enemyData.getWaveNumber();i++) spawnEnemy(enemyData, pathData);
+		int numEnemies = enemyData.getOption();
+		for (int i =0; i<numEnemies;i++) spawnEnemy(enemyData, pathData);
 	}
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
