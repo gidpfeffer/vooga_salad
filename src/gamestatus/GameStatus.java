@@ -21,6 +21,13 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	
 	public GameStatus(WriteableUser writeableUser) {
 		myWriteableUser =writeableUser;
+		setInitialValues();
+	}
+	
+	private void setInitialValues() {
+		setMyMoney(0);
+		setMyLevel(1);
+		setMyExperience(0);
 	}
 
 	public void addExperience(double exp){
