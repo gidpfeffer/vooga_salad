@@ -89,6 +89,7 @@ public class MusicPlayer {
 	public void setSong(String s){
 		song = new Media(new File(s).toURI().toString());
 		mediaPlayer = new MediaPlayer(song);
+		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 	
 	private void playMusic() {
