@@ -34,12 +34,12 @@ public class GameScreen extends GenericGameScreen
 	private Map<Integer, Actor> actorsMap;
 	private ScreenHandler screenHandler;
 	private LoginHandler loginhandler;
-	//private AnimationHandler animationhandler;
+	private AnimationHandler animationhandler;
 	
 	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
 		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
 		this.uihandler = uihandler;
-		//this.animationhandler = animationHandler;
+		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.loginhandler = loginHandler;
 		this.ivp = this.getIVP();
@@ -90,7 +90,7 @@ public class GameScreen extends GenericGameScreen
 	
 	private void setup() {
 		setupPanels();
-		setupHUD();
+		//setupHUD();
 		setReturnToMain(e -> loginhandler.returnToMain());
 		
 	}
@@ -140,6 +140,7 @@ public class GameScreen extends GenericGameScreen
 		});
 		
 		arg.keySet().stream().forEach(id -> {
+			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
 				System.out.println("making new actor");
 				System.out.println("id " + id + " option: " + actorOption + " all options: " + uihandler.getOptions());

@@ -77,6 +77,17 @@
       <rank>Novice</rank>
       <last></last>
     </ui.player.users.User>
+    <ui.player.users.User>
+      <username>star2</username>
+      <password>f126d46cf7c53672ba0c757c0f9f3ada01278dc2</password>
+      <score>0</score>
+      <avatar>filled_star.png</avatar>
+      <email>s@duke.edu</email>
+      <level>1</level>
+      <experience>0.0</experience>
+      <rank>Novice</rank>
+      <last></last>
+    </ui.player.users.User>
   </database>
   <passwords>
     <database>
@@ -103,6 +114,10 @@
       <entry>
         <string>juju</string>
         <string>fa914f4dbd71df8b5c377bbb9af724cbf296f0a3</string>
+      </entry>
+      <entry>
+        <string>star2</string>
+        <string>f126d46cf7c53672ba0c757c0f9f3ada01278dc2</string>
       </entry>
       <entry>
         <string>hello</string>

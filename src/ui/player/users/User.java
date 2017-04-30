@@ -55,7 +55,7 @@ public class User implements WriteableUser{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public double getHighScore() {
+	public Double getHighScore() {
 		return money;
 	}
 	public void setMoney(double money) {
