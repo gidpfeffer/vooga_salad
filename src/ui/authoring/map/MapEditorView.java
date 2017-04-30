@@ -268,9 +268,10 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
-			ConcreteFileHelper manager = new ConcreteFileHelper();
-			// TODO copy file to images folder
-			myBackgroundView.getImageView().setImage(new Image(selectedFile.getName()));
+			//ConcreteFileHelper manager = new ConcreteFileHelper();
+			Image img = new Image(selectedFile.getName());
+			if(img != null)
+				myBackgroundView.getImageView().setImage(img);
 		}
 	}
 
