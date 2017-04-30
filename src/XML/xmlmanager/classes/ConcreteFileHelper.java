@@ -74,7 +74,7 @@ public class ConcreteFileHelper implements FileHelper{
 		String oldDirPath = startDirPath + "/" + filename;
 		String newDirPath = endDirPath + "/" + filename;
 		checkForValidity(new File(oldDirPath), f -> !f.exists() || !f.isFile(), "Invalid file to read the file from");
-		checkForValidity(new File(newDirPath), f -> f.exists(), "New file transfer location already existed");
+		//checkForValidity(new File(newDirPath), f -> f.exists(), "New file transfer location already existed");
 		Files.copy(Paths.get(oldDirPath), Paths.get(newDirPath));
 	}
 }

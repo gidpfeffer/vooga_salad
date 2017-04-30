@@ -2,6 +2,7 @@ package gameengine.controllers;
 import java.util.Map;			
 import builders.ActorGenerator;
 import gamedata.ActorData;
+import gamedata.DisplayData;
 import gamedata.GameData;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
@@ -176,6 +177,9 @@ public class GameController {
 			@Override
 			public Map<Integer, ActorData> getOptions() {
 				return myGameData.getOptions();
+			}
+			public DisplayData getDisplayData(){
+				return myGameData.getDisplayData();
 			}
 			@Override
 			public void changeLevel(int level) throws VoogaException {
