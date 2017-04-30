@@ -121,6 +121,7 @@ public class DisplayView extends BorderPane {
 		posChoice.getItems().add(s);
 		}
 		posChoice.valueProperty().addListener((x, y, newValue) -> {
+			myData.setLocation(newValue);
 			TexttoPosFactory.updateMenuPosition(this, newValue, myMenu);
 		});
 		myVBox.getChildren().add(makeField(title, posChoice));

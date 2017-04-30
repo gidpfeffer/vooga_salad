@@ -200,6 +200,7 @@ public class ActorData {
 		this.cost = cost;
 	}
 
+
 	public String getLayerName() {
 		return layerName;
 	}
@@ -207,6 +208,7 @@ public class ActorData {
 	public void setLayerName(String layerName) {
 		this.layerName = layerName;
 	}
+
 
 	
 	
