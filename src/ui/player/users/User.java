@@ -16,6 +16,8 @@ public class User implements WriteableUser{
 	private final static double INITIAL_MONEY = 0;
 	private final static double INITIAL_EXP = 0;
 	private final static int INITIAL_LEVEL = 1;
+	private final static String guestUser = "Guest";
+	private final static String guestPicture = "profile_icon.png";
 	
 	public String getMostPlayed() {
 		return most;
@@ -59,7 +61,7 @@ public class User implements WriteableUser{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public double getHighScore() {
+	public Double getHighScore() {
 		return money;
 	}
 	public void setMoney(double money) {
@@ -97,7 +99,11 @@ public class User implements WriteableUser{
 			}
 		};
 	}
-
+	
+	public User() {
+		this(guestUser, "", guestPicture, "");
+	}
+	
 	public User(String username, String password, String avatar, String email) {
 		this.username = username;
 		this.password = password;

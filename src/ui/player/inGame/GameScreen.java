@@ -61,7 +61,7 @@ public class GameScreen extends GenericGameScreen
 		screenHandler = new ScreenHandler(){
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
-				Actor actor = new Actor(uihandler, screenHandler, option,actorData,ivp, actorsMap);
+				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp, actorsMap);
 				actor.getPane().setLayoutX(getWidth() - x);
 				actor.getPane().setLayoutY(y);
 				getChildren().add(actor.getPane());
@@ -80,14 +80,17 @@ public class GameScreen extends GenericGameScreen
 				AnchorPane.setRightAnchor(holder, 20.);
 				AnchorPane.setBottomAnchor(holder, 20.);
 			}
+			@Override
+			public void addActorToMap(int id, Actor actor) {
+				actorsMap.put(id, actor);
+			}
 		};
 	}
 	
 	private void setup() {
 		setupPanels();
 		setupHUD();
-		setReturnToMain(e -> loginhandler.returnToMain());
-		
+		setReturnToMain(e -> returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -119,19 +122,20 @@ public class GameScreen extends GenericGameScreen
 		ft.play();
 		return ft;
 	}
+
 	private EventHandler<ActionEvent> returnToMain() {
 		return new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				animationhandler.stop();
 				loginhandler.returnToMain();
-				System.out.println(getMediaPlayer().getStatus());
 				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
 					getMediaPlayer().stop();
 				}
 			}
 		};
 	}
+
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {

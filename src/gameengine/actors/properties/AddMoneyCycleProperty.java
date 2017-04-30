@@ -1,21 +1,28 @@
 package gameengine.actors.properties;
 
 import gamedata.composition.AddMoneyCycleData;
+import gameengine.actors.propertygen.CycleProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
-import util.Delay;
 
-public class AddMoneyCycleProperty<G extends ReadAndDamageGrid> extends AddMoneyProperty<G> {
-	
-	private Delay myDelay;
+/**
+ * TODO: make sure AddMoneyData 
+ * @author Moses Wayne
+ *
+ * @param <G>
+ */
+
+public class AddMoneyCycleProperty<G extends ReadAndDamageGrid> extends CycleProperty<G>{
+
+	private Double myMoney;
 	
 	public AddMoneyCycleProperty(AddMoneyCycleData myData) {
-		super(myData);
-		myDelay = new Delay(myData.getFrequency());
+		super(myData.getFrequency());
+		myMoney = myData.getMoney();
 	}
 	
 	@Override
-	public boolean isOn() {
-		return myDelay.delayAction();
+	public void action(G grid, Integer actorID) {
+		grid.getWriteableGameStatus().addMoney(myMoney);
 	}
 
 }

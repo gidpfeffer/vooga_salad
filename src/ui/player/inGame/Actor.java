@@ -44,6 +44,7 @@ public class Actor{
 	}
 	
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp, Map<Integer, Actor> mapOfActors) {
+		//System.out.println("IN ACTOR: making the option: " + option);
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
 				true);
@@ -118,6 +119,7 @@ public class Actor{
 					if (obj instanceof Pane) {
 						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
 						if (removeable.isPresent() && !removeable.get()) ((Pane) obj).removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
+						//screenhandler.addActorToMap(actorID, clazz);
 						mapOfActors.put(actorID, clazz);
 						actor.setId(actorID.toString());
 					}

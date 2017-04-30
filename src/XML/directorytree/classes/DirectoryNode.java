@@ -6,9 +6,10 @@ import java.util.Collection;
 import java.util.Collections;
 
 import XML.directorytree.interfaces.BoolSwitch;
+import XML.directorytree.interfaces.StringDirectoryTree;
 import XML.directorytree.interfaces.Pair;
 
-public class DirectoryNode {
+public class DirectoryNode implements StringDirectoryTree{
 
 	private Collection<String> files;
 	private Collection<DirectoryNode> subDirectories;

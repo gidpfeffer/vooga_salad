@@ -185,7 +185,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		VBox vbox = new VBox(40, auth, selector, reviews);
 		vbox.setAlignment(Pos.CENTER);
 		getBorderPane().setCenter(vbox);
-		Label us = new Label("'I Heart Singletons' - Duvall, probably");
+		Label us = new Label("'I Love Singletons' - Duvall, probably");
 		us.setStyle("-fx-font-size: 15");
 		us.setPadding(new Insets(50, 0, 20, 0));
 		getBorderPane().setBottom(us);

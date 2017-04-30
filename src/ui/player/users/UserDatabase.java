@@ -5,9 +5,16 @@ import java.util.Collection;
 
 public class UserDatabase {
 	
-	private Collection<User> database = new ArrayList<User>();
-	private Passwords passwords = new Passwords();
-	private User activeUser = null;
+	private Collection<User> database;
+	private Passwords passwords;
+	private User activeUser;
+	
+	public UserDatabase() {
+		database = new ArrayList<User>();
+		passwords = new Passwords();
+		activeUser = new User();
+		addUser(activeUser);
+	}
 	
 	public User getActiveUser() {
 		return activeUser;
