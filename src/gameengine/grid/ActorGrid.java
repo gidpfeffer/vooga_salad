@@ -54,7 +54,6 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 						a -> new DisplayInfo(a.getLocation(), 
 								a.getActor()))));
 		notifyObservers();
-		System.out.println(actors.size());
 	}
 	
 	private void updateActors(){

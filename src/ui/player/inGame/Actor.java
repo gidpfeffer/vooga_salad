@@ -44,7 +44,7 @@ public class Actor{
 	}
 	
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp, Map<Integer, Actor> mapOfActors) {
-		System.out.println("IN ACTOR: making the option: " + option);
+		//System.out.println("IN ACTOR: making the option: " + option);
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
 				true);
