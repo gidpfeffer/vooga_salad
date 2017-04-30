@@ -1,10 +1,6 @@
 package util;
 
-<<<<<<< HEAD
-import java.util.stream.Collectors;
-=======
 import java.util.stream.Collectors;			
->>>>>>> 607acb60baab219daf2d1ec602a81f00d47ee0e0
 
 import builders.ActorGenerator;
 import gamedata.ActorData;
