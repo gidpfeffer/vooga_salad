@@ -59,6 +59,7 @@ public class LoginMain {
 	private String resource;
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
+	private static final String guestUser = "Guest";
 	private SceneListen mySceneListen;
 	
 	/**
@@ -179,6 +180,9 @@ public class LoginMain {
 			XStream mySerializer = new XStream(new DomDriver());
 			XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
 			database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
+			if(loginhandler.findUser(guestUser) == null) {
+				database.addUser(new User());
+			}
 		} catch (Exception e) {
 			database = new UserDatabase();
 		}
@@ -188,10 +192,10 @@ public class LoginMain {
 	 * @see ui.handlers.LoginHandler#showProfile()
 	 */
 	private void showProfileCard(User user) {
-		if(user != null) {
+		if(!user.equals(loginhandler.findUser(guestUser))) {
 			ProfileCard card = new ProfileCard("profile", user, "profile.css");
 			card.setLogoutAction(e -> {
-				loginhandler.setActiveUser(null);
+				loginhandler.setActiveUser(loginhandler.findUser(guestUser));
 				loginScreen = new Login(loginhandler, css, resource);
 				loginhandler.returnToMain();
 			});

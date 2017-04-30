@@ -34,7 +34,6 @@ public class ProfileCard {
 	}
 	
 	public void setLogoutAction(EventHandler<ActionEvent> e) {
-		System.out.println("returning");
 		logout.setOnAction(e);
 	}
 	
