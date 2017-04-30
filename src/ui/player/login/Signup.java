@@ -123,8 +123,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	EventHandler<MouseEvent> loadPicture = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent t) {
-			FileSelector fileSelector = new FileSelector("*.png");
-			fileSelector.setExtension("*.jpg");
+			FileSelector fileSelector = new FileSelector("*.jpg", "*.png");
 			File file = fileSelector.open(new Stage());
 			if (file != null) {
 				profileImage.getChildren().clear();
