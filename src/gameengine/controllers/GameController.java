@@ -71,7 +71,7 @@ public class GameController {
 		initializeAnimationHandler();
 		initializeGridHandler();
 		initializeLevelHandler();
-		//setupGameStatus(loginHandler.getActiveUser());
+		setupGameStatus(loginHandler.getActiveUser());
 		setUpGameScreen(loginHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new LevelController(myLevelHandler,myGameData);
@@ -93,11 +93,11 @@ public class GameController {
 		return actorGrid;
 	}
 	
-//	private void setupGameStatus(WriteableUser writeableUser) {
-//		mySimpleHUD = new SimpleHUD();
-//		myGameStatus = new GameStatus(writeableUser);
-//		myGameStatus.addObserver(mySimpleHUD);
-//	}
+	private void setupGameStatus(WriteableUser writeableUser) {
+		mySimpleHUD = new SimpleHUD();
+		myGameStatus = new GameStatus(writeableUser);
+		myGameStatus.addObserver(mySimpleHUD);
+	}
 	
 	public void start(Stage stage,double width, double height, Paint fill) {
 		intitializeTimeline();

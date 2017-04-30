@@ -16,8 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import ui.authoring.map.PointType;
-import ui.authoring.map.layer.path.Path;
-import ui.authoring.map.layer.path.Point;
 import ui.general.CustomColors;
 import ui.general.ImageViewPane;
 import util.Location;
@@ -26,16 +24,33 @@ import util.Tuple;
 public class PathLayerView extends Layer {
 
 	private boolean isActive = false;
+	private boolean isLoaded = false;
 	private PathData myPathData;
 	private boolean isFirstPoint = true;
-	private List<Path> myDataToPath;
-	private Path myCurrentPath;
+	private List<UIPath> myUIPath;
+	private UIPath myCurrentPath;
 	
 	public PathLayerView(PathData data) {
 		super();
 		myPathData = data;
-		myDataToPath = new ArrayList<>();
+		myUIPath = new ArrayList<>();
 		addEventHandler(MouseEvent.MOUSE_RELEASED, e -> handleMouseRelease(e));
+		widthProperty().addListener(e -> sizeDidChange());
+		heightProperty().addListener(e -> sizeDidChange());
+	}
+	
+	@Override
+	protected void layoutChildren(){
+		super.layoutChildren();
+		if(!isLoaded)
+			didFinishLoading();
+
+	}
+
+	private void didFinishLoading() {
+		isLoaded = true;
+		loadPathData(myPathData);
+		System.out.println("finished loading data for pathlayer");		
 	}
 
 	private void handleMouseRelease(MouseEvent e) {
@@ -50,27 +65,16 @@ public class PathLayerView extends Layer {
 		if (!coordinate.isValid())
 			return;
 		if(myCurrentPath == null){
-			myCurrentPath = new Path();
+			myCurrentPath = new UIPath();
 			myPathData.addPath(new ArrayList<>());
-			myDataToPath.add(myCurrentPath);
+			myUIPath.add(myCurrentPath);
 		}
 
 		
-		Point p = new Point(coordinate, e.getX(), e.getY());
-		myCurrentPath.addPointTo(p, this);
+		UIPoint p = new UIPoint(coordinate, e.getX(), e.getY());
+		myCurrentPath.addPointAndMouseDraggableLine(p, this);
 		List<Grid2D> listOfPoints = myPathData.poll();
 		listOfPoints.add(coordinate);
-//		Line line = new Line(e.getX(), e.getY(), e.getX(), e.getY());
-//
-//		this.setOnMouseMoved(event -> {
-//			line.setEndX(event.getX());
-//			line.setEndY(event.getY());
-//		});
-//		this.setOnMouseDragged(event -> {
-//			line.setEndX(event.getX());
-//			line.setEndY(event.getY());
-//		});
-
 
 		// determines if the point is exit, entry, or regular path
 		if (!isFirstPoint && e.getButton().equals(MouseButton.SECONDARY)) {// exit																// path
@@ -78,6 +82,7 @@ public class PathLayerView extends Layer {
 			p.setPointType(PointType.EXIT);
 			setOnMouseMoved(i -> {});
 			setOnMouseDragged(i -> {});
+			myCurrentPath.finishPath(this);
 			myCurrentPath = null;
 		} 
 		else if (isFirstPoint) {
@@ -94,7 +99,6 @@ public class PathLayerView extends Layer {
 		System.out.println("myPathData:");
 		for(List<Grid2D> l:myPathData.getMyPaths().values())
 			System.out.println("\t-"+l);
-
 
 	}
 
@@ -117,7 +121,7 @@ public class PathLayerView extends Layer {
 //		}
 		this.getChildren().clear();
 		myPathData.clear();
-		myDataToPath.clear();
+		myUIPath.clear();
 	}
 
 	@Override
@@ -125,10 +129,10 @@ public class PathLayerView extends Layer {
 		
 		List<Grid2D> data = myPathData.pop();
 		System.out.println("REMOVING PATH: "+data);
-		System.out.println(myDataToPath.size());
-		Path path = this.myDataToPath.remove(myDataToPath.size() - 1);
+		System.out.println(myUIPath.size());
+		UIPath path = this.myUIPath.remove(myUIPath.size() - 1);
 		System.out.println(path);
-		myDataToPath.forEach(d -> System.out.println(d));
+		myUIPath.forEach(d -> System.out.println(d));
 		getChildren().removeAll(path.getLines());
 		getChildren().removeAll(path.getPoints());
 	}
@@ -142,16 +146,30 @@ public class PathLayerView extends Layer {
 	public boolean isActive() {
 		return isActive;
 	}
-
-	@Override
-	public void sizeDidChange() {
-			clear();
+	
+	private void sizeDidChange() {
+		this.myUIPath.forEach(path -> {
+			System.out.println(path.getPoints());
+		});	
+		this.myUIPath.forEach(path -> path.reload(this));
 	}
 
-	@Override
-	public void load(MapLayersData mapData) {
-		// TODO Auto-generated method stub
-		
+//	@Override
+//	public void load(MapLayersData mapData) {
+//		loadPathData(mapData.getMyPathData());
+//	}
+	
+	private void loadPathData(PathData pathData){
+		pathData.getMyPaths().forEach((i,list) -> {
+			addPathToSelf(list);
+		});
 	}
+	
+	private void addPathToSelf(List<Grid2D> points){
+		System.out.println(points.size());
+		System.out.println(this.getWidth() + " \t height: " + this.getHeight());
+		this.myUIPath.add(new UIPath(points, this));
+	}
+
 
 }
