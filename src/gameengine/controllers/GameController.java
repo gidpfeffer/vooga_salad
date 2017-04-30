@@ -65,10 +65,9 @@ public class GameController {
 	
 	private final double MILLISECOND_DELAY=17;
 	
-	public GameController(GameData gameData,LoginHandler loginHandler, SceneListen sceneListen) {
+	public GameController(GameData gameData,LoginHandler loginHandler) {
 		myGameData = gameData;
 		myGameObjectUtil = new GameObjectUtil();
-		mySceneListen = sceneListen;
 		initializeUIHandler();
 		initializeAnimationHandler();
 		initializeGridHandler();
@@ -102,8 +101,10 @@ public class GameController {
 	}
 	
 	public void start(Stage stage,double width, double height, Paint fill) {
+		Scene myScene = new Scene(myGameScreen,width,height,fill);
+		mySceneListen = new SceneListen(myScene); 
+		stage.setScene(myScene);
 		intitializeTimeline();
-		stage.setScene(new Scene(myGameScreen,width,height,fill));
 	}
 	
 	private void intitializeTimeline() {
