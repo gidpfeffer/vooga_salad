@@ -214,7 +214,6 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 			try {
 				im = ImageIO.read(new File(imagePath));
 			} catch (IOException ee) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			image = SwingFXUtils.toFXImage(im, null);
