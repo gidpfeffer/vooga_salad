@@ -33,7 +33,6 @@ public class Actor{
 	private double height;
 	private Optional<Boolean> removeable;
 	private ProgressBar health;
-	private VBox vbox;
 	private Pane mainPane;
 
 	public Pane getPane() {
@@ -45,7 +44,7 @@ public class Actor{
 	}
 	
 	public void deleteActor() {
-		actor = null;
+		mainPane = null;
 	}
 	
 	public Integer getID() {
@@ -66,8 +65,11 @@ public class Actor{
 		//this.mapOfActors = mapOfActors;
 		this.removeable = Optional.of(true);
 		this.health = new ProgressBar(1F);
-		this.vbox = new VBox(actor, health);
-		this.mainPane = new Pane(vbox);
+		health.setPrefWidth(actor.getWidth());
+		health.setPrefHeight(10);
+		VBox v = new VBox(actor, health);
+		v.setAlignment(Pos.CENTER);
+		this.mainPane = new Pane(v);
 		setup();
 	}
 
@@ -102,12 +104,13 @@ public class Actor{
 	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			if (actor.getId() != null && (mapOfActors.get(Integer.parseInt(actor.getId())) != null)) {
+			if (actor.getId() != null && (screenhandler.isActorInMap(Integer.parseInt(actor.getId())))) {
 				try {
-					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
-							actor.getLayoutY() / height);
+					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), mainPane.getLayoutX() / width,
+							mainPane.getLayoutY() / height);
 				} catch (NumberFormatException | VoogaException e) {
 					screenhandler.showError("You cannot place an item there!");
+					screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
 					System.out.println("Unable to add game object -- Actor ~ 103");
 					//System.out.println("**********Unable to update location********** Actor(~80)");
 					//e.printStackTrace();
@@ -127,8 +130,8 @@ public class Actor{
 		public void handle(final MouseEvent ME) {
 			if (((MouseEvent) ME).getButton().equals(MouseButton.SECONDARY)) {
 				try {
-					System.out.println(actor.getLayoutX() / width + " " + actor.getLayoutY() / height);
-					Integer actorID = uihandler.addGameObject(option, actor.getLayoutX() / width, actor.getLayoutY() / height);
+					System.out.println(actor.getLayoutX() / width + " " + mainPane.getLayoutY() / height);
+					Integer actorID = uihandler.addGameObject(option, mainPane.getLayoutX() / width, mainPane.getLayoutY() / height);
 					Object obj = ME.getSource();
 					if (obj instanceof Pane) {
 						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
@@ -139,6 +142,7 @@ public class Actor{
 					}
 				} catch (NumberFormatException | VoogaException e) {
 					screenhandler.showError("You cannot place an item there!");
+					screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
 					System.out.println("Unable to add game object -- Actor ~ 132");
 					//e.printStackTrace();
 				}

@@ -92,6 +92,14 @@ public class GameScreen extends GenericGameScreen
 			public void addActorToMap(int id, Actor actor) {
 				if (actorsMap.get(id) != null) actorsMap.put(id, actor);
 			}
+			@Override
+			public void deleteActorFromScreen(int id){
+				getChildren().remove(actorsMap.get(id).getPane());
+			}
+			@Override
+			public boolean isActorInMap(int id) {
+				return actorsMap.get(id) != null;
+			}
 		};
 	}
 	
