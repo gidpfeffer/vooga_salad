@@ -74,7 +74,7 @@ public class GameController {
 		setupGameStatus(loginHandler.getActiveUser(),loginHandler.getActiveUser().getInitialGameStatus());
 		setUpGameScreen(loginHandler);
 		myGrid = getNewActorGrid(myGameScreen);
-		myLevelController = new GameLevelController(myLevelHandler,myGameData);
+		myLevelController = new GameLevelController(myLevelHandler,myGameData,myGameStatus);
 	}
 	
 	private void setUpGameScreen(LoginHandler loginHandler) {
@@ -205,6 +205,12 @@ public class GameController {
 			@Override
 			public void levelUp() {
 				myGameStatus.levelUp();
+			}
+
+			@Override
+			public void displayLoseAlert() {
+				animation.stop();
+				myGameScreen.notifyLose();
 			}
 			
 		};

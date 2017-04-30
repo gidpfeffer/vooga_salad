@@ -63,20 +63,15 @@ public class GameLevelController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void update() throws VoogaException {
+	public void update() {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
 		myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus).ifPresent((win) -> winCondition((Boolean) win));
-		//myWin.ifPresent(win -> winCondition(win).run());
 	}
 	
 	private Runnable winCondition(Boolean win) {
-		return win ? () -> levelUp():()->lose();
-	}
-	
-	private void lose() {
-		//TODO: do something when you lose
+		return win ? () -> levelUp():()->myLevelHandler.displayLoseAlert();
 	}
 	
 	public int getLevel() {
