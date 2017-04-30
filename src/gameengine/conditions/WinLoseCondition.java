@@ -1,0 +1,21 @@
+package gameengine.conditions;
+
+import java.util.Optional;
+
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+import gamestatus.GameStatus;
+
+public abstract class WinLoseCondition<G extends ReadableGrid> implements Condition<G>{
+	
+	public Optional<Boolean> conditionSatisfied(G grid, GameStatus status) {
+		update();
+		return (winCondition(grid,status)||loseCondition(grid,status) ? Optional.of(winCondition(grid,status)):Optional.empty());
+	} 
+	
+	protected abstract void update();
+	
+	protected abstract boolean winCondition(G grid, GameStatus status);
+	
+	protected abstract boolean loseCondition(G grid, GameStatus status);
+
+}
