@@ -44,7 +44,7 @@ public class GameScreen extends GenericGameScreen
 	private AnimationHandler animationhandler;
 	
 	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
@@ -103,10 +103,10 @@ public class GameScreen extends GenericGameScreen
 		screenHandler = new ScreenHandler(){
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
-				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp, actorsMap);
-				actor.getPane().setLayoutX(getWidth() - x);
-				actor.getPane().setLayoutY(y);
-				getChildren().add(actor.getPane());
+				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp);
+				actor.getMainPane().setLayoutX(getWidth() - x);
+				actor.getMainPane().setLayoutY(y);
+				getChildren().add(actor.getMainPane());
 			}
 			@Override
 			public void showError(String msg) {
@@ -124,7 +124,7 @@ public class GameScreen extends GenericGameScreen
 			}
 			@Override
 			public void addActorToMap(int id, Actor actor) {
-				actorsMap.put(id, actor);
+				if (actorsMap.get(id) != null) actorsMap.put(id, actor);
 			}
 		};
 	}
@@ -193,7 +193,7 @@ public class GameScreen extends GenericGameScreen
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
-				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp, actorsMap);
+				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
 				actorsMap.put(id, newActor);
 				this.getChildren().add(newActor.getPane());
 			}
