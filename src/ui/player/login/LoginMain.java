@@ -26,7 +26,6 @@ import ui.handlers.LoginHandler;
 import ui.player.GameSelector;
 import ui.player.ProfileCornerPicture;
 import ui.player.XStreamFileChooser;
-import ui.player.listener.SceneListen;
 import ui.player.login.Login.Game;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
@@ -60,7 +59,6 @@ public class LoginMain {
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
 	private static final String guestUser = "Guest";
-	private SceneListen mySceneListen;
 	
 	/**
 	 * Initialized in {@link voogasalad_ilovesingletons.Main}
@@ -80,7 +78,6 @@ public class LoginMain {
 		loginScreen = new Login(loginhandler, css, resource);
 		Scene scene = loginScreen.getScene();
 		stage.setScene(scene);
-		mySceneListen = new SceneListen(scene);
 	}
 	
 	private void setupLoginHandler() {
@@ -232,7 +229,7 @@ public class LoginMain {
 	 * @param gameData Describes the game to launch
 	 */
 	private void goToGameScreen(GameData gameData) {
-		gameController = new GameController(gameData,loginhandler,mySceneListen);
+		gameController = new GameController(gameData,loginhandler);
 		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
 		stage.setTitle("Game Screen");
 	}

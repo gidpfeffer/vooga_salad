@@ -1,22 +1,12 @@
 <ui.player.users.UserDatabase>
   <database class="list">
     <ui.player.users.User>
-      <username>leedle</username>
-      <password>f20b5d23523f77c34f358b315b10a8db851ff97f</password>
+
+      <username>hello</username>
+      <password>73c2e8db3532034b5efdc9dc70a99019428afc4d</password>
       <money>0.0</money>
       <avatar>profile_icon.png</avatar>
-      <email>leedle@leedle.com</email>
-      <level>1</level>
-      <experience>0.0</experience>
-      <rank>Novice</rank>
-      <last></last>
-    </ui.player.users.User>
-    <ui.player.users.User>
-      <username>hide</username>
-      <password>fee5d864100e99e2287ce06d3d683e2cedae9506</password>
-      <money>0.0</money>
-      <avatar>profile_icon.png</avatar>
-      <email>hide@hide.com</email>
+      <email>hello@gmail.com</email>
       <level>1</level>
       <experience>0.0</experience>
       <rank>Novice</rank>
@@ -26,12 +16,8 @@
   <passwords>
     <database>
       <entry>
-        <string>hide</string>
-        <string>fee5d864100e99e2287ce06d3d683e2cedae9506</string>
-      </entry>
-      <entry>
-        <string>leedle</string>
-        <string>f20b5d23523f77c34f358b315b10a8db851ff97f</string>
+        <string>hello</string>
+        <string>73c2e8db3532034b5efdc9dc70a99019428afc4d</string>
       </entry>
     </database>
   </passwords>
