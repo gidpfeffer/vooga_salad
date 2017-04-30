@@ -37,7 +37,7 @@ public class GameScreen extends GenericGameScreen
 	private AnimationHandler animationhandler;
 	
 	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
@@ -70,9 +70,9 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
 				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp);
-				actor.getPane().setLayoutX(getWidth() - x);
-				actor.getPane().setLayoutY(y);
-				getChildren().add(actor.getPane());
+				actor.getMainPane().setLayoutX(getWidth() - x);
+				actor.getMainPane().setLayoutY(y);
+				getChildren().add(actor.getMainPane());
 			}
 			@Override
 			public void showError(String msg) {

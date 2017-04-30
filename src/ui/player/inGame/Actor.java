@@ -6,12 +6,14 @@ import java.util.Optional;
 import gamedata.ActorData;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import ui.general.ImageViewPane;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
@@ -19,20 +21,27 @@ import util.VoogaException;
 
 public class Actor{
 
-	ImageViewPane imp;
-	UIHandler uihandler;
-	ScreenHandler screenhandler;
-	Map<Integer, Actor> mapOfActors;
-	Actor clazz = this;
-	ActorData actorData;
-	Pane actor;
-	Integer option;
-	double width;
-	double height;
-	Optional<Boolean> removeable;
+	private ImageViewPane imp;
+	private UIHandler uihandler;
+	private ScreenHandler screenhandler;
+	private Map<Integer, Actor> mapOfActors;
+	private Actor clazz = this;
+	private ActorData actorData;
+	private Pane actor;
+	private Integer option;
+	private double width;
+	private double height;
+	private Optional<Boolean> removeable;
+	private ProgressBar health;
+	private VBox vbox;
+	private Pane mainPane;
 
 	public Pane getPane() {
 		return actor;
+	}
+	
+	public Pane getMainPane() {
+		return mainPane;
 	}
 	
 	public void deleteActor() {
@@ -56,6 +65,9 @@ public class Actor{
 		this.uihandler = uihandler;
 		//this.mapOfActors = mapOfActors;
 		this.removeable = Optional.of(true);
+		this.health = new ProgressBar(1F);
+		this.vbox = new VBox(actor, health);
+		this.mainPane = new Pane(vbox);
 		setup();
 	}
 
@@ -69,16 +81,17 @@ public class Actor{
 	 * Creates events for when the node is dragged, released, or clicked secondarily
 	 */
 	public void setupEvents() {
-		actor.addEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
-		actor.addEventHandler(MouseEvent.MOUSE_CLICKED, place);
-		actor.addEventHandler(MouseEvent.MOUSE_RELEASED, released);
+		mainPane.addEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
+		mainPane.addEventHandler(MouseEvent.MOUSE_CLICKED, place);
+		mainPane.addEventHandler(MouseEvent.MOUSE_RELEASED, released);
 	}
 
 	EventHandler<MouseEvent> drag = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			actor.setLayoutX(ME.getSceneX());
-			actor.setLayoutY(ME.getSceneY());
+			System.out.println("moving");
+			mainPane.setLayoutX(ME.getSceneX());
+			mainPane.setLayoutY(ME.getSceneY());
 		}
 	};
 	
