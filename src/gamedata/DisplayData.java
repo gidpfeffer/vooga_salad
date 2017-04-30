@@ -1,5 +1,7 @@
 package gamedata;
 
+import java.util.List;
+
 /**
  * Display information
  * 
@@ -14,6 +16,7 @@ public class DisplayData {
 	private int width;
 	private int height;
 	private String location;
+	private List<ActorData>actorOrder;
 	
 	public DisplayData(){
 		this(DEFAULT_WIDTH,DEFAULT_HEIGHT,DEFAULT_POSITION);
@@ -25,7 +28,12 @@ public class DisplayData {
 		this.height=height;
 		this.location=loc;
 	}
-
+	public void setActorOrder(List<ActorData>list){
+		actorOrder=list;
+	}
+	public List<ActorData> getActorOrder(){
+		return actorOrder;
+	}
 	public int getWidth() {
 		return width;
 	}
@@ -49,7 +57,9 @@ public class DisplayData {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-
+	public String toString(){
+		return "width:"+this.width+" height:"+this.height+"loc:"+this.location+"order:"+actorOrder.toString();
+	}
 	
 	
 }
