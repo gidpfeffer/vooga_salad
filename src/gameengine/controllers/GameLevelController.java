@@ -13,9 +13,12 @@ import gamedata.PathData;
 import gamedata.PreferencesData;
 import gamedata.WaveData;
 import gameengine.actors.management.Actor;
+import gameengine.conditions.Condition;
+import gameengine.conditions.EnduranceCondition;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
+import gamestatus.ReadableGameStatus;
 import util.Delay;
 import util.VoogaException;
 
@@ -33,30 +36,35 @@ public class GameLevelController {
 	
 	private PreferencesData myPreferences;
 	
+	private ReadableGameStatus myReadableGameStatus;
+	
 	private LevelHandler myLevelHandler;
 	
 	private Delay delay;
 	
 	private final int DELAY_CONSTANT = 2;
 	
+	private Condition myEnduranceCondition;
+	
 	private int level;
 	
 	private Queue<Supplier<Boolean>> enemiesInWave;
 	
-	public GameLevelController(LevelHandler levelHandler,GameData gameData) {
+	public GameLevelController(LevelHandler levelHandler,GameData gameData,ReadableGameStatus readableGameStatus) {
 		myLevelHandler = levelHandler;
 		myGrid = myLevelHandler.getMyGrid();
 		delay = new Delay(DELAY_CONSTANT);
 		myGameData = gameData;
 		myPreferences = myGameData.getPreferences();
 		enemiesInWave = new ArrayDeque<>();
+		myEnduranceCondition = new EnduranceCondition();
 	}
 	
 	public void update() {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		
+		if myEnduranceCondition.conditionSatisfied(myGrid, status)
 		//TODO: check some sort of win condition, probably need some observable in the actor grid here. WOrking on that rn @Moses
 	}
 	
