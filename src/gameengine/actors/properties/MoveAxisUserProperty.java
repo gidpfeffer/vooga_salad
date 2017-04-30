@@ -20,8 +20,11 @@ public abstract class MoveAxisUserProperty<G extends ReadAndMoveGrid> implements
 		move(posButton, negButton, mySensitivity, grid, actorID);
 	}
 	
-	protected abstract void move(String posKey, String negKey, Integer sensitivity, G grid, Integer actorID);
+	protected abstract void move(G grid, Integer actorID);
 	
+	protected double getKeyMovement(G grid) {
+		return (grid.getEventQueue().queryKey(posButton) ? mySensitivity:0) + (grid.getEventQueue().queryKey(negButton) ? -1*mySensitivity:0);
+	}
 	
 	@Override
 	public boolean isOn() {

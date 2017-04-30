@@ -47,7 +47,6 @@ public class GameScreen extends GenericGameScreen
 		initializeScreenHandler();
 		setup();
 		fadeTransition(this, .0, 1.);
-		System.out.println("intial map: " + actorsMap);
 	}
 	
 	public void setLoginHandler(LoginHandler loginhandler) {
@@ -105,7 +104,6 @@ public class GameScreen extends GenericGameScreen
 		listOfPanes.forEach(op -> {
 			this.getChildren().add(op);
 			AnchorPane.setRightAnchor(op, -op.getPrefWidth());
-			System.out.println(op.getLayoutX());
 			op.setStyle(("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
 					+ "-fx-background-radius: 10 0 0 10;"));
 		});
@@ -131,7 +129,6 @@ public class GameScreen extends GenericGameScreen
 			public void handle(ActionEvent e) {
 				animationhandler.stop();
 				loginhandler.returnToMain();
-				System.out.println(getMediaPlayer().getStatus());
 				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
 					getMediaPlayer().stop();
 				}
@@ -142,7 +139,6 @@ public class GameScreen extends GenericGameScreen
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
-		System.out.println("Updating in GS: " + actorsMap);
 		actorsMap.keySet().removeIf(id -> {
 			if(arg.containsKey(id)) {
 				return false;
@@ -155,15 +151,11 @@ public class GameScreen extends GenericGameScreen
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
-				System.out.println("making new actor");
-				System.out.println("id " + id + " option: " + actorOption + " all options: " + uihandler.getOptions());
-				System.out.println("uihandler option: " + uihandler.getOptions().get(actorOption));
 				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp, actorsMap);
 				actorsMap.put(id, newActor);
 				this.getChildren().add(newActor.getPane());
 			}
 			Actor actor = actorsMap.get(id);
-			System.out.println("ID: " + id + " OPTION: " + actorOption + " ActorsMap: " + actorsMap);
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
 			actor.getPane().setLayoutX(xCoor);
