@@ -2,7 +2,6 @@ package gameengine.controllers;
 
 import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
 
@@ -11,7 +10,6 @@ import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LevelData;
 import gamedata.PathData;
-import gamedata.PreferencesData;
 import gamedata.WaveData;
 import gameengine.actors.management.Actor;
 import gameengine.conditions.Condition;
@@ -22,8 +20,6 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
 import gamestatus.ReadableGameStatus;
 import util.Delay;
-import util.VoogaException;
-
 /**
  * Controls information about/behavior of a single level
  * 
@@ -36,8 +32,6 @@ public class GameLevelController {
 	
 	private GameData myGameData;
 	
-	private PreferencesData myPreferences;
-	
 	private ReadableGameStatus myReadableGameStatus;
 	
 	private LevelHandler myLevelHandler;
@@ -46,7 +40,7 @@ public class GameLevelController {
 	
 	private final int DELAY_CONSTANT = 2;
 	
-	private Condition myEnduranceCondition;
+	private Condition<ReadableGrid> myEnduranceCondition;
 	
 	private int level;
 	
@@ -57,7 +51,6 @@ public class GameLevelController {
 		myGrid = myLevelHandler.getMyGrid();
 		delay = new Delay(DELAY_CONSTANT);
 		myGameData = gameData;
-		myPreferences = myGameData.getPreferences();
 		enemiesInWave = new ArrayDeque<>();
 		myReadableGameStatus = readableGameStatus;
 		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(10);
@@ -93,8 +86,7 @@ public class GameLevelController {
 	public void changeLevel(int level) {
 		this.level = level;
 		LevelData levelData = myGameData.getLevel(level);
-		if (levelData!=null) loadLevel(levelData);
-		//else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
+		loadLevel(levelData);
 	}
 	
 	private void loadLevel(LevelData levelData) {
