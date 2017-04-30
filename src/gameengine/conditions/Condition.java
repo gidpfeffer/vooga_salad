@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.GameStatus;
+import gamestatus.ReadableGameStatus;
 
 /**
  * Condition class defining 
@@ -12,5 +13,5 @@ import gamestatus.GameStatus;
  * @author maddiebriere
  */
 public interface Condition<G extends ReadableGrid> {
-	public Optional<Boolean> conditionSatisfied(G grid, GameStatus status);
+	public Optional<Boolean> conditionSatisfied(G grid, ReadableGameStatus status);
 }

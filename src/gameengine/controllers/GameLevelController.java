@@ -2,6 +2,7 @@ package gameengine.controllers;
 
 import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
 
@@ -15,6 +16,7 @@ import gamedata.WaveData;
 import gameengine.actors.management.Actor;
 import gameengine.conditions.Condition;
 import gameengine.conditions.EnduranceCondition;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
@@ -57,15 +59,18 @@ public class GameLevelController {
 		myGameData = gameData;
 		myPreferences = myGameData.getPreferences();
 		enemiesInWave = new ArrayDeque<>();
-		myEnduranceCondition = new EnduranceCondition();
+		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(100);
 	}
 	
-	public void update() {
+	@SuppressWarnings("unchecked")
+	public void update() throws VoogaException {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		if myEnduranceCondition.conditionSatisfied(myGrid, status)
-		//TODO: check some sort of win condition, probably need some observable in the actor grid here. WOrking on that rn @Moses
+		Optional<Boolean> isSatisfied = myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus);
+		if (isSatisfied.isPresent()) {
+			if (isSatisfied.get()) levelUp();
+		}
 	}
 	
 	public int getLevel() {
