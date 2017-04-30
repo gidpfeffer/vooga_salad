@@ -1,16 +1,16 @@
-package ui.authoring.map.layer.path;
+package ui.authoring.map.layer;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import gameengine.grid.classes.Coordinates;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import ui.authoring.map.PointType;
 import ui.general.CustomColors;
-import util.Tuple;
 
-public class Point extends Circle {
+public class UIPoint extends Circle {
 	
 	@SuppressWarnings("serial")
 	Map<PointType, Color> pointTypeToColor = new HashMap<PointType, Color>() {{
@@ -21,7 +21,7 @@ public class Point extends Circle {
         //etc
     }};
     
-    private Coordinates myCompressedLocation;
+    private Grid2D myCompressedLocation;
     private Color myColor = CustomColors.GREEN_900;
     
     /**
@@ -30,7 +30,7 @@ public class Point extends Circle {
      * @param size - the size of the parent node that holds the image
      * @param insets - use ImageViewPane's getInsets method to provide this
      */
-	public Point(Coordinates coordinates, double centerX, double centerY){
+	public UIPoint(Grid2D coordinates, double centerX, double centerY){
 		super();
 		setCenterX(centerX);
 		setCenterY(centerY);
@@ -64,9 +64,13 @@ public class Point extends Circle {
 		setFill(c);
 	}
 	
-	public Coordinates getCoordinates(){
+	public Grid2D getCoordinates(){
 		return this.myCompressedLocation;
 	}
-
+	
+	@Override 
+	public String toString(){
+		return "(" +this.myCompressedLocation.getX() + "," + this.myCompressedLocation.getY()+")";
+	}
 
 }
