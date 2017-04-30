@@ -56,6 +56,7 @@ public class GameLevelController {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
+		
 		//TODO: check some sort of win condition, probably need some observable in the actor grid here. WOrking on that rn @Moses
 	}
 	
