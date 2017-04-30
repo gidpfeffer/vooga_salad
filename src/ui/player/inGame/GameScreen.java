@@ -34,18 +34,19 @@ public class GameScreen extends GenericGameScreen
 	private Map<Integer, Actor> actorsMap;
 	private ScreenHandler screenHandler;
 	private LoginHandler loginhandler;
-	private AnimationHandler animationhandler;
+	//private AnimationHandler animationhandler;
 	
 	public GameScreen(UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
 		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
 		this.uihandler = uihandler;
-		this.animationhandler = animationHandler;
+		//this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
 		this.ivp = this.getIVP();
 		hud = simpleHUD.get();
 		initializeScreenHandler();
 		setup();
 		fadeTransition(this, .0, 1.);
+		System.out.println("intial map: " + actorsMap);
 	}
 	
 	public void setLoginHandler(LoginHandler loginhandler) {
@@ -60,7 +61,7 @@ public class GameScreen extends GenericGameScreen
 		screenHandler = new ScreenHandler(){
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
-				Actor actor = new Actor(uihandler, screenHandler, option,actorData,ivp, actorsMap);
+				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp, actorsMap);
 				actor.getPane().setLayoutX(getWidth() - x);
 				actor.getPane().setLayoutY(y);
 				getChildren().add(actor.getPane());
@@ -78,6 +79,10 @@ public class GameScreen extends GenericGameScreen
 				AnchorPane.setLeftAnchor(holder, 20.);
 				AnchorPane.setRightAnchor(holder, 20.);
 				AnchorPane.setBottomAnchor(holder, 20.);
+			}
+			@Override
+			public void addActorToMap(int id, Actor actor) {
+				actorsMap.put(id, actor);
 			}
 		};
 	}
@@ -100,6 +105,7 @@ public class GameScreen extends GenericGameScreen
 		listOfPanes.forEach(op -> {
 			this.getChildren().add(op);
 			AnchorPane.setRightAnchor(op, -op.getPrefWidth());
+			System.out.println(op.getLayoutX());
 			op.setStyle(("-fx-background-color: MediumAquamarine;" + " -fx-border-radius: 10 0 0 10;"
 					+ "-fx-background-radius: 10 0 0 10;"));
 		});
@@ -118,22 +124,11 @@ public class GameScreen extends GenericGameScreen
 		ft.play();
 		return ft;
 	}
-	private EventHandler<ActionEvent> returnToMain() {
-		return new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				animationhandler.stop();
-				loginhandler.returnToMain();
-				System.out.println(getMediaPlayer().getStatus());
-				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
-					getMediaPlayer().stop();
-				}
-			}
-		};
-	}
+
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
+		System.out.println("Updating in GS: " + actorsMap);
 		actorsMap.keySet().removeIf(id -> {
 			if(arg.containsKey(id)) {
 				return false;
@@ -144,13 +139,16 @@ public class GameScreen extends GenericGameScreen
 		});
 		
 		arg.keySet().stream().forEach(id -> {
-			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
+				System.out.println("making new actor");
+				System.out.println("id " + id + " option: " + actorOption + " all options: " + uihandler.getOptions());
+				System.out.println("uihandler option: " + uihandler.getOptions().get(actorOption));
 				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp, actorsMap);
 				actorsMap.put(id, newActor);
 				this.getChildren().add(newActor.getPane());
 			}
 			Actor actor = actorsMap.get(id);
+			System.out.println("ID: " + id + " OPTION: " + actorOption + " ActorsMap: " + actorsMap);
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
 			actor.getPane().setLayoutX(xCoor);
