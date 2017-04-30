@@ -26,6 +26,11 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 		hud.setStyle("-fx-background-color: slateblue; -fx-opacity: .5");
 	}
 	
+	public SimpleHUD() {
+		hud = new GridPane();
+		hud.setStyle("-fx-background-color: slateblue; -fx-opacity: .5");
+	}
+
 	private void updateDisplay(Map<String, String> arg) {
 		arg.forEach((k,v) -> display(k,v,rowIdx));
 	}
