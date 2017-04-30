@@ -10,7 +10,7 @@ import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 
-public class ShootTargetWithMouseProperty<G extends ReadAndSpawnGrid> extends ShootTargetProperty<G>{
+public class ShootTargetWithMouseProperty<G extends ReadAndSpawnGrid> extends ShootTargetLineProperty<G>{
 
 	public ShootTargetWithMouseProperty(ShootTargetWithMouseData myData) {
 		super(myData);
