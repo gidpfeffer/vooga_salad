@@ -45,7 +45,7 @@ public abstract class PackageInfoGenerator <A> {
 	 */
 	protected abstract String simplifyName(Class<?> className);
 	
-	protected String simplifyName(A obj){
+	public String simplifyName(A obj){
 		Class<?> clzz = obj.getClass();
 		return simplifyName(clzz);
 	}

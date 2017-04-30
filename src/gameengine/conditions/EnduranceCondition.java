@@ -1,5 +1,6 @@
 package gameengine.conditions;
 
+import gameengine.conditionsgen.WinLoseCondition;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
