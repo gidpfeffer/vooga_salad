@@ -23,14 +23,10 @@ public interface LoginHandler {
 	public void showProfile();
 	
 	/**
-	 * Displays the {@link ui.player.login.Login Login}. For use with back buttons.
+	 * Sets the profile picture displayed to the picture of {@code user}
+	 * @param user {@code User to show the profile picture of}
 	 */
-	public void returnToMain();
-	
-	/**
-	 * Displays the {@link ui.player.login.Signup Signup}.
-	 */
-	public void gotoSignupPage();
+	public void setCornerProfileCard(User user);
 	
 	/**
 	 * Checks whether the username/password combination is valid, and sets the active user. Gives an
@@ -55,6 +51,22 @@ public interface LoginHandler {
 	public void setActiveUser(User user);
 	
 	/**
+	 * Gets a list of all {@code User}s ordered by experience points
+	 * @return List of all {@code User}s ordered by experience points
+	 */
+	public void getXPOrderedUsers();
+	
+	/**
+	 * Displays the {@link ui.player.login.Login Login}. For use with back buttons.
+	 */
+	public void returnToMain();
+	
+	/**
+	 * Displays the {@link ui.player.login.Signup Signup}.
+	 */
+	public void gotoSignupPage();
+
+	/**
 	 * Displays the {@link ui.authoring.AuthoringView AuthoringView}
 	 */
 	public void gotoAuth();
@@ -65,13 +77,12 @@ public interface LoginHandler {
 	public void gotoGameSelector();
 	
 	/**
-	 * Displays the {@link ui.ratings.RatingView RatingView}
+	 * Displays the {@link ui.player.ratings.RatingView RatingView}
 	 */
 	public void gotoReviews();
 	
 	/**
-	 * Sets the profile picture displayed to the picture of {@code user}
-	 * @param user {@code User to show the profile picture of}
+	 * Displays the {@link ui.player.leaderboard.LeaderboardView}
 	 */
-	public void setCornerProfileCard(User user);
+	public void gotoLeaderboard();
 }

@@ -34,6 +34,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	private Button auth;
 	private Button selector;
 	private Button reviews;
+	private Button leaderboard;
 	private Button loginEnter;
 	private final Text actiontarget;
 	private HBox bottomHBox;
@@ -162,10 +163,15 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		reviews = new Button("Ratings and Reviews");
 		reviews.setOnAction(e -> loginhandler.gotoReviews());
 		
+		leaderboard = new Button("Leaderboard");
+		leaderboard.setOnAction(e -> loginhandler.gotoLeaderboard());
+		
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
 		UIHelper.setDropShadow(reviews);
-		bottomHBox = new HBox(100, auth, selector, reviews);
+		UIHelper.setDropShadow(leaderboard);
+		
+		bottomHBox = new HBox(50, auth, selector, reviews, leaderboard);
 		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
