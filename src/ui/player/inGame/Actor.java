@@ -3,8 +3,11 @@ package ui.player.inGame;
 import java.util.Map;
 import java.util.Optional;
 
+import org.openqa.selenium.Dimension;
+
 import gamedata.ActorData;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -43,6 +46,10 @@ public class Actor{
 		return mainPane;
 	}
 	
+	public void setHealth(double d){
+		health.setProgress(d);
+	}
+	
 	public void deleteActor() {
 		mainPane = null;
 	}
@@ -63,20 +70,25 @@ public class Actor{
 		this.imp = ivp;
 		this.uihandler = uihandler;
 		//this.mapOfActors = mapOfActors;
-		this.removeable = Optional.of(true);
-		this.health = new ProgressBar(1F);
-		health.setPrefWidth(actor.getWidth());
-		health.setPrefHeight(10);
-		VBox v = new VBox(actor, health);
-		v.setAlignment(Pos.CENTER);
-		this.mainPane = new Pane(v);
+		this.removeable = Optional.of(false);
 		setup();
 	}
 
 	public void setup() {
 		width = imp.getWidth() - 2 * imp.getImageInsets().x;
 		height = imp.getHeight() - 2 * imp.getImageInsets().y;
+		setupHealth();
 		setupEvents();
+	}
+
+	private void setupHealth() {
+		health = new ProgressBar(1F);
+		health.setPrefWidth(actor.getWidth());
+		health.setScaleY(.2);
+		VBox v = new VBox(-8);
+		v.getChildren().addAll(actor, health);
+		v.setAlignment(Pos.CENTER);
+		mainPane = new Pane(v);
 	}
 
 	/**
@@ -91,7 +103,6 @@ public class Actor{
 	EventHandler<MouseEvent> drag = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			System.out.println("moving");
 			mainPane.setLayoutX(ME.getSceneX());
 			mainPane.setLayoutY(ME.getSceneY());
 		}
@@ -110,7 +121,7 @@ public class Actor{
 							mainPane.getLayoutY() / height);
 				} catch (NumberFormatException | VoogaException e) {
 					screenhandler.showError("You cannot place an item there!");
-					screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
+					//screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
 					System.out.println("Unable to add game object -- Actor ~ 103");
 					//System.out.println("**********Unable to update location********** Actor(~80)");
 					//e.printStackTrace();
@@ -142,7 +153,7 @@ public class Actor{
 					}
 				} catch (NumberFormatException | VoogaException e) {
 					screenhandler.showError("You cannot place an item there!");
-					screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
+					//screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
 					System.out.println("Unable to add game object -- Actor ~ 132");
 					//e.printStackTrace();
 				}
