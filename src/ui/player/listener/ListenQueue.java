@@ -27,11 +27,16 @@ public class ListenQueue {
 	}
 	
 	public void addEvent(KeyCode code) {
+		//System.out.println(code);
 		myEvents.add(code);
 	}
 	
-	public boolean queryKey(String key) {
-		return myEvents.contains(KeyCode.getKeyCode(key));
+	public boolean queryKey(KeyCode key) {
+		return myEvents.contains(key);
+	}
+	
+	public Set<KeyCode> getSet(){
+		return myEvents;
 	}
 	/*
 	@Override

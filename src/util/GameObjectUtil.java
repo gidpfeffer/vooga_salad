@@ -46,7 +46,7 @@ public class GameObjectUtil {
 
 	public int addGameObject(Integer option, double xRatio, double yRatio,GameData gameData,ControllableGrid grid) throws VoogaException{
 		ActorData actorData = gameData.getOption(option); 
-		if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && grid.isValidLoc(xRatio, yRatio)) return generateActor(actorData, xRatio, yRatio,grid);
+		if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && grid.isValidLoc(xRatio, yRatio)) return generateActor(gameData, actorData, xRatio, yRatio,grid);
 		else throw new VoogaException(VoogaException.INVALID_LOCATION);
 	}
 	
@@ -55,8 +55,8 @@ public class GameObjectUtil {
 		return false;
 	}
 	
-	public int generateActor(ActorData actorData, double xRatio, double yRatio,ControllableGrid grid) {
-		Actor actor = ActorGenerator.makeActor(IDGenerator.getNewID(),actorData);
+	public int generateActor(GameData gameData, ActorData actorData, double xRatio, double yRatio,ControllableGrid grid) {
+		Actor actor = ActorGenerator.makeActor(gameData.getOptionKey(actorData),actorData);
 		grid.controllerSpawnActor(actor, xRatio, yRatio);
 		return actor.getID();
 	}

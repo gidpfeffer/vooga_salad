@@ -40,9 +40,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.util.Duration;
 import types.ActorType;
 import types.BasicActorType;
 import ui.Preferences;
+import ui.authoring.delegates.ActorEditorDelegate;
+import ui.authoring.delegates.ActorInfoDelegate;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
@@ -59,18 +62,17 @@ import util.Location;
  * @author maddiebriere
  *
  */
-public class ActorEditorView extends AnchorPane {
+public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 	private static final double BUTTON_HEIGHT = 72;
 	
 	
 	private GameData myGameData;
-	private PopViewDelegate myDelegate;
-	private VBox myActorsView;
+	private ActorEditorDelegate myDelegate;
+	private VBox myLineageList;
 	private ActorInfoView myActorInfoView;
 	private BasicActorType myActorType;
 
-	public ActorEditorView(PopViewDelegate delegate, BasicActorType type, GameData gameData) {
-		
+	public ActorEditorView(ActorEditorDelegate delegate, BasicActorType type, GameData gameData) {
 		super();
 		myDelegate = delegate;
 		myActorType = type;
@@ -78,6 +80,7 @@ public class ActorEditorView extends AnchorPane {
 		myGameData.getAllOfType(type);
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
+		
 	}
 
 	private void setupBackButton() {
@@ -133,7 +136,7 @@ public class ActorEditorView extends AnchorPane {
 	}
 	
 	private void setupInfoView(ScrollPane scroll){
-		myActorInfoView = new ActorInfoView(myGameData);
+		myActorInfoView = new ActorInfoView(this, myGameData);
 		myActorInfoView.prefWidthProperty().bind(scroll.widthProperty());
 		myActorInfoView.minHeightProperty().bind(scroll.heightProperty());
 		scroll.setContent(myActorInfoView);
@@ -152,7 +155,7 @@ public class ActorEditorView extends AnchorPane {
 		view.setPrefHeight(BUTTON_HEIGHT);
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
-		this.myActorsView.getChildren().add( view);
+		this.myLineageList.getChildren().add( view);
 
 	}
 
@@ -189,10 +192,10 @@ public class ActorEditorView extends AnchorPane {
 	}
 
 	private void setupVBox(ScrollPane pane) {
-		myActorsView = new VBox();
-		myActorsView.setAlignment(Pos.CENTER);
-		myActorsView.prefWidthProperty().bind(pane.widthProperty().add(-2));
-		pane.setContent(myActorsView);
+		myLineageList = new VBox();
+		myLineageList.setAlignment(Pos.CENTER);
+		myLineageList.prefWidthProperty().bind(pane.widthProperty().add(-2));
+		pane.setContent(myLineageList);
 	}
 
 	public void setupDefaultActors(Map<String,String> mapOfNameToImagePath) {
@@ -223,17 +226,15 @@ public class ActorEditorView extends AnchorPane {
 		StackPane.setMargin(field, new Insets(8,32,8,32));
 		lblWrapper.getChildren().add(field);
 		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
-		StackPane view = UIHelper.buttonStack(e -> {
-			myActorInfoView.setLineageData(data);
-		}, 
+		StackPane view = UIHelper.buttonStack(
+				e -> myActorInfoView.setLineageData(data), 
 				Optional.of(field), Optional.of(imageView), 
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
-		view.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> selectActor(view));
 		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(data, newText));
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		VBox.setMargin(view, new Insets(8));
-		myActorsView.getChildren().add(myActorsView.getChildren().size() - 1, view);		
+		myLineageList.getChildren().add(myLineageList.getChildren().size() - 1, view);		
 	}
 
 	/**
@@ -254,10 +255,6 @@ public class ActorEditorView extends AnchorPane {
 	public void setGameData(GameData data){
 		myGameData = data;
 	}
-
-	private void selectActor(StackPane stackButton){
-		
-	}
 	
 	private void updateTowerName(LineageData data, String text){
 		for(ActorData actor : data.getMap().values()){
@@ -273,6 +270,12 @@ public class ActorEditorView extends AnchorPane {
 		this.myActorInfoView.setActorTypeOptions(keySet);
 		
 	}
+
+@Override
+public void addActorToBase(ActorData data, Location mouseLoc) {
+	myDelegate.addActorToBase(data, mouseLoc);
+	myDelegate.closeView(this);
+}
 	
 	
 

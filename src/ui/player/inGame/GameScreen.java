@@ -130,7 +130,7 @@ public class GameScreen extends GenericGameScreen
 			}
 			@Override
 			public void deleteActorFromScreen(int id){
-				getChildren().remove(actorsMap.get(id).getPane());
+				getChildren().remove(actorsMap.get(id).getMainPane());
 			}
 			@Override
 			public boolean isActorInMap(int id) {
@@ -191,6 +191,10 @@ public class GameScreen extends GenericGameScreen
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
+/*		System.out.println(actorsMap);
+		for (int i : actorsMap.keySet()) {
+			System.out.println(actorsMap.get(i).getData().getType().toString());
+		}*/
 		actorsMap.keySet().removeIf(id -> {
 			if(arg.containsKey(id)) {
 				return false;
@@ -203,6 +207,7 @@ public class GameScreen extends GenericGameScreen
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
+				//System.out.println("This is the option " +actorOption);
 				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
 				actorsMap.put(id, newActor);
 				this.getChildren().add(newActor.getMainPane());

@@ -8,14 +8,25 @@
       <email></email>
       <level>1</level>
       <experience>0.0</experience>
+      <rank>Novice</rank>
+      <last></last>
+    </ui.player.users.User>
+    <ui.player.users.User>
+      <username>cat</username>
+      <password>f6a1bb23a5012d64c9dd7a63e2315f4953495e35</password>
+      <money>0.0</money>
+      <avatar>cat_random.png</avatar>
+      <email>cat@duke.edu</email>
+      <level>1</level>
+      <experience>0.0</experience>
       <last></last>
     </ui.player.users.User>
     <ui.player.users.User>
       <username>hello</username>
-      <password>73c2e8db3532034b5efdc9dc70a99019428afc4d</password>
+      <password>56f668f7814fe5c1ee5769f18c74c1d53cc03464</password>
       <money>0.0</money>
       <avatar>profile_icon.png</avatar>
-      <email>hello@hello.com</email>
+      <email>hello@duke.edu...</email>
       <level>1</level>
       <experience>0.0</experience>
       <last></last>
@@ -24,8 +35,12 @@
   <passwords>
     <database>
       <entry>
+        <string>cat</string>
+        <string>f6a1bb23a5012d64c9dd7a63e2315f4953495e35</string>
+      </entry>
+      <entry>
         <string>hello</string>
-        <string>73c2e8db3532034b5efdc9dc70a99019428afc4d</string>
+        <string>56f668f7814fe5c1ee5769f18c74c1d53cc03464</string>
       </entry>
     </database>
   </passwords>
