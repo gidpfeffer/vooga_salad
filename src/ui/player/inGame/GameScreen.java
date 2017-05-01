@@ -207,6 +207,7 @@ public class GameScreen extends GenericGameScreen
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
+				//System.out.println("This is the option " +actorOption);
 				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
 				actorsMap.put(id, newActor);
 				this.getChildren().add(newActor.getMainPane());
