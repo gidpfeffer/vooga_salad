@@ -126,7 +126,7 @@ public class GameScreen extends GenericGameScreen
 			}
 			@Override
 			public void addActorToMap(int id, Actor actor) {
-				if (actorsMap.get(id) != null) actorsMap.put(id, actor);
+				if (actorsMap.get(id) == null) actorsMap.put(id, actor);
 			}
 			@Override
 			public void deleteActorFromScreen(int id){
@@ -191,8 +191,6 @@ public class GameScreen extends GenericGameScreen
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
-		System.out.println("MYMAP: " + actorsMap);
-		System.out.println("THIERMAP: " + arg);
 		actorsMap.keySet().removeIf(id -> {
 			if(arg.containsKey(id)) {
 				return false;
