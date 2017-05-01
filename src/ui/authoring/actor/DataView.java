@@ -36,6 +36,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import types.BasicActorType;
 import ui.Preferences;
+import ui.authoring.delegates.DataViewDelegate;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
 import ui.general.UIHelper;

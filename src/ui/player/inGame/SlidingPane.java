@@ -45,7 +45,6 @@ public class SlidingPane extends AnchorPane{
 	}
 	
 	public void slidePane(Pane pane, double xValue) {
-		System.out.println(xValue);
 		TranslateTransition t = new TranslateTransition(Duration.seconds(0.2));
 		t.setNode(pane);
 		t.setToX(xValue);

@@ -12,8 +12,4 @@ public class ProfileCornerPicture extends ImageView{
 		this.setOnMouseClicked(callCard);
 	}
 	
-/*	public ProfileCornerPicture(ImageView image) {
-		image.setClip(this);
-	}*/
-	
 }

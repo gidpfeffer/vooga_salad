@@ -1,74 +1,61 @@
 <ui.player.users.UserDatabase>
   <database class="list">
     <ui.player.users.User>
-
-      <username>hello</username>
-      <password>73c2e8db3532034b5efdc9dc70a99019428afc4d</password>
+      <username>Guest</username>
+      <password></password>
       <money>0.0</money>
       <avatar>profile_icon.png</avatar>
-      <email>hello@gmail.com</email>
+      <email></email>
       <level>1</level>
       <experience>0.0</experience>
-      <rank>Novice</rank>
       <last></last>
     </ui.player.users.User>
     <ui.player.users.User>
-      <username>star2</username>
-      <password>f126d46cf7c53672ba0c757c0f9f3ada01278dc2</password>
-      <score>0</score>
-      <avatar>filled_star.png</avatar>
-      <email>s@duke.edu</email>
+      <username>cat</username>
+      <password>f6a1bb23a5012d64c9dd7a63e2315f4953495e35</password>
+      <money>0.0</money>
+      <avatar>cat_random.png</avatar>
+      <email>cat@duke.edu</email>
       <level>1</level>
       <experience>0.0</experience>
-      <rank>Novice</rank>
+      <last></last>
+    </ui.player.users.User>
+    <ui.player.users.User>
+      <username>hello</username>
+      <password>56f668f7814fe5c1ee5769f18c74c1d53cc03464</password>
+      <money>0.0</money>
+      <avatar>profile_icon.png</avatar>
+      <email>hello@duke.edu...</email>
+      <level>1</level>
+      <experience>0.0</experience>
+      <last></last>
+    </ui.player.users.User>
+    <ui.player.users.User>
+      <username>star</username>
+      <password>6ab1fe8074ffadd457f93e266b2fb6b23d48a7b1</password>
+      <money>0.0</money>
+      <avatar>filled_star.png</avatar>
+      <email>star@duke.edu</email>
+      <level>1</level>
+      <experience>0.0</experience>
       <last></last>
     </ui.player.users.User>
   </database>
   <passwords>
     <database>
       <entry>
-        <string>apple</string>
-        <string>0112b6f1f335082e9c089ac49a10c1b925d79e2e</string>
-      </entry>
-      <entry>
-        <string>jieshen</string>
-        <string>9789fd1b31da544ae96d5fcb55488f56c7d5d044</string>
-      </entry>
-      <entry>
         <string>star</string>
-        <string>f126d46cf7c53672ba0c757c0f9f3ada01278dc2</string>
+        <string>6ab1fe8074ffadd457f93e266b2fb6b23d48a7b1</string>
       </entry>
       <entry>
-        <string>honey</string>
-        <string>7f482b1efe6a764d7dafc1b32a662a81f1704a6e</string>
-      </entry>
-      <entry>
-        <string>bilva</string>
-        <string>4e48297149c501cf4077858931278ea204117a0b</string>
-      </entry>
-      <entry>
-        <string>juju</string>
-        <string>fa914f4dbd71df8b5c377bbb9af724cbf296f0a3</string>
-      </entry>
-      <entry>
-        <string>star2</string>
-        <string>f126d46cf7c53672ba0c757c0f9f3ada01278dc2</string>
+        <string>cat</string>
+        <string>f6a1bb23a5012d64c9dd7a63e2315f4953495e35</string>
       </entry>
       <entry>
         <string>hello</string>
-        <string>73c2e8db3532034b5efdc9dc70a99019428afc4d</string>
+        <string>56f668f7814fe5c1ee5769f18c74c1d53cc03464</string>
       </entry>
     </database>
   </passwords>
-  <activeUser>
-    <username>Guest</username>
-    <password></password>
-    <money>0.0</money>
-    <avatar>profile_icon.png</avatar>
-    <email></email>
-    <level>1</level>
-    <experience>0.0</experience>
-    <rank>Novice</rank>
-    <last></last>
-  </activeUser>
+  <activeUser reference="../database/ui.player.users.User"/>
 </ui.player.users.UserDatabase>

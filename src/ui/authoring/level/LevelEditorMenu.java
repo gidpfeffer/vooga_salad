@@ -6,7 +6,6 @@ import java.util.List;
 
 import builders.infogen.AuthorInfoGenerator;
 import builders.objectgen.ConditionGenerator;
-import gamedata.ActorData;
 import gamedata.LevelData;
 import gameengine.conditionsgen.Condition;
 import javafx.beans.value.ChangeListener;
@@ -99,7 +98,7 @@ public class LevelEditorMenu extends AnchorPane {
 		settings.setContent(root);
 	}
 	
-	private void addClickableCondition(VBox vbox, Condition<?> condition){
+	private void addClickableCondition(VBox vbox, Condition condition){
 		List<String> conditions = new ArrayList<String>(AuthorInfoGenerator.getConditionTypesWithArgs().keySet());
 		String name = AuthorInfoGenerator.getName(condition);
 		BasicPicker<String> input = addClickableField(vbox, "Win on", name, conditions);
@@ -109,7 +108,7 @@ public class LevelEditorMenu extends AnchorPane {
 	}
 	
 	private void didEditCondition(String newCondition){
-		Condition<?> condition = ConditionGenerator.makeCondition(newCondition);
+		Condition condition = ConditionGenerator.makeCondition(newCondition);
 		if(condition!=null){
 			myData.setCondition(condition);
 		}

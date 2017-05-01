@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -74,7 +73,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	}
 
 	private void setupLayout() {
-		gridPane.setHgap(50);
+		gridPane.setHgap(100);
 		gridPane.setVgap(20);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.getStyleClass().add("grid");
@@ -171,7 +170,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		UIHelper.setDropShadow(reviews);
 		UIHelper.setDropShadow(leaderboard);
 		
-		bottomHBox = new HBox(50, auth, selector, reviews, leaderboard);
+		bottomHBox = new HBox(20, auth, selector, reviews, leaderboard);
 		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
@@ -190,8 +189,6 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	     ScaleTransition st = new ScaleTransition(Duration.millis(1000), gridPane);
 	     st.setByX(-1f);
 	     st.setByY(-1f);
-	     //st.setCycleCount((int) 4f);
-	    //st.setAutoReverse(true);
 	     st.play();
 	     st.setOnFinished(e -> createNewScreen());
 	}
@@ -199,7 +196,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	private void createNewScreen() {
 		getBorderPane().setBottom(null);
 		bottomHBox.getChildren().clear();
-		VBox vbox = new VBox(40, auth, selector, reviews);
+		VBox vbox = new VBox(40, auth, selector, reviews, leaderboard);
 		vbox.setAlignment(Pos.CENTER);
 		getBorderPane().setCenter(vbox);
 		Label us = new Label("'I Love Singletons' - Duvall, probably");
@@ -208,40 +205,8 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		getBorderPane().setBottom(us);
 		setupCenter(vbox);
 		BorderPane.setAlignment(us, Pos.CENTER);
-		/*	     vbox.setScaleX(0);
-	     vbox.setScaleY(0);*/
 		ScaleTransition st = new ScaleTransition(Duration.millis(1000), vbox);
 		st.setByX(2f);
 		st.setByY(2f);
-		addProfileImage();
-	}
-
-	private void addProfileImage() {
-		
-	}
-
-	//temp
-	public class Game{
-		String name;
-		String imagePath;
-		EventHandler<MouseEvent> clicked;
-
-		public String getName() {
-			return name;
-		}
-
-		public String getImagePath() {
-			return imagePath;
-		}
-
-		public EventHandler<MouseEvent> getClicked() {
-			return clicked;
-		}
-
-		public Game(String name, String imagePath, EventHandler<MouseEvent> clicked) {
-			this.name = name;
-			this.imagePath = imagePath;
-			this.clicked = clicked;
-		}
 	}
 }

@@ -55,7 +55,6 @@ public class XStreamFileChooser {
         }
         catch (Exception ex) {
         	passwords = new Passwords();
-            //ex.printStackTrace();
         }
 		return passwords;
 	}
@@ -68,8 +67,7 @@ public class XStreamFileChooser {
 			return content;
         }
         catch (Exception ex) {
-        	ex.printStackTrace();
+        	return null;
         }
-		return null;
 	}
 }

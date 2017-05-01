@@ -53,8 +53,6 @@ public class SceneListen implements IListen{
 	}
 
 	public void pollQueue() {
-		//ListenQueue retQueue = myQueue.clone();
 		generateNewQueue();
-		//return retQueue;
 	}
 }

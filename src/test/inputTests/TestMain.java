@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import util.general.MultiInputHandler;
 
 public class TestMain extends Application {
 
@@ -14,8 +13,8 @@ public class TestMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		StackPane myPane = new StackPane();
 		Scene myScene = new Scene(myPane, 500, 500);
-		MultiInputHandler handler = new MultiInputHandler(myScene,"devices");
-		myPane.getChildren().add(handler.getMenu());
+		//MultiInputHandler handler = new MultiInputHandler(myScene,"devices");
+		//myPane.getChildren().add(handler.getMenu());
 		myScene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
 			@Override

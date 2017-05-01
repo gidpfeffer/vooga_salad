@@ -1,4 +1,5 @@
 package ui.player.inGame;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -18,7 +19,8 @@ import ui.general.ImageViewPane;
 import ui.handlers.AnimationHandler;
 import ui.handlers.UIHandler;
 import util.VoogaException;
-public class GenericGameScreen extends AnchorPane{
+
+public class GenericGameScreen extends AnchorPane {
 	private UIHandler uihandler;
 	private Optional<String> songString;
 	private Optional<String> css;
@@ -28,26 +30,26 @@ public class GenericGameScreen extends AnchorPane{
 	public static final String backIcon = "splash_icon.png";
 	public static final String cssPath = "panel.css";
 	public static final String backgroundImagePath = "default_map_background_0.jpg";
-	private MusicPlayer musicPlayer; 
+	private MusicPlayer musicPlayer;
 	private AnimationHandler animationhandler;
-	
+
 	protected ImageViewPane getIVP() {
 		return ivp;
 	}
-	
+
 	protected MediaPlayer getMediaPlayer() {
 		return musicPlayer.getMediaPlayer();
 	}
-	
+
 	public void setAnimationHandler(AnimationHandler animationhandler) {
 		this.animationhandler = animationhandler;
 	}
-	
+
 	public void setReturnToMain(EventHandler<ActionEvent> value) {
 		settingsPane.setReturnToMain(value);
 	}
-	
-	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css, 
+
+	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css,
 			Optional<String> backgroundImage) {
 		this.uihandler = uihandler;
 		this.songString = songString;
@@ -55,32 +57,31 @@ public class GenericGameScreen extends AnchorPane{
 		this.backgroundImage = backgroundImage;
 		setup();
 	}
-	
-	private void setup(){
+
+	private void setup() {
 		setupBackground();
 		addSettings();
 		addStartLevelButton();
-		//addAnimationButtons();
 	}
-	
+
 	private void setupBackground() {
-		System.out.println(backgroundImagePath);
 		ivp = new ImageViewPane(new ImageView(new Image(backgroundImage.orElse(backgroundImagePath))));
 		this.getChildren().add(ivp);
 		setNodeInAnchorPane(ivp);
 	}
-	
+
 	private void addSettings() {
 		musicPlayer = new MusicPlayer();
 		settingsPane = new SettingsPane(this, songString, 0, Optional.ofNullable(null));
 		settingsPane.addObject(musicPlayer.getNode());
-		OptionButton helpButton = new OptionButton(0, "", backIcon, e -> settingsPane.slidePane(settingsPane, settingsPane.getPrefWidth()));
+		OptionButton helpButton = new OptionButton(0, "", backIcon,
+				e -> settingsPane.slidePane(settingsPane, settingsPane.getPrefWidth()));
 		AnchorPane.setLeftAnchor(helpButton.getButton(), 10.);
 		AnchorPane.setTopAnchor(helpButton.getButton(), 10.);
 		this.getChildren().addAll(helpButton.getButton(), settingsPane);
 		settingsPane.setLayoutX(-settingsPane.getPrefWidth());
 	}
-	
+
 	private void addStartLevelButton() {
 		OptionButton startLevel = new OptionButton(0, "", "power_icon.png", e -> {
 			try {
@@ -89,26 +90,27 @@ public class GenericGameScreen extends AnchorPane{
 				new VoogaException("Could not change levels ~ 105 GenericGame");
 			}
 		});
-		startLevel.getButton().addEventHandler(MouseEvent.MOUSE_CLICKED, e -> transitionButtons(startLevel.getButton()));
+		startLevel.getButton().addEventHandler(MouseEvent.MOUSE_CLICKED,
+				e -> transitionButtons(startLevel.getButton()));
 		setRightBottom(startLevel.getButton());
 	}
-	
+
 	private void transitionButtons(Node node) {
-		 ScaleTransition st = new ScaleTransition(Duration.millis(1000), node);
-	     st.setByX(-1f);
-	     st.setByY(-1f);
-	     st.play();
-	     st.setOnFinished(e -> playPauseStop());
+		ScaleTransition st = new ScaleTransition(Duration.millis(1000), node);
+		st.setByX(-1f);
+		st.setByY(-1f);
+		st.play();
+		st.setOnFinished(e -> playPauseStop());
 	}
-	
+
 	private void playPauseStop() {
 		Map<String, EventHandler<MouseEvent>> animationIcons = addIcons();
 		addAnimationButtons(animationIcons);
 	}
-	
+
 	private void addAnimationButtons(Map<String, EventHandler<MouseEvent>> iconList) {
 		HBox animationButtons = new HBox(20);
-		animationButtons.setPadding(new Insets(10,10,10,10));
+		animationButtons.setPadding(new Insets(10, 10, 10, 10));
 		animationButtons.getStylesheets().add(css.orElse(cssPath));
 		iconList.keySet().forEach(icon -> {
 			OptionButton animationButton = new OptionButton(0, "", icon, iconList.get(icon));
@@ -116,13 +118,13 @@ public class GenericGameScreen extends AnchorPane{
 		});
 		setRightBottom(animationButtons);
 	}
-	
+
 	private void setRightBottom(Node node) {
 		this.getChildren().add(node);
 		AnchorPane.setBottomAnchor(node, 10.0);
 		AnchorPane.setRightAnchor(node, 10.0);
 	}
-	
+
 	private Map<String, EventHandler<MouseEvent>> addIcons() {
 		Map<String, EventHandler<MouseEvent>> animationIcons = new LinkedHashMap<>();
 		animationIcons.put("play_icon.png", e -> animationhandler.play());
@@ -130,15 +132,15 @@ public class GenericGameScreen extends AnchorPane{
 		animationIcons.put("stop_icon.png", e -> animationhandler.stop());
 		return animationIcons;
 	}
-	
+
 	private void setNodeInAnchorPane(Node node) {
 		AnchorPane.setBottomAnchor(node, 0.0);
 		AnchorPane.setTopAnchor(node, 0.0);
 		AnchorPane.setLeftAnchor(node, 0.0);
 		AnchorPane.setRightAnchor(node, 0.0);
 	}
-	public void setSong(String song){
-		System.out.println("SONG: " + song);
+
+	public void setSong(String song) {
 		musicPlayer.setSong(song);
 		musicPlayer.getMediaPlayer().play();
 	}

@@ -28,6 +28,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -42,7 +43,6 @@ import util.SimpleDateTimeUtil;
  */
 public class RatingDisplay extends VBox {
 	
-	private static final int SCREEN_WIDTH = 975;
 	private static final int TOTAL_NUM_STARS = 5;
 	private static final int DEFAULT_SPACING = 8;
 	private static final Insets DEFAULT_PADDING_INSETS = new Insets(10,10,10,10);
@@ -66,9 +66,6 @@ public class RatingDisplay extends VBox {
 		this.lang = lang;
 		dateTime = new SimpleDateTimeUtil();
 		resource = ResourceBundle.getBundle(lang);
-		setPrefWidth(SCREEN_WIDTH);
-		setMinWidth(SCREEN_WIDTH);
-		setMaxWidth(SCREEN_WIDTH);
 		setSpacing(DEFAULT_SPACING);
 		loadContents();
 	}
@@ -91,18 +88,21 @@ public class RatingDisplay extends VBox {
 	 * @return
 	 */
 	private Node setUpAddReview() {
-		// TODO Auto-generated method stub
 		Label lbl = new Label(resource.getString("addreviewprompt"));
 		lbl.setFont(Preferences.FONT_MEDIUM_BOLD);
 		lbl.setTextFill(Color.WHITE);
-		return UIHelper.buttonStack(e -> addReview(), Optional.of(lbl), Optional.of(new ImageView(new Image(ADD_ICON))), Pos.CENTER_LEFT, true);
+		StackPane stack = (StackPane) UIHelper.buttonStack(e -> addReview(), Optional.of(lbl), 
+				Optional.of(new ImageView(new Image(ADD_ICON))), Pos.CENTER_LEFT, true);
+		stack.setPrefWidth(Preferences.SCREEN_WIDTH);
+		stack.setMaxWidth(Preferences.SCREEN_WIDTH);
+		stack.setMinWidth(Preferences.SCREEN_WIDTH);
+		return (Node) stack;
 	}
 
 	/**
 	 * @return
 	 */
 	private void addReview() {
-		// TODO Auto-generated method stub
 		getChildren().remove(0);
 		RatingEntry re = new RatingEntry(TOTAL_NUM_STARS, lang);
 		re.addSubmitEventHandler(e -> submit(re.getUser(), re.getRating(),re.getReview()));
@@ -115,21 +115,27 @@ public class RatingDisplay extends VBox {
 		Label usernameText = new Label(username);
 		Label datetimeText = new Label(time);
 		Text reviewText = new Text(review);
-		usernameText.setPrefWidth(SCREEN_WIDTH - 200);
+		
+		usernameText.setPrefWidth(Preferences.SCREEN_WIDTH - 200);
 		datetimeText.setFont(Preferences.FONT_SMALL_BOLD);
 		datetimeText.setTextFill(Color.WHITE);
+		
 		usernameText.setFont(Preferences.FONT_SMALL_BOLD);
 		usernameText.setTextFill(Color.WHITE);
 		reviewText.setFont(Preferences.FONT_SMALL);
 		reviewText.setFill(Color.WHITE);
-		vb.setPrefWidth(SCREEN_WIDTH);
-		vb.setMaxWidth(SCREEN_WIDTH);
-		vb.setMinWidth(SCREEN_WIDTH);
+		
 		topHB.getChildren().addAll(usernameText, datetimeText);
 		reviewText.wrappingWidthProperty().bind(widthProperty());
+		
 		vb.getChildren().addAll(topHB, new RatingStars(rating, false, TOTAL_NUM_STARS, lang), reviewText);
 		vb.setBackground(DEFAULT_NODE_BACKGROUND);
 		vb.setPadding(DEFAULT_PADDING_INSETS);
+		
+		vb.setPrefWidth(Preferences.SCREEN_WIDTH);
+		vb.setMaxWidth(Preferences.SCREEN_WIDTH);
+		vb.setMinWidth(Preferences.SCREEN_WIDTH);
+		
 		UIHelper.setDropShadow(vb);
 		getChildren().add(vb);
 	}
