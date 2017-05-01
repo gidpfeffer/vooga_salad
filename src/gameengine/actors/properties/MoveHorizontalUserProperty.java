@@ -1,12 +1,13 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.MoveHorizontalUserData;
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
 public class MoveHorizontalUserProperty<G extends ReadAndMoveGrid> extends MoveAxisUserProperty<G>{
 
 	public MoveHorizontalUserProperty(MoveHorizontalUserData myData) {
-		super(myData.getRight(),myData.getLeft(),myData.getSensitivity());
+		super(myData.getPosButton(),myData.getNegButton(),myData.getMySensitivity());
 	}
 
 	@Override

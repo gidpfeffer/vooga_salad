@@ -4,7 +4,8 @@ package ui.authoring.level;
 import java.util.ArrayList;
 import java.util.List;
 
-import builders.AuthorInfoGenerator;
+import builders.infogen.AuthorInfoGenerator;
+import builders.objectgen.ConditionGenerator;
 import gamedata.ActorData;
 import gamedata.LevelData;
 import gameengine.conditionsgen.Condition;
@@ -101,15 +102,17 @@ public class LevelEditorMenu extends AnchorPane {
 	private void addClickableCondition(VBox vbox, Condition<?> condition){
 		List<String> conditions = new ArrayList<String>(AuthorInfoGenerator.getConditionTypesWithArgs().keySet());
 		String name = AuthorInfoGenerator.getName(condition);
-		BasicPicker<String> input = addClickableField(vbox, "Condition", name, conditions);
+		BasicPicker<String> input = addClickableField(vbox, "Win on", name, conditions);
 		input.getTypeProperty().addListener(e -> {
-			System.out.println("toggled basic actor field input thing");
 			didEditCondition(input.getTypeProperty().get());
 		});
 	}
 	
 	private void didEditCondition(String newCondition){
-		
+		Condition<?> condition = ConditionGenerator.makeCondition(newCondition);
+		if(condition!=null){
+			myData.setCondition(condition);
+		}
 	}
 	
 	//TODO: Move to Util class

@@ -1,4 +1,4 @@
-package builders;
+package builders.infogen;
 
 import gamedata.compositiongen.Data;
 

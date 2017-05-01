@@ -1,4 +1,4 @@
-package builders;
+package builders.infogen;
 
 import java.util.ArrayList;
 import java.util.List;

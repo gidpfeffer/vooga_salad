@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
-import builders.DataGenerator;
-import builders.AuthorInfoGenerator;
+import builders.infogen.AuthorInfoGenerator;
+import builders.objectgen.DataGenerator;
 import gamedata.ActorData;
 import gamedata.FieldData;
 import gamedata.GameData;
@@ -134,16 +134,17 @@ public class DataView extends AnchorPane {
 			if(clazz == Integer.class && myDataClassName.contains("Shoot") && nameKey.equals("myProjectile"))
 				addClickableActorField(nameKey, (Integer) value);
 			else
-				addNumberField(nameKey, value);
-		}else if(clazz == BasicActorType.class){
+				addTextField(nameKey, value);
+		} else if(clazz == BasicActorType.class){
 			addClickableTypeField(nameKey, (BasicActorType) value);
 			//TODO: Clean up
-		}else if(clazz == List.class || clazz == ArrayList.class){
+		} else if(clazz == List.class || clazz == ArrayList.class){
 			if(myDataClassName.equals("MoveWithSetPathData"))
 				addIntegerList(new ArrayList<Integer>(myPaths.getMyPaths().keySet()), nameKey);
 			else
 				addCategoryList(this.myActorTypes, nameKey);
-				
+		} else if(clazz == String.class){
+			addTextField(nameKey,value);
 		}
 		
 	}
@@ -249,7 +250,15 @@ public class DataView extends AnchorPane {
 		return input;
 	}
 
-	private void addNumberField(String nameKey, Object value){
+	private void addTextField(String nameKey, Object value){
+		if(value.getClass().equals(String.class)){
+			addStringField(nameKey, value);
+		} else if(value.getClass().equals(Double.class) || value.getClass().equals(Integer.class)){
+			addNumberField(nameKey, value);
+		}
+	}
+	
+	private TextField generateField(String nameKey, Object value){
 		AnchorPane content = new AnchorPane();
 		
 		Label fieldName = new Label(nameKey + ":");
@@ -266,7 +275,7 @@ public class DataView extends AnchorPane {
 		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
 		field.setAlignment(Pos.CENTER);
 		//IMPORTANT: makes field number only and also updates the value of field
-		field.textProperty().addListener((e,oldVal,newValue) -> didEditField(field, nameKey, oldVal, newValue));
+		
 		AnchorPane.setRightAnchor(field, 4.0);
 		AnchorPane.setTopAnchor(field, 4.0);
 		AnchorPane.setBottomAnchor(field, 4.0);
@@ -276,12 +285,30 @@ public class DataView extends AnchorPane {
 		content.getChildren().add(field);
 		VBox.setMargin(content, new Insets(8.0));
 		vbox.getChildren().add(content);
+		
+		return field;
+	}
+	
+	private void addStringField(String nameKey, Object value){
+		TextField field = generateField(nameKey, value);
+		field.textProperty().addListener((e,oldVal,newValue) -> didEditField(field, nameKey, oldVal, newValue));
+	}
+	
+	private void addNumberField(String nameKey, Object value){
+		TextField field = generateField(nameKey, value);
+		field.textProperty().addListener((e,oldVal,newValue) -> didEditNumberField(field, nameKey, oldVal, newValue));
+		
+	}
+	
+	private void didEditNumberField(TextField field, String varName, String oldValue, String newValue){
+		 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
+			 field.setText(oldValue);
+		 } else{
+			didEditField(field,varName, oldValue, newValue);
+		 }
 	}
 	
 	private void didEditField(TextField field, String varName,String oldValue, String newValue){
-		 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
-			 field.setText(oldValue);
-         }else{
         	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");
         	System.out.println("\tADDING NEW DATA TO ACTORDATA");
      		this.myFields.put(varName, 
@@ -292,7 +319,6 @@ public class DataView extends AnchorPane {
      		printMyData();
      		setMyData(d); 
      		System.out.println("*\t*\t*\t*\t*\t*\t*\t*\t\n");
-         }
 	}
 	private <T extends Object> void didEditClickable(T basicActorType, String varName){
    	 	System.out.println("\n*\t*\t*\t*\t*\t*\t*\t*\t");

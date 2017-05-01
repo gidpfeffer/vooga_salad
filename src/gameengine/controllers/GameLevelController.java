@@ -128,7 +128,7 @@ public class GameLevelController {
 
 	private void spawnEnemy(EnemyInWaveData enemyData, Grid2D firstPathCoor) {
 		ActorData actorData = enemyData.getMyActor();
-		Actor actor = builders.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
+		Actor actor = builders.objectgen.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
 	}
 	

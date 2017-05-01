@@ -1,4 +1,4 @@
-package builders;
+package builders.infogen;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -63,7 +63,6 @@ public abstract class PackageInfoGenerator <A> {
 			properties = Reflections.getClasses(pkg);
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return Arrays.asList(properties);
 	}

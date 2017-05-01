@@ -10,7 +10,7 @@ import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
-import builders.GameDataGenerator;
+import builders.objectgen.GameDataGenerator;
 import gamedata.DisplayData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;

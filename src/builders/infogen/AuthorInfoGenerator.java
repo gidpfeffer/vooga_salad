@@ -1,4 +1,4 @@
-package builders;
+package builders.infogen;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import builders.util.FieldGenerator;
 import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.compositiongen.Data;

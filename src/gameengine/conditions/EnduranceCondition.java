@@ -9,6 +9,10 @@ public class EnduranceCondition<G extends ReadableGrid> extends WinLoseCondition
 	private Integer myFinalFrame;
 	private Integer myCurrentFrame;
 	
+	public EnduranceCondition(){
+		this(400);
+	}
+	
 	public EnduranceCondition(Integer duration) {
 		myFinalFrame = duration;
 		myCurrentFrame = 0;
