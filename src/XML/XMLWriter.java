@@ -2,6 +2,7 @@ package XML;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +26,11 @@ import gamedata.BasicData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LevelData;
-import gamedata.ProjectileType;
 import gamedata.WaveData;
 import gamedata.compositiongen.Data;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.util.Pair;
 import util.Tuple;
 
 public class XMLWriter {
@@ -95,7 +93,8 @@ public class XMLWriter {
 			for (Data d : dataList) {
 				Element dataElement = doc.createElement(
 						d.getClass().toString().split("\\.")[d.getClass().toString().split("\\.").length - 1]);
-				Map<String, Object> fields = OptionGenerator.getFields(d);
+				//Map<String, Object> fields = OptionGenerator.getFields(d);
+				Map<String, Object> fields = new HashMap<String, Object>();
 				ArrayList<Object> fieldStrings = new ArrayList<Object>();
 				for (String s : fields.keySet()) {
 					fieldStrings.add(fields.get(s));
@@ -120,7 +119,7 @@ public class XMLWriter {
 		Element attackMultiplier = doc.createElement("AttackMultiplier");
 		attackMultiplier.appendChild(doc.createTextNode(Double.toString(myLevelData.getAttackMultiplier())));
 		Element difficulty = doc.createElement("Difficulty");
-		difficulty.appendChild(doc.createTextNode(Double.toString(myLevelData.getDifficulty())));
+		//difficulty.appendChild(doc.createTextNode(Double.toString(myLevelData.getDifficulty())));
 		Element duration = doc.createElement("Duration");
 		duration.appendChild(doc.createTextNode(Double.toString(myLevelData.getDuration())));
 		levelData.appendChild(healthMultiplier);
@@ -145,7 +144,7 @@ public class XMLWriter {
 				}
 
 				Element number = doc.createElement("Number");
-				number.appendChild(doc.createTextNode(Integer.toString(enemy.getMyNumber())));
+				//number.appendChild(doc.createTextNode(Integer.toString(enemy.getMyNumber())));
 				enemyElement.appendChild(number);
 
 				wave.appendChild(enemyElement);
@@ -242,6 +241,6 @@ public class XMLWriter {
 	public static void main(String[] args) {
 		XMLReader you = new XMLReader("data/voogatest.xml");
 		GameData d = you.getData();
-		XMLWriter me = new XMLWriter(d);
+		new XMLWriter(d);
 	}
 }
