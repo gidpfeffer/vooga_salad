@@ -142,7 +142,7 @@ public class GameScreen extends GenericGameScreen
 	private void setup() {
 		setupPanels();
 		setupHUD();
-		setReturnToMain(e -> returnToMain());
+		setReturnToMain(returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -180,10 +180,10 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void handle(ActionEvent e) {
 				animationhandler.stop();
-				loginhandler.returnToMain();
 				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
 					getMediaPlayer().stop();
 				}
+				loginhandler.returnToMain();
 			}
 		};
 	}
