@@ -1,4 +1,4 @@
-package builders;
+package builders.objectgen;
 
 import java.util.Arrays;
 
@@ -19,9 +19,6 @@ import gamedata.compositiongen.Data;
 public class DataGenerator {
 
 	public static Data makeData(String data, Object ... args){
-		for(Object o: args){
-			System.out.println(o.getClass());
-		}
 		DataFactory factory = new DataFactory();
 		Data toRet = factory.make(data, args);
 		return toRet;

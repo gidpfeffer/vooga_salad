@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import builders.DataGenerator;
+import builders.objectgen.DataGenerator;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 import types.BasicActorType;

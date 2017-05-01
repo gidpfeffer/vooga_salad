@@ -1,6 +1,7 @@
 package gameengine.controllers;
-import java.util.Map;			
-import builders.ActorGenerator;
+import java.util.Map;
+
+import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.DisplayData;
 import gamedata.GameData;

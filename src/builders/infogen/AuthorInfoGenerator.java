@@ -1,4 +1,4 @@
-package builders;
+package builders.infogen;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import builders.util.FieldGenerator;
 import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.compositiongen.Data;
+import gameengine.conditionsgen.Condition;
 import util.PropertyUtil;
 
 /**
@@ -39,7 +41,11 @@ public class AuthorInfoGenerator{
 	}
 	
 	public static String getName(Data data){
-		return (new DataPackageInfoGenerator()).simplifyName(data);
+		return (new DataInfoGenerator()).simplifyName(data);
+	}
+	
+	public static String getName(Condition con){
+		return (new ConditionInfoGenerator()).simplifyName(con);
 	}
 	
 	/**
@@ -62,20 +68,28 @@ public class AuthorInfoGenerator{
 	 * @return Properties matched to arguments
 	 */
 	public static Map<String, List<FieldData>> getPropertyTypesWithArgs(){
-		DataPackageInfoGenerator d = new DataPackageInfoGenerator();
-		List<Class<?>> datas = d.getConcreteDataClasses();
-		
+		return getTypesWithArgs(new DataInfoGenerator());
+	}
+	
+	public static Map<String, List<FieldData>> getConditionTypesWithArgs(){
+		return getTypesWithArgs(new ConditionInfoGenerator());
+	}
+	
+	
+	public static <T extends Object> Map<String, List<FieldData>> getTypesWithArgs
+			(TwoLevelInfoGenerator<T> info){
+		List<Class<?>> datas = info.getConcreteDataClasses();
 		Map<String,List<FieldData>> toRet = new LinkedHashMap<String, List<FieldData>>();
 		
 		for(Class<?> clzz: datas){
 			List<Field> fields = FieldGenerator.getFields(clzz);
 			List<FieldData> fieldDatas = FieldGenerator.getFieldDatas(fields);
-			toRet.put(d.simplifyName(clzz), fieldDatas);
+			toRet.put(info.simplifyName(clzz), fieldDatas);
 		}
 		return toRet;
 	}
 	
-	public static Map<String, Object>  getFields(Data data){
+	public static Map<String, Object> getFields(Data data){
 		return FieldGenerator.getFields(data);
 	}
 	

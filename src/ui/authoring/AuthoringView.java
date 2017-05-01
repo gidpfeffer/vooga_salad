@@ -10,7 +10,7 @@ import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
-import builders.GameDataGenerator;
+import builders.objectgen.GameDataGenerator;
 import gamedata.DisplayData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -153,6 +153,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 	}
 
+	//TODO: Consolidate
 	private void setupMenuView() {
 		
 		ImageButton menuButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
@@ -164,8 +165,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 		double width = 300;
 
-
-		
 		//alex test
 		ImageButton displayButton = new ImageButton("icon.png", new Location(40.0,40.0));
 		displayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> launchDisplayView());
@@ -175,10 +174,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.getChildren().add(displayButton);
 		myDisplayView=new DisplayView(this,this,myGameData.getDisplayData(),myGameData);
 		UIHelper.setBackgroundColor(myDisplayView, CustomColors.GREEN);
-	
-		//this.getChildren().add(myDisplayView);
-		
-		
 		//end test
 		
 
