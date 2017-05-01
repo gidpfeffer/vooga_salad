@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
 import gamedata.ActorData;
+import gamedata.BasePlacementData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LevelData;
@@ -100,9 +101,14 @@ public class GameLevelController {
 	
 	private void loadLevel(LevelData levelData) {
 		updateWinCondition(levelData);
+		addSetPieces(myGameData.getLayers().getMyBaseData());
 		addPieces(levelData);
 	}
 	
+	private void addSetPieces(BasePlacementData myBaseData) {
+		myBaseData.getMyActorToLocation().stream().forEach(tuple -> myGrid.controllerSpawnActor(builders.objectgen.ActorGenerator.makeActor(myGameData.getOptionKey(tuple.x), tuple.x),tuple.y.getX(),tuple.y.getY()));
+	}
+
 	private void updateWinCondition(LevelData levelData) {
 		myWinCondition = levelData.getCondition();
 	}
