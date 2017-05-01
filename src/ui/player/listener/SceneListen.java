@@ -6,7 +6,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import util.Delay;
 
 /**
  * Modular class that is takes in a scene and reports an ListenQueue to the end
@@ -54,8 +53,6 @@ public class SceneListen implements IListen{
 	}
 
 	public void pollQueue() {
-		//ListenQueue retQueue = myQueue.clone();
 		generateNewQueue();
-		//return retQueue;
 	}
 }
