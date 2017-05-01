@@ -27,7 +27,6 @@ public class ListenQueue {
 	}
 	
 	public void addEvent(KeyCode code) {
-		//System.out.println(code);
 		myEvents.add(code);
 	}
 	
@@ -38,11 +37,4 @@ public class ListenQueue {
 	public Set<KeyCode> getSet(){
 		return myEvents;
 	}
-	/*
-	@Override
-	public ListenQueue clone() {
-		ListenQueue ret = new ListenQueue(myPointer.getX(),myPointer.getY());
-		myEvents.stream().forEach(event -> ret.addEvent(event));
-		return ret;
-	}*/
 }
