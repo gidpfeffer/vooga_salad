@@ -29,6 +29,7 @@ import ui.Preferences;
 import ui.authoring.PopupSize;
 import ui.authoring.delegates.LayerViewDelegate;
 import ui.authoring.delegates.PopViewDelegate;
+import ui.authoring.map.layer.BaseLayerView;
 import ui.authoring.map.layer.Layer;
 import ui.authoring.map.layer.LayerPopupDelegate;
 import ui.authoring.map.layer.LayerPopupView;
@@ -49,7 +50,7 @@ import util.Tuple;
 public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate {
 	
 	private boolean IS_LOADED = false;
-	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_1.png";
+	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
 	private static final Color[] LAYER_COLORS = { 
 			CustomColors.AMBER, CustomColors.BLUE_500, 
 			CustomColors.GREEN, CustomColors.INDIGO };
@@ -59,14 +60,16 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private List<Layer> myLayers = new ArrayList<>();
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
+	private BaseLayerView myBaseLayer;
 
 	private Pane myLayerPopup;
-
+	
 	public MapEditorView(MapLayersData mapData, PopViewDelegate popDelegate) {
 		super();
 		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
 		myMapData = mapData;
 		myPopDelegate = popDelegate;
+		myBaseLayer = new BaseLayerView(myMapData.getMyBaseData());
 		setupViews();
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
@@ -114,6 +117,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private void setupMapData() {
 		System.out.println("isLoaded:" + IS_LOADED);
 		addLayerView(new PathLayerView(myMapData.getMyPathData()), "Path");
+		addLayerView(myBaseLayer, "Base");
 		for (Entry<String, LayerData> entry : myMapData.getMyLayers().entrySet()) {
 			addLayerView(new PolygonLayerView(entry.getValue()), entry.getKey());
 		}
@@ -289,6 +293,11 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		for (Layer layer : myLayers) {
 			StackPane.setMargin(layer, getAdjustedInsets());
 		}
+	}
+	
+	
+	public BaseLayerView getBaseLayer(){
+		return this.myBaseLayer;
 	}
 
 	/*

@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class DisplayData {
+	
 	private static final String DEFAULT_POSITION= "Left";
 	private static final int DEFAULT_WIDTH=80;
 	private static final int DEFAULT_HEIGHT=400;

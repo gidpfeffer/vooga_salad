@@ -11,6 +11,7 @@ import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
 import builders.GameDataGenerator;
+import gamedata.ActorData;
 import gamedata.DisplayData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -50,7 +51,7 @@ import util.Location;
  */
 
 
-public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate,DisplayDelegate{
+public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate,DisplayDelegate,ActorEditorDelegate{
 	
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 144;
@@ -465,6 +466,14 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.loginhandler.returnToMain();
 		
 	}
+
+	@Override
+	public void addActorToBase(ActorData data, Location mouseLoc) {
+		this.myMapView.getBaseLayer().addBase(data, mouseLoc);
+		
+	}
+
+
 
 	
 }
