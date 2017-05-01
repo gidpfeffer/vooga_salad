@@ -1,11 +1,8 @@
 package gameengine.actors.properties;
 
-import java.util.Collection;
 import java.util.function.Consumer;
 
 import gamedata.composition.ActorDamageableData;
-import gameengine.actors.propertygen.IActProperty;
-import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
 public class ActorDamageableWithExitProperty<G extends ReadAndDamageGrid> extends ActorDamageableProperty<G> {

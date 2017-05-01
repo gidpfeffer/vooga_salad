@@ -8,7 +8,7 @@ package types;
  *
  */
 
-public class BasicActorType implements Comparable {
+public class BasicActorType implements Comparable<Object> {
 	private String type;
 	private boolean placeable;
 	
