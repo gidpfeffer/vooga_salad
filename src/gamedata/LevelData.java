@@ -31,7 +31,7 @@ public class LevelData {
 	private double speedMultiplier;
 	private double attackMultiplier;
 	
-	private Condition<?> condition;
+	private Condition condition;
 
 	public LevelData(){
 		this(100);//TODO: Choose better #
@@ -110,11 +110,11 @@ public class LevelData {
 		this.myWaves = myWaves;
 	}
 
-	public Condition<?> getCondition() {
+	public Condition getCondition() {
 		return condition;
 	}
 
-	public void setCondition(Condition<?> condition) {
+	public void setCondition(Condition condition) {
 		this.condition = condition;
 	}
 	
