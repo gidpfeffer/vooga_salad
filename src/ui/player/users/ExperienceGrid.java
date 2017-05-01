@@ -22,10 +22,6 @@ public class ExperienceGrid extends DataEntryGrid{
 		return dataMap.get(profileR.getString("level"));
 	}
 	
-	public TextField getRank() {
-		return dataMap.get(profileR.getString("rank"));
-	}
-	
 	public ExperienceGrid(ResourceBundle resource) {
 		super(resource);
 		profileR = resource;
@@ -42,7 +38,6 @@ public class ExperienceGrid extends DataEntryGrid{
 	
 	public void addValues(){
 		addTextField(dataMap, entryMap, profileR.getString("level"), new TextField());
-		addTextField(dataMap, entryMap, profileR.getString("rank"), new TextField());
 		addTextField(dataMap, entryMap, profileR.getString("experience"), new TextField());
 	}
 }
