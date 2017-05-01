@@ -12,7 +12,7 @@ public class TestGameController extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		GameController controller = new GameController();
-		controller.start(primaryStage);
+		GameController controller = new GameController(null, null);
+		controller.start(primaryStage, 0, 0, null);
 	}
 }

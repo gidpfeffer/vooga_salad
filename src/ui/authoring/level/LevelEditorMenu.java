@@ -6,7 +6,6 @@ import java.util.List;
 
 import builders.infogen.AuthorInfoGenerator;
 import builders.objectgen.ConditionGenerator;
-import gamedata.ActorData;
 import gamedata.LevelData;
 import gameengine.conditionsgen.Condition;
 import javafx.beans.value.ChangeListener;
