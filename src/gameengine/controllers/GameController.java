@@ -50,8 +50,6 @@ public class GameController {
 	private LevelHandler myLevelHandler;
 	private GridHandler myGridHandler;
 	
-	private WriteableGameStatus myWriteableGameStatus;
-	
 	private GameLevelController myLevelController;
 	
 	private ControllableGrid myGrid;
