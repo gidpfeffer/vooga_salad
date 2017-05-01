@@ -59,6 +59,12 @@ public class Actor{
 		return Integer.parseInt(actor.getId());
 	}
 	
+	public void turnOffHandlers() {
+		mainPane.removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
+		mainPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
+		mainPane.removeEventHandler(MouseEvent.MOUSE_RELEASED, released);
+	}
+	
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp) {
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
@@ -142,7 +148,6 @@ public class Actor{
 		public void handle(final MouseEvent ME) {
 			if (((MouseEvent) ME).getButton().equals(MouseButton.SECONDARY)) {
 				try {
-					System.out.println("INSIDE PLACING");
 					System.out.println(actor.getLayoutX() / width + " " + mainPane.getLayoutY() / height);
 					Integer actorID = uihandler.addGameObject(option, mainPane.getLayoutX() / width, mainPane.getLayoutY() / height);
 					Object obj = ME.getSource();
