@@ -2,6 +2,7 @@ package gameengine.controllers;
 
 import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
 
@@ -56,7 +57,6 @@ public class GameLevelController {
 		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(10);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void update() {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();

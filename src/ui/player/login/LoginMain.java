@@ -161,11 +161,8 @@ public class LoginMain {
 			@Override
 			public void gotoReviews() {
 				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
-				stage.setWidth(800);
-				stage.setHeight(800);
-				stage.setResizable(false);
-				stage.show();
-				
+				stage.setWidth(Preferences.SCREEN_WIDTH);
+				stage.setHeight(Preferences.SCREEN_HEIGHT);
 			}
 		};
 	}
@@ -211,8 +208,7 @@ public class LoginMain {
 				goToGameScreen(gameData);
 			}
 		} catch(Exception e){
-			e.printStackTrace();
-			System.out.println("Invalid GameData file chosen");
+			new Alert(AlertType.ERROR, "Invalid GameData file chosen").showAndWait();
 		}
 	}
 	
