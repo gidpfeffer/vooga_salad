@@ -3,11 +3,8 @@ package ui.player.inGame;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openqa.selenium.Dimension;
-
 import gamedata.ActorData;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -38,9 +35,9 @@ public class Actor{
 	private ProgressBar health;
 	private Pane mainPane;
 
-	public Pane getPane() {
+/*	public Pane getPane() {
 		return actor;
-	}
+	}*/
 	
 	public Pane getMainPane() {
 		return mainPane;
@@ -54,16 +51,20 @@ public class Actor{
 		mainPane = null;
 	}
 	
+	public ActorData getData() {
+		return actorData;
+	}
+	
 	public Integer getID() {
 		return Integer.parseInt(actor.getId());
 	}
 	
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp) {
-		//System.out.println("IN ACTOR: making the option: " + option);
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
 				true);
 		actor.setBackground(Background.EMPTY);
+		System.out.println(actorData.getType() + " " + actorData.getName());
 		this.screenhandler = screenhandler;
 		this.actorData = actorData;
 		this.option = option;
@@ -141,6 +142,7 @@ public class Actor{
 		public void handle(final MouseEvent ME) {
 			if (((MouseEvent) ME).getButton().equals(MouseButton.SECONDARY)) {
 				try {
+					System.out.println("INSIDE PLACING");
 					System.out.println(actor.getLayoutX() / width + " " + mainPane.getLayoutY() / height);
 					Integer actorID = uihandler.addGameObject(option, mainPane.getLayoutX() / width, mainPane.getLayoutY() / height);
 					Object obj = ME.getSource();

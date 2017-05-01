@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import ui.Preferences;
+import ui.authoring.delegates.OptionPickerDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 

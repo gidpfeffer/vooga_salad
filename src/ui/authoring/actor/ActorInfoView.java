@@ -36,8 +36,12 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import types.BasicActorType;
 import ui.Preferences;
+import ui.authoring.delegates.ActorInfoDelegate;
+import ui.authoring.delegates.DataViewDelegate;
+import ui.authoring.delegates.OptionPickerDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
+import util.Location;
 
 /**
  * @author TNK
@@ -45,6 +49,7 @@ import ui.general.UIHelper;
  */
 public class ActorInfoView extends AnchorPane implements DataViewDelegate, OptionPickerDelegate{
 	
+	private ActorInfoDelegate myDelegate;
 	private GridPane myGridPane;
 	private static final int GRID_X_DIM = 3;
 	private HBox myUpgradePickerView;
@@ -56,10 +61,12 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private Set<BasicActorType> myActorTypeOptions;
 	private ActorData myCurrentActorData;
 	private GameData myGameData;
+	
 
 	
-	public ActorInfoView(GameData gameData){
+	public ActorInfoView(ActorInfoDelegate delegate, GameData gameData){
 		super();
+		myDelegate = delegate;
 		myGameData = gameData;
 		myDataViews = new ArrayList<DataView>();
 		myActors = new ArrayList<StackPane>();
@@ -148,6 +155,8 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 				Optional.of(myActorImageView), Pos.CENTER, true);
 		button.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {highlightCurrentActor(button);});
 		button.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {doubleClick(actor, local, e);});
+		UIHelper.addPressAndHoldHandler(button, Duration.seconds(0.3), e -> myDelegate.addActorToBase(actor, new Location(e.getSceneX(), e.getScreenY())));
+
 		
 		button.heightProperty().addListener(e -> {
 			//TODO?

@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import ui.Preferences;
+import ui.authoring.delegates.CreateActorDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
 import util.generator.ImageInfo;
@@ -40,7 +41,7 @@ import util.generator.WebImageCollector;
  * @author maddiebriere
  *
  */
-public class CreateActorTypeView extends VBox {
+public class CreateBasicTypeView extends VBox {
 	
 	private final String NO_IMAGE = "no_image_icon.png";
 	
@@ -53,7 +54,7 @@ public class CreateActorTypeView extends VBox {
 	private List<String>hits;
 	private List<Integer> hitIters;
 	
-	public CreateActorTypeView(CreateActorDelegate delegate){
+	public CreateBasicTypeView(CreateActorDelegate delegate){
 		super();
 		myDelegate = delegate;
 		randy = new Random();
