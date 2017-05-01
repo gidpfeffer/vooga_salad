@@ -74,7 +74,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	}
 
 	private void setupLayout() {
-		gridPane.setHgap(50);
+		gridPane.setHgap(100);
 		gridPane.setVgap(20);
 		gridPane.setAlignment(Pos.CENTER);
 		gridPane.getStyleClass().add("grid");
@@ -171,7 +171,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		UIHelper.setDropShadow(reviews);
 		UIHelper.setDropShadow(leaderboard);
 		
-		bottomHBox = new HBox(50, auth, selector, reviews, leaderboard);
+		bottomHBox = new HBox(20, auth, selector, reviews, leaderboard);
 		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
