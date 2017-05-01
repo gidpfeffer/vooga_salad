@@ -29,7 +29,7 @@ public class MusicPlayer {
 	static final String heroSong = "music/hero_song.mp3";
 
 	public MusicPlayer() {
-		layout = new VBox();
+		layout = new VBox(20);
 		component1 = new HBox();
 
 		song = new Media(new File(heroSong).toURI().toString());

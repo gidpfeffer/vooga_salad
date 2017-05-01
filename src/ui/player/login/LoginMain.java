@@ -1,7 +1,6 @@
 package ui.player.login;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.ResourceBundle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import XML.xmlmanager.classes.XStreamSerializer;
-import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
@@ -66,7 +64,7 @@ public class LoginMain {
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
 	private static final String guestUser = "Guest";
-	private static final List<String> games = new ArrayList<>(Arrays.asList("games/BESTTESTEVER.xml"));
+	private static final List<String> games = new ArrayList<>(Arrays.asList("games/BESTTESTEVER.xml", "games/WORKINGGAME.xml"));
 
 	/**
 	 * Initialized in {@link voogasalad_ilovesingletons.Main}
