@@ -1,6 +1,5 @@
 package gameengine.controllers;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
