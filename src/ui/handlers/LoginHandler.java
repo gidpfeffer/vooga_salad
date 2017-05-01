@@ -1,5 +1,7 @@
 package ui.handlers;
 
+import java.util.Iterator;
+
 import ui.player.users.User;
 
 /**
@@ -51,10 +53,10 @@ public interface LoginHandler {
 	public void setActiveUser(User user);
 	
 	/**
-	 * Gets a list of all {@code User}s ordered by experience points
-	 * @return List of all {@code User}s ordered by experience points
+	 * Gets an {@code iterator} of all {@code User}s ordered by experience points
+	 * @return {@code Iterator} of all {@code User}s ordered by experience points
 	 */
-	public void getXPOrderedUsers();
+	public Iterator<User> getUsersInExpOrder();
 	
 	/**
 	 * Displays the {@link ui.player.login.Login Login}. For use with back buttons.
