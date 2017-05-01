@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import builders.ActorGenerator;
-import builders.PathGenerator;
+import builders.objectgen.ActorGenerator;
+import builders.util.PathGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.composition.BaseDamageData;

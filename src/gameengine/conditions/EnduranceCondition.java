@@ -1,12 +1,17 @@
 package gameengine.conditions;
 
+import gameengine.conditionsgen.WinLoseCondition;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
-public class EnduranceCondition<G extends ReadableGrid> extends WinLoseCondition<G> {
+public class EnduranceCondition extends WinLoseCondition {
 
 	private Integer myFinalFrame;
 	private Integer myCurrentFrame;
+	
+	public EnduranceCondition(){
+		this(400);
+	}
 	
 	public EnduranceCondition(Integer duration) {
 		myFinalFrame = duration;
@@ -19,13 +24,13 @@ public class EnduranceCondition<G extends ReadableGrid> extends WinLoseCondition
 	}
 
 	@Override
-	protected boolean winCondition(G grid, ReadableGameStatus status) {
+	protected boolean winCondition(ReadableGameStatus status) {
 		return myCurrentFrame>myFinalFrame;
 	}
 
 	@Override
-	protected boolean loseCondition(G grid, ReadableGameStatus status) {
-		return status.getLives()>0;
+	protected boolean loseCondition(ReadableGameStatus status) {
+		return status.getLives()<1;
 	}
 
 }

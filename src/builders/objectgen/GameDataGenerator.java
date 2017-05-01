@@ -1,8 +1,9 @@
-package builders;
+package builders.objectgen;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import builders.util.PathGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.EnemyInWaveData;

@@ -1,13 +1,20 @@
 package ui.authoring.map;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+
+
 import XML.xmlmanager.classes.ConcreteFileHelper;
 import gamedata.MapLayersData;
+import gamedata.PathData;
+import gamedata.DisplayData;
 import gamedata.LayerData;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -50,7 +57,6 @@ import util.Tuple;
 public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate {
 	
 	private boolean IS_LOADED = false;
-	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
 	private static final Color[] LAYER_COLORS = { 
 			CustomColors.AMBER, CustomColors.BLUE_500, 
 			CustomColors.GREEN, CustomColors.INDIGO };
@@ -61,15 +67,17 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
 	private BaseLayerView myBaseLayer;
-
+	private DisplayData myDisplayData;
 	private Pane myLayerPopup;
 	
-	public MapEditorView(MapLayersData mapData, PopViewDelegate popDelegate) {
+	public MapEditorView(PopViewDelegate popDelegate, MapLayersData mapData, DisplayData displayData) {
+
 		super();
-		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
+		myBackgroundView = new ImageViewPane(new ImageView(new Image(displayData.getBackgroundImagePath())));
 		myMapData = mapData;
 		myPopDelegate = popDelegate;
 		myBaseLayer = new BaseLayerView(myMapData.getMyBaseData());
+		myDisplayData=displayData;
 		setupViews();
 		setupMouseEvents();
 		this.widthProperty().addListener(e -> sizeDidChange());
@@ -273,10 +281,29 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if (selectedFile != null) {
-			//ConcreteFileHelper manager = new ConcreteFileHelper();
-			Image img = new Image(selectedFile.getName());
-			if(img != null)
-				myBackgroundView.getImageView().setImage(img);
+
+			ConcreteFileHelper manager = new ConcreteFileHelper();
+			// TODO copy file to images folder
+			
+			
+			try {
+				
+				//Files.move(Paths.get(selectedFile.getAbsolutePath()), Paths.get(new File("images\\").getAbsolutePath()));
+				
+				manager.moveFile(selectedFile.getParent(), "images", selectedFile.getName());
+				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+			e1.printStackTrace();
+				
+			}
+			System.out.println(selectedFile.getName());
+			//Image image=new Image(selectedFile.getName());
+			Image image=new Image(selectedFile.toURI().toString());
+			myBackgroundView.getImageView().setImage(image);
+			myDisplayData.setBackgroundImagePath(selectedFile.getName());
+			System.out.println("backgroundimage:"+selectedFile.getName());
+
 		}
 	}
 	

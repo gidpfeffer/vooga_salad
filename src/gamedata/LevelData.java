@@ -3,6 +3,9 @@ package gamedata;
 import java.util.ArrayList;
 import java.util.List;
 
+import gameengine.conditions.EnduranceCondition;
+import gameengine.conditionsgen.Condition;
+
 /**
  * Holds all the data that is encoded for a level
  * such as:
@@ -27,6 +30,8 @@ public class LevelData {
 	private double healthMultiplier;
 	private double speedMultiplier;
 	private double attackMultiplier;
+	
+	private Condition condition;
 
 	public LevelData(){
 		this(100);//TODO: Choose better #
@@ -38,6 +43,7 @@ public class LevelData {
 		attackMultiplier=-1;
 		speedMultiplier=-1;
 		healthMultiplier=-1;
+		condition = new EnduranceCondition(100);
 	}
 	
 	public int getNumWaves(){
@@ -103,6 +109,15 @@ public class LevelData {
 	public void setMyWaves(List<WaveData> myWaves) {
 		this.myWaves = myWaves;
 	}
+
+	public Condition getCondition() {
+		return condition;
+	}
+
+	public void setCondition(Condition condition) {
+		this.condition = condition;
+	}
+	
 	
 	
 	

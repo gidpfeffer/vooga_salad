@@ -1,9 +1,8 @@
-package gameengine.conditions;
+package gameengine.conditionsgen;
 
 import java.util.Optional;
 
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
-import gamestatus.GameStatus;
 import gamestatus.ReadableGameStatus;
 
 /**
@@ -12,6 +11,6 @@ import gamestatus.ReadableGameStatus;
  * @author Moses Wayne
  * @author maddiebriere
  */
-public interface Condition<G extends ReadableGrid> {
-	public Optional<Boolean> conditionSatisfied(G grid, ReadableGameStatus status);
+public interface Condition {
+	public Optional<Boolean> conditionSatisfied(ReadableGameStatus status);
 }

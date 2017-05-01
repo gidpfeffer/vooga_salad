@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import builders.AuthorInfoGenerator;
+import builders.infogen.AuthorInfoGenerator;
 import gamedata.LayerData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import builders.AuthorInfoGenerator;
+import builders.infogen.AuthorInfoGenerator;
 import gamedata.FieldData;
 import gamedata.compositiongen.Data;
 import javafx.geometry.Insets;

@@ -1,8 +1,8 @@
 package util;
 
-import java.util.stream.Collectors;			
+import java.util.stream.Collectors;
 
-import builders.ActorGenerator;
+import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LayerData;
@@ -36,8 +36,10 @@ public class GameObjectUtil {
 	}
 	
 	public boolean isPlaceable(LayerData layer, double x, double y){
-		if (layer.getMyPolygons().stream()
-				.filter(poly -> !PathUtil.isWithinPolygon(poly.getMyPoints(), x,y))
+		layer.getMyPolygons().forEach(p -> System.out.println("layer " + PathUtil.isWithinPolygon(p.getMyPoints(), x,y)));
+		
+		if (!layer.getMyPolygons().stream()
+				.filter(poly -> PathUtil.isWithinPolygon(poly.getMyPoints(), x,y))
 				.collect(Collectors.toList()).isEmpty()) return true;
 		return false;
 	}

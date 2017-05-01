@@ -5,25 +5,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
-
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
 import gamedata.LevelData;
 import gamedata.PathData;
-import gamedata.PreferencesData;
 import gamedata.WaveData;
 import gameengine.actors.management.Actor;
-import gameengine.conditions.Condition;
-import gameengine.conditions.EnduranceCondition;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
+import gameengine.conditionsgen.Condition;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
-import gamestatus.ReadableGameStatus;
+import gamestatus.GameStatus;
+import types.BasicActorType;
 import util.Delay;
-import util.VoogaException;
-
 /**
  * Controls information about/behavior of a single level
  * 
@@ -36,9 +31,7 @@ public class GameLevelController {
 	
 	private GameData myGameData;
 	
-	private PreferencesData myPreferences;
-	
-	private ReadableGameStatus myReadableGameStatus;
+	private GameStatus myGameStatus;
 	
 	private LevelHandler myLevelHandler;
 	
@@ -46,28 +39,40 @@ public class GameLevelController {
 	
 	private final int DELAY_CONSTANT = 2;
 	
-	private Condition myEnduranceCondition;
+	private Condition myWinCondition;
 	
 	private int level;
 	
 	private Queue<Supplier<Boolean>> enemiesInWave;
 	
-	public GameLevelController(LevelHandler levelHandler,GameData gameData,ReadableGameStatus readableGameStatus) {
+	private int enemiesLeft = 0; 
+
+	public GameLevelController(LevelHandler levelHandler,GameData gameData,GameStatus gameStatus) {
 		myLevelHandler = levelHandler;
 		myGrid = myLevelHandler.getMyGrid();
 		delay = new Delay(DELAY_CONSTANT);
 		myGameData = gameData;
-		myPreferences = myGameData.getPreferences();
 		enemiesInWave = new ArrayDeque<>();
-		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(100);
+		myGameStatus = gameStatus;
 	}
 	
-	@SuppressWarnings("unchecked")
+	private BasicActorType getBasicActorEnemyType() {
+		return myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies().get(0).getMyActor().getType();
+	}
+	
+	private void setEnemiesLeft(int numEnemies) {
+		enemiesLeft = numEnemies;
+		myGameStatus.setMyEnemiesLeft(numEnemies);
+	}
+	
 	public void update() {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus).ifPresent((win) -> winCondition((Boolean) win));
+		int enemiesLeft = enemiesInWave.size()+myLevelHandler.actorCounts().apply(getBasicActorEnemyType());
+		setEnemiesLeft(enemiesLeft);
+		Optional<Boolean> myWin = myWinCondition.conditionSatisfied(myGameStatus);
+		myWin.ifPresent(win -> winCondition(win).run());
 	}
 	
 	private Runnable winCondition(Boolean win) {
@@ -90,12 +95,16 @@ public class GameLevelController {
 	public void changeLevel(int level) {
 		this.level = level;
 		LevelData levelData = myGameData.getLevel(level);
-		if (levelData!=null) loadLevel(levelData);
-		//else throw new VoogaException(VoogaException.NONEXISTANT_LEVEL);
+		loadLevel(levelData);
 	}
 	
 	private void loadLevel(LevelData levelData) {
+		updateWinCondition(levelData);
 		addPieces(levelData);
+	}
+	
+	private void updateWinCondition(LevelData levelData) {
+		myWinCondition = levelData.getCondition();
 	}
 	
 	/**
@@ -122,10 +131,14 @@ public class GameLevelController {
 			});
 		});
 	}
+	
+	public int getEnemiesLeft() {
+		return enemiesLeft;
+	}
 
 	private void spawnEnemy(EnemyInWaveData enemyData, Grid2D firstPathCoor) {
 		ActorData actorData = enemyData.getMyActor();
-		Actor actor = builders.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
+		Actor actor = builders.objectgen.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
 	}
 	

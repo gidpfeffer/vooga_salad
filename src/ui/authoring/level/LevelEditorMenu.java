@@ -1,7 +1,14 @@
 package ui.authoring.level;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import builders.infogen.AuthorInfoGenerator;
+import builders.objectgen.ConditionGenerator;
+import gamedata.ActorData;
 import gamedata.LevelData;
+import gameengine.conditionsgen.Condition;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,7 +20,11 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
+import ui.authoring.actor.BasicPicker;
 import ui.authoring.delegates.PopViewDelegate;
+import ui.general.CustomColors;
+import ui.general.UIHelper;
 
 /**
  * Allows user to set level-specific variables
@@ -63,7 +74,6 @@ public class LevelEditorMenu extends AnchorPane {
 		String spe = fieldCheck(myData.getSpeedMultiplier());
 		String hea = fieldCheck(myData.getHealthMultiplier());
 		
-		
 		HBox duration = generateEntry("             Duration", dur, (o,oldText,newText) -> 
 			this.updateDuration((String)newText));
 		HBox attack= generateEntry("Attack Multiplier", att, (o,oldText,newText) -> 
@@ -75,16 +85,65 @@ public class LevelEditorMenu extends AnchorPane {
 		
 		VBox root = new VBox();
 		//VBox.setMargin(root)
+		root.getChildren().add(title);
+		addClickableCondition(root, myData.getCondition());
 		
 		AnchorPane.setBottomAnchor(root, 0.0);
 		AnchorPane.setTopAnchor(root, 36.);
 		AnchorPane.setLeftAnchor(root, 0.0);
 		AnchorPane.setRightAnchor(root, 0.0);
 		
-		root.getChildren().addAll(title, duration, attack, health, speed);
+		
+		root.getChildren().addAll(duration, attack, health, speed);
 		root.setAlignment(Pos.CENTER);
 		settings.setContent(root);
 	}
+	
+	private void addClickableCondition(VBox vbox, Condition<?> condition){
+		List<String> conditions = new ArrayList<String>(AuthorInfoGenerator.getConditionTypesWithArgs().keySet());
+		String name = AuthorInfoGenerator.getName(condition);
+		BasicPicker<String> input = addClickableField(vbox, "Win on", name, conditions);
+		input.getTypeProperty().addListener(e -> {
+			didEditCondition(input.getTypeProperty().get());
+		});
+	}
+	
+	private void didEditCondition(String newCondition){
+		Condition<?> condition = ConditionGenerator.makeCondition(newCondition);
+		if(condition!=null){
+			myData.setCondition(condition);
+		}
+	}
+	
+	//TODO: Move to Util class
+	private <T extends Object> BasicPicker<T> addClickableField(VBox vbox,
+			String nameKey, T value, List<T> types) {
+		AnchorPane content = new AnchorPane();
+
+		Label fieldName = new Label(nameKey + ":");
+		fieldName.setTextFill(CustomColors.BLUE_800);
+		fieldName.setTextAlignment(TextAlignment.CENTER);
+		AnchorPane.setLeftAnchor(fieldName, 4.0);
+		AnchorPane.setTopAnchor(fieldName, 4.0);
+		AnchorPane.setBottomAnchor(fieldName, 4.0);
+		fieldName.setPrefWidth(116);
+		content.getChildren().add(fieldName);
+		
+		BasicPicker <T> input = 
+				new BasicPicker<T>(value, types, true);
+		AnchorPane.setRightAnchor(input, 4.0);
+		AnchorPane.setTopAnchor(input, 4.0);
+		AnchorPane.setBottomAnchor(input, 4.0);
+		AnchorPane.setLeftAnchor(input, fieldName.getMaxWidth());
+		
+		UIHelper.setBackgroundColor(content, CustomColors.BLUE_200);
+		content.getChildren().add(input);
+		VBox.setMargin(content, new Insets(12.0, 18.0, 12.0, 18.0));
+		vbox.getChildren().add(content);
+		
+		return input;
+	}
+
 	
 	private void updateDuration(String newText){
 		try{
@@ -128,9 +187,8 @@ public class LevelEditorMenu extends AnchorPane {
 		field.setPrefWidth(116);
 		HBox box = LevelUtil.generateHBox();
 		box.getChildren().addAll(LevelUtil.labelForStackButtonBlue(name), field);
-		VBox.setMargin(box, new Insets(18));
+		VBox.setMargin(box, new Insets(12.0, 18.0, 12.0, 18.0));
 		return box;
-
 	}
 
 	private void setupViews() {

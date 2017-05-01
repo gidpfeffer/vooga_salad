@@ -10,8 +10,8 @@ import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
-import builders.GameDataGenerator;
 import gamedata.ActorData;
+import builders.objectgen.GameDataGenerator;
 import gamedata.DisplayData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -154,6 +154,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 	}
 
+	//TODO: Consolidate
 	private void setupMenuView() {
 		
 		ImageButton menuButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
@@ -165,8 +166,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 		double width = 300;
 
-
-		
 		//alex test
 		ImageButton displayButton = new ImageButton("icon.png", new Location(40.0,40.0));
 		displayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> launchDisplayView());
@@ -174,12 +173,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		AnchorPane.setTopAnchor(displayButton, 12.0);
 		UIHelper.setDropShadow(displayButton);
 		this.getChildren().add(displayButton);
-		myDisplayView=new DisplayView(this,this,myGameData);
+		myDisplayView=new DisplayView(this,this,myGameData.getDisplayData(),myGameData);
 		UIHelper.setBackgroundColor(myDisplayView, CustomColors.GREEN);
-	
-		//this.getChildren().add(myDisplayView);
-		
-		
 		//end test
 		
 
@@ -253,7 +248,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupMapView() {
-		myMapView = new MapEditorView(myGameData.getLayers(), this);
+		myMapView = new MapEditorView(this, myGameData.getLayers(),myGameData.getDisplayData());
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
