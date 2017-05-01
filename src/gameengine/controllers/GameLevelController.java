@@ -76,7 +76,6 @@ public class GameLevelController {
 		myGameStatus.setMyEnemiesLeft(numEnemies);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void update() {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();

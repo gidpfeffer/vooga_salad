@@ -161,18 +161,12 @@ public class LoginMain {
 			@Override
 			public void gotoReviews() {
 				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
-				stage.setWidth(800);
-				stage.setHeight(800);
-				stage.setResizable(false);
-				stage.show();
-				
+				stage.setWidth(Preferences.SCREEN_WIDTH);
+				stage.setHeight(Preferences.SCREEN_HEIGHT);
 			}
 		};
 	}
 	
-	/**
-	 * Reads in the {@code UserDatabase} from the file
-	 */
 	private void setupDatabase() {
 		try {
 			XStream mySerializer = new XStream(new DomDriver());
@@ -186,9 +180,6 @@ public class LoginMain {
 		}
 	}
 	
-	/**
-	 * @see ui.handlers.LoginHandler#showProfile()
-	 */
 	private void showProfileCard(User user) {
 		if(!user.equals(loginhandler.findUser(guestUser))) {
 			ProfileCard card = new ProfileCard("profile", user, "profile.css");
@@ -206,9 +197,6 @@ public class LoginMain {
 		}
 	}
 	
-	/**
-	 * Allows the user to load in a custom game file from XML
-	 */
 	private void promptUserToChooseGame(){
 		try {
 			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
@@ -220,15 +208,10 @@ public class LoginMain {
 				goToGameScreen(gameData);
 			}
 		} catch(Exception e){
-			e.printStackTrace();
-			System.out.println("Invalid GameData file chosen");
+			new Alert(AlertType.ERROR, "Invalid GameData file chosen").showAndWait();
 		}
 	}
 	
-	/**
-	 * Launches the game specified by {@code gameData}
-	 * @param gameData Describes the game to launch
-	 */
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData,loginhandler);
 		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
