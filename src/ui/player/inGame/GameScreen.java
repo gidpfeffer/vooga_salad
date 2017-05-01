@@ -126,6 +126,14 @@ public class GameScreen extends GenericGameScreen
 			public void addActorToMap(int id, Actor actor) {
 				if (actorsMap.get(id) != null) actorsMap.put(id, actor);
 			}
+			@Override
+			public void deleteActorFromScreen(int id){
+				getChildren().remove(actorsMap.get(id).getPane());
+			}
+			@Override
+			public boolean isActorInMap(int id) {
+				return actorsMap.get(id) != null;
+			}
 		};
 	}
 	
@@ -185,7 +193,7 @@ public class GameScreen extends GenericGameScreen
 			if(arg.containsKey(id)) {
 				return false;
 			}
-			this.getChildren().remove(actorsMap.get(id).getPane());
+			this.getChildren().remove(actorsMap.get(id).getMainPane());
 			//actorsMap.get(id).deleteActor();
 			return true;
 		});
@@ -195,9 +203,10 @@ public class GameScreen extends GenericGameScreen
 			if(!actorsMap.containsKey(id)) {
 				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
 				actorsMap.put(id, newActor);
-				this.getChildren().add(newActor.getPane());
+				this.getChildren().add(newActor.getMainPane());
 			}
 			Actor actor = actorsMap.get(id);
+			actor.setHealth(arg.get(id).getActorPercentHealth());
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
 			actor.getPane().setLayoutX(xCoor);
