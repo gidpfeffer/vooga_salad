@@ -8,8 +8,8 @@ import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
 import ui.player.inGame.OptionButton;
 import ui.player.login.BorderedAnchorPane;
-import ui.player.login.Login.Game;
 import ui.player.login.LoginElement;
+import ui.player.login.MiniGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -35,7 +35,7 @@ import javafx.util.Duration;
 public class GameSelector extends BorderedAnchorPane implements LoginElement {
 
 	private Scene scene;
-	private List<Game> gamesList; 
+	private List<MiniGame> gamesList; 
 	private OptionButton back;
 	private double height = Preferences.SCREEN_HEIGHT;
 	private double width = Preferences.SCREEN_WIDTH;
@@ -48,7 +48,7 @@ public class GameSelector extends BorderedAnchorPane implements LoginElement {
 		return scene;
 	}
 	
-	public GameSelector(LoginHandler loginhandler, String lang, String css, List<Game> gamesList2){
+	public GameSelector(LoginHandler loginhandler, String lang, String css, List<MiniGame> gamesList2){
 		this.loginhandler = loginhandler;
 		this.gamesList = gamesList2;
 		gameMenu = new ScrollPane();

@@ -1,6 +1,7 @@
 package ui.player.login;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.ResourceBundle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import XML.xmlmanager.classes.XStreamSerializer;
+import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.interfaces.serialization.VoogaSerializer;
 import gamedata.GameData;
 import gameengine.controllers.GameController;
@@ -29,7 +31,6 @@ import ui.player.GameSelector;
 import ui.player.ProfileCornerPicture;
 import ui.player.XStreamFileChooser;
 import ui.player.leaderboard.LeaderboardView;
-import ui.player.login.Login.Game;
 import ui.player.ratings.RatingView;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
@@ -65,6 +66,7 @@ public class LoginMain {
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
 	private static final String guestUser = "Guest";
+	private static final List<String> games = new ArrayList<>(Arrays.asList("games/BESTTESTEVER.xml"));
 
 	/**
 	 * Initialized in {@link voogasalad_ilovesingletons.Main}
@@ -155,15 +157,13 @@ public class LoginMain {
 
 			@Override
 			public void gotoGameSelector() {
-				// TODO: Replace with actual games list
-				List<Game> gamesList = new ArrayList<>(Arrays.asList(
-						// file path
-						loginScreen.new Game("Load Custom Game", "black.jpg", e -> promptUserToChooseGame()),
-						loginScreen.new Game("Bloons", "default_map_background_0.jpg", e -> {
-						}), loginScreen.new Game("Plants vs. Zombies", "plants_vs_zombies.png", e -> {
-						}), loginScreen.new Game("Asteroids", "asteroids.png", e -> {
-						})));
-				GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", gamesList);
+				List<MiniGame> miniGamesList = new ArrayList<>();
+				miniGamesList.add(new MiniGame("Load Custom Game", "black.jpg", e -> promptUserToChooseGame()));
+				games.forEach(game -> {
+					GameData gd = readGame(new File(game));
+					miniGamesList.add(new MiniGame(gd.getName(), gd.getDisplayData().getBackgroundImagePath(), e -> goToGameScreen(gd)));
+				});
+				GameSelector select = new GameSelector(loginhandler, "English", "mainScreen.css", miniGamesList);
 				stage.setScene(select.getScene());
 				stage.setTitle("Game Selector");
 				stage.show();
@@ -215,18 +215,23 @@ public class LoginMain {
 	}
 
 	private void promptUserToChooseGame() {
-		try {
-			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
-			File dataFile = mySelector.open(new Stage());
+		FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
+		File dataFile = mySelector.open(new Stage());
+		goToGameScreen(readGame(dataFile));
+	}
+
+	private GameData readGame(File dataFile) {
+		try {	
 			if (dataFile != null) {
 				String XML = new String(Files.readAllBytes(Paths.get(dataFile.getAbsolutePath())));
 				VoogaSerializer serializer = new XStreamSerializer();
 				GameData gameData = serializer.makeObjectFromXMLString(XML, GameData.class);
-				goToGameScreen(gameData);
+				return gameData;
 			}
 		} catch (Exception e) {
 			new Alert(AlertType.ERROR, "Invalid GameData file chosen").showAndWait();
 		}
+		return null;
 	}
 
 	private void goToGameScreen(GameData gameData) {
