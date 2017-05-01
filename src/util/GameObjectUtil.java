@@ -1,8 +1,8 @@
 package util;
 
-import java.util.stream.Collectors;			
+import java.util.stream.Collectors;
 
-import builders.ActorGenerator;
+import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LayerData;

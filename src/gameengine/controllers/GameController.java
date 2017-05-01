@@ -3,7 +3,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import builders.ActorGenerator;
+import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.DisplayData;
 import gamedata.GameData;

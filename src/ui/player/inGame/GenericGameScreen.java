@@ -64,6 +64,7 @@ public class GenericGameScreen extends AnchorPane{
 	}
 	
 	private void setupBackground() {
+		System.out.println(backgroundImagePath);
 		ivp = new ImageViewPane(new ImageView(new Image(backgroundImage.orElse(backgroundImagePath))));
 		this.getChildren().add(ivp);
 		setNodeInAnchorPane(ivp);

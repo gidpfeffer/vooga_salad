@@ -1,5 +1,6 @@
 package gameengine.conditions;
 
+import gameengine.conditionsgen.WinLoseCondition;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
@@ -7,6 +8,10 @@ public class EnduranceCondition<G extends ReadableGrid> extends WinLoseCondition
 
 	private Integer myFinalFrame;
 	private Integer myCurrentFrame;
+	
+	public EnduranceCondition(){
+		this(400);
+	}
 	
 	public EnduranceCondition(Integer duration) {
 		myFinalFrame = duration;

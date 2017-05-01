@@ -1,4 +1,4 @@
-package gameengine.conditions;
+package gameengine.conditionsgen;
 
 import java.util.Optional;
 

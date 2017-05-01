@@ -1,10 +1,15 @@
 package gameengine.conditions;
 
+import gameengine.conditionsgen.WinLoseCondition;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
 public class KillAllCondition<G extends ReadableGrid> extends WinLoseCondition<G> {
 
+	public KillAllCondition(){
+		//TODO: Complete
+	}
+	
 	@Override
 	protected void update() {
 		// TODO Auto-generated method stub

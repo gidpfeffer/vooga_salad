@@ -10,19 +10,21 @@ import types.BasicActorType;
 public class DamageInRadiusData extends ActData {
 	private Double radius;
 	private Double damage; 
+	private Integer damageRate;
 	private List<BasicActorType> targets;
 	
 	public DamageInRadiusData(){
-		this(0.0, 0.0, new BasicActorType[0]);
+		this(0.0, 0.0, 0, new BasicActorType[0]);
 	}
 	
-	public DamageInRadiusData(Double myHitRadius, Double myDamage, BasicActorType... myTypes) {
-		this(myHitRadius, myDamage, Arrays.asList(myTypes));
+	public DamageInRadiusData(Double myHitRadius, Double myDamage, Integer damageRate, BasicActorType... myTypes) {
+		this(myHitRadius, myDamage, damageRate, Arrays.asList(myTypes));
 	}
 	
-	public DamageInRadiusData(Double myHitRadius, Double myDamage, List<BasicActorType> myTypes) {
+	public DamageInRadiusData(Double myHitRadius, Double myDamage, Integer damageRate, List<BasicActorType> myTypes) {
 		this.radius = myHitRadius;
 		this.damage = myDamage;
+		this.damageRate = damageRate;
 		this.targets = new ArrayList<>();
 		for (BasicActorType e : myTypes) {
 			this.targets.add(e);
@@ -47,6 +49,13 @@ public class DamageInRadiusData extends ActData {
 	public void setTargets(List<BasicActorType> targets) {
 		this.targets = targets;
 	}
-	
+
+	public Integer getDamageRate() {
+		return damageRate;
+	}
+
+	public void setDamageRate(Integer damageRate) {
+		this.damageRate = damageRate;
+	}
 	
 }

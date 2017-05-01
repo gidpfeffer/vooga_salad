@@ -1,4 +1,4 @@
-package builders;
+package builders.objectgen;
 
 import java.util.ArrayList;
 import java.util.List;
