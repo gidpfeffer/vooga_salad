@@ -28,12 +28,9 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 	
 	public SimpleHUD(){
 		hud = new GridPane();
-<<<<<<< HEAD
 		applyCSSToParent(hud, css, gridId);
 		System.out.println("GameStatus initialized and dipslayed");
-=======
 		hud.setStyle("-fx-background-color: slateblue; -fx-opacity: .5");
->>>>>>> ae95a5aa66ee381c99d355f9fc3eb6d36069f83e
 	}
 	
 
