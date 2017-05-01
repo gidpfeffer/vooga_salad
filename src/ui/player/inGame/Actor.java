@@ -3,11 +3,8 @@ package ui.player.inGame;
 import java.util.Map;
 import java.util.Optional;
 
-import org.openqa.selenium.Dimension;
-
 import gamedata.ActorData;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -38,9 +35,9 @@ public class Actor{
 	private ProgressBar health;
 	private Pane mainPane;
 
-	public Pane getPane() {
+/*	public Pane getPane() {
 		return actor;
-	}
+	}*/
 	
 	public Pane getMainPane() {
 		return mainPane;
@@ -59,7 +56,6 @@ public class Actor{
 	}
 	
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData, ImageViewPane ivp) {
-		//System.out.println("IN ACTOR: making the option: " + option);
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null), Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER,
 				true);
