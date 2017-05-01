@@ -5,14 +5,10 @@ import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
 
 public abstract class MoveAxisUserProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
 	
-	private String posButton;
-	private String negButton;
-	private Integer mySensitivity;
+	private Double mySensitivity;
 	
-	public MoveAxisUserProperty(String pos, String neg, Integer sensitivity) {
-		posButton = pos;
-		negButton = neg;
-		mySensitivity = sensitivity;
+	public MoveAxisUserProperty(Integer sensitivity) {
+		mySensitivity = sensitivity/1000.0;
 	}
 	
 	@Override
@@ -22,8 +18,16 @@ public abstract class MoveAxisUserProperty<G extends ReadAndMoveGrid> implements
 	
 	protected abstract void move(G grid, Integer actorID);
 	
-	protected double getKeyMovement(G grid) {
-		return (grid.getEventQueue().queryKey(posButton) ? mySensitivity:0) + (grid.getEventQueue().queryKey(negButton) ? -1*mySensitivity:0);
+	protected double getKeyMoveX(G grid, Integer actorID) {
+		return getKeyMovement(grid.getEventQueue().getLocation().getX(),grid.getLocationOf(actorID).getX());
+	}
+	
+	protected double getKeyMoveY(G grid, Integer actorID) {
+		return getKeyMovement(grid.getEventQueue().getLocation().getY(),grid.getLocationOf(actorID).getY());
+	}
+	
+	private double getKeyMovement(double loc1, double loc2) {
+		return (loc1>loc2? mySensitivity:-1*mySensitivity);
 	}
 	
 	@Override
