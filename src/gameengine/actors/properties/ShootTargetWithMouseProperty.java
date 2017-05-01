@@ -12,23 +12,15 @@ import gameengine.grid.interfaces.ActorGrid.ReadAndSpawnGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 
 public class ShootTargetWithMouseProperty<G extends ReadAndSpawnGrid> extends ShootTargetFarProperty<G>{
-
-	private String fireKey;
 	
 	public ShootTargetWithMouseProperty(ShootTargetWithMouseData myData) {
 		super(myData);
-		fireKey = myData.getButton();
 	}
 
 	@Override
 	public void action(G grid, Integer actorID) {
-		Collection<Double> dirCoordinates = getEnemyToShoot(grid.getEventQueue().queryKey(fireKey) ? Arrays.asList(grid.getEventQueue().getLocation()):Arrays.asList(new Grid2D[] {}), grid.getLocationOf(actorID));
+		Collection<Double> dirCoordinates = getEnemyToShoot(Arrays.asList(grid.getEventQueue().getLocation()), grid.getLocationOf(actorID));
 		spawnProjectiles(grid,dirCoordinates,grid.getLocationOf(actorID));
-	}
-	
-	@Override
-	public boolean isOn() {
-		return true;
 	}
 
 }

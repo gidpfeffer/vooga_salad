@@ -2,6 +2,8 @@ package ui.player.users;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
 
 public class UserDatabase {
 	
@@ -39,4 +41,14 @@ public class UserDatabase {
 	public void deleteUser(User delete) {
 		database.remove(delete);
 	}
+	
+	public Iterator<User> getUsersInExpOrder() {
+		return database.stream().sorted(new Comparator<User>() {
+			@Override
+			public int compare(User o1, User o2) {
+				return Double.compare(o1.getExperience(), o2.getExperience());
+			}
+		}).iterator();
+	}
+	
 }

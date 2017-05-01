@@ -29,7 +29,8 @@ public class BaseDamageProperty<G extends ReadAndDamageGrid> implements IActProp
 		myTargets.stream().forEach(target -> grid.getActorDamagablesInRadius(grid.getLocationOf(actorID).getX(), grid.getLocationOf(actorID).getY(), myRadius, target).forEach((damage,remaining) -> {
 			damage.accept(remaining);
 			grid.getMyDamageable(actorID).accept(remaining);
-			for(int i = 0; i<remaining; i++) grid.getWriteableGameStatus().loseLife();
+			//for(int i = 0; i<remaining; i++) 
+			grid.getWriteableGameStatus().loseLife();
 				}));
 		//grid.getWriteableGameStatus().
 	}

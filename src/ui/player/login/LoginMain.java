@@ -26,18 +26,19 @@ import ui.handlers.LoginHandler;
 import ui.player.GameSelector;
 import ui.player.ProfileCornerPicture;
 import ui.player.XStreamFileChooser;
+import ui.player.leaderboard.LeaderboardView;
 import ui.player.login.Login.Game;
+import ui.player.ratings.RatingView;
 import ui.player.users.ProfileCard;
 import ui.player.users.User;
 import ui.player.users.UserDatabase;
-import ui.ratings.RatingView;
 import util.FileSelector;
 
 /**
  * Acts as the primary controller for the UI. Houses all of the visual elements: user authentication
  * screens ({@link ui.player.login.Login Login} and {@link ui.player.login.Signup Signup}), 
  * {@link ui.authoring.AuthoringView AuthoringView}, {@link ui.player.GameSelector GameSelector}, 
- * {@link ui.ratings.RatingView RatingView}, and {@link ui.player.inGame.GameScreen GameScreen}.
+ * {@link ui.player.ratings.RatingView RatingView}, and {@link ui.player.inGame.GameScreen GameScreen}.
  * 
  * Navigation between screens and querying of the {@link ui.player.users.UserDatabase UserDatabase}
  * is handled by the {@link ui.handlers.LoginHandler LoginHandler}.
@@ -94,21 +95,6 @@ public class LoginMain {
 			}
 			
 			@Override
-			public void returnToMain() {
-				stage.setScene(loginScreen.getScene());
-				stage.setTitle("Login");
-				stage.setWidth(Preferences.SCREEN_WIDTH);
-				stage.setHeight(Preferences.SCREEN_HEIGHT);
-			}
-			
-			@Override
-			public void gotoSignupPage() {
-				signupPage = new Signup(loginhandler, database, loginResource, "signupScreen.css");
-				stage.setScene(signupPage.getScene());
-				stage.setTitle(loginResource.getString("signup"));
-			}
-			
-			@Override
 			public Boolean login(String username, String password) {
 				return database.getPasswords().login(username, password);
 			}
@@ -126,6 +112,29 @@ public class LoginMain {
 			@Override
 			public void setActiveUser(User user) {
 				database.setActiveUser(user);
+			}
+			
+			@Override
+			public void setCornerProfileCard(User user) {
+				ProfileCornerPicture cornerCard = new ProfileCornerPicture(user.getProfilePicture(), e -> showProfileCard(user));
+				loginScreen.getRoot().getChildren().add(cornerCard);
+				AnchorPane.setRightAnchor(cornerCard, 15.);
+				AnchorPane.setTopAnchor(cornerCard, 15.);
+			}
+			
+			@Override
+			public void returnToMain() {
+				stage.setScene(loginScreen.getScene());
+				stage.setTitle("Login");
+				stage.setWidth(Preferences.SCREEN_WIDTH);
+				stage.setHeight(Preferences.SCREEN_HEIGHT);
+			}
+			
+			@Override
+			public void gotoSignupPage() {
+				signupPage = new Signup(loginhandler, database, loginResource, "signupScreen.css");
+				stage.setScene(signupPage.getScene());
+				stage.setTitle(loginResource.getString("signup"));
 			}
 			
 			@Override
@@ -149,20 +158,24 @@ public class LoginMain {
 				stage.setTitle("Game Selector");
 				stage.show();
 			}
-		
-			@Override
-			public void setCornerProfileCard(User user) {
-				ProfileCornerPicture cornerCard = new ProfileCornerPicture(user.getProfilePicture(), e -> showProfileCard(user));
-				loginScreen.getRoot().getChildren().add(cornerCard);
-				AnchorPane.setRightAnchor(cornerCard, 15.);
-				AnchorPane.setTopAnchor(cornerCard, 15.);
-			}
 
 			@Override
 			public void gotoReviews() {
 				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
 				stage.setWidth(Preferences.SCREEN_WIDTH);
 				stage.setHeight(Preferences.SCREEN_HEIGHT);
+			}
+			
+			@Override
+			public void gotoLeaderboard() {
+				stage.setScene(new LeaderboardView(loginhandler).getScene());
+				stage.setWidth(Preferences.SCREEN_WIDTH);
+				stage.setHeight(Preferences.SCREEN_HEIGHT);
+			}
+			
+			@Override
+			public void getXPOrderedUsers() {
+				//return database....;
 			}
 		};
 	}

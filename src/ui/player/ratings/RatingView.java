@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ui.ratings;
+package ui.player.ratings;
 
 import java.util.ResourceBundle;
 
