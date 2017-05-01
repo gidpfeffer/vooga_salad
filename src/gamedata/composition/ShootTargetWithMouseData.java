@@ -1,9 +1,8 @@
 package gamedata.composition;
 
-import gamedata.compositiongen.ShootData;
 import types.BasicActorType;
 
-public class ShootTargetWithMouseData extends ShootData{
+public class ShootTargetWithMouseData extends ShootTargetFarData{
 
 	public ShootTargetWithMouseData(){
 		super();
