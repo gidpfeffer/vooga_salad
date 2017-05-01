@@ -22,6 +22,12 @@ import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
 import ui.player.users.User;
 
+/**
+ * This screen is the homescreen of the application. It has buttons to access the other parts
+ * of the application, as well as fields for the user to sign in or sign up.
+ * @author Vishnu Gottiparthy
+ * @author anngelyque
+ */
 public class Login extends BorderedAnchorPane implements LoginElement {
 	// how to be "logged in"
 	private Scene scene;
@@ -41,6 +47,12 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		return scene;
 	}
 	
+	/**
+	 * Creates the login screen
+	 * @param loginhandler Allows this screen to take display-related actions
+	 * @param css Describes the style for the screen
+	 * @param resource Describes the file that contains all dialog messages
+	 */
 	public Login(LoginHandler loginhandler, String css, String resource) {
 		this.css = css;
 		this.loginhandler = loginhandler;
@@ -50,7 +62,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		setup();
 	}
 
-	public void setup() {
+	private void setup() {
 		setupLayout();
 		setupTitle();
 		setupLoginNewAccountTitle();
@@ -168,8 +180,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		getBorderPane().setCenter(sp);
 	}
 	
-	
-	public void transitionToLoggedIn() {
+	private void transitionToLoggedIn() {
 	     ScaleTransition st = new ScaleTransition(Duration.millis(1000), gridPane);
 	     st.setByX(-1f);
 	     st.setByY(-1f);

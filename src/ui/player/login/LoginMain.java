@@ -170,9 +170,6 @@ public class LoginMain {
 		};
 	}
 	
-	/**
-	 * Reads in the {@code UserDatabase} from the file
-	 */
 	private void setupDatabase() {
 		try {
 			XStream mySerializer = new XStream(new DomDriver());
@@ -186,9 +183,6 @@ public class LoginMain {
 		}
 	}
 	
-	/**
-	 * @see ui.handlers.LoginHandler#showProfile()
-	 */
 	private void showProfileCard(User user) {
 		if(!user.equals(loginhandler.findUser(guestUser))) {
 			ProfileCard card = new ProfileCard("profile", user, "profile.css");
@@ -206,9 +200,6 @@ public class LoginMain {
 		}
 	}
 	
-	/**
-	 * Allows the user to load in a custom game file from XML
-	 */
 	private void promptUserToChooseGame(){
 		try {
 			FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
@@ -225,10 +216,6 @@ public class LoginMain {
 		}
 	}
 	
-	/**
-	 * Launches the game specified by {@code gameData}
-	 * @param gameData Describes the game to launch
-	 */
 	private void goToGameScreen(GameData gameData) {
 		gameController = new GameController(gameData,loginhandler);
 		gameController.start(stage,Preferences.SCREEN_WIDTH, Preferences.SCREEN_HEIGHT, Color.WHITE);
