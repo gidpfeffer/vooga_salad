@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import ui.player.XStreamFileChooser;
-import util.inputhandler.IOUtil;
+import voogasalad.util.inputhandler.IOUtil;
 
 /**
  * Creates a pane for settings elements such as returning back to main, changing
