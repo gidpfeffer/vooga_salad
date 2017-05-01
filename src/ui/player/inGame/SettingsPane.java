@@ -24,7 +24,7 @@ import ui.player.XStreamFileChooser;
  * @author anngelyque
  */
 public class SettingsPane extends SlidingPane {
-	
+
 	private GenericGameScreen ggs;
 	private Hyperlink backToLogin;
 	private double paneWidth = 150.;
@@ -34,8 +34,9 @@ public class SettingsPane extends SlidingPane {
 	public void setReturnToMain(EventHandler<ActionEvent> value) {
 		backToLogin.setOnAction(value);
 	}
-	
-	public SettingsPane(GenericGameScreen ggs, Optional<String> backImage, double slideTo, Optional<String> helpFileName) {
+
+	public SettingsPane(GenericGameScreen ggs, Optional<String> backImage, double slideTo,
+			Optional<String> helpFileName) {
 		super(backImage, slideTo);
 		this.ggs = ggs;
 		this.helpText = helpFileName.orElse(howToPlay);
@@ -72,7 +73,6 @@ public class SettingsPane extends SlidingPane {
 		helpHBox.setStyle("-fx-background-color: white; -fx-opacity: .7");
 		helpHBox.setAlignment(Pos.CENTER);
 		helpHBox.setPrefSize(420, 380);
-		//helpHBox.setPadding(new Insets(0, 20, 0, 20));
 		Text help = new Text(addHelpMessage(helpText));
 		help.setStyle("-fx-font-size: 20");
 		help.setTextAlignment(TextAlignment.CENTER);
@@ -83,22 +83,22 @@ public class SettingsPane extends SlidingPane {
 		AnchorPane.setLeftAnchor(helpHBox, 25.);
 		exit(helpHBox);
 	}
-	
+
 	private void exit(Pane n) {
-		EventHandler<MouseEvent> close = new EventHandler<MouseEvent>()  {
+		EventHandler<MouseEvent> close = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				ScaleTransition st = new ScaleTransition(Duration.millis(1000), n);
 				st.setByX(-1f);
 				st.setByY(-1f);
-				st.play();	
+				st.play();
 			}
 		};
 		OptionButton exit = new OptionButton(0, "", "x_icon.png", close);
 		exit.getButton().setStyle("-fx-background-color: transparent");
 		n.getChildren().add(exit.getButton());
 	}
-	
+
 	private String addHelpMessage(String file) {
 		XStreamFileChooser f = new XStreamFileChooser(file);
 		return f.readInClass();
