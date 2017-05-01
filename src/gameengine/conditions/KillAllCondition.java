@@ -4,11 +4,7 @@ import gameengine.conditionsgen.WinLoseCondition;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
-public class KillAllCondition<G extends ReadableGrid> extends WinLoseCondition<G> {
-
-	public KillAllCondition(){
-		//TODO: Complete
-	}
+public class KillAllCondition extends WinLoseCondition {
 	
 	@Override
 	protected void update() {
@@ -17,15 +13,13 @@ public class KillAllCondition<G extends ReadableGrid> extends WinLoseCondition<G
 	}
 
 	@Override
-	protected boolean winCondition(G grid, ReadableGameStatus status) {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean winCondition(ReadableGameStatus status) {
+		return status.getEnemiesLeft()==0;
 	}
 
 	@Override
-	protected boolean loseCondition(G grid, ReadableGameStatus status) {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean loseCondition(ReadableGameStatus status) {
+		return status.getLives()==0;
 	}
 
 }

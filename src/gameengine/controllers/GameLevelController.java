@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
-
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
@@ -15,13 +14,11 @@ import gamedata.WaveData;
 import gameengine.actors.management.Actor;
 import gameengine.conditions.EnduranceCondition;
 import gameengine.conditionsgen.Condition;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
 import gamestatus.GameStatus;
 import gamestatus.ReadableGameStatus;
-import gamestatus.WriteableGameStatus;
 import types.BasicActorType;
 import util.Delay;
 /**
@@ -46,7 +43,7 @@ public class GameLevelController {
 	
 	private final int DELAY_CONSTANT = 2;
 	
-	private Condition<ReadableGrid> myEnduranceCondition;
+	private Condition myEnduranceCondition;
 	
 	private int level;
 	
@@ -63,13 +60,7 @@ public class GameLevelController {
 		myGameData = gameData;
 		enemiesInWave = new ArrayDeque<>();
 		myReadableGameStatus = gameStatus;
-		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(10);
-	}
-	
-	private void setInitNumEnemies(LevelData curr) {
-//		wavesLeft = curr.getNumWaves();
-		curr.getMyWaves().stream().forEach(waves -> countEnemies(waves));
-		setEnemiesLeft(enemiesLeft);
+		myEnduranceCondition = new EnduranceCondition(10);
 	}
 	
 	private BasicActorType getBasicActorEnemyType() {
@@ -90,8 +81,9 @@ public class GameLevelController {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		setEnemiesLeft(enemiesInWave.size()+myLevelHandler.actorCounts().apply(getBasicActorEnemyType()));
-		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus);
+		int enemiesLeft = enemiesInWave.size()+myLevelHandler.actorCounts().apply(getBasicActorEnemyType());
+		setEnemiesLeft(enemiesLeft);
+		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied(myReadableGameStatus);
 		myWin.ifPresent(win -> winCondition(win).run());
 		
 	}
@@ -116,7 +108,6 @@ public class GameLevelController {
 	public void changeLevel(int level) {
 		this.level = level;
 		LevelData levelData = myGameData.getLevel(level);
-		setInitNumEnemies(levelData);
 		loadLevel(levelData);
 	}
 	
