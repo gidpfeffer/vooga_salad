@@ -12,13 +12,11 @@ import gamedata.LevelData;
 import gamedata.PathData;
 import gamedata.WaveData;
 import gameengine.actors.management.Actor;
-import gameengine.conditions.EnduranceCondition;
 import gameengine.conditionsgen.Condition;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
 import gamestatus.GameStatus;
-import gamestatus.ReadableGameStatus;
 import types.BasicActorType;
 import util.Delay;
 /**
@@ -41,15 +39,13 @@ public class GameLevelController {
 	
 	private final int DELAY_CONSTANT = 2;
 	
-	private Condition myEnduranceCondition;
+	private Condition myWinCondition;
 	
 	private int level;
 	
 	private Queue<Supplier<Boolean>> enemiesInWave;
 	
 	private int enemiesLeft = 0; 
-	
-//	private int wavesLeft;
 
 	public GameLevelController(LevelHandler levelHandler,GameData gameData,GameStatus gameStatus) {
 		myLevelHandler = levelHandler;
@@ -58,16 +54,11 @@ public class GameLevelController {
 		myGameData = gameData;
 		enemiesInWave = new ArrayDeque<>();
 		myGameStatus = gameStatus;
-		myEnduranceCondition = new EnduranceCondition(1000);
 	}
 	
 	private BasicActorType getBasicActorEnemyType() {
 		return myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies().get(0).getMyActor().getType();
 	}
-	
-//	private void countEnemies(WaveData waveData) {
-//		waveData.getWaveEnemies().stream().forEach(enemy -> enemiesLeft+=enemy.getOption());
-//	}
 	
 	private void setEnemiesLeft(int numEnemies) {
 		enemiesLeft = numEnemies;
@@ -80,7 +71,7 @@ public class GameLevelController {
 		}
 		int enemiesLeft = enemiesInWave.size()+myLevelHandler.actorCounts().apply(getBasicActorEnemyType());
 		setEnemiesLeft(enemiesLeft);
-		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied(myGameStatus);
+		Optional<Boolean> myWin = myWinCondition.conditionSatisfied(myGameStatus);
 		myWin.ifPresent(win -> winCondition(win).run());
 	}
 	
@@ -108,7 +99,12 @@ public class GameLevelController {
 	}
 	
 	private void loadLevel(LevelData levelData) {
+		updateWinCondition(levelData);
 		addPieces(levelData);
+	}
+	
+	private void updateWinCondition(LevelData levelData) {
+		myWinCondition = levelData.getCondition();
 	}
 	
 	/**

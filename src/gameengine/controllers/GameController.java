@@ -138,7 +138,7 @@ public class GameController {
 		myGridHandler = new GridHandler() {
 			@Override
 			public WriteableGameStatus getWriteableGameStatus() {
-				return myWriteableGameStatus;
+				return myGameStatus;//myWriteableGameStatus;
 			}
 
 			@Override
