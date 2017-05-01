@@ -67,9 +67,9 @@ public class GameLevelController {
 		return myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies().get(0).getMyActor().getType();
 	}
 	
-	private void countEnemies(WaveData waveData) {
-		waveData.getWaveEnemies().stream().forEach(enemy -> enemiesLeft+=enemy.getOption());
-	}
+//	private void countEnemies(WaveData waveData) {
+//		waveData.getWaveEnemies().stream().forEach(enemy -> enemiesLeft+=enemy.getOption());
+//	}
 	
 	private void setEnemiesLeft(int numEnemies) {
 		enemiesLeft = numEnemies;
@@ -84,7 +84,6 @@ public class GameLevelController {
 		setEnemiesLeft(enemiesLeft);
 		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied(myReadableGameStatus);
 		myWin.ifPresent(win -> winCondition(win).run());
-		
 	}
 	
 	private Runnable winCondition(Boolean win) {
