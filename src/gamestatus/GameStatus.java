@@ -1,7 +1,5 @@
 package gamestatus;
 
-import java.util.HashMap;	
-
 import ui.player.users.InitialGameStatus;
 import ui.player.users.WriteableUser;
 import util.observerobservable.VoogaObservableMap;

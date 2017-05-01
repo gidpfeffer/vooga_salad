@@ -1,7 +1,6 @@
 package util.generator;
 
 import java.awt.FlowLayout;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
