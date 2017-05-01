@@ -10,7 +10,7 @@ import util.observerobservable.VoogaObserver;
 
 /**
  * Creates a simple grid pane HUD
- * @author anngelyque, sarahzhou
+ * @author anngelyque, sarahzhou, gideon
  *
  */
 public class SimpleHUD implements VoogaObserver<Map<String,String>>{
