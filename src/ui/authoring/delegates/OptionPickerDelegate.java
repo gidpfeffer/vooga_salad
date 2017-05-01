@@ -1,4 +1,4 @@
-package ui.authoring.actor;
+package ui.authoring.delegates;
 
 import gamedata.compositiongen.Data;
 

@@ -10,6 +10,7 @@ import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
+import gamedata.ActorData;
 import builders.objectgen.GameDataGenerator;
 import gamedata.DisplayData;
 import gamedata.GameData;
@@ -50,7 +51,7 @@ import util.Location;
  */
 
 
-public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate,DisplayDelegate{
+public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDelegate,DisplayDelegate,ActorEditorDelegate{
 	
 	private final double SIDE_PANE_WIDTH = 200;
 	private final double SIDE_PANE_WIDTH_MIN = 144;
@@ -247,7 +248,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupMapView() {
-		myMapView = new MapEditorView(myGameData.getMyPaths(),myGameData.getLayers(), this,myGameData.getDisplayData());
+		myMapView = new MapEditorView(this, myGameData.getLayers(),myGameData.getDisplayData());
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
@@ -460,6 +461,14 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.loginhandler.returnToMain();
 		
 	}
+
+	@Override
+	public void addActorToBase(ActorData data, Location mouseLoc) {
+		this.myMapView.getBaseLayer().addBase(data, mouseLoc);
+		
+	}
+
+
 
 	
 }

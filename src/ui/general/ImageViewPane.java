@@ -24,6 +24,7 @@ import util.Tuple;
 public class ImageViewPane extends Region {
     
     private ObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();
+
     public ObjectProperty<ImageView> imageViewProperty() {
         return imageViewProperty;
     }

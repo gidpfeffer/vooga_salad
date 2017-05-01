@@ -36,6 +36,7 @@ import ui.Preferences;
 import ui.authoring.PopupSize;
 import ui.authoring.delegates.LayerViewDelegate;
 import ui.authoring.delegates.PopViewDelegate;
+import ui.authoring.map.layer.BaseLayerView;
 import ui.authoring.map.layer.Layer;
 import ui.authoring.map.layer.LayerPopupDelegate;
 import ui.authoring.map.layer.LayerPopupView;
@@ -56,26 +57,26 @@ import util.Tuple;
 public class MapEditorView extends StackPane implements LayerViewDelegate, LayerPopupDelegate {
 	
 	private boolean IS_LOADED = false;
-	private final String DEFAULT_BACKGROUND_PATH = "default_map_background_0.jpg";
-	private static final Color[] LAYER_COLORS = { CustomColors.AMBER, CustomColors.BLUE_500, CustomColors.GREEN,
-			CustomColors.INDIGO };
+	private static final Color[] LAYER_COLORS = { 
+			CustomColors.AMBER, CustomColors.BLUE_500, 
+			CustomColors.GREEN, CustomColors.INDIGO };
 
 	private ImageViewPane myBackgroundView;
 	private MapLayersData myMapData;
 	private List<Layer> myLayers = new ArrayList<>();
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
-
-	private static final Insets LAYER_INSET = new Insets(8, 8, 72, 8);
+	private BaseLayerView myBaseLayer;
 	private DisplayData myDisplayData;
 	private Pane myLayerPopup;
-
-	public MapEditorView(PathData pathData, MapLayersData mapData, PopViewDelegate popDelegate,DisplayData displayData) {
+	
+	public MapEditorView(PopViewDelegate popDelegate, MapLayersData mapData, DisplayData displayData) {
 
 		super();
-		myBackgroundView = new ImageViewPane(new ImageView(new Image(DEFAULT_BACKGROUND_PATH)));
+		myBackgroundView = new ImageViewPane(new ImageView(new Image(displayData.getBackgroundImagePath())));
 		myMapData = mapData;
 		myPopDelegate = popDelegate;
+		myBaseLayer = new BaseLayerView(myMapData.getMyBaseData());
 		myDisplayData=displayData;
 		setupViews();
 		setupMouseEvents();
@@ -124,6 +125,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	private void setupMapData() {
 		System.out.println("isLoaded:" + IS_LOADED);
 		addLayerView(new PathLayerView(myMapData.getMyPathData()), "Path");
+		addLayerView(myBaseLayer, "Base");
 		for (Entry<String, LayerData> entry : myMapData.getMyLayers().entrySet()) {
 			addLayerView(new PolygonLayerView(entry.getValue()), entry.getKey());
 		}
@@ -304,6 +306,10 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 		}
 	}
+	
+	private void setBackground(String fileName){
+		//TODO
+	}
 
 	/**
 	 * This method updates the location of the points on the map This method is
@@ -314,6 +320,11 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		for (Layer layer : myLayers) {
 			StackPane.setMargin(layer, getAdjustedInsets());
 		}
+	}
+	
+	
+	public BaseLayerView getBaseLayer(){
+		return this.myBaseLayer;
 	}
 
 	/*
@@ -346,6 +357,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		this.addLayerView(layer, nameInput);
 		myPopDelegate.closeView(myLayerPopup);
 	}
+
 
 	@Override
 	public void layerPopupDidPressCancel() {
