@@ -199,7 +199,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 	private void createNewScreen() {
 		getBorderPane().setBottom(null);
 		bottomHBox.getChildren().clear();
-		VBox vbox = new VBox(40, auth, selector, reviews);
+		VBox vbox = new VBox(40, auth, selector, reviews, leaderboard);
 		vbox.setAlignment(Pos.CENTER);
 		getBorderPane().setCenter(vbox);
 		Label us = new Label("'I Love Singletons' - Duvall, probably");

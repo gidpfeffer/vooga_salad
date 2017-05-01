@@ -147,7 +147,6 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 			database.addUser(newUser);
 
 			String mySavedUsers = mySerializer.toXML(database);
-			System.out.println(mySavedUsers);
 			fileChooser.writeFile(mySavedUsers);
 
 			loginhandler.returnToMain();

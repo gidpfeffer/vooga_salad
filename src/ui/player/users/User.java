@@ -9,7 +9,6 @@ public class User implements WriteableUser{
 	private String email;
 	private Integer level;
 	private Double experience;
-	private String rank;
 	private String last;
 	private String most;
 	
