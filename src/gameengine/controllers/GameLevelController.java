@@ -13,8 +13,8 @@ import gamedata.LevelData;
 import gamedata.PathData;
 import gamedata.WaveData;
 import gameengine.actors.management.Actor;
-import gameengine.conditions.Condition;
 import gameengine.conditions.EnduranceCondition;
+import gameengine.conditionsgen.Condition;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
@@ -155,7 +155,7 @@ public class GameLevelController {
 
 	private void spawnEnemy(EnemyInWaveData enemyData, Grid2D firstPathCoor) {
 		ActorData actorData = enemyData.getMyActor();
-		Actor actor = builders.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
+		Actor actor = builders.objectgen.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
 	}
 	

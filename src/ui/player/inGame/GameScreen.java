@@ -37,7 +37,7 @@ public class GameScreen extends GenericGameScreen
 	private AnimationHandler animationhandler;
 	
 	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
@@ -70,9 +70,9 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
 				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp);
-				actor.getPane().setLayoutX(getWidth() - x);
-				actor.getPane().setLayoutY(y);
-				getChildren().add(actor.getPane());
+				actor.getMainPane().setLayoutX(getWidth() - x);
+				actor.getMainPane().setLayoutY(y);
+				getChildren().add(actor.getMainPane());
 			}
 			@Override
 			public void showError(String msg) {
@@ -91,6 +91,14 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void addActorToMap(int id, Actor actor) {
 				if (actorsMap.get(id) != null) actorsMap.put(id, actor);
+			}
+			@Override
+			public void deleteActorFromScreen(int id){
+				getChildren().remove(actorsMap.get(id).getPane());
+			}
+			@Override
+			public boolean isActorInMap(int id) {
+				return actorsMap.get(id) != null;
 			}
 		};
 	}
@@ -151,7 +159,7 @@ public class GameScreen extends GenericGameScreen
 			if(arg.containsKey(id)) {
 				return false;
 			}
-			this.getChildren().remove(actorsMap.get(id).getPane());
+			this.getChildren().remove(actorsMap.get(id).getMainPane());
 			//actorsMap.get(id).deleteActor();
 			return true;
 		});
@@ -161,13 +169,14 @@ public class GameScreen extends GenericGameScreen
 			if(!actorsMap.containsKey(id)) {
 				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
 				actorsMap.put(id, newActor);
-				this.getChildren().add(newActor.getPane());
+				this.getChildren().add(newActor.getMainPane());
 			}
 			Actor actor = actorsMap.get(id);
+			actor.setHealth(arg.get(id).getActorPercentHealth());
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
-			actor.getPane().setLayoutX(xCoor);
-			actor.getPane().setLayoutY(yCoor);
+			actor.getMainPane().setLayoutX(xCoor);
+			actor.getMainPane().setLayoutY(yCoor);
 			//System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);
 		});
 	}

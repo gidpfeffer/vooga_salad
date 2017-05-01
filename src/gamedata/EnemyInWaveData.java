@@ -25,6 +25,7 @@ public class EnemyInWaveData {
 	public int getOption() {
 		return myWaveNumber;
 	}
+	
 	public void setMyNumber(int myNumber) {
 		this.myWaveNumber = myNumber;
 	}
