@@ -1,10 +1,14 @@
 package gameengine.controllers;
-import java.util.Map;			
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import builders.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.DisplayData;
 import gamedata.GameData;
 import gameengine.grid.ActorGrid;
+import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.grid.interfaces.controllerinfo.GridHandler;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
@@ -17,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import types.BasicActorType;
 import ui.handlers.AnimationHandler;
 import ui.handlers.LoginHandler;
 import ui.handlers.UIHandler;
@@ -63,6 +68,8 @@ public class GameController {
 	private final int MAX_X = 1;
 	private final int MAX_Y = 1;
 	
+	private Function<BasicActorType,Integer> actorCounts;
+	
 	private final double MILLISECOND_DELAY=17;
 	
 	public GameController(GameData gameData,LoginHandler loginHandler) {
@@ -83,6 +90,13 @@ public class GameController {
 		myGameScreen.setAnimationHandler(myAnimationHandler);
 		myGameScreen.setSong(myGameData.getPreferences().getMusicFilePath()); //set music for game
 	}
+	
+	private Function<BasicActorType,Integer> getCounts(ReadableGrid grid) {
+		return (target) -> { 
+			return grid.getActorLocations(target).size();
+		};
+	}
+	
 	/**
 	 * @param UIObserver
 	 * @return a new clean instance of ActorGrid
@@ -90,6 +104,7 @@ public class GameController {
 	private ActorGrid getNewActorGrid(VoogaObserver<Map<Integer,FrontEndInformation>> UIObserver) {
 		ActorGrid actorGrid = new ActorGrid(MAX_X,MAX_Y,myGridHandler,
 				i -> ActorGenerator.makeActor(i,myGameData.getOption(i)));
+		actorCounts = getCounts(actorGrid);
 		actorGrid.addObserver(UIObserver);
 		return actorGrid;
 	}
@@ -215,6 +230,11 @@ public class GameController {
 			public void displayLoseAlert() {
 				animation.stop();
 				myGameScreen.notifyLose();
+			}
+
+			@Override
+			public Function<BasicActorType, Integer> actorCounts() {
+				return actorCounts;
 			}
 			
 		};
