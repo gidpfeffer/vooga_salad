@@ -31,12 +31,7 @@ public class User implements WriteableUser{
 	public void setLastPlayed(String last) {
 		this.last = last;
 	}
-	public String getRank() {
-		return rank;
-	}
-	public void setRank(String rank) {
-		this.rank = rank;
-	}
+
 	public Integer getLevel() {
 		return level;
 	}
@@ -111,7 +106,6 @@ public class User implements WriteableUser{
 		this.email = email;
 		this.experience = INITIAL_EXP;
 		this.level = INITIAL_LEVEL;
-		this.rank = "Novice";
 		this.last = "";
 		this.money = INITIAL_MONEY;
 	}

@@ -82,7 +82,6 @@ public class ProfileCard {
 	}
 
 	private void setupExpGridValues() {
-		expGrid.getRank().setText(user.getRank());
 		expGrid.getExperience().setText(user.getExperience().toString());
 		expGrid.getLevel().setText(user.getLevel().toString());
 		expGrid.getEntryMap().keySet().forEach(entry -> {
