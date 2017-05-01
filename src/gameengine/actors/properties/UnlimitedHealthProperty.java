@@ -1,9 +1,14 @@
 package gameengine.actors.properties;
 
+import gamedata.composition.UnlimitedHealthData;
 import gameengine.actors.propertygen.HealthProperty;
 
 public class UnlimitedHealthProperty implements HealthProperty {
 
+	public UnlimitedHealthProperty(UnlimitedHealthData unlimited){
+		//TODO: Any implementation
+	}
+	
 	@Override
 	public void apply(double damage) {
 		// TODO Auto-generated method stub

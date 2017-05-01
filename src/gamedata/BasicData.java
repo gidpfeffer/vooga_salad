@@ -1,7 +1,10 @@
 package gamedata;
 
 import gamedata.compositiongen.Data;
+import gameengine.grid.classes.Coordinates;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.ActorType;
+import util.Tuple;
 
 /**
  * 
@@ -19,10 +22,12 @@ public class BasicData {
 	private boolean isActive;
 	private String imagePath;
 	private double heading; //angle
+	private Grid2D imageDimensions;
 	
 	public BasicData(String name, String imagePath){
 		this.name=name;
 		this.imagePath = imagePath;
+		this.setImageDimensions(new Coordinates(0.1,0.1));
 		heading = HEADING;
 		isActive = true;
 	}
@@ -58,7 +63,15 @@ public class BasicData {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public Grid2D getImageDimensions() {
+		return imageDimensions;
+	}
+
+	public void setImageDimensions(Grid2D imageDimensions) {
+		this.imageDimensions = imageDimensions;
+	}
+
 	
 	
 }

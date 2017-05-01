@@ -181,16 +181,21 @@ public class LoginMain {
 	}
 	
 	private void setupDatabase() {
-		try {
-			XStream mySerializer = new XStream(new DomDriver());
-			XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
-			database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
-			if(loginhandler.findUser(guestUser) == null) {
-				database.addUser(new User());
-			}
-		} catch (Exception e) {
-			database = new UserDatabase();
-		}
+//		try {
+//			XStream mySerializer = new XStream(new DomDriver());
+//			XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+//			
+//			database = (UserDatabase) mySerializer.fromXML(fileChooser.readInClass());
+//			if(loginhandler.findUser(guestUser) == null) {
+//				database.addUser(new User());
+//			}
+//		} catch (Exception e) {
+//			database = new UserDatabase();
+//		}
+		
+		XStream mySerializer = new XStream(new DomDriver());
+		XStreamFileChooser fileChooser = new XStreamFileChooser(userDatabase);
+		database = (fileChooser.readInClass() != null)? (UserDatabase) mySerializer.fromXML(fileChooser.readInClass()): new UserDatabase();
 	}
 	
 	private void showProfileCard(User user) {

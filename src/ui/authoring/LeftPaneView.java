@@ -39,8 +39,9 @@ import javafx.scene.paint.Color;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.actor.ActorEditorView;
-import ui.authoring.actor.CreateActorDelegate;
-import ui.authoring.actor.CreateActorTypeView;
+import ui.authoring.actor.CreateBasicTypeView;
+import ui.authoring.delegates.ActorEditorDelegate;
+import ui.authoring.delegates.CreateActorDelegate;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
@@ -90,7 +91,8 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		DEFAULT_PROJECTILES = map;
 	}
 	
-	private PopViewDelegate myDelegate;
+	private PopViewDelegate myPopDelegate;
+	private ActorEditorDelegate myEditorDelegate;
 	private VBox myVBox; //contains the buttons
 	private Map<BasicActorType, ActorEditorView> actorTypeToView = new HashMap<>();
 	private GameData myGameData;
@@ -102,9 +104,10 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	 * 
 	 * @param delegate required so that this class can launch the ActorEditorView's
 	 */
-	public LeftPaneView(PopViewDelegate delegate, GameData gameData){
+	public LeftPaneView(ActorEditorDelegate delegate, GameData gameData){
 		super();
-		myDelegate = delegate;
+		myEditorDelegate = delegate;
+		myPopDelegate = delegate;
 		myGameData = gameData;
 		setupViews();
 	}
@@ -149,11 +152,11 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	 * creates an ActorEditorView for the new type of actor
 	 */
 	private void addNewActor() {
-		Pane pane = new CreateActorTypeView(this);
+		Pane pane = new CreateBasicTypeView(this);
 		pane.setPrefHeight(200);
 		pane.setPrefWidth(200);
 		
-		myDelegate.openViewWithSize(pane, PopupSize.SMALL);
+		myPopDelegate.openViewWithSize(pane, PopupSize.SMALL);
 		
 	}
 
@@ -179,7 +182,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	}
 
 	private void addActor(String actorType, String imagePath, Map<String,String> defaultActors){
-		ActorEditorView view = new ActorEditorView(myDelegate, new BasicActorType(actorType), myGameData);
+		ActorEditorView view = new ActorEditorView(myEditorDelegate, new BasicActorType(actorType), myGameData);
 		view.setupDefaultActors(defaultActors);
 		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
 		this.actorTypeToView.put(new BasicActorType(actorType), view);
@@ -195,7 +198,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	private void launchEditor(ActorEditorView view) {
 		view.setGameData(myGameData);
 		view.setActorTypeOptions(this.actorTypeToView.keySet());
-		myDelegate.openView(view);
+		myPopDelegate.openView(view);
 		printCurrent();
 	}
 
@@ -232,7 +235,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	
 	@Override
 	public void closeSelf(Pane pane){
-		myDelegate.closeView(pane);
+		myPopDelegate.closeView(pane);
 	}
 	
 }

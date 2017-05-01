@@ -68,8 +68,7 @@ public class XStreamFileChooser {
 			return content;
         }
         catch (Exception ex) {
-        	ex.printStackTrace();
+        	return null;
         }
-		return null;
 	}
 }

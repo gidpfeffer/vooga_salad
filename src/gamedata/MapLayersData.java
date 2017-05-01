@@ -22,9 +22,11 @@ public class MapLayersData {
 	
 	private PathData myPathData;
 	private Map<String, LayerData> myLayers;
+	private BasePlacementData myBaseData;
 	
 	public MapLayersData() {
 		myLayers = new HashMap<>();
+		setMyBaseData(new BasePlacementData());
 		setMyPathData(new PathData());
 	}
 
@@ -71,6 +73,14 @@ public class MapLayersData {
 
 	public void setMyPathData(PathData myPathData) {
 		this.myPathData = myPathData;
+	}
+
+	public BasePlacementData getMyBaseData() {
+		return myBaseData;
+	}
+
+	public void setMyBaseData(BasePlacementData myBaseData) {
+		this.myBaseData = myBaseData;
 	}
 
 }
