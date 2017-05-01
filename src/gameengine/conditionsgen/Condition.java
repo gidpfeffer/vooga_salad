@@ -2,7 +2,6 @@ package gameengine.conditionsgen;
 
 import java.util.Optional;
 
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gamestatus.ReadableGameStatus;
 
 /**

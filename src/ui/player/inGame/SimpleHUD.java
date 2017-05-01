@@ -10,7 +10,7 @@ import util.observerobservable.VoogaObserver;
 
 /**
  * Creates a simple grid pane HUD
- * @author anngelyque, sarahzhou
+ * @author anngelyque, sarahzhou, gideon
  *
  */
 public class SimpleHUD implements VoogaObserver<Map<String,String>>{
@@ -28,8 +28,8 @@ public class SimpleHUD implements VoogaObserver<Map<String,String>>{
 	
 	public SimpleHUD(){
 		hud = new GridPane();
+		hud.setHgap(10.);
 		applyCSSToParent(hud, css, gridId);
-		System.out.println("GameStatus initialized and dipslayed");
 	}
 	
 

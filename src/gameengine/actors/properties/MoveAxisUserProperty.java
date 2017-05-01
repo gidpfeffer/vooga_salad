@@ -2,17 +2,13 @@ package gameengine.actors.properties;
 
 import gameengine.actors.propertygen.IActProperty;
 import gameengine.grid.interfaces.ActorGrid.ReadAndMoveGrid;
-import javafx.scene.input.KeyCode;
 
 public abstract class MoveAxisUserProperty<G extends ReadAndMoveGrid> implements IActProperty<G>{
 	
-	private KeyCode posButton, negButton;
 	private Double mySensitivity;
 	
-	public MoveAxisUserProperty(String pos, String neg, Integer sensitivity) {
-		posButton = KeyCode.RIGHT;
-		negButton = KeyCode.LEFT;
-		mySensitivity = .001;
+	public MoveAxisUserProperty(Integer sensitivity) {
+		mySensitivity = sensitivity/1000.0;
 	}
 	
 	@Override
@@ -22,8 +18,16 @@ public abstract class MoveAxisUserProperty<G extends ReadAndMoveGrid> implements
 	
 	protected abstract void move(G grid, Integer actorID);
 	
-	protected double getKeyMovement(G grid) {
-		return (grid.getEventQueue().queryKey(posButton) ? mySensitivity:0) + (grid.getEventQueue().queryKey(negButton) ? -1*mySensitivity:0);
+	protected double getKeyMoveX(G grid, Integer actorID) {
+		return getKeyMovement(grid.getEventQueue().getLocation().getX(),grid.getLocationOf(actorID).getX());
+	}
+	
+	protected double getKeyMoveY(G grid, Integer actorID) {
+		return getKeyMovement(grid.getEventQueue().getLocation().getY(),grid.getLocationOf(actorID).getY());
+	}
+	
+	private double getKeyMovement(double loc1, double loc2) {
+		return (loc1>loc2? mySensitivity:-1*mySensitivity);
 	}
 	
 	@Override

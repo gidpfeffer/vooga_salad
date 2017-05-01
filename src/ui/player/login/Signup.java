@@ -32,8 +32,6 @@ import ui.player.users.UserDatabase;
 import util.FileSelector;
 
 public class Signup extends BorderedAnchorPane implements LoginElement {
-	// need to save image somehow and store as string to the location
-	// userImages/...
 	private Scene scene;
 	private StackPane profileImage;
 	private ResourceBundle resource;
@@ -43,7 +41,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	private String profilePicture = "profile_icon.png";
 	private static final String userDatabase = "userDatabase.xml";
 	public final static String generic_profile = "profile_icon.png";
-	public final static String path= "images/";
+	public final static String path = "images/";
 
 	@Override
 	public Scene getScene() {
@@ -74,7 +72,6 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	private void setupTop() {
 		StackPane sp = stackedPanes("pane", new Insets(10., 150., 5., 150.));
 		Text signupTitle = new Text(resource.getString("newAccount"));
-		// signupTitle.setStyle("-fx-font-family: Baby_Eskimo_Kisses_Black");
 		signupTitle.setId("title");
 		BorderPane.setAlignment(signupTitle, Pos.CENTER);
 		BorderPane.setMargin(signupTitle, new Insets(40, 20, 30, 20));
@@ -128,8 +125,7 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 			if (file != null) {
 				profileImage.getChildren().clear();
 				String[] temp = file.toURI().toString().split(path);
-				profilePicture = temp[temp.length-1];
-				System.out.println(profilePicture);
+				profilePicture = temp[temp.length - 1];
 				profileImage.getChildren().add(new ImageView(new Image(profilePicture, 200, 200, false, true)));
 			}
 		}
@@ -206,8 +202,6 @@ public class Signup extends BorderedAnchorPane implements LoginElement {
 	}
 
 	private boolean fieldsFilledIn() {
-		System.out.println(!signupGrid.getEntryMap().keySet().parallelStream()
-				.anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty()));
 		return !signupGrid.getEntryMap().keySet().parallelStream()
 				.anyMatch(name -> signupGrid.getEntryMap().get(name).getText().trim().isEmpty());
 	}

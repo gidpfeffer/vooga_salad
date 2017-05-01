@@ -20,83 +20,70 @@ import javafx.scene.media.MediaPlayer;
  */
 public class MusicPlayer {
 
-	private VBox layout; 
+	private VBox layout;
 	private CheckBox checkbox;
-	private HBox component1; 
+	private HBox component1;
 	private Media song;
 	private MediaPlayer mediaPlayer;
 	private Slider volumeSlider;
 	static final String heroSong = "music/hero_song.mp3";
-	
 
 	public MusicPlayer() {
-		layout = new VBox();
+		layout = new VBox(20);
 		component1 = new HBox();
-		
+
 		song = new Media(new File(heroSong).toURI().toString());
 		mediaPlayer = new MediaPlayer(song);
-		//mediaPlayer.play();
-		
-		
+
 		checkbox = new CheckBox("Mute");
 		checkbox.setOnAction(e -> mediaPlayer.setMute(!mediaPlayer.isMute()));
-		
+
 		Label volumeLabel = new Label("Vol: ");
 		volumeSlider = new Slider();
 		setupVolumeSlider();
-		
+
 		setupMusicPlayer();
-		
-		component1.getChildren().addAll(volumeLabel,volumeSlider);
-		layout.getChildren().addAll(checkbox,component1);
+
+		component1.getChildren().addAll(volumeLabel, volumeSlider);
+		layout.getChildren().addAll(checkbox, component1);
 	}
-	
+
 	private void setupMusicPlayer() {
 		// TODO Auto-generated method stub
-        mediaPlayer.setOnReady(new Runnable() {
-            public void run() {
-                if (!volumeSlider.isValueChanging()) {
-		            volumeSlider.setValue((int)Math.round(mediaPlayer.getVolume() 
-		                  * 100));
-		          }
-            }
-        });
- 
- 
-        
-		
+		mediaPlayer.setOnReady(new Runnable() {
+			public void run() {
+				if (!volumeSlider.isValueChanging()) {
+					volumeSlider.setValue((int) Math.round(mediaPlayer.getVolume() * 100));
+				}
+			}
+		});
 	}
 
 	private void setupVolumeSlider() {
-		// TODO Auto-generated method stub       
 		volumeSlider.setPrefWidth(90);
 		volumeSlider.setMaxWidth(Region.USE_PREF_SIZE);
 		volumeSlider.setMinWidth(20);
 		volumeSlider.valueProperty().addListener(new InvalidationListener() {
-		    public void invalidated(Observable ov) {
-		       if (volumeSlider.isValueChanging()) {
-		           mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
-		       }
-		    }
+			public void invalidated(Observable ov) {
+				if (volumeSlider.isValueChanging()) {
+					mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
+				}
+			}
 		});
-		
+
 	}
 
 	public MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
 	}
-	
-	public void setSong(String s){
+
+	public void setSong(String s) {
 		song = new Media(new File(s).toURI().toString());
 		mediaPlayer = new MediaPlayer(song);
 		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
-	
-	private void playMusic() {
-		mediaPlayer.setMute(!mediaPlayer.isMute());
-	}
-	
-	public Node getNode(){
+
+	public Node getNode() {
 		return layout;
 	}
 }
