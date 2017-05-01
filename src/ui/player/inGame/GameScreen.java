@@ -191,10 +191,8 @@ public class GameScreen extends GenericGameScreen
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
-/*		System.out.println(actorsMap);
-		for (int i : actorsMap.keySet()) {
-			System.out.println(actorsMap.get(i).getData().getType().toString());
-		}*/
+		System.out.println("MYMAP: " + actorsMap);
+		System.out.println("THIERMAP: " + arg);
 		actorsMap.keySet().removeIf(id -> {
 			if(arg.containsKey(id)) {
 				return false;
@@ -206,12 +204,16 @@ public class GameScreen extends GenericGameScreen
 		
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
+			Actor actor = null;
 			if(!actorsMap.containsKey(id)) {
-				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
-				actorsMap.put(id, newActor);
-				this.getChildren().add(newActor.getMainPane());
+				actor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
+				actorsMap.put(id, actor);
+				this.getChildren().add(actor.getMainPane());
+				actor.turnOffHandlers();
 			}
-			Actor actor = actorsMap.get(id);
+			else {
+				actor = actorsMap.get(id);
+			}
 			actor.setHealth(arg.get(id).getActorPercentHealth());
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
