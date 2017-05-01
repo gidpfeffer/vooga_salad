@@ -162,7 +162,7 @@ public class LoginMain {
 
 			@Override
 			public void gotoReviews() {
-				stage.setScene(new Scene(new RatingView(loginhandler, "English")));
+				stage.setScene(new RatingView(loginhandler, "English").getScene());
 				stage.setWidth(Preferences.SCREEN_WIDTH);
 				stage.setHeight(Preferences.SCREEN_HEIGHT);
 			}

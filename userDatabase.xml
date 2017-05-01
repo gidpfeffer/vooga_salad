@@ -11,8 +11,8 @@
       <last></last>
     </ui.player.users.User>
     <ui.player.users.User>
-      <username>hello2</username>
-      <password>1548fcd35259940975abffc1bd3586509b9a6ee9</password>
+      <username>hello</username>
+      <password>73c2e8db3532034b5efdc9dc70a99019428afc4d</password>
       <money>0.0</money>
       <avatar>profile_icon.png</avatar>
       <email>hello@hello.com</email>
@@ -24,8 +24,8 @@
   <passwords>
     <database>
       <entry>
-        <string>hello2</string>
-        <string>1548fcd35259940975abffc1bd3586509b9a6ee9</string>
+        <string>hello</string>
+        <string>73c2e8db3532034b5efdc9dc70a99019428afc4d</string>
       </entry>
     </database>
   </passwords>
