@@ -130,22 +130,21 @@ public class DataView extends AnchorPane {
 	private void addField(String nameKey, Object value){
 		Class<?> clazz = value.getClass();
 		System.out.println(clazz);
-		if(clazz == double.class ||clazz == Integer.class ||clazz == Double.class ||clazz == int.class ){
+		if(clazz == double.class ||clazz == Integer.class ||clazz == Double.class || clazz == int.class){
 			//TODO: Make this not awful
-			if(clazz == Integer.class && myDataClassName.contains("Shoot") && nameKey.equals("myProjectile"))
+			if(clazz == Integer.class && nameKey.equals("myProjectile"))
 				addClickableActorField(nameKey, (Integer) value);
 			else
 				addTextField(nameKey, value);
 		} else if(clazz == BasicActorType.class){
 			addClickableTypeField(nameKey, (BasicActorType) value);
-			//TODO: Clean up
 		} else if(clazz == List.class || clazz == ArrayList.class){
 			if(myDataClassName.equals("MoveWithSetPathData"))
 				addIntegerList(new ArrayList<Integer>(myPaths.getMyPaths().keySet()), nameKey);
 			else
 				addCategoryList(this.myActorTypes, nameKey);
 		} else if(clazz == String.class){
-			addTextField(nameKey,value);
+			addTextField(nameKey, value);
 		}
 		
 	}

@@ -72,6 +72,8 @@ public class GameData {
 	
 	//References the location of the last index
 	private int numOptions;
+	
+	private int startMoney;
 
 
 	public GameData(){
@@ -85,8 +87,9 @@ public class GameData {
 		display = new DisplayData();
 		pieces = new HashMap<Integer, LineageData>();
 		types = new ArrayList<BasicActorType>();
-		numOptions = 0;
 		myLayers = new MapLayersData();
+		numOptions = 0;
+		startMoney = 0;
 	}
 	
 	/**
@@ -319,5 +322,14 @@ public class GameData {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public int getStartMoney() {
+		return startMoney;
+	}
+
+	public void setStartMoney(int startMoney) {
+		this.startMoney = startMoney;
+	}
+	
 	
 }
