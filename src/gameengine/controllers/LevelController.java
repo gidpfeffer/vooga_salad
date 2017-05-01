@@ -1,6 +1,6 @@
 package gameengine.controllers;
 
-import java.util.List;		
+import java.util.List;			
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
@@ -81,14 +81,17 @@ public class LevelController {
 	}
 	
 	private void processWave(WaveData waveData,PathData pathData) {
-		System.out.println("processing enemy waves");
 		processEnemyWaves(waveData.getWaveEnemies(),pathData);
-		System.out.println("processed enemy waves");
+	}
+	
+	private void spawnEnemies(EnemyInWaveData enemyData, PathData pathData) {
+		int numEnemies = enemyData.getOption();
+		for (int i =0; i<numEnemies;i++) spawnEnemy(enemyData, pathData);
 	}
 	
 	private void spawnEnemy(EnemyInWaveData enemyData, PathData pathData) {
 		ActorData actorData = enemyData.getMyActor();
-		Actor actor = builders.ActorGenerator.makeActor(enemyData.getOption(), actorData);
+		Actor actor = builders.objectgen.ActorGenerator.makeActor(myGameData.getOptionKey(actorData), actorData);
 		Grid2D firstPathCoor = getFirstPathCoor(pathData);
 		myGrid.controllerSpawnActor(actor, firstPathCoor.getX(),firstPathCoor.getY());
 		if (myPreferences.pauseBetweenWaves()) delay.delayAction();
@@ -101,7 +104,7 @@ public class LevelController {
 	}
 	
 	private void processEnemyWaves(List<EnemyInWaveData> enemyInWaveDatas,PathData pathData) {
-		enemyInWaveDatas.forEach(e -> spawnEnemy(e,pathData));
+		enemyInWaveDatas.forEach(enemyData -> spawnEnemies(enemyData,pathData));
 	}
 	
 	

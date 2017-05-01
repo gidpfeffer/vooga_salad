@@ -1,8 +1,6 @@
 package ui.player.inGame;
 
 import java.io.File;
-import java.util.Optional;
-
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.Node;
@@ -14,8 +12,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;
-import ui.general.ToggleSwitch;
 
 /**
  * @author Anngelyque
@@ -93,6 +89,7 @@ public class MusicPlayer {
 	public void setSong(String s){
 		song = new Media(new File(s).toURI().toString());
 		mediaPlayer = new MediaPlayer(song);
+		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 	
 	private void playMusic() {

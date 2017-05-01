@@ -10,7 +10,7 @@ import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
-import builders.GameDataGenerator;
+import builders.objectgen.GameDataGenerator;
 import gamedata.DisplayData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
@@ -81,7 +81,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	public AuthoringView(LoginHandler loginhandler) {
 		this.loginhandler = loginhandler;
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
-		myGameData = new GameData();
+		myGameData = new GameData("Untitled"); //TODO 
 		setupViews();
 	}
 
@@ -153,6 +153,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 	}
 
+	//TODO: Consolidate
 	private void setupMenuView() {
 		
 		ImageButton menuButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
@@ -164,21 +165,15 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 		double width = 300;
 
-
-		
 		//alex test
-		ImageButton displayButton = new ImageButton("menu_icon.png", new Location(40.0,40.0));
+		ImageButton displayButton = new ImageButton("icon.png", new Location(40.0,40.0));
 		displayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> launchDisplayView());
-		AnchorPane.setLeftAnchor(displayButton, 150.0);
-		AnchorPane.setTopAnchor(displayButton, 150.0);
+		AnchorPane.setLeftAnchor(displayButton, 80.0);
+		AnchorPane.setTopAnchor(displayButton, 12.0);
 		UIHelper.setDropShadow(displayButton);
 		this.getChildren().add(displayButton);
-		myDisplayView=new DisplayView(this,this,myGameData);
+		myDisplayView=new DisplayView(this,this,myGameData.getDisplayData(),myGameData);
 		UIHelper.setBackgroundColor(myDisplayView, CustomColors.GREEN);
-	
-		//this.getChildren().add(myDisplayView);
-		
-		
 		//end test
 		
 
@@ -198,7 +193,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	
 	private void setupName() {
-		TextField toAdd = addField("Untitled");
+		TextField toAdd = addField(myGameData.getName());
 		toAdd.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                toAdd.clear();
@@ -221,8 +216,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	public TextField addField(String value){
 		StackPane lblWrapper = new StackPane();
 		TextField field = new TextField(value);
-		field.setPrefWidth(240);
-		field.setPrefHeight(20);
+		field.setPrefWidth(this.SIDE_PANE_WIDTH);
+		field.setPrefHeight(24);
 		field.setFont(Preferences.FONT_SMALL);
 		field.setAlignment(Pos.CENTER);
 		field.setBackground(UIHelper.backgroundForColor(THEME_COLOR));
@@ -252,7 +247,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 
 	private void setupMapView() {
-		myMapView = new MapEditorView(myGameData.getMyPaths(), myGameData.getLayers(), this);
+		myMapView = new MapEditorView(myGameData.getMyPaths(),myGameData.getLayers(), this,myGameData.getDisplayData());
 		UIHelper.setBackgroundColor(myMapView, THEME_COLOR);
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
@@ -380,6 +375,10 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	 */
 	private void loadGameData(GameData data) {
 		getChildren().clear();
+		this.myGameData = data;
+//		myGameData.getLayers().getMyPathData().getMyPaths().entrySet().forEach(entry -> {
+//			System.out.println(entry.getValue());
+//		});
 		setupViews();
 	}
 	

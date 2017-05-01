@@ -6,6 +6,8 @@ import java.util.List;
 import gamedata.LayerData;
 import gamedata.MapLayersData;
 import gamedata.map.PolygonData;
+import gameengine.grid.classes.Coordinates;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -37,49 +39,52 @@ public class PolygonLayerView extends Layer {
 	};
 	
 	private LayerData myLayerData;
-	private Polygon myCurrentPolygon;
+	private UIPolygon myCurrentPolygon;
+	private List<UIPolygon> myUIPolygons;
 	private Color myColor = CustomColors.AMBER;
 	private boolean isActive = false;
-	private Tuple<Double, Double> myInsets;
 	
-	public PolygonLayerView(LayerData layerData,Tuple<Double, Double> insets){
+	public PolygonLayerView(LayerData layerData){
 		super();
 		myLayerData = layerData;
-		myInsets = insets;
+		myUIPolygons = new ArrayList<>();
 		setupPolygonViews();
+		widthProperty().addListener(e -> sizeDidChange());
+		heightProperty().addListener(e -> sizeDidChange());
 	}
 
 
 	private void setupPolygonViews() {
-		for( PolygonData data : myLayerData.getMyPolygons()){
-			addPolygonFromData(data);
-		}
+//		for( PolygonData data : myLayerData.getMyPolygons()){
+//			addPolygonFromData(data);
+//		}
+		loadLayerData(myLayerData);
 	}
 	
 	/**
 	 * 
 	 * @param data the polygon data tha
 	 */
-	private void addPolygonFromData(PolygonData data) {
-		Polygon p = makePolygon(data);
-		p.setFill(myColor);
-		getChildren().add(p);
-	}
+//	private void addPolygonFromData(PolygonData data) {
+//		Polygon p = makePolygon(data);
+//		p.setFill(myColor);
+//		getChildren().add(p);
+//	}
 
 	
-	private Polygon makePolygon(PolygonData data){
-		return new Polygon(pointsToArray(
-				decompressedLocations(
-						data.getMyPoints())));
-	}
+//	private Polygon makePolygon(PolygonData data){
+//		return new Polygon(pointsToArray(
+//				decompressedLocations(
+//						data.getMyPoints())));
+//	}
 	
 	/**
 	 * 
 	 * @param locations a list of locations each with xy-values between 0 and 1
 	 * @return a copy of the list of locations scaled to the viewing size
 	 */
-	private List<Location> decompressedLocations(List<Location> locations){
-		List<Location> copy = new ArrayList<Location>();
+	private List<Grid2D> decompressedLocations(List<Grid2D> locations){
+		List<Grid2D> copy = new ArrayList<>();
 		locations.forEach(loc -> {
 			copy.add(new Location(loc.getX()*this.getWidth(),
 					loc.getY()*this.getHeight()));
@@ -117,16 +122,26 @@ public class PolygonLayerView extends Layer {
 	        return;
 	    }
 		if(myCurrentPolygon == null){
-			myCurrentPolygon = new Polygon(
-					e.getX(), e.getY(),
-					e.getX(), e.getY());
+			PolygonData data = new PolygonData(new ArrayList<>());
+			this.myLayerData.getMyPolygons().add(data);
+			myCurrentPolygon = new UIPolygon(data, this);
+			myCurrentPolygon.addPoint(compressPoint(e), this);
+			myCurrentPolygon.getPoints().addAll(e.getX(), e.getY());
 			setPolygonStyle(myCurrentPolygon);
 			getChildren().add(myCurrentPolygon);
+			this.myUIPolygons.add(myCurrentPolygon);
 		}else{
-			myCurrentPolygon.getPoints().addAll(e.getX(), e.getY());
+			myCurrentPolygon.addPoint(compressPoint(e), this);;
 		}
 	}
 	
+	private Coordinates compressPoint(MouseEvent e) {
+		Coordinates c =   new Coordinates(e.getX()/this.getWidth(), e.getY()/this.getHeight());
+		System.out.println(c);
+		return c;
+	}
+
+
 	private boolean checkIfPointInBounds(MouseEvent e){
 		return this.intersects(e.getX(), e.getY(), 1, 1);
 	}
@@ -160,9 +175,6 @@ public class PolygonLayerView extends Layer {
 	 */
 	private void mouseSecondary(MouseEvent e) {
 		if(myCurrentPolygon != null){
-			//this.myCurrentPolygon.getPoints().addAll(e.getX(),e.getY());
-			PolygonData data = makePolygonData(myCurrentPolygon);
-			this.myLayerData.getMyPolygons().add(data);
 			printData();
 			myCurrentPolygon = null;
 		}
@@ -174,23 +186,6 @@ public class PolygonLayerView extends Layer {
 			System.out.println("\t"+d);
 	}
 	
-	
-	private PolygonData makePolygonData(Polygon polygon) {
-		List<Double> list = polygon.getPoints();
-		List<Location> points = new ArrayList<>();
-		double normX = 1.0/this.getWidth();
-		double normY = 1.0/this.getHeight();
-		for(int i =0; i<list.size(); i+=2){
-			Location loc = new Location(list.get(i)*normX, list.get(i+1)*normY);
-			points.add(loc);
-		}
-		PolygonData data = new PolygonData(points);
-
-		return data;
-	}
-
-
-	//
 
 	/**
 	 * sets the plygons opacity to 100
@@ -221,7 +216,9 @@ public class PolygonLayerView extends Layer {
 
 	@Override
 	public void undo() {
-		//Node polygon = myPolygons.get(myPolygons.size() - 1);
+		UIPolygon p = this.myUIPolygons.remove(myUIPolygons.size() - 1);
+		myLayerData.getMyPolygons().remove(p);
+		this.getChildren().remove(p);
 	}
 
 
@@ -238,19 +235,20 @@ public class PolygonLayerView extends Layer {
 	}
 
 
-	@Override
-	public void sizeDidChange() {
-		// TODO Auto-generated method stub
-		clear();
-		
-
-		
+	private void sizeDidChange() {		
+		this.myUIPolygons.forEach(polygon -> {
+			polygon.reload(this);
+		});		
 	}
 
 
-	@Override
-	public void load(MapLayersData mapData) {
-		// TODO Auto-generated method stub
+	public void loadLayerData(LayerData layerData) {
+		layerData.getMyPolygons().forEach(data -> {
+			UIPolygon polygon = new UIPolygon(data, this);
+			this.setPolygonStyle(polygon);
+			this.getChildren().add(polygon);
+			this.myUIPolygons.add(polygon);
+		});
 		
 	}
 

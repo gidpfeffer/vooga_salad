@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import builders.DataGenerator;
-import builders.AuthorInfoGenerator;
+import builders.infogen.AuthorInfoGenerator;
+import builders.objectgen.DataGenerator;
 import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.compositiongen.Data;

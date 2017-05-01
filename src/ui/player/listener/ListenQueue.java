@@ -30,12 +30,14 @@ public class ListenQueue {
 		myEvents.add(code);
 	}
 	
-	public boolean queryKey(KeyCode key) {
-		return myEvents.contains(key);
+	public boolean queryKey(String key) {
+		return myEvents.contains(KeyCode.getKeyCode(key));
 	}
-	
+	/*
 	@Override
 	public ListenQueue clone() {
-		return this.clone();
-	}
+		ListenQueue ret = new ListenQueue(myPointer.getX(),myPointer.getY());
+		myEvents.stream().forEach(event -> ret.addEvent(event));
+		return ret;
+	}*/
 }

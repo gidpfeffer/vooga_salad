@@ -3,7 +3,8 @@ package gamedata.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import ui.authoring.map.layer.path.Point;
+import gameengine.grid.interfaces.Identifiers.Grid2D;
+import ui.authoring.map.layer.UIPoint;
 import util.Location;
 
 /**
@@ -13,9 +14,9 @@ import util.Location;
  */
 public class PolygonData {
 	
-	private List<Location> myPoints;
+	private List<Grid2D> myPoints;
 	
-	public PolygonData(List<Location> points){
+	public PolygonData(List<Grid2D> points){
 		myPoints = points;
 	}
 	
@@ -23,7 +24,7 @@ public class PolygonData {
 	 * default polygon: the whole square screen 
 	 */
 	public PolygonData(){
-		myPoints = new ArrayList<Location>(); 
+		myPoints = new ArrayList<>(); 
 		myPoints.add(new Location(0.0,0.0));
 		myPoints.add(new Location(0.0,1.0));
 		myPoints.add(new Location(1.0,1.0));
@@ -31,13 +32,13 @@ public class PolygonData {
 	}
 	
 	
-	public List<Location> getMyPoints(){
+	public List<Grid2D> getMyPoints(){
 		return myPoints;
 	}
 	
 	public String toString(){
 		String s = "";
-		for(Location l : myPoints)
+		for(Grid2D l : myPoints)
 			s += l + ", ";
 		return s;
 	}

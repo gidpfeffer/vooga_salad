@@ -7,8 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,7 +34,6 @@ public class ProfileCard {
 	}
 	
 	public void setLogoutAction(EventHandler<ActionEvent> e) {
-		System.out.println("returning");
 		logout.setOnAction(e);
 	}
 	
@@ -75,17 +72,13 @@ public class ProfileCard {
 	}
 
 	private void imageAndExperince() {
-		if(user != null) {
-			VBox vb = new VBox(20);
-			ImageView profilePicture = new ImageView(new Image(user.getProfilePicture(), 150, 150, false, true));
-			expGrid = new ExperienceGrid(profileRB);
-			setupExpGridValues();
-			vb.getChildren().addAll(profilePicture, expGrid.getGrid());
-			vb.setAlignment(Pos.CENTER);
-			card.getChildren().add(vb);
-		} else {
-			new Alert(AlertType.ERROR, profileRB.getString("nouser")).showAndWait();
-		}
+		VBox vb = new VBox(20);
+		ImageView profilePicture = new ImageView(new Image(user.getProfilePicture(), 150, 150, false, true));
+		expGrid = new ExperienceGrid(profileRB);
+		setupExpGridValues();
+		vb.getChildren().addAll(profilePicture, expGrid.getGrid());
+		vb.setAlignment(Pos.CENTER);
+		card.getChildren().add(vb);
 	}
 
 	private void setupExpGridValues() {
@@ -109,7 +102,7 @@ public class ProfileCard {
 	private void setupGSGridValues() {
 		gsGrid.getLastPlayed().setText(user.getLastPlayed());
 		gsGrid.getMostPlayed().setText(user.getMostPlayed());
-		gsGrid.getScore().setText(user.getHighScore().toString());
+		gsGrid.getScore().setText(user.getHighScore() + "");
 		gsGrid.getUsername().setText(user.getUsername());
 		gsGrid.getEntryMap().keySet().forEach(entry -> {
 			gsGrid.getEntryMap().get(entry).setEditable(false);

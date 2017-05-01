@@ -44,7 +44,7 @@ public class GenericGameScreen extends AnchorPane{
 	}
 	
 	public void setReturnToMain(EventHandler<ActionEvent> value) {
-		settingsPane.setBackToLoginAction(value);
+		settingsPane.setReturnToMain(value);
 	}
 	
 	public GenericGameScreen(UIHandler uihandler, Optional<String> songString, Optional<String> css, 
@@ -64,6 +64,7 @@ public class GenericGameScreen extends AnchorPane{
 	}
 	
 	private void setupBackground() {
+		System.out.println(backgroundImagePath);
 		ivp = new ImageViewPane(new ImageView(new Image(backgroundImage.orElse(backgroundImagePath))));
 		this.getChildren().add(ivp);
 		setNodeInAnchorPane(ivp);

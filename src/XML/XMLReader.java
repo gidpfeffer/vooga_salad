@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import builders.DataGenerator;
+import builders.objectgen.DataGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.EnemyInWaveData;

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import builders.AuthorInfoGenerator;
-import builders.DataGenerator;
+import builders.infogen.AuthorInfoGenerator;
+import builders.objectgen.DataGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.GameData;
@@ -55,11 +55,12 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	private DataSelectionView myOptionPickerView;
 	private Set<BasicActorType> myActorTypeOptions;
 	private ActorData myCurrentActorData;
-	private GameData gameData;
+	private GameData myGameData;
 
 	
-	public ActorInfoView(){
+	public ActorInfoView(GameData gameData){
 		super();
+		myGameData = gameData;
 		myDataViews = new ArrayList<DataView>();
 		myActors = new ArrayList<StackPane>();
 		setupViews();
@@ -173,12 +174,12 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		}
 		BasicPicker<String> layers = 
 				new BasicPicker<String>
-				(""+layer, new ArrayList<>(gameData.getLayers().getMyLayers().keySet()), false);
+				(""+layer, new ArrayList<>(myGameData.getLayers().getMyLayers().keySet()), false);
 		layers.setBackground(UIHelper.backgroundForColor(CustomColors.BLUE_50));
 		layers.addToggle();
 		layers.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> {updateLayer(actor, layers.getTypeProperty().get());});
 		layers.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> {
-			layers.setMyTypes(new ArrayList<>(gameData.getLayers().getMyLayers().keySet()));});
+			layers.setMyTypes(new ArrayList<>(myGameData.getLayers().getMyLayers().keySet()));});
 		
 		
 		AnchorPane.setRightAnchor(box, 4.0);
@@ -228,7 +229,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	
 	private void updateLayer(ActorData actor, String newLayer){
 		if(!newLayer.equals("")){
-			actor.setLayer(gameData.getLayers().getMyLayers().get(newLayer));
+			actor.setLayer(myGameData.getLayers().getMyLayers().get(newLayer));
 			actor.setLayerName(newLayer);
 		}
 	}
@@ -333,7 +334,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	}
 	
 	private void addDataView(Data data){
-		DataView view = new DataView(gameData, data, this, 
+		DataView view = new DataView(myGameData, data, this, 
 				Arrays.asList(this.myActorTypeOptions.toArray(new BasicActorType[0])));
 		int col = myDataViews.size()%GRID_X_DIM;
 		int row = myDataViews.size() - col;
@@ -410,10 +411,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	public void setActorTypeOptions(Set<BasicActorType> keySet) {
 		this.myActorTypeOptions = keySet;
 	}
-	
-	public void setGameData(GameData data){
-		gameData = data;
-	}
+
 	
 
 }

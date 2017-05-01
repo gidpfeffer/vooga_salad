@@ -10,15 +10,22 @@ import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import ui.Preferences;
 import ui.general.ImageViewPane;
 import ui.handlers.AnimationHandler;
 import ui.handlers.LoginHandler;
@@ -36,11 +43,12 @@ public class GameScreen extends GenericGameScreen
 	private LoginHandler loginhandler;
 	private AnimationHandler animationhandler;
 	
-	public GameScreen(UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
+		this.loginhandler = loginHandler;
 		this.ivp = this.getIVP();
 		hud = simpleHUD.get();
 		initializeScreenHandler();
@@ -53,17 +61,52 @@ public class GameScreen extends GenericGameScreen
 	}
 	
 	public void notifyWin() {
-		new Alert(AlertType.INFORMATION, "You win!").showAndWait();
+		notifyStatus("You won!");
+	}
+	
+	public void notifyLose() {
+		notifyStatus("You lost!");
+	}
+	
+	private void notifyStatus(String status) {
+		animationhandler.stop();
+		BoxBlur blur = new BoxBlur();
+		blur.setWidth(Preferences.SCREEN_WIDTH);
+		blur.setHeight(Preferences.SCREEN_HEIGHT);
+		blur.setIterations(1);
+		for(Node child : getChildren()) {
+			child.setEffect(blur);
+			child.setMouseTransparent(true);
+		}
+		
+		Text msg = new Text(status);
+		msg.setStyle("-fx-font-size: 50; -fx-fill: black");
+		VBox holder = new VBox();
+		holder.getChildren().add(msg);
+		
+		Hyperlink returnLink = new Hyperlink("Return To Main");
+		returnLink.setOnAction(returnToMain());
+		returnLink.setStyle("-fx-font-size: 25; -fx-fill: blue");
+		holder.getChildren().add(returnLink);
+		
+		holder.setAlignment(Pos.CENTER);
+		holder.setBackground(new Background
+				(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, new Insets(200.))));
+		getChildren().add(holder);
+		AnchorPane.setTopAnchor(holder, 20.);
+		AnchorPane.setBottomAnchor(holder, 20.);
+		AnchorPane.setLeftAnchor(holder, 20.);
+		AnchorPane.setRightAnchor(holder, 20.);
 	}
 	
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler(){
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
-				Actor actor = new Actor(uihandler, screenHandler, option,actorData,ivp, actorsMap);
-				actor.getPane().setLayoutX(getWidth() - x);
-				actor.getPane().setLayoutY(y);
-				getChildren().add(actor.getPane());
+				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp);
+				actor.getMainPane().setLayoutX(getWidth() - x);
+				actor.getMainPane().setLayoutY(y);
+				getChildren().add(actor.getMainPane());
 			}
 			@Override
 			public void showError(String msg) {
@@ -79,14 +122,17 @@ public class GameScreen extends GenericGameScreen
 				AnchorPane.setRightAnchor(holder, 20.);
 				AnchorPane.setBottomAnchor(holder, 20.);
 			}
+			@Override
+			public void addActorToMap(int id, Actor actor) {
+				if (actorsMap.get(id) != null) actorsMap.put(id, actor);
+			}
 		};
 	}
 	
 	private void setup() {
 		setupPanels();
 		setupHUD();
-		setReturnToMain(e -> loginhandler.returnToMain());
-		
+		setReturnToMain(returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -118,19 +164,20 @@ public class GameScreen extends GenericGameScreen
 		ft.play();
 		return ft;
 	}
+
 	private EventHandler<ActionEvent> returnToMain() {
 		return new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				animationhandler.stop();
-				loginhandler.returnToMain();
-				System.out.println(getMediaPlayer().getStatus());
 				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
 					getMediaPlayer().stop();
 				}
+				loginhandler.returnToMain();
 			}
 		};
 	}
+
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
@@ -146,7 +193,7 @@ public class GameScreen extends GenericGameScreen
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			if(!actorsMap.containsKey(id)) {
-				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp, actorsMap);
+				Actor newActor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
 				actorsMap.put(id, newActor);
 				this.getChildren().add(newActor.getPane());
 			}

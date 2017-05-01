@@ -84,7 +84,7 @@ public class DisplayView extends BorderPane {
 	private Map<String, ComboBox<String>> myPreferences;
 
 	public DisplayView(PopViewDelegate delegate,DisplayDelegate displayDelegate,GameData gameData) {
-		this(delegate,displayDelegate, new DisplayData(),gameData);
+		this(delegate,displayDelegate, gameData.getDisplayData(),gameData);
 	}
 	
 	public DisplayView(PopViewDelegate delegate,DisplayDelegate displayDelegate, DisplayData data, GameData gameData){
@@ -121,6 +121,7 @@ public class DisplayView extends BorderPane {
 		posChoice.getItems().add(s);
 		}
 		posChoice.valueProperty().addListener((x, y, newValue) -> {
+			myData.setLocation(newValue);
 			TexttoPosFactory.updateMenuPosition(this, newValue, myMenu);
 		});
 		myVBox.getChildren().add(makeField(title, posChoice));
