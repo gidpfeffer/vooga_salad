@@ -33,8 +33,6 @@ public class GameLevelController {
 	
 	private GameData myGameData;
 	
-	private ReadableGameStatus myReadableGameStatus;
-	
 	private GameStatus myGameStatus;
 	
 	private LevelHandler myLevelHandler;
@@ -59,8 +57,8 @@ public class GameLevelController {
 		delay = new Delay(DELAY_CONSTANT);
 		myGameData = gameData;
 		enemiesInWave = new ArrayDeque<>();
-		myReadableGameStatus = gameStatus;
-		myEnduranceCondition = new EnduranceCondition(10);
+		myGameStatus = gameStatus;
+		myEnduranceCondition = new EnduranceCondition(1000);
 	}
 	
 	private BasicActorType getBasicActorEnemyType() {
@@ -82,7 +80,7 @@ public class GameLevelController {
 		}
 		int enemiesLeft = enemiesInWave.size()+myLevelHandler.actorCounts().apply(getBasicActorEnemyType());
 		setEnemiesLeft(enemiesLeft);
-		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied(myReadableGameStatus);
+		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied(myGameStatus);
 		myWin.ifPresent(win -> winCondition(win).run());
 	}
 	
