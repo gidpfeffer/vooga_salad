@@ -50,7 +50,6 @@ public class RatingView extends BorderPane {
 	 * @return
 	 */
 	private Node setUpTopNode() {
-		// TODO Auto-generated method stub
 		HBox hb = new HBox();
 		hb.getChildren().add(setUpBackButton());
 		hb.getChildren().add(setUpTitle());
@@ -62,7 +61,6 @@ public class RatingView extends BorderPane {
 	 * @return
 	 */
 	private Node setUpTitle() {
-		// TODO Auto-generated method stub
 		Label lbl = new Label(resource.getString("ratingreviewtitle"));
 		Button b = new Button();
 		UIHelper.setDropShadow(b);
