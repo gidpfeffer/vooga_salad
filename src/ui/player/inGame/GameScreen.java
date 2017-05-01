@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
+
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
@@ -97,6 +98,7 @@ public class GameScreen extends GenericGameScreen
 		AnchorPane.setBottomAnchor(holder, 20.);
 		AnchorPane.setLeftAnchor(holder, 20.);
 		AnchorPane.setRightAnchor(holder, 20.);
+
 	}
 	
 	private void initializeScreenHandler() {
@@ -209,8 +211,8 @@ public class GameScreen extends GenericGameScreen
 			actor.setHealth(arg.get(id).getActorPercentHealth());
 			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
-			actor.getPane().setLayoutX(xCoor);
-			actor.getPane().setLayoutY(yCoor);
+			actor.getMainPane().setLayoutX(xCoor);
+			actor.getMainPane().setLayoutY(yCoor);
 			//System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);
 		});
 	}

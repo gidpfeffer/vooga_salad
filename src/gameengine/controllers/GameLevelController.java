@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.function.Supplier;
-
 import gamedata.ActorData;
 import gamedata.EnemyInWaveData;
 import gamedata.GameData;
@@ -13,13 +12,12 @@ import gamedata.LevelData;
 import gamedata.PathData;
 import gamedata.WaveData;
 import gameengine.actors.management.Actor;
-import gameengine.conditions.EnduranceCondition;
 import gameengine.conditionsgen.Condition;
-import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
-import gamestatus.ReadableGameStatus;
+import gamestatus.GameStatus;
+import types.BasicActorType;
 import util.Delay;
 /**
  * Controls information about/behavior of a single level
@@ -33,7 +31,7 @@ public class GameLevelController {
 	
 	private GameData myGameData;
 	
-	private ReadableGameStatus myReadableGameStatus;
+	private GameStatus myGameStatus;
 	
 	private LevelHandler myLevelHandler;
 	
@@ -41,30 +39,40 @@ public class GameLevelController {
 	
 	private final int DELAY_CONSTANT = 2;
 	
-	private Condition<ReadableGrid> myEnduranceCondition;
+	private Condition myWinCondition;
 	
 	private int level;
 	
 	private Queue<Supplier<Boolean>> enemiesInWave;
 	
-	public GameLevelController(LevelHandler levelHandler,GameData gameData,ReadableGameStatus readableGameStatus) {
+	private int enemiesLeft = 0; 
+
+	public GameLevelController(LevelHandler levelHandler,GameData gameData,GameStatus gameStatus) {
 		myLevelHandler = levelHandler;
 		myGrid = myLevelHandler.getMyGrid();
 		delay = new Delay(DELAY_CONSTANT);
 		myGameData = gameData;
 		enemiesInWave = new ArrayDeque<>();
-		myReadableGameStatus = readableGameStatus;
-		myEnduranceCondition = new EnduranceCondition<ReadableGrid>(1000);
+		myGameStatus = gameStatus;
 	}
 	
-	@SuppressWarnings("unchecked")
+	private BasicActorType getBasicActorEnemyType() {
+		return myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies().get(0).getMyActor().getType();
+	}
+	
+	private void setEnemiesLeft(int numEnemies) {
+		enemiesLeft = numEnemies;
+		myGameStatus.setMyEnemiesLeft(numEnemies);
+	}
+	
 	public void update() {
 		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
 			enemiesInWave.poll().get();
 		}
-		Optional<Boolean> myWin = myEnduranceCondition.conditionSatisfied((ReadableGrid)myGrid, myReadableGameStatus);//.ifPresent((win) -> winCondition((Boolean) win));
+		int enemiesLeft = enemiesInWave.size()+myLevelHandler.actorCounts().apply(getBasicActorEnemyType());
+		setEnemiesLeft(enemiesLeft);
+		Optional<Boolean> myWin = myWinCondition.conditionSatisfied(myGameStatus);
 		myWin.ifPresent(win -> winCondition(win).run());
-		System.out.println("pls");
 	}
 	
 	private Runnable winCondition(Boolean win) {
@@ -91,7 +99,12 @@ public class GameLevelController {
 	}
 	
 	private void loadLevel(LevelData levelData) {
+		updateWinCondition(levelData);
 		addPieces(levelData);
+	}
+	
+	private void updateWinCondition(LevelData levelData) {
+		myWinCondition = levelData.getCondition();
 	}
 	
 	/**
@@ -117,6 +130,10 @@ public class GameLevelController {
 				return true;
 			});
 		});
+	}
+	
+	public int getEnemiesLeft() {
+		return enemiesLeft;
 	}
 
 	private void spawnEnemy(EnemyInWaveData enemyData, Grid2D firstPathCoor) {
