@@ -22,12 +22,19 @@ import ui.general.UIHelper;
 import ui.handlers.LoginHandler;
 import ui.player.users.User;
 
+/**
+ * This screen is the homescreen of the application. It has buttons to access the other parts
+ * of the application, as well as fields for the user to sign in or sign up.
+ * @author Vishnu Gottiparthy
+ * @author anngelyque
+ */
 public class Login extends BorderedAnchorPane implements LoginElement {
 	// how to be "logged in"
 	private Scene scene;
 	private Button auth;
 	private Button selector;
 	private Button reviews;
+	private Button leaderboard;
 	private Button loginEnter;
 	private final Text actiontarget;
 	private HBox bottomHBox;
@@ -41,6 +48,12 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		return scene;
 	}
 	
+	/**
+	 * Creates the login screen
+	 * @param loginhandler Allows this screen to take display-related actions
+	 * @param css Describes the style for the screen
+	 * @param resource Describes the file that contains all dialog messages
+	 */
 	public Login(LoginHandler loginhandler, String css, String resource) {
 		this.css = css;
 		this.loginhandler = loginhandler;
@@ -50,7 +63,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		setup();
 	}
 
-	public void setup() {
+	private void setup() {
 		setupLayout();
 		setupTitle();
 		setupLoginNewAccountTitle();
@@ -150,10 +163,15 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		reviews = new Button("Ratings and Reviews");
 		reviews.setOnAction(e -> loginhandler.gotoReviews());
 		
+		leaderboard = new Button("Leaderboard");
+		leaderboard.setOnAction(e -> loginhandler.gotoLeaderboard());
+		
 		UIHelper.setDropShadow(auth);
 		UIHelper.setDropShadow(selector);
 		UIHelper.setDropShadow(reviews);
-		bottomHBox = new HBox(100, auth, selector, reviews);
+		UIHelper.setDropShadow(leaderboard);
+		
+		bottomHBox = new HBox(50, auth, selector, reviews, leaderboard);
 		getBorderPane().setBottom(bottomHBox);
 		bottomHBox.setAlignment(Pos.CENTER);
 		bottomHBox.setPadding(new Insets(0., 0., 30., 0.));
@@ -168,8 +186,7 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		getBorderPane().setCenter(sp);
 	}
 	
-	
-	public void transitionToLoggedIn() {
+	private void transitionToLoggedIn() {
 	     ScaleTransition st = new ScaleTransition(Duration.millis(1000), gridPane);
 	     st.setByX(-1f);
 	     st.setByY(-1f);

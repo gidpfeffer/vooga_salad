@@ -17,6 +17,7 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	private final String MONEY = "Money";
 	private final String LEVEL = "Level";
 	private final String LIVES = "Lives";
+	private final String ENEMIES_LEFT = "Enemies Left";
 	
 	private final static int INIT_LIVES = 3;
 	
@@ -105,5 +106,20 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	public int getLives() {
 		return Integer.parseInt(myMap.get(LIVES));
 	}
+
+	public int getEnemiesLeft() {
+		return Integer.parseInt(myMap.get(ENEMIES_LEFT));
+	}
+	
+	public void enemyEliminated() {
+		setMyEnemiesLeft(getEnemiesLeft() -1);
+	}
+
+	public void setMyEnemiesLeft(int enemiesLeft) {
+		myMap.put(ENEMIES_LEFT, Integer.toString(enemiesLeft));
+		notifyObservers();
+	}
+	
+	
 	
 }
