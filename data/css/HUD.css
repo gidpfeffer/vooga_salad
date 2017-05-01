@@ -4,8 +4,6 @@
     -fx-background-insets: 0.0 5.0 0.0 5.0;
     -fx-opacity: .5;
     -fx-padding: 10;
-    -fx-hgap: 10;
-    -fx-vgap: 10;
 }
 
 #fancytext {
@@ -14,9 +12,9 @@
 }
 
 #key{
-        -fx-fill: linear-gradient(orange, orangered);
+	-fx-fill: linear-gradient(orange, orangered);
 }
 
 #val{
-        -fx-fill:  linear-gradient(cyan , dodgerblue);
+	-fx-fill:  linear-gradient(cyan , dodgerblue);
 }
