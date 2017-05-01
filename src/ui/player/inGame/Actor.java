@@ -3,8 +3,11 @@ package ui.player.inGame;
 import java.util.Map;
 import java.util.Optional;
 
+import org.openqa.selenium.Dimension;
+
 import gamedata.ActorData;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -33,7 +36,6 @@ public class Actor{
 	private double height;
 	private Optional<Boolean> removeable;
 	private ProgressBar health;
-	private VBox vbox;
 	private Pane mainPane;
 
 	public Pane getPane() {
@@ -44,8 +46,12 @@ public class Actor{
 		return mainPane;
 	}
 	
+	public void setHealth(double d){
+		health.setProgress(d);
+	}
+	
 	public void deleteActor() {
-		actor = null;
+		mainPane = null;
 	}
 	
 	public Integer getID() {
@@ -64,17 +70,25 @@ public class Actor{
 		this.imp = ivp;
 		this.uihandler = uihandler;
 		//this.mapOfActors = mapOfActors;
-		this.removeable = Optional.of(true);
-		this.health = new ProgressBar(1F);
-		this.vbox = new VBox(actor, health);
-		this.mainPane = new Pane(vbox);
+		this.removeable = Optional.of(false);
 		setup();
 	}
 
 	public void setup() {
 		width = imp.getWidth() - 2 * imp.getImageInsets().x;
 		height = imp.getHeight() - 2 * imp.getImageInsets().y;
+		setupHealth();
 		setupEvents();
+	}
+
+	private void setupHealth() {
+		health = new ProgressBar(1F);
+		health.setPrefWidth(actor.getWidth());
+		health.setScaleY(.2);
+		VBox v = new VBox(-8);
+		v.getChildren().addAll(actor, health);
+		v.setAlignment(Pos.CENTER);
+		mainPane = new Pane(v);
 	}
 
 	/**
@@ -89,7 +103,6 @@ public class Actor{
 	EventHandler<MouseEvent> drag = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			System.out.println("moving");
 			mainPane.setLayoutX(ME.getSceneX());
 			mainPane.setLayoutY(ME.getSceneY());
 		}
@@ -102,12 +115,13 @@ public class Actor{
 	EventHandler<MouseEvent> released = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			if (actor.getId() != null && (mapOfActors.get(Integer.parseInt(actor.getId())) != null)) {
+			if (actor.getId() != null && (screenhandler.isActorInMap(Integer.parseInt(actor.getId())))) {
 				try {
-					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), actor.getLayoutX() / width,
-							actor.getLayoutY() / height);
+					uihandler.updateGameObjectLocation(Integer.parseInt(actor.getId()), mainPane.getLayoutX() / width,
+							mainPane.getLayoutY() / height);
 				} catch (NumberFormatException | VoogaException e) {
 					screenhandler.showError("You cannot place an item there!");
+					//screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
 					System.out.println("Unable to add game object -- Actor ~ 103");
 					//System.out.println("**********Unable to update location********** Actor(~80)");
 					//e.printStackTrace();
@@ -127,8 +141,8 @@ public class Actor{
 		public void handle(final MouseEvent ME) {
 			if (((MouseEvent) ME).getButton().equals(MouseButton.SECONDARY)) {
 				try {
-					System.out.println(actor.getLayoutX() / width + " " + actor.getLayoutY() / height);
-					Integer actorID = uihandler.addGameObject(option, actor.getLayoutX() / width, actor.getLayoutY() / height);
+					System.out.println(actor.getLayoutX() / width + " " + mainPane.getLayoutY() / height);
+					Integer actorID = uihandler.addGameObject(option, mainPane.getLayoutX() / width, mainPane.getLayoutY() / height);
 					Object obj = ME.getSource();
 					if (obj instanceof Pane) {
 						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
@@ -139,6 +153,7 @@ public class Actor{
 					}
 				} catch (NumberFormatException | VoogaException e) {
 					screenhandler.showError("You cannot place an item there!");
+					//screenhandler.deleteActorFromScreen(Integer.parseInt(actor.getId()));
 					System.out.println("Unable to add game object -- Actor ~ 132");
 					//e.printStackTrace();
 				}
