@@ -140,9 +140,7 @@ public class BaseLayerView extends Layer {
 
 	@Override
 	public void clear() {
-		for(Base b : myBases){
-			deleteBase(b);
-		}
+		myBases.forEach(base -> deleteBase(base));
 
 	}
 
