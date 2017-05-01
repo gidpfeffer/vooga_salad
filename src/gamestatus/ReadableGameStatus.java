@@ -5,4 +5,5 @@ public interface ReadableGameStatus {
 	double getMoney();
 	int getLevel();
 	int getLives();
+	int getEnemiesLeft();
 }
