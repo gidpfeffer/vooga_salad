@@ -8,4 +8,6 @@ public interface ScreenHandler {
 	public void addActorToMap(int id, Actor actor);
 	public void deleteActorFromScreen(int id);
 	public boolean isActorInMap(int id);
+	public double getWidth();
+	public double getHeight();
 }

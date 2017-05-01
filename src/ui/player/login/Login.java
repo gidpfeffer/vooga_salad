@@ -213,35 +213,5 @@ public class Login extends BorderedAnchorPane implements LoginElement {
 		ScaleTransition st = new ScaleTransition(Duration.millis(1000), vbox);
 		st.setByX(2f);
 		st.setByY(2f);
-		addProfileImage();
-	}
-
-	private void addProfileImage() {
-		
-	}
-
-	//temp
-	public class Game{
-		String name;
-		String imagePath;
-		EventHandler<MouseEvent> clicked;
-
-		public String getName() {
-			return name;
-		}
-
-		public String getImagePath() {
-			return imagePath;
-		}
-
-		public EventHandler<MouseEvent> getClicked() {
-			return clicked;
-		}
-
-		public Game(String name, String imagePath, EventHandler<MouseEvent> clicked) {
-			this.name = name;
-			this.imagePath = imagePath;
-			this.clicked = clicked;
-		}
 	}
 }

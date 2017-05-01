@@ -101,7 +101,7 @@ public class SidePanel {
 	}
 	
 	private OptionsPane getPane (Map<Integer, ActorData> map, String name) {
-		OptionsPane optionPane = new OptionsPane(screenHandler, map, name, 100);
+		OptionsPane optionPane = new OptionsPane(screenHandler, map, name, 115);
 		optionPane.setPrefHeight(300);
 		return optionPane;
 	}

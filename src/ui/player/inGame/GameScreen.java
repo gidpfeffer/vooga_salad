@@ -1,4 +1,5 @@
 package ui.player.inGame;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +34,10 @@ import ui.handlers.LoginHandler;
 import ui.handlers.UIHandler;
 import ui.player.login.LoginElement;
 import util.observerobservable.VoogaObserver;
-public class GameScreen extends GenericGameScreen 
-	implements VoogaObserver<Map<Integer,FrontEndInformation>>, LoginElement{
-	
+
+public class GameScreen extends GenericGameScreen
+		implements VoogaObserver<Map<Integer, FrontEndInformation>>, LoginElement {
+
 	private ImageViewPane ivp;
 	private UIHandler uihandler;
 	private SimpleHUD hud;
@@ -43,9 +45,11 @@ public class GameScreen extends GenericGameScreen
 	private ScreenHandler screenHandler;
 	private LoginHandler loginhandler;
 	private AnimationHandler animationhandler;
-	
-	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
+
+	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler,
+			Supplier<SimpleHUD> simpleHUD) {
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null),
+				Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
@@ -56,60 +60,56 @@ public class GameScreen extends GenericGameScreen
 		setup();
 		fadeTransition(this, .0, 1.);
 	}
-	
+
 	public void setLoginHandler(LoginHandler loginhandler) {
 		this.loginhandler = loginhandler;
 	}
-	
+
 	public void notifyWin() {
 		notifyStatus("You won!");
 	}
-	
+
 	public void notifyLose() {
 		notifyStatus("You lost!");
 	}
-	
+
 	private void notifyStatus(String status) {
 		animationhandler.stop();
 		BoxBlur blur = new BoxBlur();
 		blur.setWidth(Preferences.SCREEN_WIDTH);
 		blur.setHeight(Preferences.SCREEN_HEIGHT);
 		blur.setIterations(1);
-		for(Node child : getChildren()) {
+		getChildren().forEach(child -> {
 			child.setEffect(blur);
 			child.setMouseTransparent(true);
-		}
-		
+		});
+
 		Text msg = new Text(status);
 		msg.setStyle("-fx-font-size: 50; -fx-fill: black");
 		VBox holder = new VBox();
 		holder.getChildren().add(msg);
-		
+
 		Hyperlink returnLink = new Hyperlink("Return To Main");
 		returnLink.setOnAction(returnToMain());
 		returnLink.setStyle("-fx-font-size: 25; -fx-fill: blue");
 		holder.getChildren().add(returnLink);
-		
-		holder.setAlignment(Pos.CENTER);
-		holder.setBackground(new Background
-				(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, new Insets(200.))));
-		getChildren().add(holder);
-		AnchorPane.setTopAnchor(holder, 20.);
-		AnchorPane.setBottomAnchor(holder, 20.);
-		AnchorPane.setLeftAnchor(holder, 20.);
-		AnchorPane.setRightAnchor(holder, 20.);
 
+		holder.setAlignment(Pos.CENTER);
+		holder.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, new Insets(200.))));
+		getChildren().add(holder);
+		setupAnchors(holder, 20.);
 	}
-	
+
 	private void initializeScreenHandler() {
-		screenHandler = new ScreenHandler(){
+		screenHandler = new ScreenHandler() {
 			@Override
-			public void createActor(double x, double y, int option, ActorData actorData ) {
-				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp);
+			public void createActor(double x, double y, int option, ActorData actorData) {
+				Actor actor = new Actor(uihandler, screenHandler, option, actorData);
 				actor.getMainPane().setLayoutX(getWidth() - x);
 				actor.getMainPane().setLayoutY(y);
 				getChildren().add(actor.getMainPane());
 			}
+
 			@Override
 			public void showError(String msg) {
 				Text error = new Text(msg);
@@ -119,39 +119,57 @@ public class GameScreen extends GenericGameScreen
 				getChildren().add(holder);
 				FadeTransition ft = (FadeTransition) fadeTransition(holder, 1.0, 0.);
 				ft.setOnFinished(e -> getChildren().remove(holder));
-				AnchorPane.setTopAnchor(holder, 20.);
-				AnchorPane.setLeftAnchor(holder, 20.);
-				AnchorPane.setRightAnchor(holder, 20.);
-				AnchorPane.setBottomAnchor(holder, 20.);
+				setupAnchors(holder, 20.);
 			}
+
 			@Override
 			public void addActorToMap(int id, Actor actor) {
-				if (actorsMap.get(id) == null) actorsMap.put(id, actor);
+				if (actorsMap.get(id) == null)
+					actorsMap.put(id, actor);
 			}
+
 			@Override
-			public void deleteActorFromScreen(int id){
+			public void deleteActorFromScreen(int id) {
 				getChildren().remove(actorsMap.get(id).getMainPane());
 			}
+
 			@Override
 			public boolean isActorInMap(int id) {
 				return actorsMap.get(id) != null;
 			}
+
+			@Override
+			public double getWidth() {
+				return ivp.getWidth() - 2 * ivp.getImageInsets().x;
+			}
+
+			@Override
+			public double getHeight() {
+				return ivp.getHeight() - 2 * ivp.getImageInsets().y;
+			}
 		};
 	}
-	
+
+	private void setupAnchors(Node n, double value) {
+		AnchorPane.setTopAnchor(n, value);
+		AnchorPane.setLeftAnchor(n, value);
+		AnchorPane.setRightAnchor(n, value);
+		AnchorPane.setBottomAnchor(n, value);
+	}
+
 	private void setup() {
 		setupPanels();
 		setupHUD();
 		setReturnToMain(returnToMain());
 	}
-	
+
 	private void setupPanels() {
 		SidePanel sidePanel = new SidePanel(screenHandler, uihandler.getOptions());
 		AnchorPane.setRightAnchor(sidePanel.getSidePane(), 10.0);
 		this.getChildren().add(sidePanel.getSidePane());
 		addInternalPanesToRoot(sidePanel.getListOfPanes());
 	}
-	
+
 	public void addInternalPanesToRoot(Collection<OptionsPane> listOfPanes) {
 		listOfPanes.forEach(op -> {
 			this.getChildren().add(op);
@@ -160,13 +178,13 @@ public class GameScreen extends GenericGameScreen
 					+ "-fx-background-radius: 10 0 0 10;"));
 		});
 	}
-	
+
 	private void setupHUD() {
 		AnchorPane.setBottomAnchor(hud.getGrid(), 10.);
 		AnchorPane.setLeftAnchor(hud.getGrid(), 10.);
 		this.getChildren().add(hud.getGrid());
 	}
-	
+
 	private Transition fadeTransition(Node n, double from, double to) {
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), n);
 		ft.setFromValue(from);
@@ -180,7 +198,7 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void handle(ActionEvent e) {
 				animationhandler.stop();
-				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
+				if (getMediaPlayer().getStatus().equals(Status.PLAYING)) {
 					getMediaPlayer().stop();
 				}
 				loginhandler.returnToMain();
@@ -188,36 +206,34 @@ public class GameScreen extends GenericGameScreen
 		};
 	}
 
-	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
 		actorsMap.keySet().removeIf(id -> {
-			if(arg.containsKey(id)) {
+			if (arg.containsKey(id)) {
 				return false;
 			}
 			this.getChildren().remove(actorsMap.get(id).getMainPane());
-			//actorsMap.get(id).deleteActor();
 			return true;
 		});
-		
+
 		arg.keySet().stream().forEach(id -> {
 			Integer actorOption = arg.get(id).getActorOption();
 			Actor actor = null;
-			if(!actorsMap.containsKey(id)) {
-				actor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption), ivp);
+			if (!actorsMap.containsKey(id)) {
+				actor = new Actor(uihandler, screenHandler, actorOption, uihandler.getOptions().get(actorOption));
 				actorsMap.put(id, actor);
 				this.getChildren().add(actor.getMainPane());
 				actor.turnOffHandlers();
-			}
-			else {
+			} else {
 				actor = actorsMap.get(id);
 			}
 			actor.setHealth(arg.get(id).getActorPercentHealth());
-			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(), (ivp.getWidth() - ivp.getImageInsets().x));
-			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(), (ivp.getHeight() - ivp.getImageInsets().y));
+			double xCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getX(),
+					(ivp.getWidth() - ivp.getImageInsets().x));
+			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(),
+					(ivp.getHeight() - ivp.getImageInsets().y));
 			actor.getMainPane().setLayoutX(xCoor);
 			actor.getMainPane().setLayoutY(yCoor);
-			//System.out.println("Layout: " + actor.getActor().getLayoutX() + " " + xCoor + " " + actor.getActor().getLayoutY() + " " + yCoor);
 		});
 	}
 }
