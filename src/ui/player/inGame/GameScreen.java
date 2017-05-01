@@ -191,6 +191,10 @@ public class GameScreen extends GenericGameScreen
 	
 	@Override
 	public void update(Map<Integer, FrontEndInformation> arg) {
+/*		System.out.println(actorsMap);
+		for (int i : actorsMap.keySet()) {
+			System.out.println(actorsMap.get(i).getData().getType().toString());
+		}*/
 		actorsMap.keySet().removeIf(id -> {
 			if(arg.containsKey(id)) {
 				return false;
