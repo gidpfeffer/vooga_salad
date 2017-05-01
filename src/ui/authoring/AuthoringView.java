@@ -172,7 +172,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		AnchorPane.setTopAnchor(displayButton, 12.0);
 		UIHelper.setDropShadow(displayButton);
 		this.getChildren().add(displayButton);
-		myDisplayView=new DisplayView(this,this,myGameData);
+		myDisplayView=new DisplayView(this,this,myGameData.getDisplayData(),myGameData);
 		UIHelper.setBackgroundColor(myDisplayView, CustomColors.GREEN);
 		//end test
 		

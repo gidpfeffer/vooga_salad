@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DisplayData {
 	private static final String DEFAULT_POSITION= "Left";
-	private static final int DEFAULT_WIDTH=80;
+	private static final int DEFAULT_WIDTH=100;
 	private static final int DEFAULT_HEIGHT=400;
 	public static final String DEFAULT_IMAGE="default_map_background_0.jpg";
 	private int width;
@@ -65,6 +65,7 @@ public class DisplayData {
 	}
 
 	public void setBackgroundImagePath(String backgroundImagePath) {
+		
 		this.backgroundImagePath = backgroundImagePath;
 	}
 	public String toString(){

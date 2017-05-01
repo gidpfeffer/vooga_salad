@@ -10,15 +10,22 @@ import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import ui.Preferences;
 import ui.general.ImageViewPane;
 import ui.handlers.AnimationHandler;
 import ui.handlers.LoginHandler;
@@ -37,7 +44,7 @@ public class GameScreen extends GenericGameScreen
 	private AnimationHandler animationhandler;
 	
 	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler, Supplier<SimpleHUD> simpleHUD) {
-		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(null));
+		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null), Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
@@ -62,7 +69,34 @@ public class GameScreen extends GenericGameScreen
 	}
 	
 	private void notifyStatus(String status) {
-		new Alert(AlertType.INFORMATION, status).showAndWait();
+		animationhandler.stop();
+		BoxBlur blur = new BoxBlur();
+		blur.setWidth(Preferences.SCREEN_WIDTH);
+		blur.setHeight(Preferences.SCREEN_HEIGHT);
+		blur.setIterations(1);
+		for(Node child : getChildren()) {
+			child.setEffect(blur);
+			child.setMouseTransparent(true);
+		}
+		
+		Text msg = new Text(status);
+		msg.setStyle("-fx-font-size: 50; -fx-fill: black");
+		VBox holder = new VBox();
+		holder.getChildren().add(msg);
+		
+		Hyperlink returnLink = new Hyperlink("Return To Main");
+		returnLink.setOnAction(returnToMain());
+		returnLink.setStyle("-fx-font-size: 25; -fx-fill: blue");
+		holder.getChildren().add(returnLink);
+		
+		holder.setAlignment(Pos.CENTER);
+		holder.setBackground(new Background
+				(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, new Insets(200.))));
+		getChildren().add(holder);
+		AnchorPane.setTopAnchor(holder, 20.);
+		AnchorPane.setBottomAnchor(holder, 20.);
+		AnchorPane.setLeftAnchor(holder, 20.);
+		AnchorPane.setRightAnchor(holder, 20.);
 	}
 	
 	private void initializeScreenHandler() {
@@ -70,9 +104,9 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void createActor(double x, double y, int option, ActorData actorData ) {
 				Actor actor = new Actor(uihandler, screenHandler, option, actorData, ivp);
-				actor.getPane().setLayoutX(getWidth() - x);
-				actor.getPane().setLayoutY(y);
-				getChildren().add(actor.getPane());
+				actor.getMainPane().setLayoutX(getWidth() - x);
+				actor.getMainPane().setLayoutY(y);
+				getChildren().add(actor.getMainPane());
 			}
 			@Override
 			public void showError(String msg) {
@@ -98,7 +132,7 @@ public class GameScreen extends GenericGameScreen
 	private void setup() {
 		setupPanels();
 		setupHUD();
-		setReturnToMain(e -> returnToMain());
+		setReturnToMain(returnToMain());
 	}
 	
 	private void setupPanels() {
@@ -136,10 +170,10 @@ public class GameScreen extends GenericGameScreen
 			@Override
 			public void handle(ActionEvent e) {
 				animationhandler.stop();
-				loginhandler.returnToMain();
 				if(getMediaPlayer().getStatus().equals(Status.PLAYING)) {
 					getMediaPlayer().stop();
 				}
+				loginhandler.returnToMain();
 			}
 		};
 	}
