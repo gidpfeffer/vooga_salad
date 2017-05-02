@@ -12,7 +12,7 @@ public class ActorDamageableWithExitProperty<G extends ReadAndDamageGrid> extend
 	//public ActorDamageableWithExitProperty(ActorDamageableWithExitData myData) {
 	//	myExits = myData.getExits();
 
-	public ActorDamageableWithExitProperty(ActorDamageableData myData) {
+	public ActorDamageableWithExitProperty(ActorDamageableWithExitData myData) {
 		super(myData);
 	}
 	
