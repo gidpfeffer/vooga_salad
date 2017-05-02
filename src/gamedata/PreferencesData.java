@@ -24,6 +24,7 @@ public class PreferencesData{
 	static final boolean DEFAULT = false;
 	
 	private Optional<Integer> numLives;
+	private Optional<Integer> startMoney;
 	private Optional<Boolean> enemyLoop;
 	private Optional<Boolean> towersAttackable;
 	private Optional<Boolean> wantMoney;
@@ -133,6 +134,14 @@ public class PreferencesData{
 		return pauseBetweenWaves;
 	}
 
+	public Optional<Integer> getStartMoney() {
+		return startMoney;
+	}
+
+	public void setStartMoney(Optional<Integer> startMoney) {
+		this.startMoney = startMoney;
+	}
+
 	public String getMusicFilePath() {
 		return musicFilePath;
 	}
@@ -140,6 +149,8 @@ public class PreferencesData{
 	public void setMusicFilePath(String musicFilePath) {
 		this.musicFilePath = musicFilePath;
 	}
+	
+	
 	
 	
 
