@@ -23,6 +23,18 @@ public class LineageData {
 		generations.put(current, progenitor);
 	}
 	
+	@Override
+	public boolean equals(Object obj){
+		if(obj == null){
+			return false;
+		}
+		if(!(obj instanceof LineageData)){
+			return false;
+		}
+		LineageData lin = (LineageData)obj;
+		return lin.getProgenitor().equals(this.getProgenitor());
+	}
+	
 	public void addGeneration(ActorData newbie){
 		generations.put(++current, newbie);
 	}
