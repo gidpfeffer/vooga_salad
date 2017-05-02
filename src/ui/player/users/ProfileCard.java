@@ -16,6 +16,11 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import ui.player.inGame.OptionButton;
 
+/**
+ * A card that displays all of a {@code User}'s information
+ * @author anngelyque
+ * @author Vishnu Gottiparthy
+ */
 public class ProfileCard {
 
 	private HBox card;
@@ -25,14 +30,26 @@ public class ProfileCard {
 	private GameStatsGrid gsGrid;
 	private Hyperlink logout;
 	
+	/**
+	 * Gets the {@code User} associated with this {@code ProfileCard}
+	 * @return The {@code User} associated with this {@code ProfileCard}
+	 */
 	public User getUser() {
 		return user;
 	}
 	
+	/**
+	 * Gets this {@code ProfileCard} as an {@code HBox} for display
+	 * @return This {@code ProfileCard} as an {@code HBox} for display
+	 */
 	public HBox getCard() {
 		return card;
 	}
 	
+	/**
+	 * Sets the action of the logout button on the card
+	 * @param e Mouse click action
+	 */
 	public void setLogoutAction(EventHandler<ActionEvent> e) {
 		logout.setOnAction(e);
 	}
