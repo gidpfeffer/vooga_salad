@@ -41,6 +41,7 @@ import util.FileSelector;
 public class MenuView extends AnchorPane {
 
 	private static final String NUM_LIVES_LABEL = "Number of Lives";
+	private static final String START_MONEY_LABEL = "Start Money";
 	private static final String ENEMY_LOOP_LABEL = "Loop Enemies";
 	private static final String TOWERS_ATTACKABLE_LABEL = "Attackable Towers";
 	private static final String WANT_MONEY_LABEL = "Money";
@@ -129,6 +130,7 @@ public class MenuView extends AnchorPane {
 		myVBox = new VBox(3);
 		myVBox.setAlignment(Pos.CENTER_LEFT);
 		makeNumLivesField();
+		makeStartMoneyField();
 		//myVBox.setBackground(UIHelper.backgroundForColor(CustomColors.INDIGO));
 		mySwitchTitles.stream().forEach(t -> makeSwitchEntry(t));
 		double inset = 10.0;
@@ -166,6 +168,23 @@ public class MenuView extends AnchorPane {
 		field.setMaxWidth(80);
 		myVBox.getChildren().add(makeField(NUM_LIVES_LABEL, field));
 
+	}
+	
+	private void makeStartMoneyField(){
+		TextField field = new TextField();
+		field.textProperty().addListener(new ChangeListener<String>() {
+	        @Override
+	        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+	            if (!newValue.matches("\\d*")) {
+	                field.setText(newValue.replaceAll("[^\\d]", ""));
+	            }
+	            try {
+	            	myData.setStartMoney(Optional.of(Integer.parseInt(newValue)));
+	            } catch (Exception e) {}
+	        }
+	    });
+		field.setMaxWidth(80);
+		myVBox.getChildren().add(makeField(START_MONEY_LABEL, field));
 	}
 
 	private StackButton makeField(String title, Node entry) {
