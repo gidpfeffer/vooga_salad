@@ -135,14 +135,13 @@ public class GameData {
 	}
 	
 	/**
-	 * Remove an actor (e.g., Snorlax)
+	 * Remove a LineageData, including all of its actors (e.g., Snorlax)
 	 * 
-	 * @param actor ActorData to remove
+	 * @param actor LineageData to remove
 	 */
-	public void removeActor(ActorData actor){
+	public void removeLineage(LineageData actor){
 		for(Integer gen: pieces.keySet()){
-			ActorData first = pieces.get(gen).getProgenitor(); 
-			if(first.equals(actor)){
+			if(pieces.equals(actor)){ //equals method overriden in LineageData
 				pieces.remove(gen);
 			}
 		}
@@ -153,12 +152,17 @@ public class GameData {
 	 * including references in the LevelData objects
 	 * @param actor
 	 */
-	public void completeWipeActor(ActorData actor){
-		removeActor(actor);
-		removeFromLevels(actor);
+	public void completeWipeLineage(LineageData lin){
+		removeLineage(lin);
+		for(ActorData actor: lin.getMap().values()){
+			removeFromLevels(actor);
+		}
 	}
 	
 	private void removeFromLevels(ActorData actor){
+		if(levels.size()==0){
+			return;
+		}
 		for (int i=0; i<levels.size(); i++){
 			List<WaveData> waves = levels.get(i).getMyWaves();
 			for(int j=0; j<waves.size(); j++){

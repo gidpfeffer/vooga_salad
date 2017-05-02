@@ -80,7 +80,6 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		myGameData.getAllOfType(type);
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
-		
 	}
 
 	private void setupBackButton() {
@@ -132,7 +131,6 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		setupInfoView(rightSide);
 		setupBackButton();
 		setupPlaceable();
-		
 	}
 	
 	private void setupInfoView(ScrollPane scroll){
@@ -212,10 +210,52 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 	 * @param name the name of the actor, can be changed later.
 	 */
 	private void addActor(String imgPath, String name){
+		AnchorPane anchor = new AnchorPane();
+		
 		Image img = new Image(imgPath);
 		ImageView imageView = new ImageView(img);
 		imageView.setFitWidth(40);
 		imageView.setPreserveRatio(true);
+		
+		TextField actorField = addField(name);
+		
+		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
+		StackPane view = UIHelper.buttonStack(
+				e -> myActorInfoView.setLineageData(data), 
+				Optional.of(actorField), Optional.of(imageView), 
+				Pos.CENTER_LEFT, true);
+		view.setPrefHeight(BUTTON_HEIGHT);
+		actorField.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(data, newText));
+		
+		ImageView removeIcon = new ImageView(new Image("clear_icon.png"));
+		removeIcon.setFitHeight(16);
+		removeIcon.setFitWidth(16);
+		StackPane remove = UIHelper.buttonStack(e -> {removeLineage(data, anchor);}, 
+				Optional.ofNullable(null), 
+				Optional.of(removeIcon), Pos.CENTER, true);
+		UIHelper.setBackgroundColor(remove, Color.TRANSPARENT);
+		AnchorPane.setTopAnchor(remove, -4.0);
+		AnchorPane.setRightAnchor(remove, -4.0);
+		
+		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
+		//VBox.setMargin(view, new Insets(8));
+		AnchorPane.setLeftAnchor(view, 8.0);
+		AnchorPane.setRightAnchor(view, 8.0);
+		AnchorPane.setTopAnchor(view, 8.0);
+		AnchorPane.setBottomAnchor(view, 8.0);
+		anchor.getChildren().addAll(view, remove);
+		myLineageList.getChildren().add(myLineageList.getChildren().size() - 1, anchor);	
+	}
+	
+	private void removeLineage(LineageData data, AnchorPane anchor){
+		//TODO: Debug and add delgate
+		myGameData.completeWipeLineage(data);
+		//myDelegate.closeView(anchor);
+		
+	}
+	
+	
+	public TextField addField(String name){
 		StackPane lblWrapper = new StackPane();
 		TextField field = new TextField(name);
 		field.setFont(Preferences.FONT_MEDIUM);
@@ -225,16 +265,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		field.setStyle("-fx-background-color: #" +UIHelper.colorToHex(CustomColors.BLUE_200) + ";");
 		StackPane.setMargin(field, new Insets(8,32,8,32));
 		lblWrapper.getChildren().add(field);
-		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
-		StackPane view = UIHelper.buttonStack(
-				e -> myActorInfoView.setLineageData(data), 
-				Optional.of(field), Optional.of(imageView), 
-				Pos.CENTER_LEFT, true);
-		view.setPrefHeight(BUTTON_HEIGHT);
-		field.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(data, newText));
-		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
-		VBox.setMargin(view, new Insets(8));
-		myLineageList.getChildren().add(myLineageList.getChildren().size() - 1, view);		
+		return field;
 	}
 
 	/**
