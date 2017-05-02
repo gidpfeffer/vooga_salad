@@ -17,24 +17,40 @@ import ui.handlers.LoginHandler;
 import ui.player.login.LoginElement;
 import ui.player.users.User;
 
+/**
+ * Displays the list of users ordered by experience points. Accessible from 
+ * {@link ui.player.login.Login Login}
+ * @author Vishnu Gottiparthy
+ *
+ */
 public class LeaderboardView implements LoginElement {
 
 	private Scene scene;
+	private GridPane scores;
 	private LoginHandler loginhandler;
 	
 	public LeaderboardView(LoginHandler loginhandler) {
 		this.loginhandler = loginhandler;
-		
-		scene = new Scene(setupGrid());
+		setupGridPane();
+		setupTitle();
+		int row = populateList();
+		setReturnToMain(row);
+		scene = new Scene(buildScrollPane());
 	}
 	
-	private ScrollPane setupGrid() {
-		
-		GridPane scores = new GridPane();
+	@Override
+	public Scene getScene() {
+		return scene;
+	}
+	
+	private void setupGridPane() {
+		scores = new GridPane();
 		scores.setAlignment(Pos.TOP_CENTER);
 		scores.setVgap(10);
 		scores.setHgap(40);
-		
+	}
+	
+	private void setupTitle() {
 		Text username = new Text("Username");
 		username.setStyle("-fx-font-size: 40; -fx-fill: black");
 		username.setUnderline(true);
@@ -44,10 +60,13 @@ public class LeaderboardView implements LoginElement {
 		experience.setStyle("-fx-font-size: 40; -fx-fill: black");
 		experience.setUnderline(true);
 		scores.add(experience, 1, 0);
-		
+	}
+	
+	private int populateList() {
 		Iterator<User> users = loginhandler.getUsersInExpOrder();
-		
 		int row = 1;
+		Text username, experience;
+		
 		while(users.hasNext()) {
 			User user = users.next();
 			if(user.getUsername().equals("Guest")) {
@@ -64,21 +83,21 @@ public class LeaderboardView implements LoginElement {
 			
 			row++;
 		}
+		return row;
+	}
+	
+	public void setReturnToMain(int row) {
 		Hyperlink returnToMain = new Hyperlink("Return to main");
 		returnToMain.setOnAction(e -> loginhandler.returnToMain());
 		scores.add(returnToMain, 0, row);
-		
+	}
+	
+	private ScrollPane buildScrollPane() {
 		ScrollPane board = new ScrollPane(scores);
 		board.setFitToHeight(true);
 		board.setFitToWidth(true);
 		board.setBackground(new Background(
 				new BackgroundFill(Color.LAVENDER, CornerRadii.EMPTY, Insets.EMPTY)));
-		
 		return board;
-	}
-	
-	@Override
-	public Scene getScene() {
-		return scene;
 	}
 }
