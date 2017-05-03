@@ -49,10 +49,11 @@ public class GameObjectUtil {
 		return false;
 	}
 
-	public int addGameObject(Integer option, double xRatio, double yRatio,GameData gameData,GameStatus gameStatus, ControllableGrid grid) throws VoogaException{
+	public int addGameObject(Integer option, double xRatio, double yRatio,GameData gameData,GameStatus gameStatus, ControllableGrid grid) {
 		ActorData actorData = gameData.getOption(option); 
 		if (isAddable(grid,actorData.getLayer(),xRatio,yRatio,gameData.getPreferences(),gameStatus.getMoney(),actorData.getCost())) return generateActor(gameData, actorData, xRatio, yRatio,grid,gameStatus);
-		else throw new VoogaException(VoogaException.INVALID_LOCATION);
+		else return -1;
+		//should i do more rigorous error checking AKA tell them why game object can't be added
 	}
 	
 	private boolean isAddable(ControllableGrid grid, LayerData layerData, double xRatio, double yRatio, PreferencesData preferences, double moneyLeft, double cost) {
