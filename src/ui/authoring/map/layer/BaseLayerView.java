@@ -88,15 +88,24 @@ public class BaseLayerView extends Layer {
 	private void loadBaseData() {
 		System.out.println("");
 		myData.getMyActorToLocation().forEach((t) -> {
-			addBaseUI(t.x, t.y);
+			addBaseUI(t.x, decompressGrid2D(t.y));
 		});
 	}
 
+	/**
+	 * purpose is to translate the scene coordinates to local coordinates
+	 * @param data
+	 * @param sceneLoc
+	 */
 	public void addBase(ActorData data, Location sceneLoc) {
 		addBaseToLoc(data, sceneToLocal(sceneLoc));
-
 	}
-
+	
+	/**
+	 * adds base to data 
+	 * @param data
+	 * @param location
+	 */
 	private void addBaseToLoc(ActorData data, Location location) {
 		System.out.println("local coordinates " + location);
 		Coordinates coor = compressLocation(location);
@@ -124,6 +133,10 @@ public class BaseLayerView extends Layer {
 	private Coordinates compressLocation(Location e) {
 		Coordinates c = new Coordinates(e.getX() / this.getWidth(), e.getY() / this.getHeight());
 		return c;
+	}
+	
+	private Location decompressGrid2D(Grid2D c){
+		return new Location(c.getX()* this.widthProperty().get(), c.getY()*this.heightProperty().get());
 	}
 
 	private void deleteBase(UIBase base) {
