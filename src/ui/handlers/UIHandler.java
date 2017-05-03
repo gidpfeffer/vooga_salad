@@ -4,6 +4,8 @@ import java.util.Map;
 
 import gamedata.ActorData;
 import gamedata.DisplayData;
+import util.InsufficientMoneyException;
+import util.LayerNotPlaceableException;
 import util.VoogaException;
 
 /**
@@ -14,9 +16,9 @@ import util.VoogaException;
 public interface UIHandler {
 	
 	void deleteGameObject(int id);
-	void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException;
+	void updateGameObjectType(int id, Integer currentOption) throws VoogaException, InsufficientMoneyException;
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
-	int addGameObject(Integer option, double x, double y) throws VoogaException;
+	int addGameObject(Integer option, double x, double y) throws VoogaException, LayerNotPlaceableException, InsufficientMoneyException;
 	Map<Integer,ActorData> getOptions();
 	DisplayData getDisplayData();
 	void launchGame() throws VoogaException;

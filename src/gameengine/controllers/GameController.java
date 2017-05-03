@@ -30,6 +30,8 @@ import ui.player.listener.SceneListen;
 import ui.player.users.InitialGameStatus;
 import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
+import util.InsufficientMoneyException;
+import util.LayerNotPlaceableException;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 /**
@@ -178,15 +180,15 @@ public class GameController {
 				myGameObjectUtil.deleteGameObject(id, myGrid);
 			}
 			@Override
-			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
-				myGameObjectUtil.updateGameObjectType(id, currentOption, newOption, myGrid, myGameData);
+			public void updateGameObjectType(int id, Integer currentOption) throws InsufficientMoneyException {
+				myGameObjectUtil.updateGameObjectType(id, myGameData.getMappedLineageData().get(currentOption), myGrid, myGameData,myGameStatus);
 			}
 			@Override
 			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
 				myGameObjectUtil.updateGameObjectLocation(id, xRatio, yRatio, myGrid);
 			}
 			@Override
-			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
+			public int addGameObject(Integer option, double xRatio, double yRatio) throws LayerNotPlaceableException, InsufficientMoneyException{
 				return myGameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGameStatus, myGrid);
 			}
 			@Override
