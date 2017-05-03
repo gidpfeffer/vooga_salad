@@ -36,6 +36,10 @@ public class ActorGenerator{
 	 */
 
 	public static MainActor makeActor(Integer option, ActorData data){
+		return makeActor(option,IDGenerator.getNewID(),data);
+	}
+	
+	public static MainActor makeActor(Integer option, int id, ActorData data) {
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
 		List<Data> properties = data.getMyData();
@@ -43,8 +47,7 @@ public class ActorGenerator{
 		
 		toBuild.add(data.getType()); //add type
 		toBuild.add(option);
-		int index = IDGenerator.getNewID();
-		toBuild.add(index); //add ID
+		toBuild.add(id); //add ID
 		Property health = propFactory.make(data.getHealth().
 				getClass().getSimpleName().replace("Data", "Property"), data.getHealth());
 		toBuild.add(health);

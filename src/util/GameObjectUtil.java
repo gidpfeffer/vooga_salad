@@ -6,9 +6,14 @@ import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LayerData;
+import gamedata.LineageData;
+import gamedata.PreferencesData;
 import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
+import gamestatus.GameStatus;
+import gamestatus.ReadableGameStatus;
+import gamestatus.WriteableGameStatus;
 
 /**
  * Util class for updating Game Objects in back end grid (updating type, spawning, deleting, updating location)
@@ -20,13 +25,13 @@ public class GameObjectUtil {
 		grid.removeActor(id);
 	}
 
-	public void updateGameObjectType(int id, Integer currentOption, Integer newOption,ControllableGrid grid,GameData gameData) throws VoogaException {
-		if (isValidUpdate(currentOption, newOption,gameData)) {
+	public void updateGameObjectType(int id, LineageData lineageData,ControllableGrid grid,GameData gameData,GameStatus gameStatus) throws VoogaException {
+		lineageData.upgrade();
+		ActorData actorData = lineageData.getCurrent();
+		if (enoughMoney(gameData.getPreferences(),gameStatus.getMoney(),actorData.getCost())) {
 			Grid2D location = grid.getLocationOf(id);
-			addGameObject(newOption,location.getX(),location.getY(),gameData,grid);
+			generateActor(id,gameData,actorData, location.getX(), location.getY(),grid,gameStatus);
 			deleteGameObject(id,grid);
-		} else {
-			throw new VoogaException(VoogaException.ILLEGAL_UPDATE);
 		}
 	}
 
@@ -44,20 +49,32 @@ public class GameObjectUtil {
 		return false;
 	}
 
-	public int addGameObject(Integer option, double xRatio, double yRatio,GameData gameData,ControllableGrid grid) throws VoogaException{
+	public int addGameObject(Integer option, double xRatio, double yRatio,GameData gameData,GameStatus gameStatus, ControllableGrid grid) throws VoogaException{
 		ActorData actorData = gameData.getOption(option); 
-		if (isPlaceable(actorData.getLayer(),xRatio, yRatio) && grid.isValidLoc(xRatio, yRatio)) return generateActor(gameData, actorData, xRatio, yRatio,grid);
+		if (isAddable(grid,actorData.getLayer(),xRatio,yRatio,gameData.getPreferences(),gameStatus.getMoney(),actorData.getCost())) return generateActor(gameData, actorData, xRatio, yRatio,grid,gameStatus);
 		else throw new VoogaException(VoogaException.INVALID_LOCATION);
 	}
 	
-	public boolean isValidUpdate(Integer currentOption, Integer newOption,GameData gameData) {
-		if (gameData.getOption(currentOption).getType().equals(gameData.getOption(newOption).getType())) return true;
-		return false;
+	private boolean isAddable(ControllableGrid grid, LayerData layerData, double xRatio, double yRatio, PreferencesData preferences, double moneyLeft, double cost) {
+		return (isPlaceable(layerData,xRatio, yRatio) && grid.isValidLoc(xRatio, yRatio) && enoughMoney(preferences,moneyLeft,cost));
 	}
 	
-	public int generateActor(GameData gameData, ActorData actorData, double xRatio, double yRatio,ControllableGrid grid) {
+	private boolean enoughMoney(PreferencesData preferences, double moneyLeft, double cost) {
+		return ((preferences.wantMoney() && moneyLeft>=cost) || !preferences.wantMoney());
+	}
+	
+	private int generateActor(GameData gameData, ActorData actorData, double xRatio, double yRatio,ControllableGrid grid,WriteableGameStatus gameStatus) {
+		gameStatus.spendMoney(actorData.getCost());
 		Actor actor = ActorGenerator.makeActor(gameData.getOptionKey(actorData),actorData);
 		grid.controllerSpawnActor(actor, xRatio, yRatio);
 		return actor.getID();
 	}
+	
+	private void generateActor(int id, GameData gameData, ActorData actorData, double xRatio, double yRatio,ControllableGrid grid,WriteableGameStatus gameStatus) {
+		gameStatus.spendMoney(actorData.getCost());
+		Actor actor = ActorGenerator.makeActor(id,gameData.getOptionKey(actorData),actorData);
+		grid.controllerSpawnActor(actor, xRatio, yRatio);
+	}
+	
+	
 }
