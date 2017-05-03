@@ -187,7 +187,7 @@ public class GameController {
 			}
 			@Override
 			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
-				return myGameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGrid);
+				return myGameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGameStatus, myGrid);
 			}
 			@Override
 			public Map<Integer, ActorData> getOptions() {
