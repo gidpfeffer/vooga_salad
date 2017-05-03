@@ -232,8 +232,12 @@ public class GameScreen extends GenericGameScreen
 					(ivp.getWidth() - ivp.getImageInsets().x));
 			double yCoor = util.Transformer.ratioToCoordinate(arg.get(id).getActorLocation().getY(),
 					(ivp.getHeight() - ivp.getImageInsets().y));
-			actor.getMainPane().setLayoutX(xCoor);
-			actor.getMainPane().setLayoutY(yCoor);
+			
+			actor.getMainPane().setLayoutX(xCoor - actor.getMainPane().getWidth()/2); // to get the right image position
+			actor.getMainPane().setLayoutY(yCoor - actor.getMainPane().getWidth()/2 );
+			
+			//actor.getMainPane().setLayoutX(xCoor);
+			//actor.getMainPane().setLayoutY(yCoor);
 		});
 	}
 }
