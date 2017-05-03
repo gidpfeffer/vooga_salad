@@ -90,6 +90,10 @@ public class GameData {
 		numOptions = 0;
 	}
 	
+	public Map<Integer, LineageData> getMappedLineageData(){
+		return pieces;
+	}
+	
 	/**
 	 * This is for use in the GamePlayer. Returns
 	 * all of possible options for creation in the 
