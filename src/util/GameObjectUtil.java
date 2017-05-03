@@ -25,12 +25,14 @@ public class GameObjectUtil {
 		grid.removeActor(id);
 	}
 
-	public void updateGameObjectType(int id, LineageData lineageData,Actor actor, ControllableGrid grid,GameData gameData,GameStatus gameStatus) throws VoogaException {
+	public void updateGameObjectType(int id, LineageData lineageData,ControllableGrid grid,GameData gameData,GameStatus gameStatus) throws VoogaException {
 		lineageData.upgrade();
 		ActorData actorData = lineageData.getCurrent();
-		Grid2D location = grid.getLocationOf(id);
-		generateActor(id,gameData,actorData, location.getX(), location.getY(),grid,gameStatus);
-		deleteGameObject(id,grid);
+		if (enoughMoney(gameData.getPreferences(),gameStatus.getMoney(),actorData.getCost())) {
+			Grid2D location = grid.getLocationOf(id);
+			generateActor(id,gameData,actorData, location.getX(), location.getY(),grid,gameStatus);
+			deleteGameObject(id,grid);
+		}
 	}
 
 	public void updateGameObjectLocation(int id, double xRatio, double yRatio,ControllableGrid grid) throws VoogaException {
