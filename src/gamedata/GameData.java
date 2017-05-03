@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gamedata.compositiongen.Data;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
@@ -171,6 +172,7 @@ public class GameData {
 			}
 		}
 	}
+
 	
 	/**
 	 * This is for use in the GameController.

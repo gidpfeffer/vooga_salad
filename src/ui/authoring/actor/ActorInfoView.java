@@ -1,6 +1,5 @@
 package ui.authoring.actor;
 
-import java.beans.EventHandler;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import builders.infogen.AuthorInfoGenerator;
 import builders.objectgen.DataGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;

@@ -248,7 +248,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 	}
 	
 	private void removeLineage(LineageData data, AnchorPane anchor){
-		//TODO: Debug and add delgate
+		//TODO: Debug and add delegate
 		myGameData.completeWipeLineage(data);
 		//myDelegate.closeView(anchor);
 		

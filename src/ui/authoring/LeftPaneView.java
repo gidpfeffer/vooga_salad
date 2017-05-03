@@ -60,33 +60,49 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	
 	private static final Map<String, String> DEFAULT_TOWERS;
 	static {
-		String path = "Pokemon Icons/";
+		//String path = "Pokemon Icons/";
+		String path = "";
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("Pikachu", path + "pikachu.png");
+		/*map.put("Pikachu", path + "pikachu.png");
 		map.put("Bullbasaur", path + "bullbasaur.png");
 		map.put("Charmander", path + "charmander.png");
 		map.put("Snorlax", path + "snorlax.png");
-		map.put("Jigglypuff", path + "jigglypuff.png");
+		map.put("Jigglypuff", path + "jigglypuff.png");*/
+		map.put("Duvall", path + "duvall.png");
+		//map.put("Second Duvall", path + "duvall2.png");
+		//map.put("Final Duvall", path + "duvall3.png");
+		
 		DEFAULT_TOWERS = map;
 	}
 	private static final Map<String, String> DEFAULT_TROOPS;
 	static {
-		String path = "balloons/";
+		//String path = "balloons/";
+		String path = "";
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("Red", path + "red.png");
+		/*map.put("Red", path + "red.png");
 		map.put("Green", path + "green.png");
-		map.put("Blue", path + "blue.png");
+		map.put("Blue", path + "blue.png");*/
+		
+		map.put("Singleton", path + "Singleton.png");
+		map.put("Static", path + "Static.png");
+		map.put("STUPID", path + "STUPID.png");
 
 		DEFAULT_TROOPS = map;
 	}
 	private static final Map<String, String> DEFAULT_PROJECTILES;
 	static {
-		String path = "projectiles/";
+		//String path = "projectiles/";
+		String path = "";
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("Fire", path + "flame.png");
+		/*map.put("Fire", path + "flame.png");
 		map.put("Water", path + "raindrop.png");
 		map.put("Ice", path + "snowflake.png");
-		map.put("Nature", path + "leaf.png");
+		map.put("Nature", path + "leaf.png");*/
+		
+		map.put("YES", path + "piazza_proj_3.png");
+		map.put("NO", path + "piazza_proj_2.png");
+		map.put("Reference2", path + "piazza_proj_1.png");
+		map.put("Reference1", path + "piazza_proj_4.png");
 		
 		DEFAULT_PROJECTILES = map;
 	}

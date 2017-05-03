@@ -3,6 +3,7 @@ package gameengine.actors.properties;
 import java.util.function.Consumer;
 
 import gamedata.composition.ActorDamageableData;
+import gamedata.composition.ActorDamageableWithExitData;
 import gameengine.grid.interfaces.ActorGrid.ReadAndDamageGrid;
 
 public class ActorDamageableWithExitProperty<G extends ReadAndDamageGrid> extends ActorDamageableProperty<G> {
