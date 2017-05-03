@@ -1,10 +1,13 @@
 package gameengine.controllers;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.DisplayData;
 import gamedata.GameData;
+import gamedata.LineageData;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
@@ -195,6 +198,7 @@ public class GameController {
 			public Map<Integer, ActorData> getOptions() {
 				return myGameData.getOptions();
 			}
+		
 			public DisplayData getDisplayData(){
 				return myGameData.getDisplayData();
 			}
@@ -205,6 +209,10 @@ public class GameController {
 			
 			public void launchGame() throws VoogaException {
 				myLevelController.changeLevel(1);
+			}
+			@Override
+			public Collection<LineageData> getLineageData() {
+				return myGameData.getLineageData();
 			}
 		};
 	}
