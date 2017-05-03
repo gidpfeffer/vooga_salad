@@ -232,7 +232,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		if(!isLoaded){
 			myGameData.getTypes().add(newType);
 		}
-		view.setupActors(defaultActors, isLoaded);
+		//view.setupActors(defaultActors, isLoaded);
 		
 		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
 		this.actorTypeToView.put(newType, view);

@@ -22,8 +22,8 @@ public class BaseLayerView extends Layer {
 
 	private boolean isActive = false;
 	private BasePlacementData myData;
-	private List<Base> myBases;
-	private Optional<Base> myCurrentBase = Optional.ofNullable(null);
+	private List<UIBase> myBases;
+	private Optional<UIBase> myCurrentBase = Optional.ofNullable(null);
 
 	private EventHandler<MouseEvent> myEvent = e -> {
 		// base is being dragged
@@ -43,23 +43,28 @@ public class BaseLayerView extends Layer {
 
 		if (e.getEventType().equals(MouseEvent.MOUSE_PRESSED)) {
 			System.out.println("MOUSE_PRESSED...");
-			myCurrentBase = Optional.ofNullable((Base) e.getSource());
+			myCurrentBase = Optional.ofNullable((UIBase) e.getSource());
 		}
 
 		// double click
-		if (e.getEventType().equals(MouseEvent.MOUSE_CLICKED) && e.getClickCount() == 2) {
+		if (e.getEventType().equals(MouseEvent.MOUSE_PRESSED) && e.getClickCount() == 2) {
 			System.out.println("double click detected...");
-			Optional.ofNullable((Base) e.getSource()).ifPresent(base -> addBaseToLoc(base.getData().x,
+			Optional.ofNullable((UIBase) e.getSource()).ifPresent(base -> addBaseToLoc(base.getData().x,
 					new Location(base.getData().y.getX() - 0.05, base.getData().y.getX() - 0.05)));
 		}
 
 	};
 
-	private void dragBase(Base base, Location location) {
+	private void dragBase(UIBase base, Location location) {
 		base.updateLocationUI(location);
 	}
 
-	private void updateBaseLocation(Base base, Location location) {
+	/**
+	 * 
+	 * @param base the UIBase contains the actor data and location
+	 * @param location The new location that UIBase will contain
+	 */
+	private void updateBaseLocation(UIBase base, Location location) {
 		base.updateLocationData(compressLocation(location));
 		base.updateLayout(this.getBoundsInParent());
 	}
@@ -67,7 +72,7 @@ public class BaseLayerView extends Layer {
 	public BaseLayerView(BasePlacementData data) {
 		myData = data;
 		myBases = new ArrayList<>();
-		UIHelper.setBackgroundColor(this, Color.rgb(0, 0, 0, 0.3));
+		//UIHelper.setBackgroundColor(this, Color.rgb(0, 0, 0, 0.3));
 		this.addEventHandler(MouseEvent.ANY, myEvent);
 		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> System.out.println(myData.getMyActorToLocation().size()));
 	}
@@ -81,6 +86,7 @@ public class BaseLayerView extends Layer {
 	}
 
 	private void loadBaseData() {
+		System.out.println("");
 		myData.getMyActorToLocation().forEach((t) -> {
 			addBaseUI(t.x, t.y);
 		});
@@ -95,7 +101,7 @@ public class BaseLayerView extends Layer {
 		System.out.println("local coordinates " + location);
 		Coordinates coor = compressLocation(location);
 		this.myData.addBase(new Tuple<>(data, coor));
-		Base b = addBaseUI(data, coor);
+		UIBase b = addBaseUI(data, coor);
 		this.myCurrentBase = Optional.of(b);
 	}
 
@@ -108,8 +114,8 @@ public class BaseLayerView extends Layer {
 		return new Location(loc.getX() - hInset, loc.getY() - vInset);
 	}
 
-	private Base addBaseUI(ActorData data, Grid2D loc) {
-		Base base = new Base(data, loc, this.getBoundsInParent());
+	private UIBase addBaseUI(ActorData data, Grid2D loc) {
+		UIBase base = new UIBase(data, loc, this.getBoundsInParent());
 		base.addEventHandler(MouseEvent.ANY, myBaseEvent);
 		this.getChildren().add(base);
 		return base;
@@ -120,7 +126,7 @@ public class BaseLayerView extends Layer {
 		return c;
 	}
 
-	private void deleteBase(Base base) {
+	private void deleteBase(UIBase base) {
 		System.out.println("Removing base " + base.getData().x.getName());
 		this.myBases.remove(base);
 		this.myData.removeBase(base.getData());
@@ -128,13 +134,11 @@ public class BaseLayerView extends Layer {
 
 	@Override
 	public void activate() {
-		this.myBases.forEach(base -> base.setOpacity(1.0));
 		isActive = true;
 	}
 
 	@Override
 	public void deactivate() {
-		this.myBases.forEach(base -> base.setOpacity(0.1));
 		isActive = false;
 	}
 
