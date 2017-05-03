@@ -64,7 +64,7 @@ public class LoginMain {
 	public static final String userDatabase = "userDatabase.xml";
 	public static final String CONFIG_EXTENSION = "*.xml";
 	private static final String guestUser = "Guest";
-	private static final List<String> games = new ArrayList<>(Arrays.asList("games/BESTTESTEVER.xml", "games/WORKINGGAME.xml"));
+	private static final List<String> games = new ArrayList<>(Arrays.asList("games/Duvall vs. Singletons.xml"));
 
 	/**
 	 * Initialized in {@link voogasalad_ilovesingletons.Main}
