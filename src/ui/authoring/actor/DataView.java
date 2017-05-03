@@ -10,26 +10,18 @@ import java.util.Optional;
 import builders.infogen.AuthorInfoGenerator;
 import builders.objectgen.DataGenerator;
 import gamedata.ActorData;
-import gamedata.FieldData;
 import gamedata.GameData;
 import gamedata.PathData;
 import gamedata.StringToFieldFactory;
-import gamedata.composition.MoveWithSetPathData;
 import gamedata.compositiongen.Data;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,9 +30,7 @@ import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.DataViewDelegate;
 import ui.general.CustomColors;
-import ui.general.ImageButton;
 import ui.general.UIHelper;
-import util.Location;
 
 /**
  * 
@@ -83,14 +73,6 @@ public class DataView extends AnchorPane {
 		}
 		
 	}
-
-	private void colorByType(Label name){
-		if(myDataClassName.contains("Health")){
-			name.setTextFill(CustomColors.AMBER_700);
-		}else{
-			name.setTextFill(CustomColors.BLUE_800);
-		}
-	}
 	
 	private void setupViews() {
 		Label name = new Label(myDataClassName.replaceAll("Data", ""));
@@ -101,7 +83,7 @@ public class DataView extends AnchorPane {
 		AnchorPane.setTopAnchor(name, 4.0);
 		AnchorPane.setLeftAnchor(name, 4.0);
 		AnchorPane.setRightAnchor(name, 4.0);
-		colorByType(name);
+		UIActorUtil.colorByType(myDataClassName, name);
 		
 		vbox = new VBox();
 		AnchorPane.setTopAnchor(vbox, 8.0 + name.getPrefHeight());
@@ -182,7 +164,6 @@ public class DataView extends AnchorPane {
 				new ListSelectionView<T>(list);
 		addSelectionView(content, input);
 		input.getTypeList().addListener(e -> {
-			System.out.println("toggled field input thing");
 			didEditList(input.getTypeList().get(), nameKey);
 		});
 		
@@ -197,7 +178,6 @@ public class DataView extends AnchorPane {
 				new ListSelectionView<Integer>(list);
 		addSelectionView(content, input);
 		input.getTypeList().addListener(e -> {
-			System.out.println("toggled integer field input thing");
 			didEditIntegerList(input.getTypeList().get(), nameKey);
 		});
 		
@@ -208,7 +188,6 @@ public class DataView extends AnchorPane {
 	private void addClickableTypeField(String nameKey, BasicActorType value){
 		BasicPicker<BasicActorType> input = addClickableField(nameKey, value, this.myActorTypes);
 		input.getTypeProperty().addListener(e -> {
-			System.out.println("toggled basic actor field input thing");
 			didEditClickable(input.getTypeProperty().get(),nameKey);
 		});
 	}
@@ -218,7 +197,6 @@ public class DataView extends AnchorPane {
 		BasicPicker<ActorData> input = addClickableField(nameKey, myActor, 
 				new ArrayList<>(myGame.getOptions().values()));
 		input.getTypeProperty().addListener(e -> {
-			System.out.println("toggled basic actor field input thing");
 			didEditProjectileClickable(input.getTypeProperty().get(), nameKey);
 		});
 	}

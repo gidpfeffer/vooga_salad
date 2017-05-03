@@ -128,6 +128,15 @@ public class ActorData {
 		}
 	}
 	
+	public boolean contains(Data data){
+		for(Data d: myData.values()){
+			if(d.equals(data)){
+				return true;
+			}
+		}	
+		return false;
+	}
+	
 	/**
 	 * GamePlayer: Useful methods for accessing information about an ActorData
 	 *

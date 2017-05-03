@@ -15,12 +15,14 @@ import java.util.Map;
 
 public class LineageData {
 	private Map<Integer,ActorData> generations;
+	private int count;
 	private int current;
 	
 	public LineageData(ActorData progenitor){
 		generations = new HashMap<Integer,ActorData>();
 		current = 0;
-		generations.put(current, progenitor);
+		count = 0;
+		generations.put(count, progenitor);
 	}
 	
 	@Override
@@ -36,7 +38,7 @@ public class LineageData {
 	}
 	
 	public void addGeneration(ActorData newbie){
-		generations.put(++current, newbie);
+		generations.put(++count, newbie);
 	}
 	
 	public ActorData getProgenitor(){
