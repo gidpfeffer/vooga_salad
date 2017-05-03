@@ -25,13 +25,15 @@ public class GameObjectUtil {
 		grid.removeActor(id);
 	}
 
-	public void updateGameObjectType(int id, LineageData lineageData,ControllableGrid grid,GameData gameData,GameStatus gameStatus) throws VoogaException {
+	public void updateGameObjectType(int id, LineageData lineageData,ControllableGrid grid,GameData gameData,GameStatus gameStatus) throws InsufficientMoneyException {
 		lineageData.upgrade();
 		ActorData actorData = lineageData.getCurrent();
 		if (enoughMoney(gameData.getPreferences(),gameStatus.getMoney(),actorData.getCost())) {
 			Grid2D location = grid.getLocationOf(id);
 			generateActor(id,gameData,actorData, location.getX(), location.getY(),grid,gameStatus);
 			deleteGameObject(id,grid);
+		} else {
+			throw new InsufficientMoneyException();
 		}
 	}
 
@@ -49,16 +51,22 @@ public class GameObjectUtil {
 		return false;
 	}
 
-	public int addGameObject(Integer option, double xRatio, double yRatio,GameData gameData,GameStatus gameStatus, ControllableGrid grid) {
+	public int addGameObject(Integer option, double xRatio, double yRatio,GameData gameData,GameStatus gameStatus, ControllableGrid grid) throws LayerNotPlaceableException, InsufficientMoneyException {
 		ActorData actorData = gameData.getOption(option); 
-		if (isAddable(grid,actorData.getLayer(),xRatio,yRatio,gameData.getPreferences(),gameStatus.getMoney(),actorData.getCost())) return generateActor(gameData, actorData, xRatio, yRatio,grid,gameStatus);
-		else return -1;
-		//should i do more rigorous error checking AKA tell them why game object can't be added
+		if (enoughMoney(gameData.getPreferences(),gameStatus.getMoney(),actorData.getCost())) {
+			if (isPlaceable(actorData.getLayer(),xRatio, yRatio)) {
+				return generateActor(gameData, actorData, xRatio, yRatio,grid,gameStatus);
+			} else {
+				throw new LayerNotPlaceableException();
+			}
+		} else {
+			throw new InsufficientMoneyException();
+		}
 	}
 	
-	private boolean isAddable(ControllableGrid grid, LayerData layerData, double xRatio, double yRatio, PreferencesData preferences, double moneyLeft, double cost) {
-		return (isPlaceable(layerData,xRatio, yRatio) && grid.isValidLoc(xRatio, yRatio) && enoughMoney(preferences,moneyLeft,cost));
-	}
+//	private boolean isAddable(ControllableGrid grid, LayerData layerData, double xRatio, double yRatio, PreferencesData preferences, double moneyLeft, double cost) {
+//		return (isPlaceable(layerData,xRatio, yRatio) && grid.isValidLoc(xRatio, yRatio) && enoughMoney(preferences,moneyLeft,cost));
+//	}
 	
 	private boolean enoughMoney(PreferencesData preferences, double moneyLeft, double cost) {
 		return ((preferences.wantMoney() && moneyLeft>=cost) || !preferences.wantMoney());
