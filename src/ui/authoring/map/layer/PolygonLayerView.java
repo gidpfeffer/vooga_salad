@@ -193,6 +193,7 @@ public class PolygonLayerView extends Layer {
 	 */
 	@Override
 	public void activate(){
+		this.addEventHandler(MouseEvent.ANY, myMouseEvents);
 		isActive = true;
 	}
 	
@@ -201,6 +202,7 @@ public class PolygonLayerView extends Layer {
 	 */
 	@Override
 	public void deactivate(){
+		this.removeEventHandler(MouseEvent.ANY, myMouseEvents);
 		isActive = false;
 	}
 
