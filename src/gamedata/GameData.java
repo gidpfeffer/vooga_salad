@@ -5,9 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import gamedata.compositiongen.Data;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
@@ -125,6 +123,22 @@ public class GameData {
 	}
 	
 	/**
+	 * Map of String (name of Lineage) to LineageData
+	 * @param type BasicActorType to filter by
+	 * @return
+	 */
+	public Map<String, LineageData> getAllLinOfType(BasicActorType type){
+		Map<String,LineageData> toRet = new HashMap<String,LineageData>();
+		for(LineageData data: getMappedLineageData().values()){
+			ActorData lead= data.getCurrent();
+			if(lead.getType().equals(type)){
+				toRet.put(lead.getName(), data);
+			}
+		}
+		return toRet;
+	}
+	
+	/**
 	 * Remove a general category from the GameData (e.g., Projectile)
 	 * 
 	 * @param actor BasicActorType to remove
@@ -216,9 +230,13 @@ public class GameData {
 	 */
 	public LineageData add(ActorData data){
 		LineageData lin = new LineageData(data);
-		pieces.put(numOptions, lin);
-		numOptions++;
+		add(lin);
 		return lin;
+	}
+	
+	public void add(LineageData data){
+		pieces.put(numOptions, data);
+		numOptions++;
 	}
 	
 	public void addUpgrade(LineageData data, ActorData toAdd){

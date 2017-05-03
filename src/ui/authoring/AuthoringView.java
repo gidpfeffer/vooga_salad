@@ -32,6 +32,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
+import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.*;
 import ui.authoring.display.DisplayMenu;
@@ -83,14 +84,14 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.loginhandler = loginhandler;
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
 		myGameData = new GameData("Untitled"); //TODO 
-		setupViews();
+		setupViews(false); // false = not loaded
 	}
 
-	private void setupViews() {
+	private void setupViews(boolean loaded) {
 		setupTitle();
 		setupMapView();
-		setupLeftPane();
-		setupLevelView();
+		setupLeftPane(loaded);
+		setupLevelView(loaded);
 		
 		setupBottomPane();
 		setupMargins();
@@ -256,8 +257,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	}
 
-	private void setupLevelView() {
-		myLevelView = new LevelEditorView(this, myGameData);
+	private void setupLevelView(boolean load) {
+		myLevelView = new LevelEditorView(this, myGameData, load);
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
@@ -265,8 +266,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.myBorderPane.setRight(myLevelView);
 	} 
 	
-	private void setupLeftPane(){
-		myLeftPane = new LeftPaneView(this, myGameData);
+	private void setupLeftPane(boolean loaded){
+		myLeftPane = new LeftPaneView(this, myGameData, loaded);
 		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
 		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
@@ -380,7 +381,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 //		myGameData.getLayers().getMyPathData().getMyPaths().entrySet().forEach(entry -> {
 //			System.out.println(entry.getValue());
 //		});
-		setupViews();
+		setupViews(true);//loaded
 	}
 	
 	

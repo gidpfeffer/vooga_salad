@@ -196,9 +196,13 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		pane.setContent(myLineageList);
 	}
 
-	public void setupDefaultActors(Map<String,String> mapOfNameToImagePath) {
-		for (Entry<String, String> entry : mapOfNameToImagePath.entrySet()) 
-			addActor(entry.getValue(), entry.getKey());
+	public void setupActors(Map<String,LineageData> mapOfNameToImagePath, boolean loaded) {
+		for (Entry<String, LineageData> entry : mapOfNameToImagePath.entrySet()) {
+			if(!loaded){
+				myGameData.add(entry.getValue());
+			}
+			addActor(entry.getValue().getCurrent().getImagePath(), entry.getKey(), entry.getValue(), loaded);
+		}
 	}
 
 	/**
@@ -209,7 +213,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 	 * @param imgPath the String path of the image
 	 * @param name the name of the actor, can be changed later.
 	 */
-	private void addActor(String imgPath, String name){
+	private void addActor(String imgPath, String name, LineageData data, boolean loaded){
 		AnchorPane anchor = new AnchorPane();
 		
 		Image img = new Image(imgPath);
@@ -218,8 +222,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		imageView.setPreserveRatio(true);
 		
 		TextField actorField = addField(name);
-		
-		LineageData data = myGameData.add(new ActorData(myActorType, new BasicData(name, imgPath), new LimitedHealthData()));
+			
 		StackPane view = UIHelper.buttonStack(
 				e -> myActorInfoView.setLineageData(data), 
 				Optional.of(actorField), Optional.of(imageView), 
@@ -278,9 +281,14 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
 		if(selectedFile!= null){
-			String s = selectedFile.getName();
-			addActor(s,s.substring(0, s.indexOf(".")) );
+			String imagePath = selectedFile.getName();
+			String name = imagePath.substring(0, imagePath.indexOf("."));
+			LineageData lin = new LineageData(new ActorData(myActorType, 
+					new BasicData(name,  imagePath), new LimitedHealthData()));
+			myGameData.add(lin);
+			addActor(imagePath, name, lin,  false);
 		}
+		
 	}
 	
 	public void setGameData(GameData data){

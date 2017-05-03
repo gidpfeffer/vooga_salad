@@ -10,6 +10,7 @@ package types;
 
 public class BasicActorType implements Comparable<Object> {
 	private String type;
+	private String imagePath;
 	private boolean placeable;
 	
 	public BasicActorType(String type){
@@ -17,7 +18,16 @@ public class BasicActorType implements Comparable<Object> {
 	}
 	
 	public BasicActorType(String type, boolean placeable){
+		this(type, "", placeable);
+	}
+	
+	public BasicActorType(String type, String imagePath){
+		this(type, imagePath, true);
+	}
+	
+	public BasicActorType(String type, String imagePath, boolean placeable){
 		this.type=type;
+		this.imagePath = imagePath;
 		this.placeable=placeable;
 	}
 
@@ -67,5 +77,14 @@ public class BasicActorType implements Comparable<Object> {
 		}
 		return this.getType().compareTo(((BasicActorType)o).getType());
 	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
 	
 }
