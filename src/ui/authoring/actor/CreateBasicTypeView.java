@@ -124,7 +124,7 @@ public class CreateBasicTypeView extends VBox {
 		StackPane cancel =  buttonForName("Cancel", CustomColors.BLUE_50, e -> myDelegate.closeSelf(this));
 		StackPane add = buttonForName("Confirm", CustomColors.BLUE_50, e -> {
 			if(check())
-				myDelegate.closeSelfAndReturn(this, this.myTextField.getText(), myImagePath);;
+				myDelegate.closeSelfAndReturn(this, this.myTextField.getText(), myImagePath);
 			});
 		myHBox.getChildren().addAll(cancel, add);
 	}

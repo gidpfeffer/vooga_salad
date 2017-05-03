@@ -43,15 +43,17 @@ public class WaveChooserMenu extends AnchorPane {
 	private List<ActorData> enemies;
 	private List<StackPane> waveBoxes;
 	private List<TextField> textBoxes;
+	private boolean isLoaded;
 	ScrollPane waves;
 	ScrollPane actors;
 	
-	public WaveChooserMenu(PopViewDelegate delegate, Collection<ActorData> enemies, LevelData level) {
+	public WaveChooserMenu(PopViewDelegate delegate, Collection<ActorData> enemies, LevelData level, boolean loaded) {
 		super();
 		myDelegate = delegate;
 		waveBoxes = new ArrayList<StackPane>();
 		this.enemies = new ArrayList<ActorData>(enemies);
 		myData = level;
+		isLoaded = loaded;
 		setupViews();
 		populateViews();
 		if(myData.getNumWaves()==0)
@@ -101,31 +103,32 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private void printTest(){
-		System.out.println("START");
+		/*System.out.println("START");
 		
 		List<EnemyInWaveData> enemies = editWave.getWaveEnemies();
 		for(EnemyInWaveData enemy: enemies){
 			System.out.println(enemy.getMyActor().getName());
 		}
-				
+				*/
 	}
 	
 	private  void populateEnemies(){
 		HBox root=new HBox();
 		root.setSpacing(25);
 		textBoxes = new ArrayList<TextField>();
+		
 		for(ActorData enemy:enemies){
+			System.out.println("Populating: " + enemy.getName());
 			VBox enemyBox = new VBox();
 			enemyBox.setSpacing(10);
 			enemyBox.setAlignment(Pos.CENTER);
-			ImageView image=new ImageView(new Image(enemy.getImagePath()));
+			ImageView image = new ImageView(new Image(enemy.getImagePath()));
 			image.setFitWidth(60);
 			image.setPreserveRatio(true);
 			Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
 					Optional.of(LevelUtil.labelForStackButton(enemy.getName())), 
 					Optional.of(image), Pos.CENTER, true);
-			enemyBox.getChildren().add(toAdd);
-			
+		
 			//TODO: Restore saved
 			String quantity = "0";
 			if(editWave !=null){
@@ -134,10 +137,25 @@ public class WaveChooserMenu extends AnchorPane {
 			TextField text = addField(enemy, quantity);
 			textBoxes.add(text);
 			enemyBox.getChildren().add(text);
-			root.getChildren().add(enemyBox);
 			HBox.setMargin(enemyBox, new Insets(30));
+			
+			enemyBox.getChildren().add(toAdd);
+			root.getChildren().add(enemyBox);
 		}
 		actors.setContent(root);
+	}
+	
+	private Node buildEnemyBox(ActorData enemy){
+		VBox enemyBox = new VBox();
+		enemyBox.setSpacing(10);
+		enemyBox.setAlignment(Pos.CENTER);
+		ImageView image = new ImageView(new Image(enemy.getImagePath()));
+		image.setFitWidth(60);
+		image.setPreserveRatio(true);
+		Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
+				Optional.of(LevelUtil.labelForStackButton(enemy.getName())), 
+				Optional.of(image), Pos.CENTER, true);
+		return toAdd;
 	}
 	
 	private TextField addField(ActorData data, String value){

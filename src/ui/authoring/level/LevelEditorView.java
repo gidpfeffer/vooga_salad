@@ -1,6 +1,8 @@
 package ui.authoring.level;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 import gamedata.ActorData;
@@ -33,17 +35,26 @@ public class LevelEditorView extends VBox{
 	private int level;
 	private PopViewDelegate myDelegate;
 	private GameData myData;
+	private boolean isLoaded;
 	
-	public LevelEditorView(PopViewDelegate delegate, GameData data){
+	public LevelEditorView(PopViewDelegate delegate, GameData data, boolean load){
 		super();
 		this.setAlignment(Pos.CENTER);
 		this.myData = data;
 		myDelegate=delegate;
+		isLoaded = load;
+		
 		level=1;
-
-		//TODO:move text to resource file
-		StackPane levelOne = nextLevel();
-		this.getChildren().add(levelOne);
+		if(!isLoaded){
+			initialSetup();
+		} else{
+			reload();
+		}
+		addLevelButton();
+	
+	}
+	
+	private void addLevelButton(){
 		StackPane newLevel = UIHelper.buttonStack(e->addNewLevel(), 
 				Optional.of(LevelUtil.labelForStackButton("Add Level")), 
 				Optional.of(LevelUtil.imageForStackButton("add_icon.png")),
@@ -54,13 +65,35 @@ public class LevelEditorView extends VBox{
 		this.getChildren().add(newLevel);
 	}
 	
-	private void addNewLevel(){
-		this.getChildren().add(this.getChildren().size()-1, nextLevel());
+	private void initialSetup(){
+		//TODO:move text to resource file
+		StackPane levelOne = nextNewLevel();
+		this.getChildren().add(levelOne);
 	}
 	
-	private StackPane nextLevel(){
+	private void reload(){
+		System.out.println("RELOADING: " + myData.getLevels().size());
+		for(Integer level: new ArrayList<Integer>(myData.getLevels().keySet())){
+			this.getChildren().add(nextSavedLevel());
+		}	
+	}
+	
+	private void addNewLevel(){
+		this.getChildren().add(this.getChildren().size()-1, nextNewLevel());
+	}
+	
+	private StackPane nextSavedLevel(){
+		return setupLevel();
+	}
+	
+	private StackPane nextNewLevel(){
 		LevelData newLevel = new LevelData();
 		myData.getLevels().put(level, newLevel);
+		return setupLevel();
+		
+	}
+	
+	private StackPane setupLevel(){
 		ImageView img = LevelUtil.imageForStackButton("pencil.png");
 		UIHelper.setDropShadow(img);
 		img.setFitWidth(32);
@@ -87,7 +120,7 @@ public class LevelEditorView extends VBox{
 	private void launchWaveChooser(int level){
 		LevelData current = myData.getLevel(level);
 		Collection<ActorData> enemies = (myData.getAllOfType(new BasicActorType("Troop"))).values();
-		WaveChooserMenu wcm  = new WaveChooserMenu(myDelegate, enemies, current);
+		WaveChooserMenu wcm  = new WaveChooserMenu(myDelegate, enemies, current, isLoaded);
 		myDelegate.openViewWithSize(wcm, PopupSize.MEDIUM);
 	}
 

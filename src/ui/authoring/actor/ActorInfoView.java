@@ -298,6 +298,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 		StackPane actorButton=null;
 		for(int i=0; i<actors.size(); i++){
 			String path =actors.get(i).getImagePath();
+			System.out.println("PATH: " + path);
 			StackPane temp = setupImageView(new Image(path), actors.get(i));
 			if(i==0){
 				actorButton=temp;
