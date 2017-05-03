@@ -112,10 +112,14 @@ public class GameController {
 	}
 	
 	public void start(Stage stage,double width, double height, Paint fill) {
+		setScene(stage,width,height,fill);
+		intitializeTimeline();
+	}
+	
+	private void setScene(Stage stage,double width, double height, Paint fill) {
 		Scene myScene = new Scene(myGameScreen,width,height,fill);
 		mySceneListen = new SceneListen(myScene); 
 		stage.setScene(myScene);
-		intitializeTimeline();
 	}
 	
 	private void intitializeTimeline() {
