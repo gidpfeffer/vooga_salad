@@ -51,7 +51,7 @@ public class Actor {
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData) {
 		actor = UIHelper.buttonStack(e -> {
 		}, Optional.ofNullable(null),
-				Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER, true);
+				Optional.of(new ImageView(new Image(actorData.getImagePath(), 40, 40, true, true))), Pos.CENTER, true);
 		actor.setBackground(Background.EMPTY);
 		this.screenhandler = screenhandler;
 		this.option = option;

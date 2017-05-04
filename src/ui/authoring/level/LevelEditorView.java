@@ -37,12 +37,12 @@ public class LevelEditorView extends VBox{
 	private GameData myData;
 	private boolean isLoaded;
 	
-	public LevelEditorView(PopViewDelegate delegate, GameData data, boolean load){
+	public LevelEditorView(PopViewDelegate delegate, GameData data){
 		super();
 		this.setAlignment(Pos.CENTER);
 		this.myData = data;
 		myDelegate=delegate;
-		isLoaded = load;
+		isLoaded = data.getLevels().size()!=0;
 		
 		level=1;
 		if(!isLoaded){

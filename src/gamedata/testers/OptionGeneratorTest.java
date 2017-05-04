@@ -25,7 +25,6 @@ import types.BasicActorType;
 
 public class OptionGeneratorTest {
 
-	@Test
 	public void correctChoices() {
 		GameData data = new GameData();
 		data.addType("Bear");
@@ -35,12 +34,10 @@ public class OptionGeneratorTest {
 		assertEquals(data.getTypes().get(0), new BasicActorType("Bear"));
 	}
 	
-	@Test
 	public void fieldPrint(){
 	}
 
-	
-	@Test 
+	@Test
 	public void correctPropertyArgs(){
 		Map<String, List<FieldData>> options = AuthorInfoGenerator.getPropertyTypesWithArgs();
 		for(String s: options.keySet()){
@@ -53,13 +50,11 @@ public class OptionGeneratorTest {
 	}
 
 	
-	@Test
 	public void getName(){
 		Data d = DataGenerator.makeData("LimitedHealthData", 10.0);
 		assertEquals("LimitedHealth", AuthorInfoGenerator.getName(d));
 	}
-	
-	@Test 
+	 
 	public void getFields(){
 		System.out.println("\n");
 		Data d = DataGenerator.makeData("LimitedHealthData", 10.0);
@@ -71,7 +66,6 @@ public class OptionGeneratorTest {
 		//assertEquals(10.0, o);
 	}
 	
-	@Test
 	public void testPropertyDescriptions(){
 		System.out.println(AuthorInfoGenerator.getDescription("BaseDamage"));
 		System.out.println(AuthorInfoGenerator.getDescription("Shoot"));

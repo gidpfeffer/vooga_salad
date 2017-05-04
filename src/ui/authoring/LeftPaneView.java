@@ -61,62 +61,86 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	
 	private static final Map<String, LineageData> DEFAULT_TOWERS;
 	static {
-		//String path = "Pokemon Icons/";
-		String path = "";
+		String path = "Pokemon Icons/";
+		//String path = "";
 		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		/*map.put("Pikachu", path + "pikachu.png");
-		map.put("Bullbasaur", path + "bullbasaur.png");
-		map.put("Charmander", path + "charmander.png");
-		map.put("Snorlax", path + "snorlax.png");
-		map.put("Jigglypuff", path + "jigglypuff.png");*/
 		
-		BasicActorType proj = new BasicActorType("Tower", "tower_icon.png", false);
+		BasicActorType proj = new BasicActorType("Tower", "tower_icon.png", true);
 		
-		map.put("Duvall", new LineageData(new ActorData(proj, 
-				new BasicData("Duvall",  path + "duvall.png"), new LimitedHealthData())));
+		map.put("Pikachu", new LineageData(new ActorData(proj, 
+				new BasicData("Pikachu",  path + "pikachu.png"), new LimitedHealthData())));
+		map.put("Bullbasaur", new LineageData(new ActorData(proj, 
+				new BasicData("Bullbasaur",  path + "bullbasaur.png"), new LimitedHealthData())));
+		map.put("Charmander", new LineageData(new ActorData(proj, 
+				new BasicData("Charmander",  path + "charmander.png"), new LimitedHealthData())));
+		map.put("Snorlax", new LineageData(new ActorData(proj, 
+				new BasicData("Snorlax",  path + "snorlax.png"), new LimitedHealthData())));
+		map.put("Jigglypuff", new LineageData(new ActorData(proj, 
+				new BasicData("Jigglypuff",  path + "jigglypuff.png"), new LimitedHealthData())));
+		
+/*		map.put("Duvall", new LineageData(new ActorData(proj, 
+				new BasicData("Duvall",  path + "duvall.png"), new LimitedHealthData())));*/
 		
 		DEFAULT_TOWERS = map;
 	}
 	private static final Map<String, LineageData> DEFAULT_TROOPS;
 	static {
-		//String path = "balloons/";
-		String path = "";
+		String path = "balloons/";
+		//String path = "";
 		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		/*map.put("Red", path + "red.png");
+		BasicActorType proj = new BasicActorType("Troop", "enemy_icon.png", false);
+		
+/*		map.put("Red", path + "red.png");
 		map.put("Green", path + "green.png");
 		map.put("Blue", path + "blue.png");*/
 		
-		BasicActorType proj = new BasicActorType("Troop", "enemy_icon.png", false);
+		map.put("Red", new LineageData(new ActorData(proj, 
+				new BasicData("Red",  path + "red.png"), new LimitedHealthData())));
+		map.put("Green", new LineageData(new ActorData(proj, 
+				new BasicData("Green",  path + "green.png"), new LimitedHealthData())));
+		map.put("Blue", new LineageData(new ActorData(proj, 
+				new BasicData("Blue",  path + "blue.png"), new LimitedHealthData())));
+	
 		
-		map.put("Singleton", new LineageData(new ActorData(proj, 
+/*		map.put("Singleton", new LineageData(new ActorData(proj, 
 				new BasicData("Singleton",  path + "Singleton.png"), new LimitedHealthData())));
 		map.put("Static", new LineageData(new ActorData(proj, 
 				new BasicData("Static",  path + "Static.png"), new LimitedHealthData())));
 		map.put("STUPID", new LineageData(new ActorData(proj, 
-				new BasicData("STUPID",  path + "STUPID.png"), new LimitedHealthData())));
+				new BasicData("STUPID",  path + "STUPID.png"), new LimitedHealthData())));*/
 
 		DEFAULT_TROOPS = map;
 	}
+	
 	private static final Map<String, LineageData> DEFAULT_PROJECTILES;
 	static {
-		//String path = "projectiles/";
-		String path = "";
+		String path = "projectiles/";
+		//String path = "";
 		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
+		BasicActorType proj = new BasicActorType("Projectile", "projectile_icon.png", false);
+		
 		/*map.put("Fire", path + "flame.png");
 		map.put("Water", path + "raindrop.png");
 		map.put("Ice", path + "snowflake.png");
 		map.put("Nature", path + "leaf.png");*/
 		
-		BasicActorType proj = new BasicActorType("Projectile", "projectile_icon.png", false);
+		map.put("Fire", new LineageData(new ActorData(proj, 
+				new BasicData("Fire",  path + "flame.png"), new LimitedHealthData())));
+		map.put("Water", new LineageData(new ActorData(proj, 
+				new BasicData("Water",  path + "raindrop.png"), new LimitedHealthData())));
+		map.put("Ice", new LineageData(new ActorData(proj, 
+				new BasicData("Ice",  path + "snowflake.png"), new LimitedHealthData())));
+		map.put("Nature", new LineageData(new ActorData(proj, 
+				new BasicData("Nature",  path + "leaf.png"), new LimitedHealthData())));
 		
-		map.put("YES", new LineageData(new ActorData(proj, 
+		/*map.put("YES", new LineageData(new ActorData(proj, 
 				new BasicData("YES",  path + "piazza_proj_3.png"), new LimitedHealthData())));
 		map.put("NO", new LineageData(new ActorData(proj, 
 				new BasicData("NO",  path + "piazza_proj_2.png"), new LimitedHealthData())));
 		map.put("Reference2", new LineageData(new ActorData(proj, 
 				new BasicData("Reference2",  path + "piazza_proj_1.png"), new LimitedHealthData())));
 		map.put("Reference1", new LineageData(new ActorData(proj, 
-				new BasicData("Reference1",  path + "piazza_proj_4.png"), new LimitedHealthData())));
+				new BasicData("Reference1",  path + "piazza_proj_4.png"), new LimitedHealthData())));*/
 		
 		DEFAULT_PROJECTILES = map;
 	}
@@ -135,12 +159,12 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	 * 
 	 * @param delegate required so that this class can launch the ActorEditorView's
 	 */
-	public LeftPaneView(ActorEditorDelegate delegate, GameData gameData, boolean loaded){
+	public LeftPaneView(ActorEditorDelegate delegate, GameData gameData){
 		super();
 		myEditorDelegate = delegate;
 		myPopDelegate = delegate;
 		myGameData = gameData;
-		isLoaded = loaded;
+		isLoaded = (gameData.getTypes().size() != 0);
 		setupViews();
 	}
 	
