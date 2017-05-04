@@ -1,13 +1,11 @@
 package ui.authoring.actor;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import XML.xmlmanager.classes.ConcreteFileHelper;
+
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,10 +14,8 @@ import gamedata.BasicData;
 import gamedata.GameData;
 import gamedata.LineageData;
 import gamedata.composition.LimitedHealthData;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -28,25 +24,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.util.Duration;
-import types.ActorType;
 import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.ActorEditorDelegate;
 import ui.authoring.delegates.ActorInfoDelegate;
-import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.ImageButton;
 import ui.general.UIHelper;
@@ -283,14 +274,18 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		fileChooser.setTitle("Select Image File");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(this.getScene().getWindow());
-		if(selectedFile!= null){
-			String imagePath = selectedFile.getName();
-			String name = imagePath.substring(0, imagePath.indexOf("."));
+		if (selectedFile != null) {
+			ConcreteFileHelper manager = new ConcreteFileHelper();
+			try {
+				manager.moveFile(selectedFile.getParent(), "images", selectedFile.getName());
+				
+			} catch (Exception e1) {}
+			String imageName = selectedFile.getName();
+			String name = imageName.substring(0, imageName.indexOf("."));
 			LineageData lin = new LineageData(new ActorData(myActorType, 
-					new BasicData(name,  imagePath), new LimitedHealthData()));
+					new BasicData(name,  selectedFile.toURI().toString()), new LimitedHealthData()));
 			addActorData(lin);
 		}
-		
 	}
 	
 	public void setGameData(GameData data){

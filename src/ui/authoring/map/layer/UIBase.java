@@ -23,11 +23,11 @@ import util.Tuple;
  * @author TNK
  *
  */
-public class Base extends ImageViewPane{
+public class UIBase extends ImageViewPane{
 	
 	private Tuple<ActorData, Grid2D> myData;
 	
-	public Base(ActorData data, Grid2D loc, Bounds parentBounds){
+	public UIBase(ActorData data, Grid2D loc, Bounds parentBounds){
 		setMyData(new Tuple<>(data, loc));
 		setImageView(new ImageView(new Image(data.getImagePath())));
 		updateLayout(parentBounds);

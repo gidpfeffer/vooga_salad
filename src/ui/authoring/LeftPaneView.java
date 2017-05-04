@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -128,9 +129,18 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	}
 	
 	private void loadActors(){
+		boolean troopFound = false;
+		if(myGameData.getTypes().stream().filter(type -> type.getType().equals("Troop")).collect(Collectors.toList()).isEmpty())
+			myGameData.getTypes().add(new BasicActorType("Troop", "enemy_icon.png", false));
 		for(BasicActorType type: myGameData.getTypes()){
 			//Map<String, LineageData> mapping = myGameData.getAllLinOfType(type)
+			if(type.equals(new BasicActorType("Troop"))){
+				troopFound = true;
+			}
 ;			addActorView(type);
+		}
+		if(!troopFound){
+			
 		}
 	}
 	
@@ -166,9 +176,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	private void addActorToGame(BasicActorType actorType){
 		ActorEditorView view = new ActorEditorView(myEditorDelegate, actorType, myGameData);
 		myGameData.getTypes().add(actorType);
-		
-		//view.setupActors(gameData);
-		
+	
 		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
 		this.actorTypeToView.put(actorType, view);
 		StackPane button = UIHelper.buttonStack(e -> launchEditor(view), 

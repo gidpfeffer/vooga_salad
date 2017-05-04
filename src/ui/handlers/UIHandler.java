@@ -1,9 +1,14 @@
 package ui.handlers;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import gamedata.ActorData;
 import gamedata.DisplayData;
+import gamedata.LineageData;
+import util.InsufficientMoneyException;
+import util.LayerNotPlaceableException;
 import util.VoogaException;
 
 /**
@@ -14,10 +19,11 @@ import util.VoogaException;
 public interface UIHandler {
 	
 	void deleteGameObject(int id);
-	void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException;
+	void updateGameObjectType(int id, Integer currentOption) throws VoogaException, InsufficientMoneyException;
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
-	int addGameObject(Integer option, double x, double y) throws VoogaException;
+	int addGameObject(Integer option, double x, double y) throws VoogaException, LayerNotPlaceableException, InsufficientMoneyException;
 	Map<Integer,ActorData> getOptions();
+	Map<Integer,LineageData> getLineageData();
 	DisplayData getDisplayData();
 	void launchGame() throws VoogaException;
 	void changeLevel(int level) throws VoogaException;

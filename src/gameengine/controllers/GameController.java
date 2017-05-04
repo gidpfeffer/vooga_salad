@@ -1,10 +1,15 @@
 package gameengine.controllers;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
 import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.DisplayData;
 import gamedata.GameData;
+import gamedata.LineageData;
 import gameengine.grid.ActorGrid;
 import gameengine.grid.interfaces.ActorGrid.ReadableGrid;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
@@ -30,6 +35,8 @@ import ui.player.listener.SceneListen;
 import ui.player.users.InitialGameStatus;
 import ui.player.users.WriteableUser;
 import util.GameObjectUtil;
+import util.InsufficientMoneyException;
+import util.LayerNotPlaceableException;
 import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 /**
@@ -178,21 +185,22 @@ public class GameController {
 				myGameObjectUtil.deleteGameObject(id, myGrid);
 			}
 			@Override
-			public void updateGameObjectType(int id, Integer currentOption, Integer newOption) throws VoogaException {
-				myGameObjectUtil.updateGameObjectType(id, currentOption, newOption, myGrid, myGameData);
+			public void updateGameObjectType(int id, Integer currentOption) throws InsufficientMoneyException {
+				myGameObjectUtil.updateGameObjectType(id, myGameData.getMappedLineageData().get(currentOption), myGrid, myGameData,myGameStatus);
 			}
 			@Override
 			public void updateGameObjectLocation(int id, double xRatio, double yRatio) throws VoogaException {
 				myGameObjectUtil.updateGameObjectLocation(id, xRatio, yRatio, myGrid);
 			}
 			@Override
-			public int addGameObject(Integer option, double xRatio, double yRatio) throws VoogaException{
+			public int addGameObject(Integer option, double xRatio, double yRatio) throws LayerNotPlaceableException, InsufficientMoneyException{
 				return myGameObjectUtil.addGameObject(option, xRatio, yRatio, myGameData, myGameStatus, myGrid);
 			}
 			@Override
 			public Map<Integer, ActorData> getOptions() {
 				return myGameData.getOptions();
 			}
+		
 			public DisplayData getDisplayData(){
 				return myGameData.getDisplayData();
 			}
@@ -203,6 +211,10 @@ public class GameController {
 			
 			public void launchGame() throws VoogaException {
 				myLevelController.changeLevel(1);
+			}
+			@Override
+			public Map<Integer,LineageData> getLineageData() {
+				return myGameData.getMappedLineageData();
 			}
 		};
 	}
@@ -235,6 +247,10 @@ public class GameController {
 			@Override
 			public Function<BasicActorType, Integer> actorCounts() {
 				return actorCounts;
+			}
+			
+			public BasicActorType getBasicActorTypeEnemy() {
+				return myGameObjectUtil.getBasicActorEnemyType(myGameData);
 			}
 			
 		};
