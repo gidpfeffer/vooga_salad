@@ -30,7 +30,8 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	}
 	
 	public void setInitialValues() {
-		setMyMoney(myInitialGameStatus.getInitMoney().orElse(0));
+		setMyMoney(0);
+		myInitialGameStatus.getInitMoney().ifPresent((money) -> setMyMoney(money));
 		setMyLevel(INIT_LEVEL);
 		setMyExperience(INIT_EXP);
 		setMyLives(myInitialGameStatus.getInitLives());
@@ -40,11 +41,11 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 		setMyExperience(getExp()+exp);
 	}
 
-	public void addMoney(double mon){
+	public void addMoney(int mon){
 		setMyMoney(getMoney()+mon);
 	}
 
-	public void spendMoney(double mon){
+	public void spendMoney(int mon){
 		setMyMoney(getMoney()-mon);
 	}
 
@@ -59,14 +60,12 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 		notifyObservers();
 	}
 
-	public void setMyMoney(double myMoney) {
-		myWriteableUser.setMoney(myMoney);
-		myMap.put(MONEY, Double.toString(myMoney));
+	public void setMyMoney(int myMoney) {
+		myMap.put(MONEY, Integer.toString(myMoney));
 		notifyObservers();
 	}
 
 	public void setMyLevel(int myLevel) {
-		myWriteableUser.setLevel(myLevel);
 		myMap.put(LEVEL, Integer.toString(myLevel));
 		notifyObservers();
 	}
@@ -92,8 +91,8 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	}
 
 	@Override
-	public double getMoney() {
-		return Double.parseDouble(myMap.get(MONEY));
+	public int getMoney() {
+		return Integer.parseInt(myMap.get(MONEY));
 	}
 
 	@Override

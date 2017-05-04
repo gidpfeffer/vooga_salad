@@ -15,7 +15,7 @@ public class ActorDamageableWithExitProperty<G extends ReadAndDamageGrid> extend
 	protected void damageActor(G grid, Integer actorID, Consumer<Double> damage, Double health) {
 		super.damageActor(grid, actorID, damage, health);
 		grid.getWriteableGameStatus().addExperience(health);
-		grid.getWriteableGameStatus().addMoney(health);
+		grid.getWriteableGameStatus().addMoney(health.intValue());
 	}
 
 }
