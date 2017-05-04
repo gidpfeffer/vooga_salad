@@ -3,16 +3,15 @@ package ui.authoring;
 import java.io.File;
 import java.io.IOException;
 
+import XML.xmlmanager.classes.ConcreteFileHelper;
 import XML.xmlmanager.classes.ExistingDirectoryHelper;
 import XML.xmlmanager.classes.XStreamSerializer;
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.IllegalXStreamCastException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
-import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileReader;
+import XML.xmlmanager.interfaces.filemanager.FileHelper;
 import gamedata.ActorData;
-import builders.objectgen.GameDataGenerator;
-import gamedata.DisplayData;
 import gamedata.GameData;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -33,7 +32,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 import ui.Preferences;
-import ui.authoring.delegates.*;
+import ui.authoring.delegates.ActorEditorDelegate;
+import ui.authoring.delegates.DisplayDelegate;
+import ui.authoring.delegates.MenuDelegate;
+import ui.authoring.delegates.PopViewDelegate;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
@@ -393,9 +395,9 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		XStreamSerializer x = new XStreamSerializer();
 		String xml = x.getXMLStringFromObject(myGameData);
 		try {
-			DirectoryFileManager h = new ExistingDirectoryHelper("games");
-				System.out.println("File is added? "+h.addStringFileToDirectory(xml, myGameData.getName() + ".xml"));
-		} catch (IllegalFileException | InvalidRootDirectoryException | IOException e) {
+			FileHelper h = new ConcreteFileHelper();
+				System.out.println("File is added? "+h.overwriteStringFile("games/" + myGameData.getName() + ".xml", xml));
+		} catch (IllegalFileException | IOException e) {
 			e.printStackTrace();
 		} 
 	}
