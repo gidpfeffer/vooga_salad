@@ -2,7 +2,7 @@ package util;
 
 public class Delay {
 
-	private final int delayMod = 60;
+	private final int delayMod = 1000;
 
 	private Integer actionDelay;
 	private Integer steps;
