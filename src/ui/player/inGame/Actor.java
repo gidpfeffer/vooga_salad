@@ -43,7 +43,11 @@ public class Actor {
 	public Integer getID() {
 		return Integer.parseInt(actor.getId());
 	}
-
+	
+	public void setID(Integer ID) {
+		mainPane.setId(ID.toString());
+	}
+	
 	public void turnOffHandlers() {
 		mainPane.removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
 		mainPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
@@ -51,9 +55,9 @@ public class Actor {
 	}
 
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData) {
-		actor = UIHelper.buttonStack(e -> {
-		}, Optional.ofNullable(null),
-				Optional.of(new ImageView(new Image(actorData.getImagePath(), 60, 60, true, true))), Pos.CENTER, true);
+		actor = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null),
+				Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER, true);
+		actor.setStyle("-fx-effect: null;");
 		actor.setBackground(Background.EMPTY);
 		this.screenhandler = screenhandler;
 		this.option = option;
@@ -61,7 +65,6 @@ public class Actor {
 		this.height = screenhandler.getHeight();
 		this.uihandler = uihandler;
 		this.removeable = Optional.of(false); // true if actors are allowed to
-												// be picked up and replaced
 		setup();
 	}
 
@@ -138,10 +141,7 @@ public class Actor {
 						screenhandler.addActorToMap(actorID, clazz);
 						actor.setId(actorID.toString());
 					}
-				} catch (NumberFormatException | VoogaException e) {
-					screenhandler.showError("You cannot place an item there!");
-				}
-				catch (LayerNotPlaceableException e) {
+				} catch (NumberFormatException | VoogaException | LayerNotPlaceableException e) {
 					screenhandler.showError("Invalid Location!");
 				} catch (InsufficientMoneyException e) {
 					screenhandler.showError("Insufficient Funds!");
@@ -153,7 +153,7 @@ public class Actor {
 	EventHandler<MouseEvent> upgrades = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			screenhandler.showUpgrades();
+			//screenhandler.showUpgrades(option, clazz);
 		}
 	};
 	
