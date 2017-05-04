@@ -23,7 +23,7 @@ public interface UIHandler {
 	void updateGameObjectLocation(int id, double x, double y) throws VoogaException;
 	int addGameObject(Integer option, double x, double y) throws VoogaException, LayerNotPlaceableException, InsufficientMoneyException;
 	Map<Integer,ActorData> getOptions();
-	Collection<LineageData> getLineageData();
+	Map<Integer,LineageData> getLineageData();
 	DisplayData getDisplayData();
 	void launchGame() throws VoogaException;
 	void changeLevel(int level) throws VoogaException;

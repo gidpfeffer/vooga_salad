@@ -3,6 +3,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
 import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.DisplayData;
@@ -211,8 +213,8 @@ public class GameController {
 				myLevelController.changeLevel(1);
 			}
 			@Override
-			public Collection<LineageData> getLineageData() {
-				return myGameData.getLineageData();
+			public Map<Integer,LineageData> getLineageData() {
+				return myGameData.getMappedLineageData();
 			}
 		};
 	}
@@ -245,6 +247,10 @@ public class GameController {
 			@Override
 			public Function<BasicActorType, Integer> actorCounts() {
 				return actorCounts;
+			}
+			
+			public BasicActorType getBasicActorTypeEnemy() {
+				return myGameObjectUtil.getBasicActorEnemyType(myGameData);
 			}
 			
 		};

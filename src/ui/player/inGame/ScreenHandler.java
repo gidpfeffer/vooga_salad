@@ -10,4 +10,5 @@ public interface ScreenHandler {
 	public boolean isActorInMap(int id);
 	public double getWidth();
 	public double getHeight();
+	public void showUpgrades();
 }

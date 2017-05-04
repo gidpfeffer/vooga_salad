@@ -83,14 +83,14 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
 		myGameData = new GameData("Untitled"); //TODO 
-		setupViews(false); // false = not loaded
+		setupViews(); // false = not loaded
 	}
 
-	private void setupViews(boolean loaded) {
+	private void setupViews() {
 		setupTitle();
 		setupMapView();
-		setupLeftPane(loaded);
-		setupLevelView(loaded);
+		setupLeftPane();
+		setupLevelView();
 		
 		setupBottomPane();
 		setupMargins();
@@ -255,8 +255,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		BorderPane.setAlignment(myMapView, Pos.CENTER);
 	}
 
-	private void setupLevelView(boolean load) {
-		myLevelView = new LevelEditorView(this, myGameData, load);
+	private void setupLevelView() {
+		myLevelView = new LevelEditorView(this, myGameData);
 		UIHelper.setBackgroundColor(myLevelView, THEME_COLOR);
 		UIHelper.setDropShadow(myLevelView);
 		myLevelView.setMinWidth(SIDE_PANE_WIDTH_MIN);
@@ -264,8 +264,8 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		this.myBorderPane.setRight(myLevelView);
 	} 
 	
-	private void setupLeftPane(boolean loaded){
-		myLeftPane = new LeftPaneView(this, myGameData, loaded);
+	private void setupLeftPane(){
+		myLeftPane = new LeftPaneView(this, myGameData);
 		myLeftPane.setMinWidth(SIDE_PANE_WIDTH_MIN);
 		myLeftPane.setPrefWidth(SIDE_PANE_WIDTH);
 		AnchorPane.setBottomAnchor(myLeftPane, 12.0);
@@ -379,7 +379,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 //		myGameData.getLayers().getMyPathData().getMyPaths().entrySet().forEach(entry -> {
 //			System.out.println(entry.getValue());
 //		});
-		setupViews(true);//loaded
+		setupViews();//loaded
 	}
 	
 	

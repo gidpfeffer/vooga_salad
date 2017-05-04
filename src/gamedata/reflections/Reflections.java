@@ -36,7 +36,8 @@ public class Reflections {
 	    Enumeration<URL> resources = classLoader.getResources(path);
 	    List<File> dirs = new ArrayList<File>();
 	    while (resources.hasMoreElements()) {
-	        URL resource = resources.nextElement();
+	        URL resource = new URL(resources.nextElement().toString().replace("%20", " "));
+	        System.out.println(resource.toString());
 	        dirs.add(new File(resource.getFile()));
 	    }
 	    ArrayList<Class> classes = new ArrayList<Class>();

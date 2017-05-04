@@ -1,6 +1,6 @@
 package gamedata;
 
-import java.util.ArrayList;
+import java.util.ArrayList;	
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,6 @@ import gamedata.LayerData;
 import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 import gamedata.compositiongen.HealthData;
-import gamedata.map.PolygonData;
 import types.BasicActorType;
 
 /**

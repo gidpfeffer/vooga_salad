@@ -1,7 +1,5 @@
 package util;
-
 import java.util.stream.Collectors;
-
 import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
@@ -12,8 +10,8 @@ import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gamestatus.GameStatus;
-import gamestatus.ReadableGameStatus;
 import gamestatus.WriteableGameStatus;
+import types.BasicActorType;
 
 /**
  * Util class for updating Game Objects in back end grid (updating type, spawning, deleting, updating location)
@@ -43,8 +41,6 @@ public class GameObjectUtil {
 	}
 	
 	public boolean isPlaceable(LayerData layer, double x, double y){
-		layer.getMyPolygons().forEach(p -> System.out.println("layer " + PathUtil.isWithinPolygon(p.getMyPoints(), x,y)));
-		
 		if (!layer.getMyPolygons().stream()
 				.filter(poly -> PathUtil.isWithinPolygon(poly.getMyPoints(), x,y))
 				.collect(Collectors.toList()).isEmpty()) return true;
@@ -64,25 +60,29 @@ public class GameObjectUtil {
 		}
 	}
 	
-//	private boolean isAddable(ControllableGrid grid, LayerData layerData, double xRatio, double yRatio, PreferencesData preferences, double moneyLeft, double cost) {
-//		return (isPlaceable(layerData,xRatio, yRatio) && grid.isValidLoc(xRatio, yRatio) && enoughMoney(preferences,moneyLeft,cost));
-//	}
-	
 	private boolean enoughMoney(PreferencesData preferences, double moneyLeft, double cost) {
 		return ((preferences.wantMoney() && moneyLeft>=cost) || !preferences.wantMoney());
 	}
 	
 	private int generateActor(GameData gameData, ActorData actorData, double xRatio, double yRatio,ControllableGrid grid,WriteableGameStatus gameStatus) {
-		gameStatus.spendMoney(actorData.getCost());
+		changeMoneySupply(gameData.getPreferences(),gameStatus, actorData);
 		Actor actor = ActorGenerator.makeActor(gameData.getOptionKey(actorData),actorData);
 		grid.controllerSpawnActor(actor, xRatio, yRatio);
 		return actor.getID();
 	}
 	
 	private void generateActor(int id, GameData gameData, ActorData actorData, double xRatio, double yRatio,ControllableGrid grid,WriteableGameStatus gameStatus) {
-		gameStatus.spendMoney(actorData.getCost());
+		changeMoneySupply(gameData.getPreferences(),gameStatus, actorData);
 		Actor actor = ActorGenerator.makeActor(id,gameData.getOptionKey(actorData),actorData);
 		grid.controllerSpawnActor(actor, xRatio, yRatio);
+	}
+	
+	private void changeMoneySupply(PreferencesData preferences, WriteableGameStatus gameStatus, ActorData actorData) {
+		if (preferences.wantMoney()) gameStatus.spendMoney(actorData.getCost());
+	}
+	
+	public BasicActorType getBasicActorEnemyType(GameData myGameData) {
+		return myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies().get(0).getMyActor().getType();
 	}
 	
 	
