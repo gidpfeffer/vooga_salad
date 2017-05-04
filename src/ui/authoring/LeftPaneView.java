@@ -2,24 +2,14 @@ package ui.authoring;
 
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
-
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import gamedata.ActorData;
 import gamedata.BasicData;
@@ -33,7 +23,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -47,7 +36,6 @@ import ui.authoring.delegates.CreateActorDelegate;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
-import util.Tuple;
 
 public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	

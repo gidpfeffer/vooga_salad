@@ -137,7 +137,6 @@ public class PolygonLayerView extends Layer {
 	
 	private Coordinates compressPoint(MouseEvent e) {
 		Coordinates c =   new Coordinates(e.getX()/this.getWidth(), e.getY()/this.getHeight());
-		System.out.println(c);
 		return c;
 	}
 
@@ -175,15 +174,8 @@ public class PolygonLayerView extends Layer {
 	 */
 	private void mouseSecondary(MouseEvent e) {
 		if(myCurrentPolygon != null){
-			printData();
 			myCurrentPolygon = null;
 		}
-	}
-	
-	private void printData(){
-		System.out.println("\nPrint myLayerData");
-		for(PolygonData d: myLayerData.getMyPolygons())
-			System.out.println("\t"+d);
 	}
 	
 

@@ -12,9 +12,7 @@ public class User implements WriteableUser{
 	private String last;
 	private String most;
 	
-	private final static double INITIAL_MONEY = 0;
 	private final static double INITIAL_EXP = 0;
-	private final static int INITIAL_LEVEL = 1;
 	private final static String guestUser = "Guest";
 	private final static String guestPicture = "profile_icon.png";
 	
@@ -74,26 +72,6 @@ public class User implements WriteableUser{
 		this.email = email;
 	}
 	
-	public InitialGameStatus getInitialGameStatus() {
-		return new InitialGameStatus() {
-
-			@Override
-			public double getInitMoney() {
-				return INITIAL_MONEY;
-			}
-
-			@Override
-			public double getInitExp() {
-				return INITIAL_EXP;
-			}
-
-			@Override
-			public int getInitLevel() {
-				return INITIAL_LEVEL;
-			}
-		};
-	}
-	
 	public User() {
 		this(guestUser, "", guestPicture, "");
 	}
@@ -104,9 +82,7 @@ public class User implements WriteableUser{
 		this.avatar = avatar;
 		this.email = email;
 		this.experience = INITIAL_EXP;
-		this.level = INITIAL_LEVEL;
 		this.last = "";
-		this.money = INITIAL_MONEY;
 	}
 	
 }

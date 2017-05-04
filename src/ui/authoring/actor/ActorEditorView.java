@@ -86,7 +86,12 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		Label lbl = new Label("Placeable?");
 		lbl.setTextFill(CustomColors.GREEN_100);
 		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		ImageButton b = new ImageButton("place_icon.png", new Location(32., 32.));
+		ImageButton b;
+		if(myActorType.isPlaceable()){
+			b = new ImageButton("place_icon.png", new Location(32., 32.));
+		} else{
+			b = new ImageButton("no_place_icon.png", new Location(32., 32.));
+		}
 		AnchorPane.setTopAnchor(b, 4.0);
 		AnchorPane.setRightAnchor(b, 4.0);
 		AnchorPane.setTopAnchor(lbl, 16.0);
@@ -224,7 +229,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		view.setPrefHeight(BUTTON_HEIGHT);
 		actorField.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(data, newText));
 		
-		ImageView removeIcon = new ImageView(new Image("clear_icon.png"));
+/*		ImageView removeIcon = new ImageView(new Image("clear_icon.png"));
 		removeIcon.setFitHeight(16);
 		removeIcon.setFitWidth(16);
 		StackPane remove = UIHelper.buttonStack(e -> {removeLineage(data, anchor);}, 
@@ -232,7 +237,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 				Optional.of(removeIcon), Pos.CENTER, true);
 		UIHelper.setBackgroundColor(remove, Color.TRANSPARENT);
 		AnchorPane.setTopAnchor(remove, -4.0);
-		AnchorPane.setRightAnchor(remove, -4.0);
+		AnchorPane.setRightAnchor(remove, -4.0);*/
 		
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		//VBox.setMargin(view, new Insets(8));
@@ -240,7 +245,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		AnchorPane.setRightAnchor(view, 8.0);
 		AnchorPane.setTopAnchor(view, 8.0);
 		AnchorPane.setBottomAnchor(view, 8.0);
-		anchor.getChildren().addAll(view, remove);
+		anchor.getChildren().addAll(view);
 		myLineageList.getChildren().add(myLineageList.getChildren().size() - 1, anchor);	
 	}
 	
