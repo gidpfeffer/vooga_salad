@@ -93,6 +93,7 @@ public class GameLevelController {
 	}
 	
 	private void loadLevel(LevelData levelData) {
+		delay = new Delay((int) levelData.getDuration());
 		updateWinCondition(levelData);
 		addSetPieces(myGameData.getLayers().getMyBaseData());
 		addPieces(levelData);
