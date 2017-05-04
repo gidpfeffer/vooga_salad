@@ -183,7 +183,12 @@ public class GameData {
 			return;
 		}
 		for (int i=0; i<levels.size(); i++){
-			List<WaveData> waves = levels.get(i).getMyWaves();
+			List<WaveData> waves = new ArrayList<WaveData>();
+			try{
+				waves = levels.get(i).getMyWaves();
+			}catch(Exception e){
+				break;
+			}
 			for(int j=0; j<waves.size(); j++){
 				WaveData wave = waves.get(j);
 				wave.removeActor(actor);
