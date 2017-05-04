@@ -15,6 +15,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ui.general.UIHelper;
 import ui.handlers.UIHandler;
+import util.InsufficientMoneyException;
+import util.LayerNotPlaceableException;
 import util.VoogaException;
 
 public class Actor {
@@ -126,10 +128,11 @@ public class Actor {
 			if (((MouseEvent) ME).getButton().equals(MouseButton.SECONDARY)) {
 				try {
 					Integer actorID = uihandler.addGameObject(option, mainPane.getLayoutX() / width,
-							mainPane.getLayoutY() / height);
+								mainPane.getLayoutY() / height);
 					Object obj = ME.getSource();
 					if (obj instanceof Pane) {
 						((Pane) obj).removeEventHandler(MouseEvent.MOUSE_CLICKED, place);
+						((Pane) obj).addEventHandler(MouseEvent.MOUSE_CLICKED, upgrades);
 						if (removeable.isPresent() && !removeable.get())
 							((Pane) obj).removeEventHandler(MouseEvent.MOUSE_DRAGGED, drag);
 						screenhandler.addActorToMap(actorID, clazz);
@@ -138,9 +141,22 @@ public class Actor {
 				} catch (NumberFormatException | VoogaException e) {
 					screenhandler.showError("You cannot place an item there!");
 				}
+				catch (LayerNotPlaceableException e) {
+					screenhandler.showError("Invalid Location!");
+				} catch (InsufficientMoneyException e) {
+					screenhandler.showError("Insufficient Funds!");
+				}
 			}
 
 		}
 	};
+	EventHandler<MouseEvent> upgrades = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(final MouseEvent ME) {
+			screenhandler.showUpgrades();
+		}
+	};
+	
+	
 
 }
