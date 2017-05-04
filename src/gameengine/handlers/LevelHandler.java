@@ -11,4 +11,5 @@ public interface LevelHandler {
 	void displayLoseAlert();
 	void levelUp();
 	Function<BasicActorType,Integer> actorCounts();
+	BasicActorType getBasicActorTypeEnemy();
 }

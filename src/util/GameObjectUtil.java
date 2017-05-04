@@ -1,5 +1,6 @@
 package util;
 
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import builders.objectgen.ActorGenerator;
@@ -14,6 +15,7 @@ import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gamestatus.GameStatus;
 import gamestatus.ReadableGameStatus;
 import gamestatus.WriteableGameStatus;
+import types.BasicActorType;
 
 /**
  * Util class for updating Game Objects in back end grid (updating type, spawning, deleting, updating location)
@@ -81,6 +83,10 @@ public class GameObjectUtil {
 	
 	private void changeMoneySupply(PreferencesData preferences, WriteableGameStatus gameStatus, ActorData actorData) {
 		if (preferences.wantMoney()) gameStatus.spendMoney(actorData.getCost());
+	}
+	
+	public BasicActorType getBasicActorEnemyType(GameData myGameData) {
+		return myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies().get(0).getMyActor().getType();
 	}
 	
 	

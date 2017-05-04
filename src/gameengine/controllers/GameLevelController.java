@@ -1,6 +1,6 @@
 package gameengine.controllers;
 
-import java.util.ArrayDeque;
+import java.util.ArrayDeque;	
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -18,7 +18,6 @@ import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gameengine.handlers.LevelHandler;
 import gamestatus.GameStatus;
-import types.BasicActorType;
 import util.Delay;
 /**
  * Controls information about/behavior of a single level
@@ -57,20 +56,14 @@ public class GameLevelController {
 		myGameStatus = gameStatus;
 	}
 	
-	private BasicActorType getBasicActorEnemyType() {
-		return myGameData.getLevel(1).getMyWaves().get(0).getWaveEnemies().get(0).getMyActor().getType();
-	}
-	
 	private void setEnemiesLeft(int numEnemies) {
 		enemiesLeft = numEnemies;
 		myGameStatus.setMyEnemiesLeft(numEnemies);
 	}
 	
 	public void update() {
-		if(delay.delayAction()&&!enemiesInWave.isEmpty()) {
-			enemiesInWave.poll().get();
-		}
-		int enemiesLeft = enemiesInWave.size()+myLevelHandler.actorCounts().apply(getBasicActorEnemyType());
+		if(delay.delayAction()&&!enemiesInWave.isEmpty()) enemiesInWave.poll().get();
+		int enemiesLeft = enemiesInWave.size()+myLevelHandler.actorCounts().apply(myLevelHandler.getBasicActorTypeEnemy());
 		setEnemiesLeft(enemiesLeft);
 		Optional<Boolean> myWin = myWinCondition.conditionSatisfied(myGameStatus);
 		myWin.ifPresent(win -> winCondition(win).run());
