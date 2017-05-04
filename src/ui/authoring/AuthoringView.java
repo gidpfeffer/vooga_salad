@@ -184,7 +184,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 
 		
-		myMenuView.setLayoutX(-width - 5);
+		myMenuView.setLayoutX(-width - 4);
 		myMenuView.setPrefWidth(width);
 		
 		UIHelper.setBackgroundColor(myMenuView, CustomColors.GREEN);
@@ -286,10 +286,13 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	
 	private void slideMenuIn(){
-		System.out.println("menu pressed");
+		if(myMenuView.getParent() == null)
+			getChildren().add(myMenuView);
 		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 		t.setNode(myMenuView);
-		t.setByX(myMenuView.widthProperty().doubleValue());
+		t.setByX(myMenuView.getWidth());
+		System.out.println(myMenuView);
+		System.out.println(myMenuView.getWidth());
 		t.play();
 	}
 	//alex test
@@ -310,6 +313,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 	}
 	//end alex test
 	private void slideMenuOut(){
+
 		TranslateTransition t = new TranslateTransition(Duration.seconds(0.3));
 		t.setNode(myMenuView);
 		t.setToX(0);

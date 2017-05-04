@@ -228,8 +228,8 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
 		actorField.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(data, newText));
-		
-/*		ImageView removeIcon = new ImageView(new Image("clear_icon.png"));
+
+		/*ImageView removeIcon = new ImageView(new Image("clear_icon.png"));
 		removeIcon.setFitHeight(16);
 		removeIcon.setFitWidth(16);
 		StackPane remove = UIHelper.buttonStack(e -> {removeLineage(data, anchor);}, 

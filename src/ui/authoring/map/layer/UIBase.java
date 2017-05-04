@@ -34,8 +34,9 @@ public class UIBase extends ImageViewPane{
 		
 		//add image
 		ImageView img = new ImageView(new Image(data.getImagePath()));
-		img.setFitHeight(data.getBasic().getImageDimensions().getY());
-		img.setFitWidth(data.getBasic().getImageDimensions().getX());
+		img.setFitHeight(data.getBasic().getImageDimensions().getY()*pane.getHeight());
+		img.setFitWidth(data.getBasic().getImageDimensions().getX()*pane.getWidth());
+		img.setPreserveRatio(true);
 		setImageView(img);
 		
 		updateLayout(pane);
