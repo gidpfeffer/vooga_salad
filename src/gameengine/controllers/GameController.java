@@ -213,8 +213,8 @@ public class GameController {
 				myLevelController.changeLevel(1);
 			}
 			@Override
-			public Collection<LineageData> getLineageData() {
-				return myGameData.getLineageData();
+			public Map<Integer,LineageData> getLineageData() {
+				return myGameData.getMappedLineageData();
 			}
 		};
 	}
