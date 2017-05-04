@@ -1,6 +1,7 @@
 package ui.authoring.map.layer;
 
 import gamedata.ActorData;
+import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
@@ -25,12 +26,20 @@ import util.Tuple;
  */
 public class UIBase extends ImageViewPane{
 	
-	private Tuple<ActorData, Grid2D> myData;
+	private Tuple<ActorData, Coordinates> myData;
 	
-	public UIBase(ActorData data, Grid2D loc, Bounds parentBounds){
+	public UIBase(ActorData data, Coordinates loc, Pane pane){
+		
 		setMyData(new Tuple<>(data, loc));
-		setImageView(new ImageView(new Image(data.getImagePath())));
-		updateLayout(parentBounds);
+		
+		//add image
+		ImageView img = new ImageView(new Image(data.getImagePath()));
+		img.setFitHeight(data.getBasic().getImageDimensions().getY());
+		img.setFitWidth(data.getBasic().getImageDimensions().getX());
+		setImageView(img);
+		
+		updateLayout(pane);
+		
 	}
 
 	
@@ -39,9 +48,9 @@ public class UIBase extends ImageViewPane{
 	 * by decompressing points to fit the dimensions of the bounds
 	 * @param parentBounds
 	 */
-	public void updateLayout(Bounds parentBounds){
-		double xNorm = parentBounds.getWidth();
-		double yNorm = parentBounds.getHeight();
+	public void updateLayout(Pane pane){
+		double xNorm = pane.getWidth();
+		double yNorm = pane.getHeight();
 		double width = xNorm*myData.x.getBasic().getImageDimensions().getX();
 		double height = yNorm*myData.x.getBasic().getImageDimensions().getY();
 		double x = myData.y.getX()*xNorm - width/2;
@@ -68,16 +77,17 @@ public class UIBase extends ImageViewPane{
 
 	}
 	
-	public void updateLocationData(Grid2D newLoc){
-		myData.y = newLoc;
+	public void updateLocationData(double x, double y){
+		myData.y.setX(x);
+		myData.y.setY(y);
 	}
 
-	public void setMyData(Tuple<ActorData, Grid2D> myData) {
+	public void setMyData(Tuple<ActorData, Coordinates> myData) {
 		this.myData = myData;
 	}
 
 
-	public Tuple<ActorData, Grid2D> getData() {
+	public Tuple<ActorData, Coordinates> getData() {
 		return this.myData;
 	}
 
