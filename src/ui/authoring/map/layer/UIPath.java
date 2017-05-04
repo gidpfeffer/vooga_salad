@@ -32,7 +32,6 @@ public class UIPath {
 	 */
 	public UIPath(List<Grid2D> points, Pane pane){
 		points.forEach(p -> {
-			System.out.println(p);
 			addPointTo(
 					new UIPoint(p, pane.getWidth()*p.getX(), pane.getHeight()*p.getY()),
 					pane);
@@ -64,9 +63,7 @@ public class UIPath {
 
 			previousLine.endXProperty().bind(pane.widthProperty().multiply(point.getCoordinates().getX()));
 			previousLine.endYProperty().bind(pane.heightProperty().multiply(point.getCoordinates().getY()));
-			print();
 		}catch (ArrayIndexOutOfBoundsException e){
-			System.out.println("Out of list exception because click was first point");
 		}
 		return line;
 	}
@@ -85,19 +82,14 @@ public class UIPath {
 	}
 	
 	public List<UIPoint> getPoints(){
-		print();
 		return myPoints;
 	}
 	
 	public List<Line> getLines(){
-		print();
 		return myLines;
 	}
 	
-	private void print(){
-		System.out.println(myLines.size() + " size of lines");
-		System.out.println(myPoints.size() + " size of points");
-	}
+
 	public void reload(Pane pane) {
 		this.myPoints.forEach(point -> {
 			point.setCenterX(point.getCoordinates().getX()*pane.getWidth());

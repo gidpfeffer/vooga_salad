@@ -32,10 +32,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
-import types.BasicActorType;
 import ui.Preferences;
 import ui.authoring.delegates.*;
-import ui.authoring.display.DisplayMenu;
 import ui.authoring.level.LevelEditorView;
 import ui.authoring.map.MapEditorView;
 import ui.general.CustomColors;
@@ -82,6 +80,7 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 
 	public AuthoringView(LoginHandler loginhandler) {
 		this.loginhandler = loginhandler;
+		
 		UIHelper.setBackgroundColor(this, Color.WHITE);	
 		myGameData = new GameData("Untitled"); //TODO 
 		setupViews(false); // false = not loaded
@@ -254,7 +253,6 @@ public class AuthoringView extends AnchorPane implements PopViewDelegate,MenuDel
 		UIHelper.setDropShadow(myMapView);
 		myBorderPane.setCenter(myMapView);
 		BorderPane.setAlignment(myMapView, Pos.CENTER);
-
 	}
 
 	private void setupLevelView(boolean load) {

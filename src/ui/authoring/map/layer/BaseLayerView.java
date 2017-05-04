@@ -9,23 +9,21 @@ import gamedata.BasePlacementData;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import ui.general.UIHelper;
 import util.Location;
 import util.Tuple;
 
 public class BaseLayerView extends Layer {
 
 	private boolean DID_LAUNCH;
-
 	private boolean isActive = false;
 	private BasePlacementData myData;
 	private List<UIBase> myBases;
 	private Optional<UIBase> myCurrentBase = Optional.ofNullable(null);
 
 	private EventHandler<MouseEvent> myEvent = e -> {
+		
 		// base is being dragged
 		if (e.getEventType().equals(MouseEvent.MOUSE_DRAGGED)) {
 			myCurrentBase.ifPresent(base -> dragBase(base, new Location(e.getX(), e.getY())));
@@ -72,14 +70,12 @@ public class BaseLayerView extends Layer {
 	public BaseLayerView(BasePlacementData data) {
 		myData = data;
 		myBases = new ArrayList<>();
-		//UIHelper.setBackgroundColor(this, Color.rgb(0, 0, 0, 0.3));
 		this.addEventHandler(MouseEvent.ANY, myEvent);
 		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> System.out.println(myData.getMyActorToLocation().size()));
 	}
 
 	@Override
 	protected void layoutChildren() {
-		super.layoutChildren();
 		if (!DID_LAUNCH)
 			loadBaseData();
 		DID_LAUNCH = true;
@@ -89,6 +85,7 @@ public class BaseLayerView extends Layer {
 		System.out.println("");
 		myData.getMyActorToLocation().forEach((t) -> {
 			addBaseUI(t.x, decompressGrid2D(t.y));
+			System.out.println("Grid Location: "+t.y);
 		});
 	}
 
@@ -124,6 +121,7 @@ public class BaseLayerView extends Layer {
 	}
 
 	private UIBase addBaseUI(ActorData data, Grid2D loc) {
+		System.out.println("\rUIBASE: "+loc);
 		UIBase base = new UIBase(data, loc, this.getBoundsInParent());
 		base.addEventHandler(MouseEvent.ANY, myBaseEvent);
 		this.getChildren().add(base);
