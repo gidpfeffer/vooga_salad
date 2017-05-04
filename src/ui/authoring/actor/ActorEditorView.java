@@ -288,13 +288,11 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 			try {
 				manager.moveFile(selectedFile.getParent(), "images", selectedFile.getName());
 				
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			} catch (Exception e1) {}
 			String imageName = selectedFile.getName();
 			String name = imageName.substring(0, imageName.indexOf("."));
 			LineageData lin = new LineageData(new ActorData(myActorType, 
-					new BasicData(name,  imageName), new LimitedHealthData()));
+					new BasicData(name,  selectedFile.toURI().toString()), new LimitedHealthData()));
 			myGameData.add(lin);
 			addActor(selectedFile.toURI().toString(), name, lin,  false);
 		}
