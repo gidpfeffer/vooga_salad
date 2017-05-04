@@ -86,7 +86,12 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		Label lbl = new Label("Placeable?");
 		lbl.setTextFill(CustomColors.GREEN_100);
 		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		ImageButton b = new ImageButton("place_icon.png", new Location(32., 32.));
+		ImageButton b;
+		if(myActorType.isPlaceable()){
+			b = new ImageButton("place_icon.png", new Location(32., 32.));
+		} else{
+			b = new ImageButton("no_place_icon.png", new Location(32., 32.));
+		}
 		AnchorPane.setTopAnchor(b, 4.0);
 		AnchorPane.setRightAnchor(b, 4.0);
 		AnchorPane.setTopAnchor(lbl, 16.0);
