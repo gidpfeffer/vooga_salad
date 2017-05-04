@@ -11,25 +11,25 @@ import util.Tuple;
 
 public class BasePlacementData {
 	
-	private List<Tuple<ActorData, Grid2D>> myActorLocationTuples;
+	private List<Tuple<ActorData, Coordinates>> myActorLocationTuples;
 	
 	public BasePlacementData(){
 		myActorLocationTuples = new ArrayList<>();
 	}
 	
-	public BasePlacementData(List<Tuple<ActorData, Grid2D>> actorAndLocation){
+	public BasePlacementData(List<Tuple<ActorData, Coordinates>> actorAndLocation){
 		myActorLocationTuples = actorAndLocation;
 	}
 
-	public List<Tuple<ActorData, Grid2D>> getMyActorToLocation() {
+	public List<Tuple<ActorData, Coordinates>> getMyActorToLocation() {
 		return myActorLocationTuples;
 	}
 	
-	public void addBase(Tuple<ActorData, Grid2D> t){
+	public void addBase(Tuple<ActorData, Coordinates> t){
 		this.myActorLocationTuples.add(t);
 	}
 	
-	public void removeBase(Tuple<ActorData, Grid2D> t){
+	public void removeBase(Tuple<ActorData, Coordinates> t){
 		this.myActorLocationTuples.remove(t);
 	}
 	

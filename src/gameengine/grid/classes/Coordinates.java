@@ -29,6 +29,14 @@ public class Coordinates implements Grid2D {
 	public boolean isValid(){
 		return x <= 1.0 && x >= 0.0 && y<=1.0 & y>=0.0;	
 	}
+	
+	public void setX(double x){
+		this.x = x;
+	}
+	
+	public void setY(double y){
+		this.y = y;
+	}
 
 	@Override
 	public double getX() {

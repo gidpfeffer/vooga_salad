@@ -63,7 +63,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 	private ImageViewPane myBackgroundView;
 	private MapLayersData myMapData;
-	private List<Layer> myLayers = new ArrayList<>();
+	private List<Layer> myLayers;
 	private HBox myLayerPicker;
 	private PopViewDelegate myPopDelegate;
 	private BaseLayerView myBaseLayer;
@@ -73,6 +73,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	public MapEditorView(PopViewDelegate popDelegate, MapLayersData mapData, DisplayData displayData) {
 
 		super();
+		myLayers = new ArrayList<>();
 		myBackgroundView = new ImageViewPane(new ImageView(new Image(displayData.getBackgroundImagePath())));
 		myMapData = mapData;
 		myPopDelegate = popDelegate;
@@ -100,11 +101,6 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_ENTERED,
 				e -> this.getScene().setCursor(Cursor.CROSSHAIR));
 		this.myBackgroundView.addEventHandler(MouseEvent.MOUSE_EXITED, e -> this.getScene().setCursor(Cursor.DEFAULT));
-		this.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-			if (e.getCode().equals(KeyCode.ENTER)) {
-				printData();
-			}
-		});
 	}
 
 	private void setupViews() {
@@ -123,9 +119,8 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	 * children nodes
 	 */
 	private void setupMapData() {
-		System.out.println("isLoaded:" + IS_LOADED);
+		addLayerView(myBaseLayer, "Base"); //TODO
 		addLayerView(new PathLayerView(myMapData.getMyPathData()), "Path");
-		addLayerView(myBaseLayer, "Base");
 		for (Entry<String, LayerData> entry : myMapData.getMyLayers().entrySet()) {
 			addLayerView(new PolygonLayerView(entry.getValue()), entry.getKey());
 		}
@@ -155,7 +150,6 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 		UIHelper.setBackgroundColor(layerIcon, CustomColors.GREEN_100);
 		myLayerPicker.getChildren().add(myLayerPicker.getChildren().size() - 1, layerIcon);
 		layer.setOpacity(0.8);
-		System.out.println("adding to layer" + layer.getClass().getName());
 		this.getChildren().add(layer);
 		this.myLayers.add(layer);
 		switchToLayer(layer);
@@ -186,7 +180,7 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 
 		myLayers.forEach(l -> {
 			if (l == layer) {
-				l.setOpacity(0.75);
+				l.setOpacity(0.85);
 				l.activate();
 				getChildren().remove(layer);
 				getChildren().add(layer);
@@ -297,12 +291,10 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 			e1.printStackTrace();
 				
 			}
-			System.out.println(selectedFile.getName());
 			//Image image=new Image(selectedFile.getName());
 			Image image=new Image(selectedFile.toURI().toString());
 			myBackgroundView.getImageView().setImage(image);
 			myDisplayData.setBackgroundImagePath(selectedFile.getName());
-			System.out.println("backgroundimage:"+selectedFile.getName());
 
 		}
 	}
@@ -362,11 +354,6 @@ public class MapEditorView extends StackPane implements LayerViewDelegate, Layer
 	@Override
 	public void layerPopupDidPressCancel() {
 		myPopDelegate.closeView(myLayerPopup);
-	}
-
-	private void printData() {
-		System.out.println(this.myMapData.getMyPathData());
-		System.out.println(this.myMapData);
 	}
 
 }

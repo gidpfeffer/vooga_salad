@@ -37,6 +37,9 @@ import ui.handlers.AnimationHandler;
 import ui.handlers.LoginHandler;
 import ui.handlers.UIHandler;
 import ui.player.login.LoginElement;
+import util.InsufficientMoneyException;
+import util.LayerNotPlaceableException;
+import util.VoogaException;
 import util.observerobservable.VoogaObserver;
 
 public class GameScreen extends GenericGameScreen
@@ -107,11 +110,12 @@ public class GameScreen extends GenericGameScreen
 	private void initializeScreenHandler() {
 		screenHandler = new ScreenHandler() {
 			@Override
-			public void createActor(double x, double y, int option, ActorData actorData) {
+			public Actor createActor(double x, double y, int option, ActorData actorData) {
 				Actor actor = new Actor(uihandler, screenHandler, option, actorData);
 				actor.getMainPane().setLayoutX(getWidth() - x);
 				actor.getMainPane().setLayoutY(y);
 				getChildren().add(actor.getMainPane());
+				return actor;
 			}
 
 			@Override
@@ -127,8 +131,9 @@ public class GameScreen extends GenericGameScreen
 			}
 
 			@Override
-			public void showUpgrades() {
-				Pane upgrades = new StackPane();
+			public void showUpgrades(Integer option, Actor oldActor) {
+				HBox upgrades = new HBox();
+				uihandler.getLineageData().get(option).upgrade();
 				EventHandler<MouseEvent> close = new EventHandler<MouseEvent>()  {
 					@Override
 					public void handle(MouseEvent event) {
@@ -138,10 +143,33 @@ public class GameScreen extends GenericGameScreen
 						st.play();	
 					}
 				};
+				EventHandler<MouseEvent> upgradeActor = new EventHandler<MouseEvent>()  {
+					@Override
+					public void handle(MouseEvent event) {
+						try {
+							getChildren().remove(actorsMap.get(oldActor.getID()).getMainPane());
+							actorsMap.remove(oldActor.getID());
+							uihandler.deleteGameObject(oldActor.getID());
+							Actor actor = new Actor(uihandler, screenHandler, option, uihandler.getLineageData().get(option).getCurrent());
+							actor.getMainPane().setLayoutX(oldActor.getMainPane().getLayoutX());
+							actor.getMainPane().setLayoutY(oldActor.getMainPane().getLayoutY());
+							getChildren().add(actor.getMainPane());
+							actor.turnOffHandlers();
+							Integer actorID = uihandler.addGameObject(option, actor.getMainPane().getLayoutX() / getWidth(), actor.getMainPane().getLayoutY() / getWidth());
+							actorsMap.put(actorID, actor);
+							System.out.println(actorsMap);
+							actor.setID(actorID);
+							close.handle(event);
+							actor.getMainPane().addEventHandler(MouseEvent.MOUSE_CLICKED, e -> showUpgrades(option, actor));
+						} catch (VoogaException | LayerNotPlaceableException | InsufficientMoneyException e) {
+							e.printStackTrace();
+						}
+					}
+				};
 				OptionButton exit = new OptionButton(0, "", "x_icon.png", close);
-				exit.getButton().setStyle("-fx-background-color: transparent");
-				upgrades.getChildren().addAll(exit.getButton());
-				setupAnchors(upgrades, 10.);
+				OptionButton upgradedActor = new OptionButton(0, "", uihandler.getLineageData().get(option).getCurrent().getImagePath(), upgradeActor);
+				upgrades.getChildren().addAll(upgradedActor.getButton(), exit.getButton());
+				AnchorPane.setBottomAnchor(upgrades, 100.);
 				getChildren().add(upgrades);
 			}
 			

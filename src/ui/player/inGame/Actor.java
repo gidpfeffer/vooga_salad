@@ -57,6 +57,7 @@ public class Actor {
 	public Actor(UIHandler uihandler, ScreenHandler screenhandler, Integer option, ActorData actorData) {
 		actor = UIHelper.buttonStack(e -> {}, Optional.ofNullable(null),
 				Optional.of(new ImageView(new Image(actorData.getImagePath(), 30, 30, true, true))), Pos.CENTER, true);
+		actor.setStyle("-fx-effect: null;");
 		actor.setBackground(Background.EMPTY);
 		this.screenhandler = screenhandler;
 		this.option = option;
@@ -152,7 +153,7 @@ public class Actor {
 	EventHandler<MouseEvent> upgrades = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(final MouseEvent ME) {
-			screenhandler.showUpgrades(option, clazz);
+			//screenhandler.showUpgrades(option, clazz);
 		}
 	};
 	

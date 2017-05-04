@@ -17,10 +17,11 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	private final String LIVES = "Lives";
 	private final String ENEMIES_LEFT = "Enemies Left";
 	
-	private final static int INIT_LIVES = 3;
-	
 	private WriteableUser myWriteableUser;
 	private InitialGameStatus myInitialGameStatus;
+	
+	private static int INIT_LEVEL = 1;
+	private static double INIT_EXP = 0;
 	
 	public GameStatus(WriteableUser writeableUser,InitialGameStatus initialGameStatus) {
 		myWriteableUser =writeableUser;
@@ -29,10 +30,10 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	}
 	
 	public void setInitialValues() {
-		setMyMoney(myInitialGameStatus.getInitMoney());
-		setMyLevel(myInitialGameStatus.getInitLevel());
-		setMyExperience(myInitialGameStatus.getInitExp());
-		setMyLives(INIT_LIVES);
+		setMyMoney(myInitialGameStatus.getInitMoney().orElse(0));
+		setMyLevel(INIT_LEVEL);
+		setMyExperience(INIT_EXP);
+		setMyLives(myInitialGameStatus.getInitLives());
 	}
 
 	public void addExperience(double exp){

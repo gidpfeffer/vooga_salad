@@ -1,7 +1,8 @@
 package ui.player.users;
 
+import java.util.Optional;
+
 public interface InitialGameStatus {
-double getInitMoney();
-double getInitExp();
-int getInitLevel();
+Optional<Integer> getInitMoney();
+Integer getInitLives();
 }
