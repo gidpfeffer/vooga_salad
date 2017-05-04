@@ -37,7 +37,7 @@ public class GameLevelController {
 	
 	private Delay delay;
 	
-	private final int DELAY_CONSTANT = 2;
+	private final int DELAY_CONSTANT = 35;
 	
 	private Condition myWinCondition;
 	
