@@ -78,7 +78,7 @@ public class GameObjectUtil {
 	}
 	
 	private void changeMoneySupply(PreferencesData preferences, WriteableGameStatus gameStatus, ActorData actorData) {
-		if (preferences.wantMoney()) gameStatus.spendMoney(actorData.getCost());
+		if (preferences.wantMoney()) gameStatus.spendMoney((int) actorData.getCost());
 	}
 	
 	public BasicActorType getBasicActorEnemyType(GameData myGameData) {
