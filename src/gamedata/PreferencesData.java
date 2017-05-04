@@ -50,6 +50,7 @@ public class PreferencesData{
 		this.expByLevel = expByLevel;
 		this.pauseBetweenWaves = pauseBetweenWaves;
 		this.cleanLevel = cleanLevel;
+		this.startMoney = Optional.of(0);
 	}
 
 	public int getNumLives(){
