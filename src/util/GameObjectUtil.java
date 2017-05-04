@@ -1,8 +1,5 @@
 package util;
-
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
 import builders.objectgen.ActorGenerator;
 import gamedata.ActorData;
 import gamedata.GameData;
@@ -13,7 +10,6 @@ import gameengine.actors.management.Actor;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import gameengine.grid.interfaces.controllergrid.ControllableGrid;
 import gamestatus.GameStatus;
-import gamestatus.ReadableGameStatus;
 import gamestatus.WriteableGameStatus;
 import types.BasicActorType;
 
