@@ -30,8 +30,6 @@ public class ActorDamageableProperty<G extends ReadAndDamageGrid> implements IAc
 	protected void damageActor(G grid, Integer actorID, Consumer<Double> damage, Double health) {
 		grid.getMyDamageable(actorID).accept(health);
 		damage.accept(health);
-		grid.getWriteableGameStatus().addExperience(health);
-		grid.getWriteableGameStatus().addMoney(health);
 	}
 
 	@Override

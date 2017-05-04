@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import gamedata.ActorData;
 import gameengine.grid.interfaces.frontendinfo.FrontEndInformation;
 import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,11 +18,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
@@ -122,6 +126,25 @@ public class GameScreen extends GenericGameScreen
 				setupAnchors(holder, 20.);
 			}
 
+			@Override
+			public void showUpgrades() {
+				Pane upgrades = new StackPane();
+				EventHandler<MouseEvent> close = new EventHandler<MouseEvent>()  {
+					@Override
+					public void handle(MouseEvent event) {
+						ScaleTransition st = new ScaleTransition(Duration.millis(1000), upgrades);
+						st.setByX(-1f);
+						st.setByY(-1f);
+						st.play();	
+					}
+				};
+				OptionButton exit = new OptionButton(0, "", "x_icon.png", close);
+				exit.getButton().setStyle("-fx-background-color: transparent");
+				upgrades.getChildren().addAll(exit.getButton());
+				setupAnchors(upgrades, 10.);
+				getChildren().add(upgrades);
+			}
+			
 			@Override
 			public void addActorToMap(int id, Actor actor) {
 				if (actorsMap.get(id) == null)
