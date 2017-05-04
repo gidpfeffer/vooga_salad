@@ -50,7 +50,6 @@ public class PathLayerView extends Layer {
 	private void didFinishLoading() {
 		isLoaded = true;
 		loadPathData(myPathData);
-		System.out.println("finished loading data for pathlayer");		
 	}
 
 	private void handleMouseRelease(MouseEvent e) {
@@ -96,9 +95,7 @@ public class PathLayerView extends Layer {
 		/*
 		 * printing map data
 		 */
-		System.out.println("myPathData:");
-		for(List<Grid2D> l:myPathData.getMyPaths().values())
-			System.out.println("\t-"+l);
+
 
 	}
 
@@ -114,11 +111,6 @@ public class PathLayerView extends Layer {
 
 	@Override
 	public void clear() {
-//		while(!myPathData.getMyPaths().isEmpty()){
-//			Path path = this.myDataToPath.get(myPathData.pop());
-//			getChildren().removeAll(path.getLines());
-//			getChildren().removeAll(path.getPoints());
-//		}
 		this.getChildren().clear();
 		myPathData.clear();
 		myUIPath.clear();
@@ -128,11 +120,7 @@ public class PathLayerView extends Layer {
 	public void undo() {
 		
 		List<Grid2D> data = myPathData.pop();
-		System.out.println("REMOVING PATH: "+data);
-		System.out.println(myUIPath.size());
 		UIPath path = this.myUIPath.remove(myUIPath.size() - 1);
-		System.out.println(path);
-		myUIPath.forEach(d -> System.out.println(d));
 		getChildren().removeAll(path.getLines());
 		getChildren().removeAll(path.getPoints());
 	}
@@ -148,9 +136,6 @@ public class PathLayerView extends Layer {
 	}
 	
 	private void sizeDidChange() {
-		this.myUIPath.forEach(path -> {
-			System.out.println(path.getPoints());
-		});	
 		this.myUIPath.forEach(path -> path.reload(this));
 	}
 
@@ -166,8 +151,6 @@ public class PathLayerView extends Layer {
 	}
 	
 	private void addPathToSelf(List<Grid2D> points){
-		System.out.println(points.size());
-		System.out.println(this.getWidth() + " \t height: " + this.getHeight());
 		this.myUIPath.add(new UIPath(points, this));
 	}
 
