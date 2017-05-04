@@ -59,98 +59,11 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 			CustomColors.AMBER
 	};
 	
-	private static final Map<String, LineageData> DEFAULT_TOWERS;
-	static {
-		String path = "Pokemon Icons/";
-		//String path = "";
-		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		
-		BasicActorType proj = new BasicActorType("Tower", "tower_icon.png", true);
-		
-		map.put("Pikachu", new LineageData(new ActorData(proj, 
-				new BasicData("Pikachu",  path + "pikachu.png"), new LimitedHealthData())));
-		map.put("Bullbasaur", new LineageData(new ActorData(proj, 
-				new BasicData("Bullbasaur",  path + "bullbasaur.png"), new LimitedHealthData())));
-		map.put("Charmander", new LineageData(new ActorData(proj, 
-				new BasicData("Charmander",  path + "charmander.png"), new LimitedHealthData())));
-		map.put("Snorlax", new LineageData(new ActorData(proj, 
-				new BasicData("Snorlax",  path + "snorlax.png"), new LimitedHealthData())));
-		map.put("Jigglypuff", new LineageData(new ActorData(proj, 
-				new BasicData("Jigglypuff",  path + "jigglypuff.png"), new LimitedHealthData())));
-		
-/*		map.put("Duvall", new LineageData(new ActorData(proj, 
-				new BasicData("Duvall",  path + "duvall.png"), new LimitedHealthData())));*/
-		
-		DEFAULT_TOWERS = map;
-	}
-	private static final Map<String, LineageData> DEFAULT_TROOPS;
-	static {
-		String path = "balloons/";
-		//String path = "";
-		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		BasicActorType proj = new BasicActorType("Troop", "enemy_icon.png", false);
-		
-/*		map.put("Red", path + "red.png");
-		map.put("Green", path + "green.png");
-		map.put("Blue", path + "blue.png");*/
-		
-		map.put("Red", new LineageData(new ActorData(proj, 
-				new BasicData("Red",  path + "red.png"), new LimitedHealthData())));
-		map.put("Green", new LineageData(new ActorData(proj, 
-				new BasicData("Green",  path + "green.png"), new LimitedHealthData())));
-		map.put("Blue", new LineageData(new ActorData(proj, 
-				new BasicData("Blue",  path + "blue.png"), new LimitedHealthData())));
-	
-		
-/*		map.put("Singleton", new LineageData(new ActorData(proj, 
-				new BasicData("Singleton",  path + "Singleton.png"), new LimitedHealthData())));
-		map.put("Static", new LineageData(new ActorData(proj, 
-				new BasicData("Static",  path + "Static.png"), new LimitedHealthData())));
-		map.put("STUPID", new LineageData(new ActorData(proj, 
-				new BasicData("STUPID",  path + "STUPID.png"), new LimitedHealthData())));*/
-
-		DEFAULT_TROOPS = map;
-	}
-	
-	private static final Map<String, LineageData> DEFAULT_PROJECTILES;
-	static {
-		String path = "projectiles/";
-		//String path = "";
-		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		BasicActorType proj = new BasicActorType("Projectile", "projectile_icon.png", false);
-		
-		/*map.put("Fire", path + "flame.png");
-		map.put("Water", path + "raindrop.png");
-		map.put("Ice", path + "snowflake.png");
-		map.put("Nature", path + "leaf.png");*/
-		
-		map.put("Fire", new LineageData(new ActorData(proj, 
-				new BasicData("Fire",  path + "flame.png"), new LimitedHealthData())));
-		map.put("Water", new LineageData(new ActorData(proj, 
-				new BasicData("Water",  path + "raindrop.png"), new LimitedHealthData())));
-		map.put("Ice", new LineageData(new ActorData(proj, 
-				new BasicData("Ice",  path + "snowflake.png"), new LimitedHealthData())));
-		map.put("Nature", new LineageData(new ActorData(proj, 
-				new BasicData("Nature",  path + "leaf.png"), new LimitedHealthData())));
-		
-		/*map.put("YES", new LineageData(new ActorData(proj, 
-				new BasicData("YES",  path + "piazza_proj_3.png"), new LimitedHealthData())));
-		map.put("NO", new LineageData(new ActorData(proj, 
-				new BasicData("NO",  path + "piazza_proj_2.png"), new LimitedHealthData())));
-		map.put("Reference2", new LineageData(new ActorData(proj, 
-				new BasicData("Reference2",  path + "piazza_proj_1.png"), new LimitedHealthData())));
-		map.put("Reference1", new LineageData(new ActorData(proj, 
-				new BasicData("Reference1",  path + "piazza_proj_4.png"), new LimitedHealthData())));*/
-		
-		DEFAULT_PROJECTILES = map;
-	}
-	
 	private PopViewDelegate myPopDelegate;
 	private ActorEditorDelegate myEditorDelegate;
 	private VBox myVBox; //contains the buttons
 	private Map<BasicActorType, ActorEditorView> actorTypeToView = new HashMap<>();
 	private GameData myGameData;
-	private boolean isLoaded;
 
 	/**
 	 * Constructs a panel with a list of button that
@@ -164,7 +77,6 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		myEditorDelegate = delegate;
 		myPopDelegate = delegate;
 		myGameData = gameData;
-		isLoaded = (gameData.getTypes().size() != 0);
 		setupViews();
 	}
 	
@@ -172,12 +84,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		setupVBox();
 		setupTitle();
 		setupAddButton();
-		if(!isLoaded)
-			setupDefaultActors();
-		else{
-			loadActors();
-		}
-
+		loadActors();
 	}
 	
 	private void setupTitle() {
@@ -219,18 +126,11 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		myPopDelegate.openViewWithSize(pane, PopupSize.SMALL);
 		
 	}
-
-	private void setupDefaultActors() {
-		addActor("Troop","enemy_icon.png", DEFAULT_TROOPS);
-		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
-		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
-		
-	}
 	
 	private void loadActors(){
 		for(BasicActorType type: myGameData.getTypes()){
-			Map<String, LineageData> mapping = myGameData.getAllLinOfType(type)
-;			addActor(type.getType(), type.getImagePath(), mapping);
+			//Map<String, LineageData> mapping = myGameData.getAllLinOfType(type)
+;			addActorView(type);
 		}
 	}
 	
@@ -247,22 +147,33 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 			}
 		}
 	}
-
-	private void addActor(String actorType, String imagePath, 
-			Map<String, LineageData> defaultActors){
-		BasicActorType newType = new BasicActorType(actorType, imagePath);
-		ActorEditorView view = new ActorEditorView(myEditorDelegate, newType, myGameData);
+	
+	private void addActorView(BasicActorType actorType){
+		ActorEditorView view = new ActorEditorView(myEditorDelegate, actorType, myGameData);
 		
-		if(!isLoaded){
-			myGameData.getTypes().add(newType);
-		}
-		view.setupActors(defaultActors, isLoaded);
+		//view.setupActors(gameData);
 		
 		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
-		this.actorTypeToView.put(newType, view);
+		this.actorTypeToView.put(actorType, view);
 		StackPane button = UIHelper.buttonStack(e -> launchEditor(view), 
 				Optional.of(labelForStackButton(actorType + " Editor")), //TODO resources
-				Optional.of(imageForStackButton(imagePath)), 
+				Optional.of(imageForStackButton(actorType.getImagePath())), 
+				Pos.CENTER_RIGHT, true);
+		button.setPrefHeight(BUTTON_HEIGHT);
+		myVBox.getChildren().add(myVBox.getChildren().size() - 1, button);
+	}
+
+	private void addActorToGame(BasicActorType actorType){
+		ActorEditorView view = new ActorEditorView(myEditorDelegate, actorType, myGameData);
+		myGameData.getTypes().add(actorType);
+		
+		//view.setupActors(gameData);
+		
+		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
+		this.actorTypeToView.put(actorType, view);
+		StackPane button = UIHelper.buttonStack(e -> launchEditor(view), 
+				Optional.of(labelForStackButton(actorType + " Editor")), //TODO resources
+				Optional.of(imageForStackButton(actorType.getImagePath())), 
 				Pos.CENTER_RIGHT, true);
 		button.setPrefHeight(BUTTON_HEIGHT);
 		myVBox.getChildren().add(myVBox.getChildren().size() - 1, button);
@@ -302,7 +213,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	
 	@Override
 	public void closeSelfAndReturn(Pane pane, String actorName, String imagePath) {
-		this.addActor(actorName, imagePath, new HashMap<String, LineageData>());
+		this.addActorToGame(new BasicActorType(actorName, imagePath));
 		closeSelf(pane);
 	}
 	

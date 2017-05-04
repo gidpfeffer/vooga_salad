@@ -80,6 +80,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		myGameData.getAllOfType(type);
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
+		setupActors();
 	}
 
 	private void setupBackButton() {
@@ -196,13 +197,15 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		pane.setContent(myLineageList);
 	}
 
-	public void setupActors(Map<String,LineageData> mapOfNameToImagePath, boolean loaded) {
-		for (Entry<String, LineageData> entry : mapOfNameToImagePath.entrySet()) {
-			if(!loaded){
-				myGameData.add(entry.getValue());
-			}
-			addActor(entry.getValue().getCurrent().getImagePath(), entry.getKey(), entry.getValue(), loaded);
+	private void setupActors() {
+		for (LineageData entry : myGameData.getAllLinOfType(myActorType).values()) {
+			addActorToView(entry);
 		}
+	}
+	
+	private void addActorData(LineageData data){
+		myGameData.add(data);
+		addActorToView(data);
 	}
 
 	/**
@@ -213,15 +216,15 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 	 * @param imgPath the String path of the image
 	 * @param name the name of the actor, can be changed later.
 	 */
-	private void addActor(String imgPath, String name, LineageData data, boolean loaded){
+	private void addActorToView(LineageData data){
 		AnchorPane anchor = new AnchorPane();
-		
-		Image img = new Image(imgPath);
+
+		Image img = new Image(data.getProgenitor().getImagePath());
 		ImageView imageView = new ImageView(img);
 		imageView.setFitWidth(40);
 		imageView.setPreserveRatio(true);
 		
-		TextField actorField = addField(name);
+		TextField actorField = addField(data.getProgenitor().getName());
 			
 		StackPane view = UIHelper.buttonStack(
 				e -> myActorInfoView.setLineageData(data), 
@@ -285,8 +288,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 			String name = imagePath.substring(0, imagePath.indexOf("."));
 			LineageData lin = new LineageData(new ActorData(myActorType, 
 					new BasicData(name,  imagePath), new LimitedHealthData()));
-			myGameData.add(lin);
-			addActor(imagePath, name, lin,  false);
+			addActorData(lin);
 		}
 		
 	}
