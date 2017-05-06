@@ -9,11 +9,11 @@ Vishnu Gottiparthy - Game player
 Anngelyque Stevenson - Game player
 Alex Blumenstock - Authoring environment
 Talha Koc - Authoring environment
-Hari Rajan - Authoring environment
-Sarah Zhou - Controller
-Moses Wayne - Backend
-Gideon Pfeffer - Backend
-Anh Trinh - Backend
+Hari Rajan - Authoring environment and Rating System
+Sarah Zhou - Controllers
+Moses Wayne - Properties and VoogaUtil
+Gideon Pfeffer - Actor Grid, XML Serialization, File Loading/Saving Helpers, Facebook Integration
+Anh Trinh - ActorMovement and Layer Recognition
 Maddie Briere - Game Data
 
 
