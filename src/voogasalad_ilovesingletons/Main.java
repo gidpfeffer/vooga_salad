@@ -14,7 +14,6 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage s) throws Exception {
-
 		s.getIcons().add(new Image("tower_icon.png"));
 		new LoginMain(s, "loginScreen.css", "login");
 		s.setTitle("Login");

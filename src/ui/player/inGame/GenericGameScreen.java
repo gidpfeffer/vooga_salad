@@ -55,6 +55,8 @@ public class GenericGameScreen extends AnchorPane {
 		this.songString = songString;
 		this.css = css;
 		this.backgroundImage = backgroundImage;
+		System.out.println("rere");
+		System.out.println(backgroundImage.get());
 		setup();
 	}
 
