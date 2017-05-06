@@ -8,7 +8,7 @@ import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
 /**
- * Actor is able to be damaged.
+ * Actor is able to be damaged by other actors.
  * 
  * @author maddiebriere
  * 

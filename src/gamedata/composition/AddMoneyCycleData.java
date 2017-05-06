@@ -2,6 +2,14 @@ package gamedata.composition;
 
 import gamedata.compositiongen.AddMoneyData;
 
+/**
+ * This data object represents a property that earns you cash! 
+ * Set the cycle and the resulting property lets your actor generate $$$.
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class AddMoneyCycleData extends AddMoneyData  {
 	private Integer frequency;
 

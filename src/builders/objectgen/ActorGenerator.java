@@ -25,20 +25,28 @@ import util.IDGenerator;
  */
 
 public class ActorGenerator{
+	private static final String DATA  = "Data";
+	private static final String PROPERTY = "Property";
 
 	/**
-	 * Generate an Actor from an ID (generated from IdGenerator, 
+	 * Generate an Actor using an ID (generated from IdGenerator, 
 	 * represents Grid placement) and ActorData object.
 	 * 
 	 * @param ID Represents grid placement/ ActorGrid index
-	 * @param data ActorData holding information aobut how to make Actor
-	 * @return Actor
+	 * @param data ActorData holding information about how to make Actor
+	 * @return Actor produced from factory
 	 */
-
 	public static MainActor makeActor(Integer option, ActorData data){
 		return makeActor(option,IDGenerator.getNewID(),data);
 	}
 	
+	/**
+	 * Generate an Actor with the ID already given. 
+	 * @param option Integer option to be passed into Actor
+	 * @param ID Represents grid placement/ ActorGrid index
+	 * @param data ActorData holding information about how to make Actor
+	 * @return Actor produced from factory
+	 */
 	public static MainActor makeActor(Integer option, int id, ActorData data) {
 		ActorFactory actorFactory = new ActorFactory();
 		ArrayList<Object> toBuild = new ArrayList<Object>();
@@ -49,12 +57,12 @@ public class ActorGenerator{
 		toBuild.add(option);
 		toBuild.add(id); //add ID
 		Property health = propFactory.make(data.getHealth().
-				getClass().getSimpleName().replace("Data", "Property"), data.getHealth());
+				getClass().getSimpleName().replace(DATA, PROPERTY), data.getHealth());
 		toBuild.add(health);
-		IActProperty[] extras = new IActProperty[data.getMyData().size()];
+		IActProperty<?>[] extras = new IActProperty[data.getMyData().size()];
 		for(int i=0; i<properties.size(); i++){
 			String dataName = properties.get(i).getClass().getSimpleName();
-			String propertyName = dataName.replace("Data", "Property");
+			String propertyName = dataName.replace(DATA, PROPERTY);
 			Property property = propFactory.make(propertyName, properties.get(i));
 			extras[i]=(IActProperty)property;
 		}

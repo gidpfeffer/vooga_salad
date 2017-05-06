@@ -1,5 +1,12 @@
 package gamedata.compositiongen;
 
+/**
+ * Adds money to the game at a set rate
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class AddMoneyData extends ActData {
 	private Double money;
 	private Integer rate;

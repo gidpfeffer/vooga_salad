@@ -13,14 +13,14 @@ package gamedata;
 
 public class FieldData {
 	private String myName;
-	private Class myType;
-	private Class myChildType;
+	private Class<?> myType;
+	private Class<?> myChildType;
 	
-	public FieldData(String myName, Class myType) {
+	public FieldData(String myName, Class<?> myType) {
 		this(myName, myType, null);
 	}
 	
-	public FieldData(String myName, Class myType, Class myChildType) {
+	public FieldData(String myName, Class<?> myType, Class<?> myChildType) {
 		super();
 		this.myName = myName;
 		this.myType = myType;
@@ -34,19 +34,19 @@ public class FieldData {
 	public void setMyName(String myName) {
 		this.myName = myName;
 	}
-	public Class getMyType() {
+	public Class<?> getMyType() {
 		return myType;
 	}
-	public void setMyType(Class myType) {
+	public void setMyType(Class<?> myType) {
 		this.myType = myType;
 	}
 	public String toString(){
 		return String.format("%s   %s", myName, myType);
 	}
-	public Class getMyChildType() {
+	public Class<?> getMyChildType() {
 		return myChildType;
 	}
-	public void setMyChildType(Class myChildType) {
+	public void setMyChildType(Class<?> myChildType) {
 		this.myChildType = myChildType;
 	}
 	

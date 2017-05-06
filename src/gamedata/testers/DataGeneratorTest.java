@@ -9,6 +9,13 @@ import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 import types.BasicActorType;
 
+/**
+ * Tester for DataGenerator
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class DataGeneratorTest {
 
 	@Test

@@ -5,10 +5,12 @@ import java.util.List;
 
 
 /**
+ * Information about enemies in a single wave.
+ * 
  * Wave ex: 
  * - Enemy Type: 1 Number: 200 PathOptions: 1, 2
  * 
- * number of troops and its types and its path options as indexes 
+ * Number of troops and its types and its path options as indexes 
  *  
  * @author anh
  * @author maddiebriere

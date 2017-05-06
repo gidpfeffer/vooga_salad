@@ -45,11 +45,40 @@ public abstract class PackageInfoGenerator <A> {
 	 */
 	protected abstract String simplifyName(Class<?> className);
 	
+	/**
+	 * Modify an input target name to reflect
+	 * an actual Class name.
+	 * 
+	 * Example: For DataInfoGenerator
+	 * Input: "MoveWithSetPath"
+	 * Output: Class<MoveWithSetPathData>
+	 * 
+	 * @param name String to "rebuild" into valid class
+	 * @return Valid class name matching to given keyword
+	 */
+	protected abstract Class<?> rebuildFromName(String name);
+	
+	
+	/**
+	 * Return the simplified class name of the given object.
+	 * Instead of returning a full class path, return 
+	 * the simple name modified using the given parameters.
+	 * 
+	 * @param obj Object from which to collect simplified class name
+	 * @return Simplified name
+	 */
 	public String simplifyName(A obj){
 		Class<?> clzz = obj.getClass();
 		return simplifyName(clzz);
 	}
 
+	/**
+	 * Use the simplifyName method to return a List of simplified names
+	 * matching to a list of classes.
+	 * 
+	 * @param toSimplify List of Classes to simplify
+	 * @return List of Strings representing simplified class names
+	 */
 	public List<String> getSimplifiedNames(List<Class<?>> toSimplify){
 		return 	toSimplify
 				.stream()

@@ -12,7 +12,7 @@ import java.util.List;
  * Class for getting all of classes within a package (for use in
  * Game Authoring Environment, to get options)
  * 
- * SOURCE: http://stackoverflow.com/questions/520328/
+ * Resource: http://stackoverflow.com/questions/520328/
  * 	can-you-find-all-classes-in-a-package-using-reflection
  * @author maddiebriere
  *

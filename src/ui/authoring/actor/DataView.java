@@ -186,7 +186,7 @@ public class DataView extends AnchorPane {
 
 	
 	private void addClickableTypeField(String nameKey, BasicActorType value){
-		BasicPicker<BasicActorType> input = addClickableField(nameKey, value, this.myActorTypes);
+		Picker<BasicActorType> input = addClickableField(nameKey, value, this.myActorTypes);
 		input.getTypeProperty().addListener(e -> {
 			didEditClickable(input.getTypeProperty().get(),nameKey);
 		});
@@ -194,14 +194,14 @@ public class DataView extends AnchorPane {
 	
 	private void addClickableActorField(String nameKey, Integer option){
 		ActorData myActor = myGame.getOption(option);
-		BasicPicker<ActorData> input = addClickableField(nameKey, myActor, 
+		Picker<ActorData> input = addClickableField(nameKey, myActor, 
 				new ArrayList<>(myGame.getOptions().values()));
 		input.getTypeProperty().addListener(e -> {
 			didEditProjectileClickable(input.getTypeProperty().get(), nameKey);
 		});
 	}
 
-	private <T extends Object> BasicPicker<T> addClickableField(String nameKey, T value, List<T> types) {
+	private <T extends Object> Picker<T> addClickableField(String nameKey, T value, List<T> types) {
 		AnchorPane content = new AnchorPane();
 
 		Label fieldName = new Label(nameKey + ":");
@@ -213,8 +213,8 @@ public class DataView extends AnchorPane {
 		fieldName.setMaxWidth(80);
 		content.getChildren().add(fieldName);
 		
-		BasicPicker <T> input = 
-				new BasicPicker<T>(value, types, true);
+		Picker <T> input = 
+				new Picker<T>(value, types, true);
 		AnchorPane.setRightAnchor(input, 4.0);
 		AnchorPane.setTopAnchor(input, 4.0);
 		AnchorPane.setBottomAnchor(input, 4.0);

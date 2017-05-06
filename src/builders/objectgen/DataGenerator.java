@@ -1,7 +1,5 @@
 package builders.objectgen;
 
-import java.util.Arrays;
-
 import factories.DataFactory;
 import gamedata.compositiongen.Data;
 

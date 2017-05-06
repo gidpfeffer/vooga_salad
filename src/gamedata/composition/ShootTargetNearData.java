@@ -2,6 +2,12 @@ package gamedata.composition;
 
 import gamedata.compositiongen.ShootTargetLineData;
 import types.BasicActorType;
+/**
+ * Target only nearby actors when shooting
+ * 
+ * @author maddiebriere
+ *
+ */
 
 public class ShootTargetNearData extends ShootTargetLineData{
 	

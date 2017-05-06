@@ -1,19 +1,19 @@
 package factories;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
+import gameengine.actors.properties.LimitedHealthProperty;
 import gameengine.actors.propertygen.Property;
+/**
+ * Property factory, used in creation of Actors.
+ * 
+ * @author maddiebriere
+ */
+
 
 public class PropertyFactory extends AbstractFactory <Property> {
-	//TODO: Confirm package
 	private static final String PATH = "gameengine.actors.properties.";
 	
 	public PropertyFactory() {
 		super(PATH);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class PropertyFactory extends AbstractFactory <Property> {
 
 	@Override
 	protected Property failResponse() {
-		return null;
+		return new LimitedHealthProperty(0.0);
 	}
 
 

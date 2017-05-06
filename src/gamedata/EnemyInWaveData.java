@@ -1,6 +1,12 @@
 package gamedata;
 
-import java.util.List;
+/**
+ * Defines information about a single enemy in a single wave, 
+ * including the actor and its number in this wave
+ * 
+ * @author maddiebriere
+ *
+ */
 
 public class EnemyInWaveData {
 	
