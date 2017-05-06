@@ -2,11 +2,13 @@ package factories;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 
 /**
- * 
+ * UPDATES:
+ * 1) New extensions of this class were created for this project, implementing 
+ * new elements of the component
+ * 2) Future goals include use/incorporation of VoogaSalad Reflection Util
  * This abstract class is used throughout the project to perform reflection and
  * build an object given the path name desired.
  * 
@@ -34,8 +36,6 @@ import java.util.Arrays;
  */
 
 public abstract class AbstractFactory<A> {
-	private static final String RESOURCE_REFLECTION_NAME = "InvalidCommandMessage";
-
 	private String path;
 
 	/**

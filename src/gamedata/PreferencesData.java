@@ -1,6 +1,5 @@
 package gamedata;
 
-import java.io.File;
 import java.util.Optional;
 
 /**

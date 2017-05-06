@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * Display information
  * 
+ * @author alexblumenstock
  * @author maddiebriere
  *
  */

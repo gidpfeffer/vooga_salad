@@ -8,6 +8,12 @@ import builders.objectgen.GameDataGenerator;
 import gamedata.GameData;
 import types.BasicActorType;
 
+/**
+ * Simple tester for GameData generation
+ * @author maddiebriere
+ *
+ */
+
 public class GameDataTest {
 
 	@Test
@@ -20,7 +26,7 @@ public class GameDataTest {
 	
 	@Test
 	public void testComplexSample(){
-		GameData game = GameDataGenerator.getComplexSampleGame();
+		GameDataGenerator.getComplexSampleGame();
 	}
 
 }

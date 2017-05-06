@@ -12,14 +12,23 @@ import javafx.scene.text.TextAlignment;
 import types.BasicActorType;
 import ui.Preferences;
 
-public class BasicPicker <A> extends StackPane{
+/**
+ * A field for use in the authoring environment that
+ * allows the user to toggle between multiple options.
+ * 
+ * @author maddiebriere & talhakoc
+ *
+ * @param <A>
+ */
+
+public class Picker <A> extends StackPane{
 	
 	private int pos = 0;
 	private List<A> myTypes;
 	private Label myLabel;
 	private ObjectProperty<A> myType;
 	
-	public BasicPicker(A actorType, List<A> actorTypes, boolean toggle){
+	public Picker(A actorType, List<A> actorTypes, boolean toggle){
 		super();
 		this.myTypes = actorTypes;
 		this.myType = new SimpleObjectProperty<A>(actorType);

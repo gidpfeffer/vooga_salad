@@ -1,14 +1,12 @@
 package gamedata;
 
-import gamedata.compositiongen.Data;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
-import types.ActorType;
-import util.Tuple;
 
 /**
  * 
- * Basic information all actors should have
+ * Basic information all actors should have, including
+ * a name, imagePath, active status, etc.
  * 
  * @author maddiebriere
  *

@@ -11,7 +11,11 @@ import gamedata.FieldData;
 
 /**
  * Return information about the fields from
- * a class
+ * a class. 
+ * 
+ * NOTE: Similar methods can be found in the Reflection Util
+ * in the VoogaSalad Util package. Future goals include 
+ * incorporation of this util into this class.
  * 
  * @author maddiebriere
  *

@@ -2,6 +2,14 @@ package gamedata.compositiongen;
 
 import types.BasicActorType;
 
+/**
+ * Subset of ActData defining how the actor
+ * will shoot.
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class ShootData extends ActData {
 
 	private double myRange;

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
+import util.PropertyUtil;
+
 import gamedata.ActorData;
 import gamedata.GameData;
 import gamedata.LevelData;
@@ -30,6 +32,7 @@ import ui.general.UIHelper;
  */
 
 public class LevelEditorView extends VBox{
+	private static final String LEVEL_OPTIONS = "ui/authoring/resources/level_options";
 	//# of Enemies
 	//TODO: remove duplicated code from LeftPaneView, potentially by making methods static 
 	private int level;
@@ -55,8 +58,9 @@ public class LevelEditorView extends VBox{
 	}
 	
 	private void addLevelButton(){
+		String levAdd = PropertyUtil.getTerm(LEVEL_OPTIONS, "AddLevel");
 		StackPane newLevel = UIHelper.buttonStack(e->addNewLevel(), 
-				Optional.of(LevelUtil.labelForStackButton("Add Level")), 
+				Optional.of(LevelUtil.labelForStackButton(levAdd)), 
 				Optional.of(LevelUtil.imageForStackButton("add_icon.png")),
 				Pos.CENTER_RIGHT, true);
 		newLevel.setPrefHeight(56);
@@ -66,7 +70,6 @@ public class LevelEditorView extends VBox{
 	}
 	
 	private void initialSetup(){
-		//TODO:move text to resource file
 		StackPane levelOne = nextNewLevel();
 		this.getChildren().add(levelOne);
 	}
@@ -98,7 +101,8 @@ public class LevelEditorView extends VBox{
 		UIHelper.setDropShadow(img);
 		img.setFitWidth(32);
 		img.setFitHeight(32);
-		Label label = LevelUtil.labelForStackButton(String.format("Level %d",level));
+		String lvl = PropertyUtil.getTerm(LEVEL_OPTIONS, "Level");
+		Label label = LevelUtil.labelForStackButton(String.format(lvl + " %d",level));
 		int localLevel = level;
 		img.setOnMousePressed(e->launchLevelEditor(localLevel));
 		label.setOnMousePressed(e->launchWaveChooser(localLevel));

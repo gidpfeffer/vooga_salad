@@ -2,6 +2,13 @@ package util.generator;
 
 import java.awt.image.BufferedImage;
 
+
+/**
+ * Date storage for WebImageCollector
+ * 
+ * @author maddiebriere
+ *
+ */
 public class ImageInfo {
 	private BufferedImage myImage;
 	private String myName;

@@ -18,6 +18,13 @@ import gamedata.composition.ShootTargetWithMouseData;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
+/**
+ * Test property generation via factory
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class PropertyFactoryTest {
 
 	@Test

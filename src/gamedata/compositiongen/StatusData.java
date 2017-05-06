@@ -3,6 +3,13 @@ package gamedata.compositiongen;
 import gameengine.actors.status.StatusDuration;
 import types.BasicActorType;
 
+/**
+ * Defines the "status" of a given actor
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public abstract class StatusData extends ActData{
 	
 	BasicActorType myTarget;

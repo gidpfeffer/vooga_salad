@@ -2,6 +2,13 @@ package gamedata.composition;
 
 import gamedata.compositiongen.HealthData;
 
+/**
+ * Gives the actor a limited amount of health
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class LimitedHealthData extends HealthData{
 	
 	private double startHealth;
