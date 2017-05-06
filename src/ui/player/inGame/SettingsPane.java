@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import ui.player.XStreamFileChooser;
-import voogasalad.util.inputhandler.IOUtil;
+
 
 /**
  * Creates a pane for settings elements such as returning back to main, changing
@@ -51,8 +51,8 @@ public class SettingsPane extends SlidingPane {
 	}
 
 	private void addInputHandle() {
-		IOUtil util = new IOUtil();
-		getVBox().getChildren().add(util.showMenu());
+//		IOUtil util = new IOUtil();
+//		getVBox().getChildren().add(util.showMenu());
 	}
 
 	private void setupPane() {

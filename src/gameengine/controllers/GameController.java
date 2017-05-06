@@ -89,6 +89,7 @@ public class GameController {
 	}
 	
 	private void setUpGameScreen(LoginHandler loginHandler) {
+		System.out.println(myUIHandler.getDisplayData().getBackgroundImagePath());
 		myGameScreen = new GameScreen(loginHandler,myUIHandler,myAnimationHandler,() -> mySimpleHUD);
 		myGameScreen.setAnimationHandler(myAnimationHandler);
 		myGameScreen.setSong(myGameData.getPreferences().getMusicFilePath()); //set music for game

@@ -53,7 +53,7 @@ public class GameScreen extends GenericGameScreen
 	public GameScreen(LoginHandler loginHandler, UIHandler uihandler, AnimationHandler animationHandler,
 			Supplier<SimpleHUD> simpleHUD) {
 		super(uihandler, Optional.ofNullable(null), Optional.ofNullable(null),
-				Optional.ofNullable(uihandler.getDisplayData().getBackgroundImagePath()));
+				Optional.of(uihandler.getDisplayData().getBackgroundImagePath()));
 		this.uihandler = uihandler;
 		this.animationhandler = animationHandler;
 		this.actorsMap = new HashMap<Integer, Actor>();
