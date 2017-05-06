@@ -1,3 +1,4 @@
+
 package voogasalad_ilovesingletons;
 
 import javafx.application.Application;

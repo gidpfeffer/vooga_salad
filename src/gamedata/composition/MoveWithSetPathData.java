@@ -2,11 +2,15 @@ package gamedata.composition;
 
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import gamedata.compositiongen.MoveData;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
+
 /**
+ * Gives the actor a set path to move upon.
+ * 
  * @author maddie
  * @author Anh
  *

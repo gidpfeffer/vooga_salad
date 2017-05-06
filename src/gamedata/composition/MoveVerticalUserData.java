@@ -2,6 +2,12 @@ package gamedata.composition;
 
 import gamedata.compositiongen.MoveAxisUserData;
 
+/**
+ * Allows the user to move this actor vertically .
+ * 
+ * @author maddiebriere
+ */
+
 public class MoveVerticalUserData extends MoveAxisUserData {
 	
 	public MoveVerticalUserData(){

@@ -1,12 +1,21 @@
 package gamedata.composition;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
 import gamedata.compositiongen.ActData;
-import gamedata.compositiongen.Data;
 import types.BasicActorType;
+
+/**
+ * This data object is necessary for win conditions. With a BaseDamage property,
+ * an actor is able to take on damage as a base, and end the game if all of its
+ * health is lost.
+ * 
+ * @author maddiebriere
+ *
+ */
 
 public class BaseDamageData extends ActData {
 

@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import builders.objectgen.ActorGenerator;
-import builders.util.PathGenerator;
+import builders.objectgen.PathGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.composition.BaseDamageData;
@@ -25,9 +25,15 @@ import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
+/**
+ * Tester for Actor Generator
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class ActorGeneratorTest {
 
-	//TODO: Fix
 	@Test
 	public void basicGenerate() {
 		System.out.println("\n"
@@ -35,7 +41,7 @@ public class ActorGeneratorTest {
 		ActorData toTest = new ActorData(new BasicActorType("Tower"), new BasicData("Bob", "imagePath"));
 		MainActor actor = ActorGenerator.makeActor(1, toTest);
 		assertNotEquals(actor, null);
-		int ID = actor.getID();
+		actor.getID();
 		int option = actor.getMyOption();
 		BasicActorType type = actor.getType();
 		assertEquals(type, new BasicActorType("Tower"));
@@ -75,13 +81,12 @@ public class ActorGeneratorTest {
 	
 	@Test
 	public void testConstructors(){
-		Class clzz = null;
-		Class clzz2 = null;
+		Class<?> clzz = null;
+		Class<?> clzz2 = null;
 		try {
 			clzz = Class.forName("gamedata.ActorData");
 			clzz2 = Class.forName("gameengine.actors.MainActor");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Class fail");
 		}
 		

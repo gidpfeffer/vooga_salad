@@ -22,7 +22,7 @@ public class AddMoneyCycleProperty<G extends ReadAndDamageGrid> extends CyclePro
 	
 	@Override
 	public void action(G grid, Integer actorID) {
-		grid.getWriteableGameStatus().addMoney(myMoney);
+		grid.getWriteableGameStatus().addMoney(myMoney.intValue());
 	}
 
 }

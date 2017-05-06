@@ -9,23 +9,21 @@ import gamedata.BasePlacementData;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import ui.general.UIHelper;
 import util.Location;
 import util.Tuple;
 
 public class BaseLayerView extends Layer {
 
 	private boolean DID_LAUNCH;
-
 	private boolean isActive = false;
 	private BasePlacementData myData;
 	private List<UIBase> myBases;
 	private Optional<UIBase> myCurrentBase = Optional.ofNullable(null);
 
 	private EventHandler<MouseEvent> myEvent = e -> {
+		
 		// base is being dragged
 		if (e.getEventType().equals(MouseEvent.MOUSE_DRAGGED)) {
 			myCurrentBase.ifPresent(base -> dragBase(base, new Location(e.getX(), e.getY())));
@@ -50,7 +48,7 @@ public class BaseLayerView extends Layer {
 		if (e.getEventType().equals(MouseEvent.MOUSE_PRESSED) && e.getClickCount() == 2) {
 			System.out.println("double click detected...");
 			Optional.ofNullable((UIBase) e.getSource()).ifPresent(base -> addBaseToLoc(base.getData().x,
-					new Location(base.getData().y.getX() - 0.05, base.getData().y.getX() - 0.05)));
+					base.getData().y));
 		}
 
 	};
@@ -65,30 +63,41 @@ public class BaseLayerView extends Layer {
 	 * @param location The new location that UIBase will contain
 	 */
 	private void updateBaseLocation(UIBase base, Location location) {
-		base.updateLocationData(compressLocation(location));
-		base.updateLayout(this.getBoundsInParent());
+		System.out.println("Updating Base Location to " + location);
+		Grid2D p = compressLocation(location);
+		base.updateLocationData(p.getX(), p.getY());
+		base.updateLayout(this);
+		this.myData.getMyActorToLocation().forEach(data -> {
+			System.out.println(data);
+		});
 	}
 
 	public BaseLayerView(BasePlacementData data) {
 		myData = data;
 		myBases = new ArrayList<>();
-		//UIHelper.setBackgroundColor(this, Color.rgb(0, 0, 0, 0.3));
 		this.addEventHandler(MouseEvent.ANY, myEvent);
-		this.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> System.out.println(myData.getMyActorToLocation().size()));
+		widthProperty().addListener(e -> sizeDidChange());
+		heightProperty().addListener(e -> sizeDidChange());
 	}
+	
+
 
 	@Override
 	protected void layoutChildren() {
-		super.layoutChildren();
 		if (!DID_LAUNCH)
 			loadBaseData();
 		DID_LAUNCH = true;
+	}
+	
+	private void sizeDidChange() {
+		this.myBases.forEach(path -> path.updateLayout(this));
 	}
 
 	private void loadBaseData() {
 		System.out.println("");
 		myData.getMyActorToLocation().forEach((t) -> {
-			addBaseUI(t.x, decompressGrid2D(t.y));
+			addBaseUI(t.x, t.y);
+			System.out.println("Grid Location: "+t.y);
 		});
 	}
 
@@ -98,7 +107,7 @@ public class BaseLayerView extends Layer {
 	 * @param sceneLoc
 	 */
 	public void addBase(ActorData data, Location sceneLoc) {
-		addBaseToLoc(data, sceneToLocal(sceneLoc));
+		addBaseToLoc(data, compressLocation(sceneToLocal(sceneLoc)));
 	}
 	
 	/**
@@ -106,11 +115,10 @@ public class BaseLayerView extends Layer {
 	 * @param data
 	 * @param location
 	 */
-	private void addBaseToLoc(ActorData data, Location location) {
+	private void addBaseToLoc(ActorData data, Coordinates location) {
 		System.out.println("local coordinates " + location);
-		Coordinates coor = compressLocation(location);
-		this.myData.addBase(new Tuple<>(data, coor));
-		UIBase b = addBaseUI(data, coor);
+		this.myData.addBase(new Tuple<>(data, location));
+		UIBase b = addBaseUI(data, location);
 		this.myCurrentBase = Optional.of(b);
 	}
 
@@ -119,24 +127,25 @@ public class BaseLayerView extends Layer {
 		double sceneW = this.getScene().getWidth();
 		double vInset = (sceneH - this.getHeight()) / 2.0;
 		double hInset = (sceneW - this.getWidth()) / 2.0;
-		// System.out.println("v: " + vInset + "\th:" + hInset);
 		return new Location(loc.getX() - hInset, loc.getY() - vInset);
 	}
 
-	private UIBase addBaseUI(ActorData data, Grid2D loc) {
-		UIBase base = new UIBase(data, loc, this.getBoundsInParent());
+	private UIBase addBaseUI(ActorData data, Coordinates loc) {
+		System.out.println("\rUIBASE: "+loc);
+		UIBase base = new UIBase(data, loc, this);
 		base.addEventHandler(MouseEvent.ANY, myBaseEvent);
 		this.getChildren().add(base);
 		return base;
 	}
+	
+	
+//	private Location decompressCoordinates(Grid2D c){
+//		return new Location(c.getX()* this.widthProperty().get(), c.getY()*this.heightProperty().get());
+//	}
 
 	private Coordinates compressLocation(Location e) {
 		Coordinates c = new Coordinates(e.getX() / this.getWidth(), e.getY() / this.getHeight());
 		return c;
-	}
-	
-	private Location decompressGrid2D(Grid2D c){
-		return new Location(c.getX()* this.widthProperty().get(), c.getY()*this.heightProperty().get());
 	}
 
 	private void deleteBase(UIBase base) {

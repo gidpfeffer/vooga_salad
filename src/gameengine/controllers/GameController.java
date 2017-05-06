@@ -2,6 +2,7 @@ package gameengine.controllers;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -65,11 +66,15 @@ public class GameController {
 	
 	private GameObjectUtil myGameObjectUtil;
 	
+	private InitialGameStatus myInitGameStatus;
+	
 	private GameScreen myGameScreen;
 	private SimpleHUD mySimpleHUD;
 	
 	private final int MAX_X = 1;
 	private final int MAX_Y = 1;
+	
+	private static int INIT_EXP = 0;
 	
 	private Function<BasicActorType,Integer> actorCounts;
 	
@@ -82,7 +87,8 @@ public class GameController {
 		initializeAnimationHandler();
 		initializeGridHandler();
 		initializeLevelHandler();
-		setupGameStatus(loginHandler.getActiveUser(),loginHandler.getActiveUser().getInitialGameStatus());
+		initializeInitialGameStatus();
+		setupGameStatus(loginHandler.getActiveUser(),myInitGameStatus);
 		setUpGameScreen(loginHandler);
 		myGrid = getNewActorGrid(myGameScreen);
 		myLevelController = new GameLevelController(myLevelHandler,myGameData,myGameStatus);
@@ -175,6 +181,21 @@ public class GameController {
 			@Override
 			public void exit() {
 				System.exit(0);
+			}
+		};
+	}
+	
+	private void initializeInitialGameStatus() {
+		myInitGameStatus = new InitialGameStatus() {
+
+			@Override
+			public Optional<Integer> getInitMoney() {
+				return Optional.of(0);
+			}
+
+			@Override
+			public Integer getInitLives() {
+				return myGameData.getPreferences().getNumLives();
 			}
 		};
 	}

@@ -34,7 +34,7 @@ public class LevelData {
 	private Condition condition;
 
 	public LevelData(){
-		this(100);//TODO: Choose better #
+		this(100); 
 	}
 	
 	public LevelData(double duration){

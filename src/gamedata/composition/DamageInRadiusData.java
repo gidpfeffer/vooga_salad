@@ -7,6 +7,13 @@ import java.util.List;
 import gamedata.compositiongen.*;
 import types.BasicActorType;
 
+/**
+ * This data/property set lets your actor damage every specific type in its radius at a rate you set.
+ * Attach it to a projectile to wipe out your enemies!
+ * 
+ * @author maddiebriere
+ */
+
 public class DamageInRadiusData extends ActData {
 	private Double radius;
 	private Double damage; 

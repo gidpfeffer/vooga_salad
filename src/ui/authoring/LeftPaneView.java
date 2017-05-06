@@ -2,23 +2,14 @@ package ui.authoring;
 
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
-
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import gamedata.ActorData;
 import gamedata.BasicData;
@@ -32,7 +23,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -46,7 +36,6 @@ import ui.authoring.delegates.CreateActorDelegate;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
-import util.Tuple;
 
 public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	
@@ -59,74 +48,11 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 			CustomColors.AMBER
 	};
 	
-	private static final Map<String, LineageData> DEFAULT_TOWERS;
-	static {
-		//String path = "Pokemon Icons/";
-		String path = "";
-		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		/*map.put("Pikachu", path + "pikachu.png");
-		map.put("Bullbasaur", path + "bullbasaur.png");
-		map.put("Charmander", path + "charmander.png");
-		map.put("Snorlax", path + "snorlax.png");
-		map.put("Jigglypuff", path + "jigglypuff.png");*/
-		
-		BasicActorType proj = new BasicActorType("Tower", "tower_icon.png", false);
-		
-		map.put("Duvall", new LineageData(new ActorData(proj, 
-				new BasicData("Duvall",  path + "duvall.png"), new LimitedHealthData())));
-		
-		DEFAULT_TOWERS = map;
-	}
-	private static final Map<String, LineageData> DEFAULT_TROOPS;
-	static {
-		//String path = "balloons/";
-		String path = "";
-		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		/*map.put("Red", path + "red.png");
-		map.put("Green", path + "green.png");
-		map.put("Blue", path + "blue.png");*/
-		
-		BasicActorType proj = new BasicActorType("Troop", "enemy_icon.png", false);
-		
-		map.put("Singleton", new LineageData(new ActorData(proj, 
-				new BasicData("Singleton",  path + "Singleton.png"), new LimitedHealthData())));
-		map.put("Static", new LineageData(new ActorData(proj, 
-				new BasicData("Static",  path + "Static.png"), new LimitedHealthData())));
-		map.put("STUPID", new LineageData(new ActorData(proj, 
-				new BasicData("STUPID",  path + "STUPID.png"), new LimitedHealthData())));
-
-		DEFAULT_TROOPS = map;
-	}
-	private static final Map<String, LineageData> DEFAULT_PROJECTILES;
-	static {
-		//String path = "projectiles/";
-		String path = "";
-		HashMap<String, LineageData> map = new HashMap<String, LineageData>();
-		/*map.put("Fire", path + "flame.png");
-		map.put("Water", path + "raindrop.png");
-		map.put("Ice", path + "snowflake.png");
-		map.put("Nature", path + "leaf.png");*/
-		
-		BasicActorType proj = new BasicActorType("Projectile", "projectile_icon.png", false);
-		
-		map.put("YES", new LineageData(new ActorData(proj, 
-				new BasicData("YES",  path + "piazza_proj_3.png"), new LimitedHealthData())));
-		map.put("NO", new LineageData(new ActorData(proj, 
-				new BasicData("NO",  path + "piazza_proj_2.png"), new LimitedHealthData())));
-		map.put("Reference2", new LineageData(new ActorData(proj, 
-				new BasicData("Reference2",  path + "piazza_proj_1.png"), new LimitedHealthData())));
-		map.put("Reference1", new LineageData(new ActorData(proj, 
-				new BasicData("Reference1",  path + "piazza_proj_4.png"), new LimitedHealthData())));
-		
-		DEFAULT_PROJECTILES = map;
-	}
-	
 	private PopViewDelegate myPopDelegate;
 	private ActorEditorDelegate myEditorDelegate;
 	private VBox myVBox; //contains the buttons
 	private Map<BasicActorType, ActorEditorView> actorTypeToView = new HashMap<>();
 	private GameData myGameData;
-	private boolean isLoaded;
 
 	/**
 	 * Constructs a panel with a list of button that
@@ -135,12 +61,11 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	 * 
 	 * @param delegate required so that this class can launch the ActorEditorView's
 	 */
-	public LeftPaneView(ActorEditorDelegate delegate, GameData gameData, boolean loaded){
+	public LeftPaneView(ActorEditorDelegate delegate, GameData gameData){
 		super();
 		myEditorDelegate = delegate;
 		myPopDelegate = delegate;
 		myGameData = gameData;
-		isLoaded = loaded;
 		setupViews();
 	}
 	
@@ -148,12 +73,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		setupVBox();
 		setupTitle();
 		setupAddButton();
-		if(!isLoaded)
-			setupDefaultActors();
-		else{
-			loadActors();
-		}
-
+		loadActors();
 	}
 	
 	private void setupTitle() {
@@ -195,18 +115,20 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 		myPopDelegate.openViewWithSize(pane, PopupSize.SMALL);
 		
 	}
-
-	private void setupDefaultActors() {
-		addActor("Troop","enemy_icon.png", DEFAULT_TROOPS);
-		addActor("Tower", "tower_icon.png", DEFAULT_TOWERS); //TODO resources
-		addActor("Projectile","projectile_icon.png", DEFAULT_PROJECTILES);
-		
-	}
 	
 	private void loadActors(){
+		boolean troopFound = false;
+		if(myGameData.getTypes().stream().filter(type -> type.getType().equals("Troop")).collect(Collectors.toList()).isEmpty())
+			myGameData.getTypes().add(new BasicActorType("Troop", "enemy_icon.png", false));
 		for(BasicActorType type: myGameData.getTypes()){
-			Map<String, LineageData> mapping = myGameData.getAllLinOfType(type)
-;			addActor(type.getType(), type.getImagePath(), mapping);
+			//Map<String, LineageData> mapping = myGameData.getAllLinOfType(type)
+			if(type.equals(new BasicActorType("Troop"))){
+				troopFound = true;
+			}
+;			addActorView(type);
+		}
+		if(!troopFound){
+			
 		}
 	}
 	
@@ -223,22 +145,31 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 			}
 		}
 	}
-
-	private void addActor(String actorType, String imagePath, 
-			Map<String, LineageData> defaultActors){
-		BasicActorType newType = new BasicActorType(actorType, imagePath);
-		ActorEditorView view = new ActorEditorView(myEditorDelegate, newType, myGameData);
+	
+	private void addActorView(BasicActorType actorType){
+		ActorEditorView view = new ActorEditorView(myEditorDelegate, actorType, myGameData);
 		
-		if(!isLoaded){
-			myGameData.getTypes().add(newType);
-		}
-		//view.setupActors(defaultActors, isLoaded);
+		//view.setupActors(gameData);
 		
 		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
-		this.actorTypeToView.put(newType, view);
+		this.actorTypeToView.put(actorType, view);
 		StackPane button = UIHelper.buttonStack(e -> launchEditor(view), 
 				Optional.of(labelForStackButton(actorType + " Editor")), //TODO resources
-				Optional.of(imageForStackButton(imagePath)), 
+				Optional.of(imageForStackButton(actorType.getImagePath())), 
+				Pos.CENTER_RIGHT, true);
+		button.setPrefHeight(BUTTON_HEIGHT);
+		myVBox.getChildren().add(myVBox.getChildren().size() - 1, button);
+	}
+
+	private void addActorToGame(BasicActorType actorType){
+		ActorEditorView view = new ActorEditorView(myEditorDelegate, actorType, myGameData);
+		myGameData.getTypes().add(actorType);
+	
+		UIHelper.setBackgroundColor(view, COLOR_ROTATION[this.actorTypeToView.size()%COLOR_ROTATION.length]);
+		this.actorTypeToView.put(actorType, view);
+		StackPane button = UIHelper.buttonStack(e -> launchEditor(view), 
+				Optional.of(labelForStackButton(actorType + " Editor")), //TODO resources
+				Optional.of(imageForStackButton(actorType.getImagePath())), 
 				Pos.CENTER_RIGHT, true);
 		button.setPrefHeight(BUTTON_HEIGHT);
 		myVBox.getChildren().add(myVBox.getChildren().size() - 1, button);
@@ -278,7 +209,7 @@ public class LeftPaneView extends StackPane implements CreateActorDelegate{
 	
 	@Override
 	public void closeSelfAndReturn(Pane pane, String actorName, String imagePath) {
-		this.addActor(actorName, imagePath, new HashMap<String, LineageData>());
+		this.addActorToGame(new BasicActorType(actorName, imagePath));
 		closeSelf(pane);
 	}
 	

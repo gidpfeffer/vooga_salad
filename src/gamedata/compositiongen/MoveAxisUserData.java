@@ -1,5 +1,14 @@
 package gamedata.compositiongen;
 
+/**
+ * Defines subclass of ActData objects that allow for movement
+ * of the actor by the user, in various directions and via
+ * various means. 
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class MoveAxisUserData extends ActData {
 	private String posButton;
 	private String negButton;

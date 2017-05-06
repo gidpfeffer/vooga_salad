@@ -26,6 +26,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.UIHelper;
+import util.PropertyUtil;
 
 /**
  * Wave chooser allows for setting the type and number of each enemy
@@ -36,6 +37,7 @@ import ui.general.UIHelper;
  */
 
 public class WaveChooserMenu extends AnchorPane {
+	private static final String LEVEL_OPTIONS = "ui/authoring/resources/level_options";
 
 	PopViewDelegate myDelegate;
 	private WaveData editWave;
@@ -64,7 +66,6 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 
 	private void setupViews() {
-		//TODO: Fix scroll bar
 		waves = new ScrollPane();
 		waves.setHbarPolicy(ScrollBarPolicy.NEVER);
 		waves.setVbarPolicy(ScrollBarPolicy.NEVER);
@@ -92,8 +93,9 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private void addWaveButton(HBox root){
+		String waveAdd = PropertyUtil.getTerm(LEVEL_OPTIONS,"AddWave");
 		StackPane newWave = UIHelper.buttonStack(e->addNewWave(), 
-				Optional.of(LevelUtil.labelForStackButton("Add Wave")), 
+				Optional.of(LevelUtil.labelForStackButton(waveAdd)), 
 				Optional.of(LevelUtil.imageForStackButton("add_icon.png")),
 				Pos.CENTER_RIGHT, true);
 		newWave.setPrefHeight(56);
@@ -125,11 +127,10 @@ public class WaveChooserMenu extends AnchorPane {
 			ImageView image = new ImageView(new Image(enemy.getImagePath()));
 			image.setFitWidth(60);
 			image.setPreserveRatio(true);
-			Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
+			Node toAdd = UIHelper.buttonStack(e->{},
 					Optional.of(LevelUtil.labelForStackButton(enemy.getName())), 
 					Optional.of(image), Pos.CENTER, true);
 		
-			//TODO: Restore saved
 			String quantity = "0";
 			if(editWave !=null){
 				quantity = ""+editWave.getQuantity(enemy);
@@ -145,19 +146,6 @@ public class WaveChooserMenu extends AnchorPane {
 		actors.setContent(root);
 	}
 	
-	private Node buildEnemyBox(ActorData enemy){
-		VBox enemyBox = new VBox();
-		enemyBox.setSpacing(10);
-		enemyBox.setAlignment(Pos.CENTER);
-		ImageView image = new ImageView(new Image(enemy.getImagePath()));
-		image.setFitWidth(60);
-		image.setPreserveRatio(true);
-		Node toAdd = UIHelper.buttonStack(e->promptUser(enemy),
-				Optional.of(LevelUtil.labelForStackButton(enemy.getName())), 
-				Optional.of(image), Pos.CENTER, true);
-		return toAdd;
-	}
-	
 	private TextField addField(ActorData data, String value){
 		TextField field = LevelUtil.addField(value);
 		field.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -166,7 +154,6 @@ public class WaveChooserMenu extends AnchorPane {
             }
         });
 		
-		//TODO: why did I do this
 		field.textProperty().addListener((o,oldText,newText) -> 
 			this.updateQuantity(field.textProperty().getValue(), data));
 		return field;
@@ -182,13 +169,8 @@ public class WaveChooserMenu extends AnchorPane {
 				editWave.addWaveEnemy(new EnemyInWaveData(data, quantity));
 			}
 		}catch(Exception e){
-			//TODO: Error checking
+			//NO RESPONSE
 		}
-	}
-	
-	private void promptUser(ActorData enemy){
-		System.out.println("Prompt user");
-		//TODO: Implement
 	}
 	
 	private StackPane addNewWave(){
@@ -213,7 +195,6 @@ public class WaveChooserMenu extends AnchorPane {
 		highlight(selected);
 		
 		for(int i =0; i<textBoxes.size(); i++){
-			//TODO: Restore saved
 			int quantity = editWave.getQuantity(enemies.get(i));
 			textBoxes.get(i).setText(""+quantity);
 		}
@@ -232,9 +213,10 @@ public class WaveChooserMenu extends AnchorPane {
 	}
 	
 	private StackPane addWave(int waveNumber){
+		String wave = PropertyUtil.getTerm(LEVEL_OPTIONS, "Wave");
 		StackPane nextWave= UIHelper.buttonStack(e->{},  
 				Optional.of(LevelUtil.labelForStackButton
-				(String.format("      Wave %d       ", waveNumber + 1))), 
+				(String.format("      " + wave + " %d       ", waveNumber + 1))), 
 				Optional.ofNullable(null),Pos.CENTER_RIGHT, true);
 		highlight(nextWave);
 		nextWave.addEventHandler(MouseEvent.MOUSE_CLICKED, 

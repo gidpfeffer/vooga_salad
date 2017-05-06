@@ -1,27 +1,23 @@
 package factories;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import gamedata.composition.LimitedHealthData;
 import gamedata.compositiongen.Data;
 
 /**
  * Data object factory, used in DataGenerator
- * 
- * TODO: Consolidate shared code
  * 
  * @author maddiebriere
  *
  */
 
 public class DataFactory extends AbstractFactory <Data> {
-	//TODO: Confirm package
 	private static final String PATH = "gamedata.composition.";
 	
 	public DataFactory() {
 		super(PATH);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -31,7 +27,7 @@ public class DataFactory extends AbstractFactory <Data> {
 
 	@Override
 	protected Data failResponse() {
-		return null;
+		return new LimitedHealthData();
 	}
 	
 	protected Class<?>[] getClasses(Object... args) {

@@ -3,7 +3,6 @@ package builders.objectgen;
 import java.util.ArrayList;
 import java.util.List;
 
-import builders.util.PathGenerator;
 import gamedata.ActorData;
 import gamedata.BasicData;
 import gamedata.EnemyInWaveData;
@@ -18,7 +17,10 @@ import gameengine.grid.classes.Coordinates;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 /**
- * Generates test GameData for use in GamePlayer
+ * Generates test GameData for use in GamePlayer.
+ * 
+ * USED ONLY IN EARLY STAGES, BEFORE FUNCTIONING 
+ * AUTHORING ENVIRONMENT.
  * 
  * @author maddiebriere
  */
@@ -51,9 +53,6 @@ public class GameDataGenerator {
 	public static GameData getComplexSampleGame(){
 		GameData game = new GameData();
 		
-		//BasicActorType tower = game.addType("Tower");
-		//BasicActorType shot = game.addType("Shot");
-		//BasicActorType troop = game.addType("Troop");
 		BasicActorType base = game.addType("Base");
 		
 		List<Grid2D> samplePath = new ArrayList<Grid2D>();

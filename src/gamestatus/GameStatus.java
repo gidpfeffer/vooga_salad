@@ -17,10 +17,11 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	private final String LIVES = "Lives";
 	private final String ENEMIES_LEFT = "Enemies Left";
 	
-	private final static int INIT_LIVES = 3;
-	
 	private WriteableUser myWriteableUser;
 	private InitialGameStatus myInitialGameStatus;
+	
+	private static int INIT_LEVEL = 1;
+	private static double INIT_EXP = 0;
 	
 	public GameStatus(WriteableUser writeableUser,InitialGameStatus initialGameStatus) {
 		myWriteableUser =writeableUser;
@@ -29,21 +30,22 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	}
 	
 	public void setInitialValues() {
-		setMyMoney(myInitialGameStatus.getInitMoney());
-		setMyLevel(myInitialGameStatus.getInitLevel());
-		setMyExperience(myInitialGameStatus.getInitExp());
-		setMyLives(INIT_LIVES);
+		setMyMoney(0);
+		myInitialGameStatus.getInitMoney().ifPresent((money) -> setMyMoney(money));
+		setMyLevel(INIT_LEVEL);
+		setMyExperience(INIT_EXP);
+		setMyLives(myInitialGameStatus.getInitLives());
 	}
 
 	public void addExperience(double exp){
 		setMyExperience(getExp()+exp);
 	}
 
-	public void addMoney(double mon){
+	public void addMoney(int mon){
 		setMyMoney(getMoney()+mon);
 	}
 
-	public void spendMoney(double mon){
+	public void spendMoney(int mon){
 		setMyMoney(getMoney()-mon);
 	}
 
@@ -58,14 +60,12 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 		notifyObservers();
 	}
 
-	public void setMyMoney(double myMoney) {
-		myWriteableUser.setMoney(myMoney);
-		myMap.put(MONEY, Double.toString(myMoney));
+	public void setMyMoney(int myMoney) {
+		myMap.put(MONEY, Integer.toString(myMoney));
 		notifyObservers();
 	}
 
 	public void setMyLevel(int myLevel) {
-		myWriteableUser.setLevel(myLevel);
 		myMap.put(LEVEL, Integer.toString(myLevel));
 		notifyObservers();
 	}
@@ -91,8 +91,8 @@ public class GameStatus extends VoogaObservableMap<String,String> implements Wri
 	}
 
 	@Override
-	public double getMoney() {
-		return Double.parseDouble(myMap.get(MONEY));
+	public int getMoney() {
+		return Integer.parseInt(myMap.get(MONEY));
 	}
 
 	@Override

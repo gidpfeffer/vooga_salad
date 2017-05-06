@@ -1,6 +1,14 @@
 package factories;
 
+import gameengine.conditions.KillAllCondition;
 import gameengine.conditionsgen.Condition;
+
+/**
+ * Factory for creating Conditions;
+ * 
+ * @author maddiebriere
+ *
+ */
 
 public class ConditionFactory extends AbstractFactory<Condition>{
 	private static final String PATH = "gameengine.conditions.";
@@ -16,8 +24,7 @@ public class ConditionFactory extends AbstractFactory<Condition>{
 
 	@Override
 	protected Condition failResponse() {
-		// TODO Auto-generated method stub
-		return null;
+		return new KillAllCondition();
 	}
 
 }

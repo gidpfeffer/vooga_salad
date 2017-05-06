@@ -37,7 +37,7 @@ public class GameLevelController {
 	
 	private Delay delay;
 	
-	private final int DELAY_CONSTANT = 2;
+	private final int DELAY_CONSTANT = 35;
 	
 	private Condition myWinCondition;
 	
@@ -93,6 +93,7 @@ public class GameLevelController {
 	}
 	
 	private void loadLevel(LevelData levelData) {
+		delay = new Delay((int) levelData.getDuration());
 		updateWinCondition(levelData);
 		addSetPieces(myGameData.getLayers().getMyBaseData());
 		addPieces(levelData);

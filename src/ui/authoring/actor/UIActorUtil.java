@@ -1,10 +1,5 @@
 package ui.authoring.actor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gamedata.ActorData;
-import gamedata.GameData;
 import gamedata.compositiongen.Data;
 import javafx.scene.control.Label;
 import ui.general.CustomColors;

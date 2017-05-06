@@ -20,10 +20,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
-import ui.authoring.actor.BasicPicker;
+import ui.authoring.actor.Picker;
 import ui.authoring.delegates.PopViewDelegate;
 import ui.general.CustomColors;
 import ui.general.UIHelper;
+import util.PropertyUtil;
 
 /**
  * Allows user to set level-specific variables
@@ -33,6 +34,7 @@ import ui.general.UIHelper;
  */
 
 public class LevelEditorMenu extends AnchorPane {
+	private static final String LEVEL_OPTIONS = "ui/authoring/resources/level_options";
 	
 	PopViewDelegate myDelegate;
 	private int levelNum;
@@ -64,8 +66,15 @@ public class LevelEditorMenu extends AnchorPane {
 	}
 	
 	private void setupFields(){
-		//TODO: Resource file
-		Label title = LevelUtil.labelForTitle("Level " + levelNum);
+		String level = PropertyUtil.getTerm(LEVEL_OPTIONS,  "Level"); 
+		String durSt = "             " + PropertyUtil.getTerm(LEVEL_OPTIONS, "Duration");
+		
+		String attSt = PropertyUtil.getTerm(LEVEL_OPTIONS, "Attack");
+		String heaSt = PropertyUtil.getTerm(LEVEL_OPTIONS, "Health");
+		String speSt = PropertyUtil.getTerm(LEVEL_OPTIONS, "Speed");
+		
+		
+		Label title = LevelUtil.labelForTitle(level + " " + levelNum);
 		title.setMinWidth(50);
 		
 		String dur = fieldCheck(myData.getDuration());
@@ -73,13 +82,13 @@ public class LevelEditorMenu extends AnchorPane {
 		String spe = fieldCheck(myData.getSpeedMultiplier());
 		String hea = fieldCheck(myData.getHealthMultiplier());
 		
-		HBox duration = generateEntry("             Duration", dur, (o,oldText,newText) -> 
+		HBox duration = generateEntry(durSt, dur, (o,oldText,newText) -> 
 			this.updateDuration((String)newText));
-		HBox attack= generateEntry("Attack Multiplier", att, (o,oldText,newText) -> 
+		HBox attack= generateEntry(attSt, att, (o,oldText,newText) -> 
 			this.updateAttack((String)newText));
-		HBox health = generateEntry("Health Multiplier", hea, (o,oldText,newText) -> 
+		HBox health = generateEntry(heaSt, hea, (o,oldText,newText) -> 
 			this.updateHealth((String)newText));
-		HBox speed = generateEntry("Speed Multiplier", spe, (o,oldText,newText) -> 
+		HBox speed = generateEntry(speSt, spe, (o,oldText,newText) -> 
 		this.updateSpeed((String)newText));
 		
 		VBox root = new VBox();
@@ -101,7 +110,7 @@ public class LevelEditorMenu extends AnchorPane {
 	private void addClickableCondition(VBox vbox, Condition condition){
 		List<String> conditions = new ArrayList<String>(AuthorInfoGenerator.getConditionTypesWithArgs().keySet());
 		String name = AuthorInfoGenerator.getName(condition);
-		BasicPicker<String> input = addClickableField(vbox, "Win on", name, conditions);
+		Picker<String> input = addClickableField(vbox, "Win on", name, conditions);
 		input.getTypeProperty().addListener(e -> {
 			didEditCondition(input.getTypeProperty().get());
 		});
@@ -114,8 +123,7 @@ public class LevelEditorMenu extends AnchorPane {
 		}
 	}
 	
-	//TODO: Move to Util class
-	private <T extends Object> BasicPicker<T> addClickableField(VBox vbox,
+	private <T extends Object> Picker<T> addClickableField(VBox vbox,
 			String nameKey, T value, List<T> types) {
 		AnchorPane content = new AnchorPane();
 
@@ -128,8 +136,8 @@ public class LevelEditorMenu extends AnchorPane {
 		fieldName.setPrefWidth(116);
 		content.getChildren().add(fieldName);
 		
-		BasicPicker <T> input = 
-				new BasicPicker<T>(value, types, true);
+		Picker <T> input = 
+				new Picker<T>(value, types, true);
 		AnchorPane.setRightAnchor(input, 4.0);
 		AnchorPane.setTopAnchor(input, 4.0);
 		AnchorPane.setBottomAnchor(input, 4.0);
@@ -149,7 +157,7 @@ public class LevelEditorMenu extends AnchorPane {
 			double duration = Double.parseDouble(newText);
 			myData.setDuration(duration);
 		}catch(Exception e){
-			//TODO: Error handling
+			//No response
 		}
 	}
 	
@@ -158,7 +166,7 @@ public class LevelEditorMenu extends AnchorPane {
 			double attack = Double.parseDouble(newText);
 			myData.setAttackMultiplier(attack);
 		}catch(Exception e){
-			//TODO: Error handling
+			//No response
 		}
 	}
 	
@@ -167,7 +175,7 @@ public class LevelEditorMenu extends AnchorPane {
 			double health = Double.parseDouble(newText);
 			myData.setHealthMultiplier(health);
 		}catch(Exception e){
-			//TODO: Error handling
+			//No response
 		}
 	}
 	
@@ -176,7 +184,7 @@ public class LevelEditorMenu extends AnchorPane {
 			double speed = Double.parseDouble(newText);
 			myData.setSpeedMultiplier(speed);
 		}catch(Exception e){
-			//TODO: Error handling
+			//No response
 		}
 	}
 	

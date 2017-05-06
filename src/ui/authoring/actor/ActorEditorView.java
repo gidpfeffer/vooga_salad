@@ -71,6 +71,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		myGameData.getAllOfType(type);
 		UIHelper.setBackgroundColor(this, CustomColors.BLUE_800);
 		setupViews();
+		setupActors();
 	}
 
 	private void setupBackButton() {
@@ -85,7 +86,12 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		Label lbl = new Label("Placeable?");
 		lbl.setTextFill(CustomColors.GREEN_100);
 		lbl.setFont(Preferences.FONT_SMALL_BOLD);
-		ImageButton b = new ImageButton("place_icon.png", new Location(32., 32.));
+		ImageButton b;
+		if(myActorType.isPlaceable()){
+			b = new ImageButton("place_icon.png", new Location(32., 32.));
+		} else{
+			b = new ImageButton("no_place_icon.png", new Location(32., 32.));
+		}
 		AnchorPane.setTopAnchor(b, 4.0);
 		AnchorPane.setRightAnchor(b, 4.0);
 		AnchorPane.setTopAnchor(lbl, 16.0);
@@ -187,13 +193,15 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		pane.setContent(myLineageList);
 	}
 
-	public void setupActors(Map<String,LineageData> mapOfNameToImagePath, boolean loaded) {
-		for (Entry<String, LineageData> entry : mapOfNameToImagePath.entrySet()) {
-			if(!loaded){
-				myGameData.add(entry.getValue());
-			}
-			addActor(entry.getValue().getCurrent().getImagePath(), entry.getKey(), entry.getValue(), loaded);
+	private void setupActors() {
+		for (LineageData entry : myGameData.getAllLinOfType(myActorType).values()) {
+			addActorToView(entry);
 		}
+	}
+	
+	private void addActorData(LineageData data){
+		myGameData.add(data);
+		addActorToView(data);
 	}
 
 	/**
@@ -204,15 +212,15 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 	 * @param imgPath the String path of the image
 	 * @param name the name of the actor, can be changed later.
 	 */
-	private void addActor(String imgPath, String name, LineageData data, boolean loaded){
+	private void addActorToView(LineageData data){
 		AnchorPane anchor = new AnchorPane();
-		
-		Image img = new Image(imgPath);
+
+		Image img = new Image(data.getProgenitor().getImagePath());
 		ImageView imageView = new ImageView(img);
 		imageView.setFitWidth(40);
 		imageView.setPreserveRatio(true);
 		
-		TextField actorField = addField(name);
+		TextField actorField = addField(data.getProgenitor().getName());
 			
 		StackPane view = UIHelper.buttonStack(
 				e -> myActorInfoView.setLineageData(data), 
@@ -220,8 +228,8 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 				Pos.CENTER_LEFT, true);
 		view.setPrefHeight(BUTTON_HEIGHT);
 		actorField.textProperty().addListener((o,oldText,newText) -> this.updateTowerName(data, newText));
-		
-		ImageView removeIcon = new ImageView(new Image("clear_icon.png"));
+
+		/*ImageView removeIcon = new ImageView(new Image("clear_icon.png"));
 		removeIcon.setFitHeight(16);
 		removeIcon.setFitWidth(16);
 		StackPane remove = UIHelper.buttonStack(e -> {removeLineage(data, anchor);}, 
@@ -229,7 +237,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 				Optional.of(removeIcon), Pos.CENTER, true);
 		UIHelper.setBackgroundColor(remove, Color.TRANSPARENT);
 		AnchorPane.setTopAnchor(remove, -4.0);
-		AnchorPane.setRightAnchor(remove, -4.0);
+		AnchorPane.setRightAnchor(remove, -4.0);*/
 		
 		UIHelper.setBackgroundColor(view, CustomColors.BLUE_200);
 		//VBox.setMargin(view, new Insets(8));
@@ -237,7 +245,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 		AnchorPane.setRightAnchor(view, 8.0);
 		AnchorPane.setTopAnchor(view, 8.0);
 		AnchorPane.setBottomAnchor(view, 8.0);
-		anchor.getChildren().addAll(view, remove);
+		anchor.getChildren().addAll(view);
 		myLineageList.getChildren().add(myLineageList.getChildren().size() - 1, anchor);	
 	}
 	
@@ -281,8 +289,7 @@ public class ActorEditorView extends AnchorPane implements ActorInfoDelegate {
 			String name = imageName.substring(0, imageName.indexOf("."));
 			LineageData lin = new LineageData(new ActorData(myActorType, 
 					new BasicData(name,  selectedFile.toURI().toString()), new LimitedHealthData()));
-			myGameData.add(lin);
-			addActor(selectedFile.toURI().toString(), name, lin,  false);
+			addActorData(lin);
 		}
 	}
 	

@@ -1,19 +1,37 @@
 package builders.infogen;
 
-import gamedata.compositiongen.Data;
 import gameengine.conditionsgen.Condition;
 
+/**
+ * Generate information about Conditions, including
+ * concrete subclasses, abstract super classes, etc.
+ * (inherited).
+ * 
+ * @author maddiebriere
+ *
+ */
+
 public class ConditionInfoGenerator extends TwoLevelInfoGenerator<Condition>{
-	private static final String DATA_PATH = "gameengine.conditions";
-	private static final String SUPER_DATA_PATH = "gameengine.conditionsgen";
+	//keys for accessing class path property file
+	private static final String CONDITION = "Condition";
+	private static final String SUPER_CONDITION = "GenCondition";
 	
 	public ConditionInfoGenerator() {
-		super(DATA_PATH, SUPER_DATA_PATH);
+		super(ClassFinder.getClass(CONDITION), ClassFinder.getClass(SUPER_CONDITION));
 	}
 	
 	@Override
 	protected String simplifyName(Class<?> className) {
-		return className.getSimpleName().replace("Condition", "");
+		return className.getSimpleName().replace(CONDITION, "");
+	}
+
+	@Override
+	protected Class<?> rebuildFromName(String name) {
+		try {
+			return Class.forName(name + CONDITION);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
 	}
 	
 
