@@ -19,3 +19,13 @@
 |------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Steppable        | ActorGrid                 | void step();                                                                                                                                                                                                                            |
 | ControllableGrid | ActorGrid                 | extends Steppable(); <br><br> void move(int ID, double newX, double newY); <br><br> void removeActor(int ID); <br><br> void controllerSpawnActor(Actor actor, double startX, double startY); <br><br> Grid2D getLocationOf(int ID); <br><br> boolean isValidLoc(double x, double y); |
+
+### Grid Utilities and Handlers
+
+| Interface            | Classes That Implement It | Methods                                                                          |
+|----------------------|---------------------------|----------------------------------------------------------------------------------|
+| GridHandler          | See GameController        | WriteableGameStatus getWriteableGameStatus(); <br><br> ListenQueue getEventQueue();    |
+| FrontEndInformation  | DisplayInfo               | Grid2D getActorLocation(); <br><br> double getActorPercentHealth(); <br><br> int getActorOption(); |
+| ActorLocator         | ActorFinder               | Actor getActor(); <br><br> Grid2D getLocation();                                          |
+| SettableActorLocator | ActorFinder               | extends ActorLocator <br><br> void setLocation(double x, double y);                       |
+| Grid2D               | Coordinates               | double getY(); <br><br> double getX();                                                    |
