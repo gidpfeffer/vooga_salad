@@ -9,6 +9,15 @@ import gameengine.grid.interfaces.ActorGrid.MasterGrid;
 import gameengine.grid.interfaces.Identifiers.Grid2D;
 import types.BasicActorType;
 
+/**
+ * 
+ * @author Gideon
+ *
+ * This class is the shell of an actor used for testing purposes only
+ * It has no properties associated with it
+ * 
+ * To see it in use, look in the actorGrid and Controller Grid testers
+ */
 public class TestActor implements Actor{
 	private boolean alive;
 	private int ID;
@@ -20,6 +29,9 @@ public class TestActor implements Actor{
 		type = new BasicActorType("troop");
 	}
 
+	/**
+	 * moves the actor when prompted to act
+	 */
 	@Override
 	public void act(MasterGrid grid) {
 		Grid2D loc = grid.getLocationOf(ID);

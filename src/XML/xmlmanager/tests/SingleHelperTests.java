@@ -9,7 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import XML.xmlmanager.classes.NewDirectoryCreator;
+import XML.xmlmanager.classes.NewDirectoryHelper;
 import XML.xmlmanager.exceptions.IllegalFileException;
 import XML.xmlmanager.exceptions.InvalidRootDirectoryException;
 import XML.xmlmanager.interfaces.filemanager.DirectoryFileManager;
@@ -25,7 +25,7 @@ public class SingleHelperTests {
        myData.addType("test1");
        myData.addType("test2");
        try {
-    	   helper = new NewDirectoryCreator(rootDir, newDir);
+    	   helper = new NewDirectoryHelper(rootDir, newDir);
     	   assertEquals(test, true);
        } catch (InvalidRootDirectoryException | IOException e) {
     	   assertEquals(test, false);
