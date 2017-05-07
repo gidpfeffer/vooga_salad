@@ -39,3 +39,25 @@
 | DirectoryFileReader | ExistingDirectoryHelper <br><br> NewDirectoryHelper | boolean fileExists(String fileName); <br><br> String getFileContent(String filename) throws IOException, IllegalFileException; <br><br> Collection< String> getAllNewFilenames(); <br><br> Collection< String> getAllFilesInDirectory();|
 | DirectoryFileManager | ExistingDirectoryHelper <br><br> NewDirectoryHelper | extends DirectoryFileWriter <br><br> void cleanse() throws IOException; |
 | VoogaSerializer | XStreamSerializer | String getXMLStringFromObject(Object o); <br><br> < C> C makeObjectFromXMLString(String XMLString, Class< C> clazz) throws IllegalXStreamCastException;|
+
+### Facebook
+
+| Interface            | Classes That Implement It | Methods                                                                          |
+|----------------------|---------------------------|----------------------------------------------------------------------------------|
+| FacebookAuthenticator | Authenticator | boolean isAuthenticated(); <br><br> void authenticate();| 
+| FacebookPoster | Authenticator | String postWithoutVoogaLink(String toPost); <br><br> String postWithVoogaLink(String toPost); | 
+| ProfilePictureAcessor | Authenticator | Image getProfilePicture(); | 
+| MasterFacebookUser | Authenticator | extends FacebookAuthenticator, FacebookPoster, ProfilePictureAccessor| 
+
+### DirectoryTree 
+
+**These classes were never finished and were not used anywhere in the project**
+
+| Interface            | Classes That Implement It | Methods                                                                          |
+|----------------------|---------------------------|----------------------------------------------------------------------------------|
+| BoolSwitch | ConcreteBoolSwitch | void setTrue(); <br><br> void setFalse(); <br><br> boolean getState(); |
+| Pair< K,V> | ConcretePair | K getKey(); <br><br> V getValue(); <br><br> void setKey(K k); <br><br> void setValue(V v); |
+| StringDirectoryTree | DirectoryNode | boolean addDirectoryToTree(String filepath); <br><br> boolean addFileToTree(String filepath); <br><br> String getRootDirectory(); <br><br> Collection< DirectoryNode> getSubDirectories(); <br><br> Collection< String> getFiles(); <br><br> void printTree(); |
+
+
+
