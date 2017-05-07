@@ -29,3 +29,13 @@
 | ActorLocator         | ActorFinder               | Actor getActor(); <br><br> Grid2D getLocation();                                          |
 | SettableActorLocator | ActorFinder               | extends ActorLocator <br><br> void setLocation(double x, double y);                       |
 | Grid2D               | Coordinates               | double getY(); <br><br> double getX();                                                    |
+
+### XML and File Management
+
+| Interface            | Classes That Implement It | Methods                                                                          |
+|----------------------|---------------------------|----------------------------------------------------------------------------------|
+| FileHelper |  ConcreteFileHelper | boolean overwriteStringFile(String filepath, String fileContent) throws IllegalFileException, IOException; <br><br> boolean deleteFile(File file); <br><br> boolean deleteDir(File directory) throws IOException; <br><br> String readFile(File file) throws IOException; <br><br> void moveFile(String startDirPath, String endDirPath, String filename) throws IllegalFileException, IOException;|
+| DirectoryFileWriter | ExistingDirectoryHelper <br><br> NewDirectoryHelper | extends DirectoryFileReader <br><br> boolean addStringFileToDirectory(String fileContent, String filename) throws IOException, IllegalFileException; |
+| DirectoryFileReader | ExistingDirectoryHelper <br><br> NewDirectoryHelper | boolean fileExists(String fileName); <br><br> String getFileContent(String filename) throws IOException, IllegalFileException; <br><br> Collection< String> getAllNewFilenames(); <br><br> Collection< String> getAllFilesInDirectory();|
+| DirectoryFileManager | ExistingDirectoryHelper <br><br> NewDirectoryHelper | extends DirectoryFileWriter <br><br> void cleanse() throws IOException; |
+| VoogaSerializer | XStreamSerializer | String getXMLStringFromObject(Object o); <br><br> < C> C makeObjectFromXMLString(String XMLString, Class< C> clazz) throws IllegalXStreamCastException;|
