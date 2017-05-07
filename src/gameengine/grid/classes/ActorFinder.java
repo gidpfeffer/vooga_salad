@@ -12,12 +12,12 @@ import gameengine.grid.interfaces.Identifiers.SettableActorLocator;
  * location because the actor shoul dnot change after instantiation.
  */
 
-public class ActorLocator implements SettableActorLocator{
+public class ActorFinder implements SettableActorLocator{
 	
 	private Grid2D location;
 	private Actor actor;
 
-	public ActorLocator(Grid2D location, Actor actor){
+	public ActorFinder(Grid2D location, Actor actor){
 		this.actor = actor;
 		this.location = location;
 	}
