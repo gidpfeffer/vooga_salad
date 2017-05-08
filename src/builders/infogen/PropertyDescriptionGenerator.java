@@ -1,5 +1,7 @@
 package builders.infogen;
 
+import builders.infogen.masterpiece.DataInfoGenerator;
+
 public class PropertyDescriptionGenerator {
 	private static final String DESCRIPTIONS = "PropertyDescriptions";
 	

@@ -1,6 +1,6 @@
-package builders.infogen;
+package builders.infogen.masterpiece;
 
-import gamedata.compositiongen.Data;
+import builders.infogen.ClassFinder;
 
 /**
  * Generate information about Data objects, including
@@ -11,7 +11,8 @@ import gamedata.compositiongen.Data;
  *
  */
 
-public class DataInfoGenerator extends TwoLevelInfoGenerator<Data>{
+public class DataInfoGenerator extends HierarchyInfoGenerator{
+	
 	//Keys for accessing class path property file
 	private static final String DATA = "Data";
 	private static final String SUPER_DATA = "GenData";
@@ -21,17 +22,13 @@ public class DataInfoGenerator extends TwoLevelInfoGenerator<Data>{
 	}
 	
 	@Override
-	protected String simplifyName(Class<?> className) {
+	public String simplifyName(Class<?> className) {
 		return className.getSimpleName().replace(DATA, "");
 	}
-
+	
 	@Override
-	protected Class<?> rebuildFromName(String name) {
-		try {
-			return Class.forName(name + DATA);
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
+	protected String rebuildAddress(String name){
+		return ClassFinder.getClass(DATA) + "." + name + DATA;
 	}
 	
 

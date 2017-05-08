@@ -54,9 +54,6 @@ public class GameData {
 	//Preferences for game
 	PreferencesData preferences;
 	
-	//Path information
-	//PathData myPaths;
-	
 	//Layer information
 	MapLayersData myLayers; 
 
