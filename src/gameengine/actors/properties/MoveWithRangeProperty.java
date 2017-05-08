@@ -46,9 +46,12 @@ public abstract class MoveWithRangeProperty<G extends MasterGrid> implements IAc
 	 * Abstract method that determines the type of movement that is undergone by
 	 * a specific actor in this class' extending subclasses
 	 * 
-	 * @param grid generic grid determining the access rights of this property
-	 * @param actorID unique integer delineating the identity of a given actor
-	 * @param speed the absolute velocity at which this actor will move
+	 * @param grid
+	 *            generic grid determining the access rights of this property
+	 * @param actorID
+	 *            unique integer delineating the identity of a given actor
+	 * @param speed
+	 *            the absolute velocity at which this actor will move
 	 */
 	abstract protected void moveProj(G grid, Integer actorID, double speed);
 
