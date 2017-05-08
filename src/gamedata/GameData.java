@@ -104,6 +104,7 @@ public class GameData {
 	public Collection<LineageData> getLineageData(){
 		return pieces.values();
 	}
+	
 	/**
 	 * Get all option matching to a certain type (Troop, Tower, etc.) of
 	 * Actor. 
