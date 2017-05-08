@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import gameengine.actors.management.Actor;
 import gameengine.actors.propertygen.IActProperty;
-import gameengine.grid.classes.ActorLocator;
+import gameengine.grid.classes.ActorFinder;
 import gameengine.grid.classes.Coordinates;
 import gameengine.grid.classes.DisplayInfo;
 import gameengine.grid.interfaces.ActorGrid.MasterGrid;
@@ -263,7 +263,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	 */
 	@Override
 	public void controllerSpawnActor(Actor actor, double startX, double startY){
-		actors.add(new ActorLocator(new Coordinates(startX, startY), actor));
+		actors.add(new ActorFinder(new Coordinates(startX, startY), actor));
 	}
 	
 	/**
@@ -272,7 +272,7 @@ public class ActorGrid extends VoogaObservableMap<Integer, FrontEndInformation> 
 	 * @param startY the starting y location for the actor
 	 */
 	private void addActor(Actor newActor, double startX, double startY){
-		SettableActorLocator movingActor = new ActorLocator(new Coordinates(startX, startY), newActor);
+		SettableActorLocator movingActor = new ActorFinder(new Coordinates(startX, startY), newActor);
 		newActors.push(movingActor);
 	}
 
