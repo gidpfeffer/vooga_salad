@@ -18,6 +18,10 @@ import org.junit.Test;
 
 public class DataInfoTester {
 	
+	/**
+	 * Test the functionality of the concrete class
+	 * method in the DataInfoGenerator
+	 */
 	@Test
 	public void testConcreteClasses(){
 		for(Class<?> clzz: getConcreteClasses()){
@@ -25,6 +29,9 @@ public class DataInfoTester {
 		}
 	}
 	
+	/**
+	 * Test the simplify and rebuild methods
+	 */
 	@Test
 	public void testDataRebuild(){
 		List<Class<?>> classes = getConcreteClasses();
