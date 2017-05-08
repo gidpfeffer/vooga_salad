@@ -54,9 +54,6 @@ public class GameData {
 	//Preferences for game
 	PreferencesData preferences;
 	
-	//Path information
-	//PathData myPaths;
-	
 	//Layer information
 	MapLayersData myLayers; 
 
@@ -107,6 +104,7 @@ public class GameData {
 	public Collection<LineageData> getLineageData(){
 		return pieces.values();
 	}
+	
 	/**
 	 * Get all option matching to a certain type (Troop, Tower, etc.) of
 	 * Actor. 

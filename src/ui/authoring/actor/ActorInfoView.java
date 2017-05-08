@@ -406,6 +406,7 @@ public class ActorInfoView extends AnchorPane implements DataViewDelegate, Optio
 	
 	@Override
 	public void didPickOptionWithData(String dataName) {
+		System.out.println("HERE" + dataName);
 		Data d = DataGenerator.makeData(dataName+"Data");
 		d.addData(this.myCurrentActorData);
 		addDataView(d);
