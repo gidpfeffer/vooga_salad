@@ -1,6 +1,6 @@
 package builders.infogen;
 
-import gameengine.conditionsgen.Condition;
+import builders.infogen.masterpiece.HierarchyInfoGenerator;
 
 /**
  * Generate information about Conditions, including
@@ -11,7 +11,7 @@ import gameengine.conditionsgen.Condition;
  *
  */
 
-public class ConditionInfoGenerator extends TwoLevelInfoGenerator<Condition>{
+public class ConditionInfoGenerator extends HierarchyInfoGenerator{
 	//keys for accessing class path property file
 	private static final String CONDITION = "Condition";
 	private static final String SUPER_CONDITION = "GenCondition";
@@ -21,17 +21,22 @@ public class ConditionInfoGenerator extends TwoLevelInfoGenerator<Condition>{
 	}
 	
 	@Override
-	protected String simplifyName(Class<?> className) {
+	public String simplifyName(Class<?> className) {
 		return className.getSimpleName().replace(CONDITION, "");
 	}
 
 	@Override
-	protected Class<?> rebuildFromName(String name) {
+	public Class<?> rebuildFromName(String name) {
 		try {
 			return Class.forName(name + CONDITION);
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
+	}
+	
+	@Override
+	protected String rebuildAddress(String name){
+		return ClassFinder.getClass(CONDITION) + "." + name + CONDITION;
 	}
 	
 

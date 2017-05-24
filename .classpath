@@ -8,7 +8,6 @@
 	<classpathentry kind="src" path="images"/>
 	<classpathentry kind="src" path="data/resource"/>
 	<classpathentry kind="src" path="data/css"/>
-	<classpathentry kind="src" path="games"/>
 	<classpathentry kind="src" path="music"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.9.jar"/>
@@ -50,6 +49,6 @@
 	<classpathentry kind="lib" path="lib/selenium-java-3.3.1/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/selenium-java-3.3.1/lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/voogasalad_util"/>
+	<classpathentry kind="lib" path="voogasalad_util"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -20,33 +20,26 @@ public class Coordinates implements Grid2D {
 		this.x = x;
 		this.y = y;
 	}
-	
-	public Coordinates(Grid2D other){
-		this.x = other.getX();
-		this.y = other.getY();
-	}
-	
-	public boolean isValid(){
-		return x <= 1.0 && x >= 0.0 && y<=1.0 & y>=0.0;	
-	}
-	
-	public void setX(double x){
-		this.x = x;
-	}
-	
-	public void setY(double y){
-		this.y = y;
-	}
 
+	/**
+	 * returns the x location
+	 */
 	@Override
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * returns the y location
+	 */
 	@Override
 	public double getY() {
 		return y;
 	}
+	
+	/**
+	 * prints the location in a formatted way
+	 */
 	@Override
 	public String toString(){
 		return(String.format("(%f,%f)", x,y));

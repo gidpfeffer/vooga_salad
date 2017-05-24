@@ -1,5 +1,6 @@
 package builders.infogen;
 
+import builders.infogen.masterpiece.HierarchyInfoGenerator;
 import util.PropertyUtil;
 /**
  * Generate descriptions
@@ -20,7 +21,7 @@ public class DescriptionGenerator {
 	 * @return description A String defining the property
 	 */
 	public static String getDescription(String propertyName, String file, 
-			TwoLevelInfoGenerator<?> info){
+			HierarchyInfoGenerator info){
 		String toRet = PropertyUtil.getTerm(file, propertyName);
 		Class<?> superclass = null;
 		int counter = 0; //to stop time-outs

@@ -215,6 +215,7 @@ public class LoginMain {
 	private void promptUserToChooseGame() {
 		FileSelector mySelector = new FileSelector(CONFIG_EXTENSION);
 		File dataFile = mySelector.open(new Stage());
+		System.out.println("print");
 		goToGameScreen(readGame(dataFile));
 	}
 

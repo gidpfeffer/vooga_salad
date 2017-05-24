@@ -28,9 +28,25 @@ public interface Actor {
 	 *            composition elements of the Actor class are called
 	 */
 	public void act(MasterGrid grid);
-	
+
+	/**
+	 * Method in the Actor interface that dictates the action of an actor when
+	 * the actor is removed from the game or "exits".
+	 * 
+	 * @param grid
+	 *            all access grid that is limited in permissions when elements
+	 *            of this calss are called.
+	 */
 	public void exit(MasterGrid grid);
-	
+
+	/**
+	 * Method that dictates a change in the exit properties for a given actor.
+	 * This allows a calling client to alter what an actor does when the actor
+	 * exits.
+	 * 
+	 * @param action
+	 *            consumer taking a list that alters that list in some way.
+	 */
 	public void changeExit(Consumer<Collection<IActProperty<MasterGrid>>> action);
 
 	/**
@@ -58,7 +74,6 @@ public interface Actor {
 	 * @return consumer that allows for the addition of properties
 	 */
 	public void addProperty(Consumer<Collection<IActProperty<MasterGrid>>> function);
-	//public void changeProperty(Consumer<Collection<IActProperty<MasterGrid>>> action);
 
 	/**
 	 * Method that allows the grid to identify various actors
@@ -76,13 +91,28 @@ public interface Actor {
 	public BasicActorType getType();
 
 	/**
+	 * Method returning the "option" of an actor, the instance of type held
+	 * within a given actor's ActorData.
 	 * 
 	 * @return Integer denoting the "type" of actor that a given actor is with
 	 *         respect to the gamedata
 	 */
 	public Integer getMyOption();
-	
+
+	/**
+	 * Method that allows for the observation of the percentage remaining in a
+	 * given actor's HealthProperty
+	 * 
+	 * @return double representing the percentage of health remaining
+	 */
 	public double getPercentHealth();
-	
+
+	/**
+	 * Method that returns the literal value of remaining health in an actor's
+	 * HealthProperty. This method can be used in conjunction with the
+	 * getPercentHealth() method to return the original amount of health.
+	 * 
+	 * @return current value of remaining health in an actor.
+	 */
 	public double getRemainingHealth();
 }
