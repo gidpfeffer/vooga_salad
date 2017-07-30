@@ -10,10 +10,10 @@ import org.junit.Test;
 /**
  * Minimal tester to confirm the functionality of the DataInfoGenerator.
  * Checks to confirm that the concrete classes are being found and used
- * correctly, 
+ * correctly, and other such conditions.
  * 
  * @author maddiebriere
- *
+ * d
  */
 
 public class DataInfoTester {
