@@ -1,3 +1,9 @@
+# Data Classes #
+################
+*.avi
+*.mp4
+*.xml
+
 # IDEA Ignores #
 ################
 *.iml
@@ -49,6 +55,7 @@ log/
 *.log
 *.sql
 *.sqlite
+*.xml
 
 # OS generated files #
 ######################
